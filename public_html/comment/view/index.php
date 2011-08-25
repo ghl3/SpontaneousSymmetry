@@ -1,0 +1,33 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+
+ <head>	
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+  <link rel="stylesheet" href="/styles/style.css" type="text/css" media="screen">
+
+  <title>View Comments</title>
+
+    <?php include "/home/spontane/tools/commonhead.inc"; ?>
+
+ </head>
+ 
+ <body>
+
+<?php 
+
+   $middle = "displaycomments.inc";
+  // $right  = "rightcolumn.inc";
+
+   include "/home/spontane/tools/body.inc"
+
+?>
+
+ </body>
+
+</html>
+

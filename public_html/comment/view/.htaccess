@@ -1,0 +1,5 @@
+
+AuthName "Secure Area"
+AuthType Basic
+AuthUserFile /home/spontane/password/.htpasswd
+require valid-user
