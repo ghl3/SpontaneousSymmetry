@@ -3,6 +3,8 @@
 
 <html>
 
+
+  <!-- Initialize some variables: -->
   <?php
      $NUM_SLASH = substr_count($_SERVER["SCRIPT_NAME"], "/") - 1;
      $HOME_DIR = ($NUM_SLASH == 0) ? "./"  : str_repeat("../", $NUM_SLASH );
@@ -18,32 +20,59 @@
 
   <head>	
 
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-
-    <link rel="stylesheet" href="/styles/style.css" type="text/css" media="screen">
-
-    
-    <link href="/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="/google-code-prettify/prettify.js"></script>
-
-
-    <?php include "title.inc"; ?>
-    
-    <meta name="keywords" content="spontaneous symmetry, spontaneoussymmetry, george lewis, Higgs, ATLAS, CERN, Statistics, physics, quark" >
-
+    <!-- Include common head statements: -->
     <?php include $HOME_DIR . "../tools/commonhead.inc"; ?>
+
+    <!-- Make the title of the Page: -->
+    <?php if( file_exists("title.inc") ) include "title.inc"; ?>
+    
+    <!-- Include any additional head statements: -->
+    <?php if( file_exists("head.inc") ) include "head.inc"; ?>
+
 
   </head>
 
   <body onload="prettyPrint()">
 
+    <!-- Add default variable options: -->
+    <?php
+       if(! Isset($left) )   $left   = "left.inc";
+       if(! Isset($middle) ) $middle = "midcolumn.inc";
+       if(! Isset($right) )  $right  = "rightcolumn.inc";
+       ?>
 
-    <!-- The body script uses the following variables:
-	 $middle
-	 $right
-      -->
+    <!-- Add the Common Header: -->
+    <?php include "header.inc"; ?>
 
-    <?php include $HOME_DIR . "../tools/body.inc"; ?>
+    <!-- Build the structure of the body: -->
+    <div class="midsection">
+      
+      <div class="leftcol">
+	<?php if( file_exists($left) ) include $left; ?>
+      </div>
+      
+      <div class="midcol">
+	<?php if( file_exists($middle) ) include $middle; ?>
+      </div>
+
+      <div class="rightcol">
+	<?php if( file_exists($right) ) include $right; ?>
+      </div> 
+
+      <div class="bar">
+	<p>&nbsp;</p>
+      </div>
+
+    </div>
+
+    <!-- Add the footer: -->
+    <?php include "footer.inc"; ?>
+
+    <!-- Add analytics: -->
+    <?php include $HOME_DIR . "../analytics/ga.inc"; ?>
+
+
+    <?php /* include $HOME_DIR . "../tools/body.inc";*/ ?>
     
   </body>
 
