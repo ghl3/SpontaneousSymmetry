@@ -14,16 +14,17 @@ the zero's of a quadratic equation (just for fun): <br>
     <fieldset>
       <legend>Quadratic Solver</legend>
 
-      <label for="a" accesskey="f">a: </label>
+      <label accesskey="f">a: </label>
       <input type="text" id="quada" name="quada" tabindex="1"  title="a"><br>
 
-      <label for="b" accesskey="f">b: </label>
+      <label accesskey="f">b: </label>
       <input type="text" id="quadb" name="quadb" tabindex="2"  title="b"><br>
 
-      <label for="c" accesskey="f">c: </label>
+      <label accesskey="f">c: </label>
       <input type="text" id="quadc" name="quadc" tabindex="3"  title="c"><br>
 
-      <label for="submit" action="." class="required" accesskey="e"></label>
+<!--      <label for="submit" action="." class="required" accesskey="e"></label>-->
+     <label class="required" accesskey="e"></label>
       <input type="submit" name="submit" value="Submit" >
 
     </fieldset>
@@ -41,9 +42,9 @@ the zero's of a quadratic equation (just for fun): <br>
 <br>
 
 
-<button id=showcode>Show/Hide Code</button>
+<button id="showcodebutton">Show/Hide Code</button>
 
-<div id=showcode> 
+<div id="showcode"> 
 
   <?php   
      echo '<pre class="prettyprint" id="python">';

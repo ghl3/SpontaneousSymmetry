@@ -25,7 +25,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function(){
-    $("button#showcode").click(function(){
+    $("button#showcodebutton").click(function(){
 	$("div#showcode").toggle("fast");
     });
 });
