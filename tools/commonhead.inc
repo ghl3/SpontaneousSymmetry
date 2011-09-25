@@ -8,7 +8,7 @@
 
 
 <!-- Include the stylesheet: -->
-<link rel="stylesheet" href="/styles/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="<?php echo $HOME_DIR ?>styles/style.css" type="text/css" media="screen">
 
 <!-- Include google's "code prettify" functions: -->
 <link href="/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" >
