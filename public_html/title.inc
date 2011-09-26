@@ -1,1 +1,1 @@
-  <title>Home</title>
+  <title>Spontaneous Symmetry</title>

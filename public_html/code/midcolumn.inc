@@ -12,7 +12,8 @@ Please select a program below: <br>
 
 <br>
 
-<a href="Quadratic"> Quadratic </a>
+<a href="Quadratic"> Quadratic <br> </a>
+<a href="BouncingBalls"> Bouncingballs <br> </a>
 
 <!--
 
