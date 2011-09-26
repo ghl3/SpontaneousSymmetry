@@ -105,6 +105,15 @@ ul {
 
   }
 
+.centralcol
+{
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  float: left;
+
+  }
+
 
 .leftcol {
            /*  font-size: 10px;

@@ -1,3 +1,0 @@
-
-
-  <title>Quadratic Equation</title>
