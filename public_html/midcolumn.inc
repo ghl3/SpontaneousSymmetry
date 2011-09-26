@@ -1,7 +1,7 @@
 
 
 
-	 <p align=center>
+	 <p style="text-align:center">
 	 <br>	 
 	  <b>Welcome to Spontaneous Symmetry:</b> 
 	  <br>
@@ -28,7 +28,7 @@
 	 They are the language of the most fundamental physical processes that we can describe.
 	 </p>
 
-	 <img src="/images/symmetry_e8.jpg" alt=""  border="0" vspace="10">
+	 <img src="/images/symmetry_e8.jpg" alt=""  border="0" >
 
 	 <div class="caption">
 	 <p>	 
