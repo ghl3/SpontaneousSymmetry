@@ -1,1 +1,1 @@
-../../tools/index_main.php
+../../tools/index_common.php
