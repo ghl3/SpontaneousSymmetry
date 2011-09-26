@@ -1,4 +1,6 @@
 
+<?php if( file_exists("title.inc") ) { include "tutke.inc"; } ?>
+
 <meta name="keywords" content="spontaneous symmetry, spontaneoussymmetry, george lewis, Higgs, ATLAS, CERN, Statistics, physics, quark" >
 
 <link rel="shortcut icon" href="/favicon.ico" >
