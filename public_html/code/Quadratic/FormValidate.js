@@ -26,11 +26,11 @@ $(document).ready(function(){
 		number: "Input must be a number"
 	    },
 	    quadb: {
-		required: "Enter the quadratic term.",
+		required: "Enter the linear term.",
 		number: "Input must be a number"
 	    },
 	    quadc: {
-		required: "Enter the quadratic term.",
+		required: "Enter the constant term.",
 		number: "Input must be a number"
 	    }
 

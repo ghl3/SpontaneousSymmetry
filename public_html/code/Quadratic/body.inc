@@ -5,7 +5,7 @@
   <?php include $HOME_DIR . "../tools/header.inc"; ?>
 
   <!-- Add the midsection of the body -->
-  <?php include $HOME_DIR . "../tools/midsection_3column.inc"; ?>
+  <?php include $HOME_DIR . "../tools/midsection_1column.inc"; ?>
 
   <!-- Add the footer: -->
   <?php include $HOME_DIR . "../tools/footer.inc"; ?>

@@ -1,14 +1,20 @@
 
 <br>
-<center><b>CODE</b></center>
+<center><b>Quadratic Solver</b></center>
 <br>
 
-This is a simple example program to return
+<center>
+This is a simple example program to return <br>
 the zero's of a quadratic equation (just for fun): <br>
+<br>
 
+Solve: ax^2 + bx + c = 0
+
+</center>
 <br>
 
 <!--<script type="text/javascript" src="submitQuadForm.js"></script>-->
+<div style="margin: auto; width:80%;">
 <form name="QuadraticForm" id="QuadraticForm" action="" method="POST">
   <!-- Field 1 -->
     <fieldset>
@@ -29,7 +35,9 @@ the zero's of a quadratic equation (just for fun): <br>
 
     </fieldset>
   </form>
+</div>
 
+<center>
 <br>
 <br>
 
@@ -43,6 +51,8 @@ the zero's of a quadratic equation (just for fun): <br>
 
 
 <button id="showcodebutton">Show/Hide Code</button>
+
+</center>
 
 <div id="showcode"> 
 

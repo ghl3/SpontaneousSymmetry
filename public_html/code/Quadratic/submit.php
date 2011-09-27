@@ -22,8 +22,6 @@ if( isset($_POST['quada']) ){
       $handle = popen('python Quadratic.py ' . $quada . ' ' . $quadb . ' ' . $quadc . ' 2>&1', 'r');
       $read = fread($handle, 2096);
       echo "Solution to the Quadratic equation:<br>";
-      // $Eqn = ' ' . $quada . 'x^2 + ' $quadb . 'x + ' . $quadc . ':<br>'; 
-      //echo  $Eqn;
       echo $read;
       pclose($handle);
 
