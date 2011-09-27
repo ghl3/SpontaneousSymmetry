@@ -44,6 +44,14 @@ ball.prototype.Move = function() {
     this.y += this.vy;
 }
 
+ball.prototype.MagV = function() {
+    return Math.sqrt(this.vx*this.vx + this.vy*this.vy);
+}
+
+ball.prototype.CosThetaV = function( OtherBall ) {
+    var CosTheta = (this.vx*OtherBall.vx + this.vy*OtherBall.vy) / (this.MagV() * OtherBall.MagV());
+}
+
 ball.prototype.BounceBoundary = function(WIDTH, HEIGHT) {
     if(this.x + this.radius + this.vx > WIDTH  || this.x - this.radius + this.vx < 0) this.vx = -this.vx;
     if(this.y + this.radius + this.vy > HEIGHT || this.y - this.radius + this.vy < 0) this.vy = -this.vy;
@@ -61,6 +69,11 @@ $(document).ready(function() {
 ball.prototype.BounceBall = function( OtherBall ) {
 
     if( isTouching( this, OtherBall) ) {
+
+	// Remove the case when the velocities aren't
+	// toward one another:
+//	if( this.CosThetaV( OtherBall ) > 0 ) return;
+	
 
 
 /*	document.getElementById("logger").innerHTML += "Bounced! Momentum Before: ";
@@ -95,6 +108,8 @@ ball.prototype.BounceBall = function( OtherBall ) {
 
 	OtherBall.vx = vx2CM + vxCM_frame;
 	OtherBall.vy = vy2CM + vyCM_frame;
+
+
 
 
 /*
