@@ -9,6 +9,16 @@ Rocks Paper Scissors against a computer opponent.
 </center>
 <br>
 
+<center>
+  Strategy: <br>
+  <select name="strategy" id="strategy">
+    <option>Random</option>
+    <option>Smart</option>
+  </select>
+</center>
+
+<br>
+
 <center> 
 <table border="1" style="width:50%; font-size: 24px; text-align: center;">
   <tr>
@@ -54,6 +64,7 @@ Rocks Paper Scissors against a computer opponent.
 <hr width="90%" />
 <br>
 
+
 <!--Result of the program: -->
 <!-- Results go here (filled by jquery) -->
 <center>
@@ -76,7 +87,7 @@ Rocks Paper Scissors against a computer opponent.
 
   <?php   
      echo '<pre class="prettyprint" id="python">';
-     include "RocksPaper.py";
+     include "RocksPaper.js";
      echo '</pre>';
      ?>  
 

@@ -7,7 +7,7 @@
   
   <script type="text/javascript" src="<?php echo $HOME_DIR ?>jquery/jquery.js"></script>
 
-  <script type="text/javascript" src="game.js"></script>  
+  <script type="text/javascript" src="RocksPaper.js"></script>  
 
   <script type="text/javascript" src="<?php echo $HOME_DIR ?>jquery/jquery.validate.min.js"></script>
 <!--  <script type="text/javascript" src="FormValidate.js"></script>  -->
