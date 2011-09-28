@@ -83,9 +83,10 @@ public class Logistic extends Applet
 	
     // Create and add the refresh button
     refresh = new Button("Refresh");
-    refresh.setBounds( new Rectangle(30, 50, 0, 100) ); 
-    //    add(refresh,"South"); // use layout manager 
-    add(refresh);  // use layout manager 
+    refresh.setBounds(20,20,50,30);           
+    //refresh.setBounds( new Rectangle(20, 20, 40, 30) ); 
+    add(refresh,"South"); // use layout manager 
+    //    add(refresh);  // use layout manager 
     refresh.addActionListener(this); 
 
     // Add the mouse area
