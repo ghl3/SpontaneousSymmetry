@@ -172,6 +172,13 @@ img.center {
              margin-top: auto;   margin-bottom: auto; 
              } 
 
+img.centercolumn { 
+                   display: block;
+                   margin-left: auto;   margin-right: auto; 
+                   margin-top: auto;   margin-bottom: auto; 
+                   width:100%;
+                   }
+
 .caption {
            margin-top: 5px;
            text-indent: 3em;

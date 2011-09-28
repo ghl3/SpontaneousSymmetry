@@ -10,6 +10,6 @@
 
 <div id="logo">
 <!--  <img src="/images/sslogo_large.jpg" alt="Spontaneous Logo"  border="black" class="center" width="100%">-->
-<img src="/images/sslogo_large.jpg" alt="Spontaneous Logo" style="border:.5px solid black" class="center" width="100%" >
+<img src="/images/sslogo_large.jpg" alt="Spontaneous Logo" style="border:.5px solid black; width:100%;" class="center"  >
 </div>
 

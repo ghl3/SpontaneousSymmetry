@@ -1,6 +1,6 @@
 
      
-	 <img src="/images/MeStreetWalk.jpg" alt="" class="center" >
+	 <img src="/images/MeStreetWalk.jpg" alt="" class="centercolumn" style="width:60%;" >
 
 	 <div class="caption">
 	 This was taken just outside my apartment in New York.  
@@ -9,7 +9,7 @@
 
 	 <br>
 	 
-	 <img src="/images/Profile.jpg" alt="" class="center" width="80%" >
+	 <img src="/images/Profile.jpg" alt="" class="centercolumn"  style="width:80%;" >
 
 	 <div class="caption">
 	  Please refrain from spamming me.  
