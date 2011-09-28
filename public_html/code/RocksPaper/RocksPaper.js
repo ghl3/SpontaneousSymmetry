@@ -8,17 +8,6 @@ function PlayRocks() { Play("Rocks");  }
 function PlayPaper() { Play("Paper");  }
 function PlayScissors() { Play("Scissors");  }
 
-function GetCompMove() {
-
-    var RandChoice = Math.random();
-
-    if( RandChoice < 1/3)   return "Rocks";
-    else if( RandChoice < 2/3) return "Paper";
-    else                    return "Scissors";
-
-
-}
-
 
 function GetWinner( MoveA, MoveB ) {
 
@@ -39,6 +28,15 @@ function GetWinner( MoveA, MoveB ) {
     if( MoveA == "Scissors" && MoveB == "Scissors" ) return 0;
 
 }
+
+function BeatMove( Move ) {
+
+    if(Move == "Rocks" )    return "Paper";
+    if(Move == "Paper" )    return "Scissors";
+    if(Move == "Scissors" ) return "Rocks";
+
+}
+
 
 var GamesPlayed = 0;
 var PlayerWins = 0;
@@ -80,14 +78,16 @@ function AddRowToLog( PlayerMove, ComputerMove, GamesPlayed) {
 function Play( Move ) {
 
 
-    // Player Move
-    PlayerMoves.push( Move );
-    document.getElementById("PlayerMove").innerHTML = Move;
-
     // Calculate Computer Move
+    // Based only on previous moves
+    // (New player move not yet added to list)
     var CompMove = GetCompMove( PlayerMoves );
     ComputerMoves.push(CompMove);
     document.getElementById("ComputerMove").innerHTML = CompMove;
+
+    // Now add player move to list of moves
+    PlayerMoves.push( Move );
+    document.getElementById("PlayerMove").innerHTML = Move;
 
 
     // Display Winner
@@ -102,6 +102,89 @@ function Play( Move ) {
     GamesPlayed++;
 
 }
+
+var CompStrategy = "Random";
+
+function GetCompMove() {
+
+    CompStrategy = document.getElementById("strategy").value;
+    
+    //document.getElementById("debug").innerHTML += CompStrategy + "<br>";
+
+    if( CompStrategy == "Random" ) {
+	return RandomGuess();
+    }
+
+    if( CompStrategy == "Smart" ) {
+
+	var Guess;
+
+	Guess = SmartStrat(5);
+	if( Guess == "NoGuess" ) Guess = SmartStrat(4);
+	if( Guess == "NoGuess" ) Guess = SmartStrat(3);
+	if( Guess == "NoGuess" ) Guess = SmartStrat(2);
+	if( Guess == "NoGuess" ) Guess = RandomGuess();
+	
+	return Guess;
+
+    }
+
+}
+
+
+function RandomGuess() {
+    
+    var RandChoice = Math.random();
+    
+    if( RandChoice < 1/3)      return "Rocks";
+    else if( RandChoice < 2/3) return "Paper";
+    else                       return "Scissors";
+
+}
+
+function SmartStrat( PatternLength ) {
+
+    var NumPlayerMoves = PlayerMoves.length;
+
+    if( NumPlayerMoves <= PatternLength ) return "NoGuess";
+
+    RecentSubpattern = PlayerMoves.slice(NumPlayerMoves-PatternLength, NumPlayerMoves);
+
+    //document.getElementById("debug").innerHTML += "Recent: " + RecentSubpattern.toString() + "<br>";
+
+    for( var i = 0; i < PlayerMoves.length - PatternLength; i++) {
+
+	var CurrentSubpattern = PlayerMoves.slice(i, i+PatternLength);
+
+	//document.getElementById("debug").innerHTML += "Current: " + CurrentSubpattern.toString() + "<br>";
+
+	if( compare(CurrentSubpattern,RecentSubpattern) == true ) {
+	    //document.getElementById("debug").innerHTML += "Found Pattern: " + PlayerMoves[i + PatternLength] + "<br>";
+	    return BeatMove(PlayerMoves[i + PatternLength]);
+	}
+    }
+
+    return "NoGuess";
+
+}
+
+
+
+function compare(x, y) {
+    if (x === y) {//For reference types:returns true if x and y points to same object
+	return true;
+    }
+    if (x.length != y.length) {
+	return false;
+    }
+    for (key in x) {
+	if (x[key] !== y[key]) {//!== So that the the values are not converted while comparison
+	    return false;
+	}
+    }
+    return true;
+}
+
 
 
 $(document).ready(function(){
