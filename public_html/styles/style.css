@@ -67,6 +67,21 @@ html, body {  height: 100% }
         }
 
 
+.nicebutton {
+              /*background:url(img/button.gif);*/
+              /*display:block;*/
+              color:#555555;
+              font-weight:bold;
+              line-height:25px;
+              text-decoration:none;
+              }
+              
+.nicebutton:hover{
+                   color:#0066CC;
+                   }
+
+
+
 p { 
     text-indent: 3em;
     }
@@ -119,7 +134,7 @@ ul {
               font-style: italic; 
               line-height: 20px;
               */
-          
+           
            /*border: 1px solid black;*/
            position: relative;
            left: -100px;

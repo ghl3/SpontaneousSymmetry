@@ -1,4 +1,3 @@
 
 
-Logistic:	Logistic.class
-		javac Logistic.java
+Logistic:	javac Logistic.java
