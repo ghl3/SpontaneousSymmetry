@@ -1,7 +1,7 @@
 
 
      
-	 <img src="/images/StandardModel.gif" alt="" class="center" width="100%" >
+	 <img src="/images/StandardModel.gif" alt="" class="centercolumn" >
 
 	 <div class="caption">
 	 The particles of the standard model.

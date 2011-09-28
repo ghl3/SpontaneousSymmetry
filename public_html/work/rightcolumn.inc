@@ -1,6 +1,6 @@
 
 
-	 <img src="/images/topquarkevent.jpg" alt="" class="center" width="100%" >
+	 <img src="/images/topquarkevent.jpg" alt="" class="centercolumn"  >
 
 	 <div class="caption">	 
 	 An example of a proton-proton event that leads to the production of two top quarks (specifically, one top and one anti-top).
@@ -9,7 +9,7 @@
 
 	 <br>
 
-	 <img src="/images/AtlasEvent.jpg" alt="" class="center" width="100%" >
+	 <img src="/images/AtlasEvent.jpg" alt="" class="centercolumn"  >
 
 	 <div class="caption">	 
 	 An example of a collision event as seen by the ATLAS detector.
@@ -17,7 +17,7 @@
 	 </div>
 
 
-	 <img src="/images/DijetResonance.jpg" alt="" class="center" width="100%" >
+	 <img src="/images/DijetResonance.jpg" alt="" class="centercolumn"  >
 
 	 <div class="caption">	 
 	 A public result from ATLAS on the invariant mass of jets.

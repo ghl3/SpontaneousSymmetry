@@ -2,7 +2,7 @@
 
 
 
-	 <img src="/images/brokensymmetry.jpg" class="center"  width="100%" >
+	 <img src="/images/brokensymmetry.jpg" class="centercolumn"  >
 
 	 <p>	 
 	 Your symmetry spontaneously broke.  
