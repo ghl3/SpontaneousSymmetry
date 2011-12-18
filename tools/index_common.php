@@ -1,40 +1,83 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
 
-<!--
-    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-    -->
 
 <html>
 
-  <?php
-     $NUM_SLASH = substr_count($_SERVER["SCRIPT_NAME"], "/") - 1;
-     $HOME_DIR = ($NUM_SLASH == 0) ? "./"  : str_repeat("../", $NUM_SLASH );
-     ?>
 
-  <!-- Include common head statements: -->
-  <!-- Use commonhead.inc by default -->
+<!-- 
+     Sets up:
+
+     $HOME_DIR     (aboslute path)
+     $HOME_DIR_REL (relative path ) 
+
+     and adds to the include path
+-->
+  <?php require realpath($_SERVER["DOCUMENT_ROOT"]) . "/../tools/phpcommon.php" ; ?>
+
+
+<!--
+  <?php
+/*
+     $NUM_SLASH = substr_count($_SERVER["SCRIPT_NAME"], "/") - 1;
+     $HOME_DIR_REL = ($NUM_SLASH == 0) ? "./"  : str_repeat("../", $NUM_SLASH );
+*/
+     ?>
+-->
+
+<!--
   <?php 
-     if( file_exists("head.inc") ) { include "head.inc"; }
+/*
+     if( file_exists("head.inc") ) { require "head.inc"; }
      else {
      echo "<head>";
-     include $HOME_DIR . "../tools/commonhead.inc";  
+     require $HOME_DIR_REL . "../tools/commonhead.inc";  
      echo "</head>";
      }
+*/
      ?>
+-->
+
+<head>
+  <?php if( file_exists("title.inc") ) { include "title.inc"; } ?>
+  <?php require $HOME_DIR_REL . "../tools/commonhead.inc";  ?>
+</head>
+
 
   <!-- Make Body -->
   <!-- Use Common format by default -->
+
+<!--
+
   <?php 
-     if( file_exists("body.inc") ) { include "body.inc"; }
+/*
+     if( file_exists("body.inc") ) { require "body.inc"; }
      else{
      echo "<body>";
-     include $HOME_DIR . "../tools/header.inc";
-     include $HOME_DIR . "../tools/midsection_3column.inc";
-     include $HOME_DIR . "../tools/footer.inc";
-     include $HOME_DIR . "../analytics/ga.inc";
+
+     require $HOME_DIR_REL . "../tools/header.inc";
+     require $HOME_DIR_REL . "../tools/midsection_3column.inc";
+     require $HOME_DIR_REL . "../tools/footer.inc";
+     require $HOME_DIR_REL . "../analytics/ga.inc";
      echo "</body>";
      }
+*/
      ?>
+-->
+
+
+<body>
+  <?php
+     
+     require $HOME_DIR_REL . "../tools/header.inc";
+     
+     require $HOME_DIR_REL . "../tools/midsection_3column.inc";
+     require $HOME_DIR_REL . "../tools/footer.inc";
+     require $HOME_DIR_REL . "../analytics/ga.inc";
+     
+     ?>
+  
+</body>
+
 
 </html>

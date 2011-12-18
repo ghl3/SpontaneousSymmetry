@@ -9,7 +9,7 @@
     <div class="midsection">
       
       <div class="centralcol">
-	<?php if( file_exists($middle) ) include $middle; ?>
+	<?php require $middle; ?>
       </div>
 
       <div class="bar">
