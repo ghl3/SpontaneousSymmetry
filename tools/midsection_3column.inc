@@ -11,15 +11,15 @@
     <div class="midsection">
       
       <div class="leftcol">
-	<?php if( file_exists($left) ) include $left; ?>
+	<?php require $left; ?>
       </div>
       
       <div class="midcol">
-	<?php if( file_exists($middle) ) include $middle; ?>
+	<?php require $middle; ?>
       </div>
 
       <div class="rightcol">
-	<?php if( file_exists($right) ) include $right; ?>
+	<?php require $right; ?>
       </div> 
 
       <div class="bar">
