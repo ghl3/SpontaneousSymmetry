@@ -8,7 +8,7 @@
 
   <head>
 
-    <?php require "title.inc";  ?>
+    <title> Logistic </title>
     <?php require "commonhead.inc";  ?>
 
     <script type="text/javascript" src="/jquery/jquery.js"></script>
