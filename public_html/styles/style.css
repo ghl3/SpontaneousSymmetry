@@ -120,6 +120,16 @@ ul {
 
   }
 
+.centeredcol
+{
+  margin-left:auto;
+  margin-right:auto;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+
+  }
+
 .centralcol
 {
   width: 90%;
