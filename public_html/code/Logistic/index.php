@@ -1,1 +1,0 @@
-../../../tools/index_code_common.php
