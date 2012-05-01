@@ -24,7 +24,7 @@
 
     <?php
        require "header.inc";
-       require "midsection_3column.inc";
+       require "midsection_2column.inc";
        require "footer.inc";
        require "analytics/ga.inc";
        ?>
