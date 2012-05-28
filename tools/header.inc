@@ -5,7 +5,7 @@
 
 <!--<div id="navebar" align="center">-->
 <div id="navebar" >
-  <a href="/"> HOME</a> | <a href="/info">INFO</a>  | <a href="/work">WORK</a> | <a href="/links">LINKS</a> | <a href="/comment">COMMENT</a> | <a href="/blog">BLOG</a>
+  <a href="/"> HOME</a> | <a href="/info">INFO</a>  | <a href="/work">WORK</a> | <a href="/links">LINKS</a> | <a href="/code">CODE</a> | <a href="/blog">BLOG</a>
 </div>
 
 <div id="logo">
