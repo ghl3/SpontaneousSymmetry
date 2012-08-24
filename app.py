@@ -18,6 +18,11 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', title="SpontaneousSymmetry")
 
+@app.route('/info')
+def info():
+    return render_template('info.html', title="Info")
+
+
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
