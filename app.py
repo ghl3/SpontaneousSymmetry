@@ -22,6 +22,18 @@ def index():
 def info():
     return render_template('info.html', title="Info")
 
+@app.route('/work')
+def work():
+    return render_template('work.html', title="Work")
+
+@app.route('/links')
+def links():
+    return render_template('links.html', title="Links")
+
+@app.route('/code')
+def code():
+    return render_template('code.html', title="Code")
+
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
