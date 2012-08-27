@@ -1,0 +1,81 @@
+
+{% extends "main_template.html" %}
+
+<!-- Body -->
+{% block body %}
+<div class="section">
+
+  <!-- <?php require $middle; ?> -->
+  <!--
+  <p style="text-align:center">
+    <h1>Welcome to Spontaneous Symmetry:</h1> 
+    <h2>A site devoted to Physics, Math, Computing, and Life.</h2>
+  </p>
+-->
+    <h1>Welcome to Spontaneous Symmetry:</h1> 
+    <h2>A site devoted to Physics, Math, Computing, and Life.</h2>
+
+  <p>
+    This is my personal website, a place where I can share a bit about who I am and what I do. 
+    I'm a scientist, full time student, and part time programmer.
+    Feel	free to browse this site, free of charge.  
+    My hope is that you'll learn something about the world around you, and possibly about the site's author.
+    Thank you very much for stopping by.
+  </p>
+  
+  <br>
+
+  <p>
+    So, why the name <i>Spontaneous Symmetry</i>?  
+    The term comes from a phenomenon that appears in may fields of physics known as <i>spontaneous symmetry breaking.</i>
+    Symmetries are all around us and shape our lives in ways few understand.  
+    On an aesthetic level, symmetries are considered beautiful and visually pleasing.
+    But the mathematical concept of a symmetry is much deeper than the familiar definition.
+    On a fundamental level, symmetries govern how the world works.
+    They are the language of the most fundamental physical processes that we can describe.
+  </p>
+
+  <img src="/static/images/symmetry_e8.jpg" style="width: 200px" alt=""  border="0" >
+
+  <div class="caption">
+    <p>	 
+      A mathematical group known as E8.  
+      It is the largest <Q>exceptional</Q> lie group, 
+      an algebraic structure known for its many beautiful symmetries.
+    </p>
+  </div>
+</div>
+
+{% endblock %}
+
+<!-- Sidebar -->
+{% block sidebar %}
+<img src="/static/images/higgs-boson.jpg" class="sidebar_image" style="width: 200px" >
+
+<div class="caption" >
+  A simulated image of a potential collision event causing the creation and almost immediate decay of a Higgs Boson.
+</div>
+
+<p>&nbsp;</p>
+
+<img src="/static/images/atlas-detector.jpg" class="sidebar_image" style="width: 200px" >
+
+<div class="caption" >
+  A picture of the ATLAS detector as it was being constructed.  
+  The eight large structures are toroidal magnets which create a magnetic field as a part of the muon system.
+</div>
+
+<p>&nbsp;</p>
+
+<img src="/static/images/standardmodellagrangian.gif" class="sidebar_image" style="width: 200px" >
+
+<div class="caption">
+  The standard model lagrangian: the equation that describes our current model for fundamental physics.  
+  Gravity is not included.
+</div>
+
+
+<div class="bar">
+  <p>&nbsp;</p>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <meta name="keywords" content="spontaneous symmetry, spontaneoussymmetry, george lewis, Higgs, ATLAS, CERN, Statistics, physics, quark" >
+    <link rel="shortcut icon" href="/favicon.ico" >
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    
+    <!-- Include the stylesheet: -->
+    <link rel="stylesheet" href="/static/flasky.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="/static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/static/style.css" type="text/css" />
+
+    {% block head %}
+    <!-- Hook for additional head content -->
+    {% endblock %}
+
+  </head>
+
+  <body>
+
+    {% block header %}
+
+    <div id="header" style="margin-left: auto; margin-right: auto; text-align: center;">
+
+      <nav id="navebar" style="margin-top: 20px" >
+	<a href="/"> HOME</a> | 
+	<a href="/info">INFO</a>  | 
+	<a href="/work">WORK</a> | 
+	<a href="/links">LINKS</a> | 
+	<a href="/code">CODE</a> | 
+	<a href="/blog">BLOG</a>
+      </nav>
+
+    </div>
+
+    {% endblock %}
+
+    <div class="document">
+
+      <div class="documentwrapper">
+	<div class="bodywrapper">
+	  <div class="body">
+	    {% block body %}
+	    {% endblock %}
+	  </div>
+	</div>
+      </div>
+
+      <div class="sphinxsidebar">
+	<div class="sphinxsidebarwrapper">
+	  {% block sidebar %}
+	  {% endblock %}
+	</div>
+      </div>
+            
+      <div class="clearer"></div>
+
+    </div> <!-- End document -->
+
+
+    <div class="footer">
+      &copy; Copyright 2012, George Herbert Lewis.
+    </div>
+
+    <a href="https://github.com/ghl3" class="github">
+      <img style="position: absolute; top: 0; right: 0; border: 0;"
+	   src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+	   alt="Fork me on GitHub"  class="github"/>
+    </a>                    
+    
+  </body>
+
+</html>
