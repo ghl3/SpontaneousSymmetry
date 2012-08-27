@@ -29,6 +29,12 @@ def work():
 def links():
     return render_template('links.html', title="Links")
 
+@app.route('/RocksPaper')
+def rockspaper():
+    return render_template('rockspaper.html', title="Rocks Paper")
+
+
+
 @app.route('/code')
 def code():
     return render_template('code.html', title="Code")
