@@ -9,6 +9,7 @@
  * @since Twenty Ten 1.0
  */
 ?><!DOCTYPE html>
+<?php $FLASK_BASE = "/home1/spontane/public_html" ?>
 <html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
@@ -54,17 +55,8 @@
 
 <body <?php body_class(); ?>>
 
-    <div id="header" style="margin-left: auto; margin-right: auto; text-align: center; margin-top: -40px">
 
-      <nav id="navebar" style="margin-top: 20px" >
-	<a href="/"> HOME</a> | 
-	<a href="/info">INFO</a>  | 
-	<a href="/work">WORK</a> | 
-	<a href="/links">LINKS</a> | 
-	<a href="/code">CODE</a> | 
-	<a href="/blog">BLOG</a>
-      </nav>
-      </div>
+  <?php require $FLASK_BASE . "/templates/header.html" ?>
 
 <div id="wrapper" class="hfeed">
 	<div id="header">
@@ -73,7 +65,7 @@
 				<?php $heading_tag = ( is_home() || is_front_page() ) ? 'h1' : 'div'; ?>
 				<<?php echo $heading_tag; ?> id="site-title">
 					<span>
-						<a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><h2>Spontaneous Symmetry</h2></a>
+					  <a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><h2>Spontaneous Symmetry</h2></a>
 					</span>
 				</<?php echo $heading_tag; ?>>
 				<div id="site-description"><?php bloginfo( 'description' ); ?></div>
