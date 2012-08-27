@@ -3,7 +3,6 @@
 import os
 
 import json
-#import simplejson
 
 from flask import Flask
 from flask import url_for
@@ -32,6 +31,14 @@ def links():
 @app.route('/code')
 def code():
     return render_template('code.html', title="Code")
+
+@app.route('/RocksPaper')
+def rockspaper():
+    return render_template('rockspaper.html', title="Rocks Paper")
+
+@app.route('/BouncingBalls')
+def bouncingballs():
+    return render_template('bouncingballs.html', title="Bouncing Balls")
 
 @app.errorhandler(404)
 def page_not_found(e):
