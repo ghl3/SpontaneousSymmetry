@@ -11,7 +11,6 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -34,6 +33,9 @@ def links():
 def code():
     return render_template('code.html', title="Code")
 
+@app.errorhandler(404)
+def page_not_found(e):
+        return render_template('errorpage.html'), 404
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
