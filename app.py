@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-
+import subprocess
 import json
 
 from flask import Flask
@@ -31,6 +31,12 @@ def links():
 @app.route('/code')
 def code():
     return render_template('code.html', title="Code")
+
+@app.route('/blog')
+def blog():
+    # Get the php'd version of the blog
+    blog_data = subprocess.check_output(["php", "test_blog/index.php"])
+    return render_template('blog.html', title="Blog", blog_data=blog_data)
 
 @app.route('/RocksPaper')
 def rockspaper():
