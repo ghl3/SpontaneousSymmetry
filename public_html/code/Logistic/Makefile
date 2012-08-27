@@ -1,3 +1,0 @@
-
-
-Logistic:	javac Logistic.java
