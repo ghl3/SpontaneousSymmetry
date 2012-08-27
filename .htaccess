@@ -4,6 +4,6 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ app.fcgi/$1 [QSA,L]
 
-RedirectMatch 404 /\\.git(/.*|$)
-RedirectMatch 404 /\\.svn(/.*|$)
+#RedirectMatch 404 /\\.git(/.*|$)
+#RedirectMatch 404 /\\.svn(/.*|$)
  
