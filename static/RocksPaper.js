@@ -1,5 +1,15 @@
 
 
+$(document).ready(function() {
+    $('div#showcode').hide();
+});
+
+$(document).ready(function(){
+    $("button#showcodebutton").click(function(){
+	$("div#showcode").toggle("fast");
+    });
+});
+
 var PlayerMoves   = new Array();
 var ComputerMoves = new Array();
 
