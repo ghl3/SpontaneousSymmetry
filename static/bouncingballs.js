@@ -1,4 +1,16 @@
 
+
+$(document).ready(function() {
+    $('div#showcode').hide();
+});
+
+$(document).ready(function(){
+    $("button#showcodebutton").click(function(){
+	$("div#showcode").toggle("fast");
+    });
+});
+
+
 // Holder
 
 var Break = "<b" + "r>";

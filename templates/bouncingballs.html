@@ -45,13 +45,12 @@ animation and some (very simple) physics.
 <button id="showcodebutton">Show/Hide Code</button>
 
 </center>
+
 <div id="showcode"> 
 
-  <?php   
-     echo '<pre class="prettyprint" id="python">';
-     include "draw.js";
-     echo '</pre>';
-     ?>  
+  <pre class="prettyprint" id="python">
+    {% include "bouncingballs.js" %} 
+  </pre>
 
 </div>
 
