@@ -2,6 +2,13 @@
 
 {% extends "main_template.html" %}
 
+<!-- Head -->
+{% block head %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript" src="/static/info.js"></script>  
+{% endblock %}
+
+
 <!-- Body -->
 {% block body %}
 <div class="section">
@@ -9,12 +16,22 @@
 <div style="text-align: center;">
   <h2>WORK</h2>
 </div>
+
   <p>
     I am a graduate student working as a member of the ATLAS experiment.  
-    My specific interests include Top quark physics, the Missing Energy Trigger, Physics Analysis Tools, and Statistics.
-
+    Most of my work involves Top Quark and Exotic physics, as well as tools and techniques for Statistical Analysis, and Atlas'Missing Energy Trigger.
   </p> 
+  <p>
+    Click to expand the following sections:
+  </p>
 
+</div>
+
+
+<div id="IntroductionButton" style="text-align: center;">
+  <h2>Introduction</h2>
+</div>
+<div class="section" id="Introduction">    
   <p>
     ATLAS is an all-purpose particle detector whose primary goal is the discovery of new particles.
     However, before it can claim new discoveries, it must understand standard physics well enough to distinguish non-standard physics.
@@ -51,10 +68,34 @@
     One must be able to work with large data sets, to move and organize this data, to process and visualize it, and to find patterns and meaning among a huge amount of information.
     And finally, one must be able to do formal statistical analysis of this data, to claim discovery or reject hypothesis, and to relate statistical observations back to fundamental theories.
   </p> 
+</div>
+
+
+<div id="ResultsButton" style="text-align: center;">
+  <h2>Results and Projects</h2>
+</div>
+<div class="section" id="Results">
+
+    <a href="http://arxiv.org/abs/1202.5520">Same-Sign Top Quarks and b' (arxiv)</a><br>
+    <a href="http://www.springerlink.com/content/p572k4h1h328m353/fulltext.pdf">Same-Sign Top Quarks and b' (JHEP)</a><br>
+
+    <a href="http://root.cern.ch/root/html/ROOFIT_HISTFACTORY_Index.html">HistFactory Project Index</a><br>
+
+    <a href="http://indico.cern.ch/conferenceDisplay.py?confId=120126">Presentation at L1 Calo Joint Meeting</a><br>
+    <a href="https://cdsweb.cern.ch/record/1335149">MET Significance Approved Plots</a><br>
+    <a href="https://cdsweb.cern.ch/record/1336182">MET Significance Poster</a><br>
+    
+    <a href="https://atlas.web.cern.ch/Atlas/GROUPS/PHYSICS/CONFNOTES/ATLAS-CONF-2012-024/">2011 Top Quark Cross-Section Combination</a><br>
+    <a href="https://atlas.web.cern.ch/Atlas/GROUPS/PHYSICS/CONFNOTES/ATLAS-CONF-2011-108/">2010 and 2011 Top Quark Cross-Section Combination</a><br>
+    <a href="https://atlas.web.cern.ch/Atlas/GROUPS/PHYSICS/CONFNOTES/ATLAS-CONF-2011-040/">2010 Top Quark Cross-Section Combination</a><br>
+
+    <a href="">NSF US LHC Graduate Student Support Award (2010)</a>
 
 </div>
 
 {% endblock %}
+
+
 
 <!-- Sidebar -->
 {% block sidebar %}
@@ -85,6 +126,7 @@
 
 <br>
 <br>
+
 
 
 {% endblock %}
