@@ -1,9 +1,11 @@
 Options +ExecCGI
 AddHandler fcgid-script .fcgi
+FcgidWrapper environ .fcgi
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ app.fcgi/$1 [QSA,L]
 
 #RedirectMatch 404 /\\.git(/.*|$)
 #RedirectMatch 404 /\\.svn(/.*|$)
- 
+# See Here:
+# https://httpd.apache.org/mod_fcgid/mod/mod_fcgid.html
