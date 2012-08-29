@@ -1,6 +1,11 @@
-#!/home1/spontane/venv/flask_hello_world/bin/python
+#!/bin/bash
 
-from flup.server.fcgi import WSGIServer
-from app import app as application
+/home1/spontane/python/bin/python cgi.py
 
-WSGIServer(application).run()
+
+# ! /home1/spontane/python/bin/python
+
+#from flup.server.fcgi import WSGIServer
+#from app import app as application
+
+#WSGIServer(application).run()

@@ -1,3 +1,4 @@
+SetEnv LD_LIBRARY_PATH /home/spontane/python/lib/
 Options +ExecCGI
 AddHandler fcgid-script .fcgi
 RewriteEngine On
@@ -6,4 +7,3 @@ RewriteRule ^(.*)$ app.fcgi/$1 [QSA,L]
 
 #RedirectMatch 404 /\\.git(/.*|$)
 #RedirectMatch 404 /\\.svn(/.*|$)
- 
