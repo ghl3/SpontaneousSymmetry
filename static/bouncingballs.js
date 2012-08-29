@@ -10,16 +10,6 @@ $(document).ready(function(){
     });
 });
 
-
-// Holder
-
-var Break = "<b" + "r>";
-/*
-$(document).ready(function() {
-    document.getElementById("debug").innerHTML += "Starting draw.js code" + Break;
-});
-*/
-
 // Circle Drawing
 function drawCircle(x,y,r, color) {
     ctx.save();  
@@ -72,11 +62,6 @@ ball.prototype.BounceBoundary = function(WIDTH, HEIGHT) {
 
 }
 
-/*
-$(document).ready(function() {
-    document.getElementById("debug").innerHTML += "Declared ball class" + Break;
-});
-*/
 
 ball.prototype.BounceBall = function( OtherBall ) {
 
@@ -86,12 +71,6 @@ ball.prototype.BounceBall = function( OtherBall ) {
 	// toward one another:
 //	if( this.CosThetaV( OtherBall ) > 0 ) return;
 	
-
-
-/*	document.getElementById("logger").innerHTML += "Bounced! Momentum Before: ";
-	document.getElementById("logger").innerHTML += this.vx + OtherBall.vx + ", ";
-	document.getElementById("logger").innerHTML += this.vy + OtherBall.vy + Break;
-*/
 	var dx = this.x - OtherBall.x;
 	var dy = this.y - OtherBall.y;
 
@@ -121,15 +100,6 @@ ball.prototype.BounceBall = function( OtherBall ) {
 	OtherBall.vx = vx2CM + vxCM_frame;
 	OtherBall.vy = vy2CM + vyCM_frame;
 
-
-
-
-/*
-	document.getElementById("logger").innerHTML += "Bounced! Momentum After: ";
-	document.getElementById("logger").innerHTML += this.vx + OtherBall.vx + ", ";
-	document.getElementById("logger").innerHTML += this.vy + OtherBall.vy + Break + Break;
-*/
-
     }
 
     return this;
@@ -151,6 +121,7 @@ function isTouching( ballA, ballB ) {
 
 }
 
+
 var numBalls = 28;
 var ballCollection = new Array(numBalls);
 
@@ -158,7 +129,7 @@ var WIDTH;
 var HEIGHT;
 var DELTAT = 10;
 var ctx;
-var Loop;
+
 
 function clear() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -167,30 +138,23 @@ function clear() {
 
 function init() {
     
-//    document.getElementById("debug").innerHTML += "Entering Init method" + Break;
-
     var canvas=document.getElementById("canvas");
     if(!canvas.getContext){return;}
     ctx=canvas.getContext("2d");
 
     WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
-    return setInterval(draw, DELTAT);
+    draw();
 }
 
 
 function InitialState() {
     
-//    document.getElementById("debug").innerHTML += "Initial State" + Break;
-    
     // Make the initial positions of the balls
     for(var itr = 0; itr < ballCollection.length;  ++itr) {
 
-
 	var ColorString = '#'+Math.floor(Math.random()*16777215).toString(16);
 	ballCollection[itr] = new ball(8, ColorString);
-
-	// var thisBall = ballCollection[itr];
 
 	ballCollection[itr].x = 20 + itr*20;
 	ballCollection[itr].y = 30 + itr*20;
@@ -208,10 +172,8 @@ function draw() {
 
     for(itr = 0; itr < numBalls; itr++) {
 	for( oitr = 0; oitr < numBalls; ++oitr) {
-
 	    // Go through half the balls:
 	    if( oitr >= itr ) continue;
-
 	    ballCollection[itr].BounceBall( ballCollection[oitr] );
 	}
     }
@@ -226,7 +188,6 @@ function draw() {
 
 	// Advance in Space
 	ballCollection[itr].Move();
-
 	// Redraw
 	ballCollection[itr].Draw();
     }
@@ -234,31 +195,35 @@ function draw() {
 
 }
 
+var Loop=null;
+var IsLoopStopped = true;
 
-var IsCleared = false;
-
-function stoploop() {
+function toggle_loop() {
     
-    if(IsCleared) {
+    /*
+    if(Loop==null){
+	Loop = (draw, DELTAT);
+	IsLoopStopped=true;
+    }
+*/
+
+    if(IsLoopStopped) {
 	// Restart the loop
-	IsCleared = false;
 	Loop = setInterval(draw, 10);
+	IsLoopStopped = false;
     }
     else {
 	// Stop the loop 
-	IsCleared = true;
 	clearInterval(Loop);
+	IsLoopStopped = true;
     }
 }
 
 $(document).ready(function() {
 
-//    document.getElementById("debug").innerHTML += "Document ready" + Break;
-
     // Start
     InitialState();
-    Loop = init();
-
+    init();
 
 });
 
