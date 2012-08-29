@@ -147,6 +147,13 @@ function init() {
     draw();
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 
 function InitialState() {
     
@@ -156,11 +163,11 @@ function InitialState() {
 	var ColorString = '#'+Math.floor(Math.random()*16777215).toString(16);
 	ballCollection[itr] = new ball(8, ColorString);
 
-	ballCollection[itr].x = 20 + itr*20;
+	ballCollection[itr].x = getRandomInt(20, 500);//20 + itr*20;
 	ballCollection[itr].y = 30 + itr*20;
 
-	ballCollection[itr].vx = 0 + itr/3;
-	ballCollection[itr].vy = 1 + itr/4;
+	ballCollection[itr].vx = getRandomArbitrary(-5, 5);//0 + itr/3;
+	ballCollection[itr].vy = getRandomArbitrary(-5, 5);//1 + itr/4;
     }
 }
 
