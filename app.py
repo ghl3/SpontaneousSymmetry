@@ -4,13 +4,19 @@ import os
 
 import json
 
+from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.serving import run_simple
+
 from flask import Flask
 from flask import url_for
 from flask import render_template
 from flask import request
 from flask import jsonify
 
+from HistFactoryJS.blueprint import HistFactory
+
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -44,10 +50,14 @@ def bouncingballs():
 def page_not_found(e):
         return render_template('errorpage.html'), 404
 
+# Make the 'combined app'
+from HistFactoryJS.app import app as histfactory
+combined_app = DispatcherMiddleware(app, {'/HistFactory': histfactory })
+
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
     app.debug = True
-    app.run(host='0.0.0.0', port=port)
-    
+    #app.run(host='0.0.0.0', port=port)
+    run_simple('localhost', port, combined_app)
 
