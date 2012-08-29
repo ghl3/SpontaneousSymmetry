@@ -1,7 +1,34 @@
+IndexIgnore *
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www\.)?spontaneoussymmetry.com/.*$ [NC]
+RewriteRule \.(gif|jpg|js|css)$ - [F]
+
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+<Files .git/*>
+order allow,deny
+deny from all
+</Files>
+
+order allow,deny
+deny from 180.76.6.37
+deny from 66.249.68.113
+allow from all
+
+
+#<Directory .git>
+#order allow,deny	
+#deny from all	
+#</Directory>
+
 Options +ExecCGI
 AddHandler fcgid-script .fcgi
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} ! -f
 RewriteRule ^(.*)$ app.fcgi/$1 [QSA,L]
 
 #RedirectMatch 404 /\\.git(/.*|$)
