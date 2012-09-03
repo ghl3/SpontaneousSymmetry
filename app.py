@@ -13,6 +13,8 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
+from HistFactoryJS.tools import ProcessMeasurementRequestParallel
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -35,12 +37,6 @@ def links():
 def code():
     return render_template('code.html', title="Code")
 
-#@app.route('/blog')
-#def blog():
-#    # Get the php'd version of the blog
-#    blog_data = subprocess.check_output(["php", "templates/blog.php"])
-#    return render_template('blog.html', title="Blog", blog_data=blog_data)
-
 @app.route('/RocksPaper')
 def rockspaper():
     return render_template('rockspaper.html', title="Rocks Paper")
@@ -48,6 +44,15 @@ def rockspaper():
 @app.route('/BouncingBalls')
 def bouncingballs():
     return render_template('bouncingballs.html', title="Bouncing Balls")
+
+@app.route('/FitHistFactoryMeasurement', methods=['POST'])
+def FitHistFactoryMeasurement():
+    """ Create the HistFactory fitting API 
+
+    This is the fitting API that can be accessed
+    as the back-end to HistFactoryJS
+    """
+    return ProcessMeasurementRequestParallel(request)            
         
 @app.errorhandler(404)
 def page_not_found(e):
@@ -56,12 +61,6 @@ def page_not_found(e):
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
-    #app.run(host='0.0.0.0', port=port)
-    # Make the 'combined app'
-    from HistFactoryJS.app import app as histfactory
-    combined_app = DispatcherMiddleware(app, {'/HistFactory': histfactory })
     app.debug = True
-    histfactory.debug = True
-    run_simple('localhost', port, combined_app, 
-               use_debugger=True, use_reloader=True)
+    app.run(host='0.0.0.0', port=port)
 
