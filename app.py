@@ -41,31 +41,6 @@ def code():
 def rockspaper():
     return render_template('rockspaper.html', title="Rocks Paper")
 
-@app.route('/BouncingBalls')
-def bouncingballs():
-    return render_template('bouncingballs.html', title="Bouncing Balls")
-
-@app.route('/FitHistFactoryMeasurement', methods=['POST','GET'])
-def FitHistFactoryMeasurement():
-    """ Create the HistFactory fitting API 
-
-    This is the fitting API that can be accessed
-    as the back-end to HistFactoryJS
-    """
-    return ProcessMeasurementRequestParallel(request)            
-
-@app.route('/TestPost', methods=['POST','GET'])
-def TestPost():
-    """ Create the HistFactory fitting API 
-
-    This is the fitting API that can be accessed
-    as the back-end to HistFactoryJS
-    """
-    if request.method != 'POST':
-        print "FitMeasurement() - ERROR: Expected POST http request"
-        return jsonify(flag="error")
-    return jsonify(flag="success")
-        
 @app.errorhandler(404)
 def page_not_found(e):
         return render_template('errorpage.html'), 404
