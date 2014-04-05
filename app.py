@@ -13,7 +13,7 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
-from HistFactoryJS.tools import ProcessMeasurementRequestParallel
+#from HistFactoryJS.tools import ProcessMeasurementRequestParallel
 
 app = Flask(__name__)
 
@@ -45,7 +45,7 @@ def rockspaper():
 def bouncingballs():
     return render_template('bouncingballs.html', title="Bouncing Balls")
 
-@app.route('/FitHistFactoryMeasurement', methods=['POST'])
+@app.route('/FitHistFactoryMeasurement', methods=['POST','GET'])
 def FitHistFactoryMeasurement():
     """ Create the HistFactory fitting API 
 
@@ -53,6 +53,18 @@ def FitHistFactoryMeasurement():
     as the back-end to HistFactoryJS
     """
     return ProcessMeasurementRequestParallel(request)            
+
+@app.route('/TestPost', methods=['POST','GET'])
+def TestPost():
+    """ Create the HistFactory fitting API 
+
+    This is the fitting API that can be accessed
+    as the back-end to HistFactoryJS
+    """
+    if request.method != 'POST':
+        print "FitMeasurement() - ERROR: Expected POST http request"
+        return jsonify(flag="error")
+    return jsonify(flag="success")
         
 @app.errorhandler(404)
 def page_not_found(e):

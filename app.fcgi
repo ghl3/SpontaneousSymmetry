@@ -1,7 +1,16 @@
-#!/bin/bash
+#!/home1/spontane/python/bin/python
 
-# Setup ROOT
-source $HOME/root/bin/thisroot.sh
+from flup.server.fcgi import WSGIServer
 
-# Run the real cgi script
-/home1/spontane/python/bin/python cgi.py
+
+from app import app as application
+WSGIServer(application, maxThreads=4).run()
+
+#from werkzeug.wsgi import DispatcherMiddleware
+#from HistFactoryJS.app import app as histfactory
+#
+#combined_app = DispatcherMiddleware(application, {'/HistFactory': histfactory })
+#WSGIServer(combined_app).run()
+
+
+#WSGIServer(histfactory, scriptName='/HistFactory').run()
