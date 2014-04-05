@@ -2,8 +2,8 @@
 
 $(document).ready(function() {
 
-    $('div#Introduction').hide();
-    $('div#Results').hide();
+	//$('div#Introduction').hide();
+	//$('div#Results').hide();
 
     // Show/Hide Introduction
     $("#IntroductionButton").click(function(){

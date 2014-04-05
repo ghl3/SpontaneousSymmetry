@@ -1,3 +1,5 @@
+# Use PHP5.4 as default
+AddHandler application/x-httpd-php54 .php
 IndexIgnore *
 RewriteCond %{HTTP_REFERER} !^$
 RewriteCond %{HTTP_REFERER} !^http://(www\.)?spontaneoussymmetry.com/.*$ [NC]
@@ -18,6 +20,7 @@ deny from 180.76.6.37
 deny from 66.249.68.113
 allow from all
 
+Header set Access-Control-Allow-Origin *
 
 #<Directory .git>
 #order allow,deny	
@@ -33,3 +36,14 @@ RewriteRule ^(.*)$ app.fcgi/$1 [QSA,L]
 
 #RedirectMatch 404 /\\.git(/.*|$)
 #RedirectMatch 404 /\\.svn(/.*|$)
+
+
+
+Redirect /run-query http://run-query.herokuapp.com
+# RewriteEngine on
+#RewriteRule http://run-query.herokuapp.com /run-query
+
+#ProxyPreserveHost On
+#ProxyRequests Off
+#ProxyPass /run-query http://run-query.herokuapp.com
+#ProxyPassReverse /run-query http://run-query.herokuapp.com
