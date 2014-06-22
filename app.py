@@ -91,7 +91,7 @@ def get_archive(post_folder):
     d = defaultdict(list)
 
     for (name, date, link, file) in get_ordered_posts(post_folder):
-        year_month = date.strftime('%Y-%m')
+        year_month = date.replace(day=1) #strftime('%Y-%m')
         d[year_month].append((name, date, link, file))
 
     od = OrderedDict()

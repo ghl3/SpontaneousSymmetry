@@ -23,9 +23,9 @@
 <div>
   <ul>
     {% for title, post_list in archive.iteritems() %}
-    <li> {{title}}</li>
+    <li> {{title.strftime("%B, %Y")}}</li>
     {% for name, date, link, file in post_list %}
-    <li> <a href="{{url_for('blog_post', post=link) }}">{{name}} ({{date}})</a></li>
+    <li> <a href="{{url_for('blog_post', post=link) }}">{{name}} ({{date.strftime("%B %d, %Y")}})</a></li>
     {% endfor %}
     {% endfor %}
   </ul>
