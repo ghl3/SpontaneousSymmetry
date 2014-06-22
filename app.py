@@ -3,6 +3,7 @@
 import os
 import subprocess
 import json
+import re
 
 from werkzeug.wsgi import DispatcherMiddleware
 from werkzeug.serving import run_simple
@@ -12,6 +13,13 @@ from flask import url_for
 from flask import render_template
 from flask import request
 from flask import jsonify
+
+
+import markdown
+from flask import Flask
+from flask import render_template
+from flask import Markup
+
 
 #from HistFactoryJS.tools import ProcessMeasurementRequestParallel
 
@@ -40,6 +48,48 @@ def code():
 @app.route('/RocksPaper')
 def rockspaper():
     return render_template('rockspaper.html', title="Rocks Paper")
+
+
+def load_markdown(file_name):
+    """
+    Load a markdown file from disk and convert it into
+    markup.
+    """
+    raw_content = open(file_name).read()
+    raw_content = unicode(raw_content, errors='ignore')
+    return Markup(markdown.markdown(raw_content))
+
+
+def get_all_posts(post_folder):
+    #regex = r"([a-zA-Z]+)_([0-9-_]+).html"
+    regex = r"(\d{4}-\d{2}-\d{2})-(.*).markdown"
+    posts = {}
+    files = os.listdir(post_folder)
+    for file in files:
+        m = re.match(regex, file)
+        if m:
+            date, name = m.group(1), m.group(2)
+            posts[name] = (name, date, date+"-"+name, file)
+    return posts
+
+
+def get_ordered_posts(post_folder):
+    return sorted(get_all_posts(post_folder).values(),
+                  key=lambda (name, date, link, file): date,
+                  reverse=True)
+
+
+@app.route('/blog/<post>')
+def blog_post(post):
+    #raw_content = open("_posts/{}".format(post)).read()
+    #raw_content = unicode(raw_content, errors='ignore')
+    #print raw_content
+    print get_all_posts("_posts")
+    content = load_markdown("_posts/{}.markdown".format(post))
+    archive = get_ordered_posts("_posts")
+    return render_template('post.html', content=content, archive=archive)
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):

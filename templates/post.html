@@ -1,0 +1,30 @@
+
+
+{% extends "main_template.html" %}
+
+<!-- Body -->
+{% block body %}
+
+
+<html>
+  <head>
+    <title>Markdown Snippet</title>
+  </head>
+  <body>
+    {{ content }}
+  </body>
+</html>
+
+
+{% endblock %}
+
+
+{% block sidebar %}
+<div>
+  <ul>
+    {% for name, date, link, file in archive %}
+    <li> <a href="{{url_for('blog_post', post=link) }}">{{name}} ({{date}})</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
