@@ -4,6 +4,7 @@ import os
 import subprocess
 import json
 import re
+import datetime
 
 from werkzeug.wsgi import DispatcherMiddleware
 from werkzeug.serving import run_simple
@@ -14,6 +15,7 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
+from collections import defaultdict, OrderedDict
 
 import markdown
 from flask import Flask
@@ -68,8 +70,9 @@ def get_all_posts(post_folder):
     for file in files:
         m = re.match(regex, file)
         if m:
-            date, name = m.group(1), m.group(2)
-            posts[name] = (name, date, date+"-"+name, file)
+            date_str, name = m.group(1), m.group(2)
+            date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+            posts[name] = (name, date, date_str+"-"+name, file)
     return posts
 
 
@@ -79,14 +82,35 @@ def get_ordered_posts(post_folder):
                   reverse=True)
 
 
+def get_archive(post_folder):
+    """
+    An archive is an ordered dictionary of
+    month-year to a list of posts
+    """
+
+    d = defaultdict(list)
+
+    for (name, date, link, file) in get_ordered_posts(post_folder):
+        year_month = date.strftime('%Y-%m')
+        d[year_month].append((name, date, link, file))
+
+    od = OrderedDict()
+    for key in sorted(d.keys(), reverse=True):
+        od[key] = d[key]
+
+    return od
+
+
 @app.route('/blog/<post>')
 def blog_post(post):
     #raw_content = open("_posts/{}".format(post)).read()
     #raw_content = unicode(raw_content, errors='ignore')
     #print raw_content
-    print get_all_posts("_posts")
+    #print get_all_posts("_posts")
+    #print get_archive("_posts")
     content = load_markdown("_posts/{}.markdown".format(post))
     archive = get_ordered_posts("_posts")
+    archive = get_archive("_posts")
     return render_template('post.html', content=content, archive=archive)
 
 

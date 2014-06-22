@@ -22,8 +22,11 @@
 {% block sidebar %}
 <div>
   <ul>
-    {% for name, date, link, file in archive %}
+    {% for title, post_list in archive.iteritems() %}
+    <li> {{title}}</li>
+    {% for name, date, link, file in post_list %}
     <li> <a href="{{url_for('blog_post', post=link) }}">{{name}} ({{date}})</a></li>
+    {% endfor %}
     {% endfor %}
   </ul>
 </div>
