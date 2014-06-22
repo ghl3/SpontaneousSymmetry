@@ -5,13 +5,12 @@
 <!-- Body -->
 {% block body %}
 
-
 <html>
   <head>
     <title>Markdown Snippet</title>
   </head>
   <body>
-    {{ content }}
+    {{ post['content'] }}
   </body>
 </html>
 
@@ -21,9 +20,10 @@
 
 {% block sidebar %}
 <div>
+  <h2>Archive:</h1>
   <ul>
     {% for title, post_list in archive.iteritems() %}
-    <li> {{title.strftime("%B, %Y")}}</li>
+    <li> <a href="{{ url_for('archive', year=title.year, month=title.month) }}"><b>{{title.strftime("%B, %Y")}}</b></a></li>
     {% for name, date, link, file in post_list %}
     <li> <a href="{{url_for('blog_post', post=link) }}">{{name}} ({{date.strftime("%B %d, %Y")}})</a></li>
     {% endfor %}

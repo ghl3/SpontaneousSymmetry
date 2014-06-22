@@ -100,6 +100,14 @@ def get_archive(post_folder):
     return od
 
 
+def get_post(post):
+    return {'content':load_markdown("_posts/{}.markdown".format(post))}
+
+
+def get_latest_post():
+    return get_post('2013-01-17-python-threads')
+
+
 @app.route('/blog/archive/<year>/<month>')
 def archive(year, month):
     d = datetime.date(int(year), int(month), 1)
@@ -116,10 +124,16 @@ def archive(year, month):
 
 @app.route('/blog/<post>')
 def blog_post(post):
-    content = load_markdown("_posts/{}.markdown".format(post))
-    archive = get_ordered_posts("_posts")
+    post_data = get_post(post)
     archive = get_archive("_posts")
-    return render_template('post.html', content=content, archive=archive)
+    return render_template('post.html', post=post_data, archive=archive)
+
+
+@app.route('/blog')
+def blog():
+    post_data = get_latest_post()
+    archive = get_archive("_posts")
+    return render_template('post.html', post=post_data, archive=archive)
 
 
 @app.errorhandler(404)
