@@ -63,7 +63,6 @@ def load_markdown(file_name):
 
 
 def get_all_posts(post_folder):
-    #regex = r"([a-zA-Z]+)_([0-9-_]+).html"
     regex = r"(\d{4}-\d{2}-\d{2})-(.*).markdown"
     posts = {}
     files = os.listdir(post_folder)
@@ -71,7 +70,7 @@ def get_all_posts(post_folder):
         m = re.match(regex, file)
         if m:
             date_str, name = m.group(1), m.group(2)
-            date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+            date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
             posts[name] = (name, date, date_str+"-"+name, file)
     return posts
 
@@ -91,7 +90,7 @@ def get_archive(post_folder):
     d = defaultdict(list)
 
     for (name, date, link, file) in get_ordered_posts(post_folder):
-        year_month = date.replace(day=1) #strftime('%Y-%m')
+        year_month = date.replace(day=1)
         d[year_month].append((name, date, link, file))
 
     od = OrderedDict()
@@ -101,18 +100,26 @@ def get_archive(post_folder):
     return od
 
 
+@app.route('/blog/archive/<year>/<month>')
+def archive(year, month):
+    d = datetime.date(int(year), int(month), 1)
+    archive = get_archive("_posts")
+    print archive
+    try:
+        posts=archive[d]
+        print "Using posts: {}".format(posts)
+    except KeyError:
+        print "Couldn't find key {} in archive".format(d)
+        posts = []
+    return render_template('archive.html', month=d, posts=posts)
+
+
 @app.route('/blog/<post>')
 def blog_post(post):
-    #raw_content = open("_posts/{}".format(post)).read()
-    #raw_content = unicode(raw_content, errors='ignore')
-    #print raw_content
-    #print get_all_posts("_posts")
-    #print get_archive("_posts")
     content = load_markdown("_posts/{}.markdown".format(post))
     archive = get_ordered_posts("_posts")
     archive = get_archive("_posts")
     return render_template('post.html', content=content, archive=archive)
-
 
 
 @app.errorhandler(404)

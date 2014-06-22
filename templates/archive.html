@@ -1,0 +1,17 @@
+
+
+{% extends "main_template.html" %}
+
+<!-- Body -->
+{% block body %}
+
+{{month}}
+
+<div>
+  <ul>
+    {% for name, date, link, file in posts %}
+    <li> <a href="{{url_for('blog_post', post=link) }}">{{name}} ({{date.strftime("%B %d, %Y")}})</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
