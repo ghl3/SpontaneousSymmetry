@@ -23,8 +23,6 @@ from flask import render_template
 from flask import Markup
 
 
-#from HistFactoryJS.tools import ProcessMeasurementRequestParallel
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -105,19 +103,17 @@ def get_post(post):
 
 
 def get_latest_post():
-    return get_post('2013-01-17-python-threads')
+    post_title = get_ordered_posts("_posts")[0][2]
+    return get_post(post_title)
 
 
 @app.route('/blog/archive/<year>/<month>')
 def archive(year, month):
     d = datetime.date(int(year), int(month), 1)
     archive = get_archive("_posts")
-    print archive
     try:
         posts=archive[d]
-        print "Using posts: {}".format(posts)
     except KeyError:
-        print "Couldn't find key {} in archive".format(d)
         posts = []
     return render_template('archive.html', month=d, posts=posts)
 
@@ -140,8 +136,8 @@ def blog():
 def page_not_found(e):
         return render_template('errorpage.html'), 404
 
+
 if __name__ == '__main__':
-    # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
     app.debug = True
     app.run(host='0.0.0.0', port=port)
