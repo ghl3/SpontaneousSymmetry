@@ -62,15 +62,31 @@ def load_markdown(file_name):
 
 
 def separate_yaml(raw):
+    """
+    Posts are supposed to be in the following form:
+
+    ---
+    YAML Metadata
+    ---
+
+    Markdown Content
+
+    This method splits a post string, converts the
+    yaml to a python dict, and converts the markdown
+    text to markup html
+    """
     tokens = raw.split('---')
     yaml_data = yaml.load(tokens[1])
     markdown_raw = tokens[2]
-
     markdown_raw = unicode(markdown_raw, errors='ignore')
     return (yaml_data, Markup(markdown.markdown(markdown_raw)))
 
 
 def load_post(post):
+    """
+    Load a post from disk and return a dict
+    of the post's contents and it's metadata
+    """
     file_name = "_posts/{}.markdown".format(post)
     raw_content = open(file_name).read()
     meta, content = separate_yaml(raw_content)
@@ -78,6 +94,14 @@ def load_post(post):
 
 
 def get_all_posts(post_folder):
+    """
+    Get a list of all post data
+    from a directory by looking for
+    markdown files of a certain form.
+    This does not parse the files, it
+    simply returns a list of:
+      (name, date, date-name, file-path)
+    """
     regex = r"(\d{4}-\d{2}-\d{2})-(.*).markdown"
     posts = {}
     files = os.listdir(post_folder)
@@ -96,7 +120,7 @@ def get_ordered_posts(post_folder):
                   reverse=True)
 
 
-def get_archive(post_folder):
+def get_archive(post_folder, n=None):
     """
     An archive is an ordered dictionary of
     month-year to a list of posts
@@ -104,7 +128,11 @@ def get_archive(post_folder):
 
     d = defaultdict(list)
 
-    for (name, date, link, file) in get_ordered_posts(post_folder):
+    for i, (name, date, link, file) in enumerate(get_ordered_posts(post_folder)):
+
+        if n and i >= n:
+            break
+
         year_month = date.replace(day=1)
         d[year_month].append((name, date, link, file))
 
@@ -113,10 +141,6 @@ def get_archive(post_folder):
         od[key] = d[key]
 
     return od
-
-
-#def get_post(post):
-#    return {'content':load_markdown("_posts/{}.markdown".format(post))}
 
 
 def get_latest_post():
@@ -132,7 +156,13 @@ def archive(year, month):
         posts=archive[d]
     except KeyError:
         posts = []
-    return render_template('archive.html', month=d, posts=posts)
+    return render_template('archive.html', archive={d : posts})
+
+
+@app.route('/blog/archive')
+def archive_list():
+    archive = get_archive("_posts")
+    return render_template('archive.html', archive=archive)
 
 
 @app.route('/blog/<post>')
