@@ -132,9 +132,9 @@ def get_archive(post_folder, n=None):
     return od
 
 
-def get_latest_post():
-    post_title = get_ordered_posts("posts")[0][2]
-    return load_post(post_title)
+def get_latest_posts(n=1):
+    post_titles = [get_ordered_posts("posts")[i][2] for i in range(0,n)]
+    return [load_post(post_title) for post_title in post_titles]
 
 
 @app.route('/blog/archive/<year>/<month>')
@@ -163,7 +163,7 @@ def blog_post(post):
 
 @app.route('/blog')
 def blog():
-    post_data = get_latest_post()
+    post_data = get_latest_posts(1)[0]
     archive = get_archive("posts", 20)
     return render_template('post.html', post=post_data, archive=archive)
 
