@@ -5,15 +5,16 @@
 <!-- Body -->
 {% block body %}
 
-<html>
-  <head>
-    <title>Markdown Snippet</title>
-  </head>
-  <body>
-    {{ post['content'] }}
-  </body>
-</html>
+Title: {{ post['meta']['title'] }} <br>
 
+Categories:
+<ul>
+  {% for category in post['meta']['categories'] %}
+    <li> {{ category }} </li>
+    {% endfor %}
+</ul>
+
+{{ post['content'] }}
 
 {% endblock %}
 

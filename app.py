@@ -22,6 +22,7 @@ from flask import Flask
 from flask import render_template
 from flask import Markup
 
+import yaml
 
 app = Flask(__name__)
 
@@ -58,6 +59,22 @@ def load_markdown(file_name):
     raw_content = open(file_name).read()
     raw_content = unicode(raw_content, errors='ignore')
     return Markup(markdown.markdown(raw_content))
+
+
+def separate_yaml(raw):
+    tokens = raw.split('---')
+    yaml_data = yaml.load(tokens[1])
+    markdown_raw = tokens[2]
+
+    markdown_raw = unicode(markdown_raw, errors='ignore')
+    return (yaml_data, Markup(markdown.markdown(markdown_raw)))
+
+
+def load_post(post):
+    file_name = "_posts/{}.markdown".format(post)
+    raw_content = open(file_name).read()
+    meta, content = separate_yaml(raw_content)
+    return {'meta': meta, 'content':content}
 
 
 def get_all_posts(post_folder):
@@ -98,13 +115,13 @@ def get_archive(post_folder):
     return od
 
 
-def get_post(post):
-    return {'content':load_markdown("_posts/{}.markdown".format(post))}
+#def get_post(post):
+#    return {'content':load_markdown("_posts/{}.markdown".format(post))}
 
 
 def get_latest_post():
     post_title = get_ordered_posts("_posts")[0][2]
-    return get_post(post_title)
+    return load_post(post_title)
 
 
 @app.route('/blog/archive/<year>/<month>')
@@ -120,7 +137,7 @@ def archive(year, month):
 
 @app.route('/blog/<post>')
 def blog_post(post):
-    post_data = get_post(post)
+    post_data = load_post(post)
     archive = get_archive("_posts")
     return render_template('post.html', post=post_data, archive=archive)
 
