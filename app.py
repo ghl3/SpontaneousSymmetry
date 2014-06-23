@@ -87,7 +87,7 @@ def load_post(post):
     Load a post from disk and return a dict
     of the post's contents and it's metadata
     """
-    file_name = "_posts/{}.markdown".format(post)
+    file_name = "posts/{}.markdown".format(post)
     raw_content = open(file_name).read()
     meta, content = separate_yaml(raw_content)
     return {'meta': meta, 'content':content}
@@ -144,14 +144,14 @@ def get_archive(post_folder, n=None):
 
 
 def get_latest_post():
-    post_title = get_ordered_posts("_posts")[0][2]
+    post_title = get_ordered_posts("posts")[0][2]
     return load_post(post_title)
 
 
 @app.route('/blog/archive/<year>/<month>')
 def archive(year, month):
     d = datetime.date(int(year), int(month), 1)
-    archive = get_archive("_posts")
+    archive = get_archive("posts")
     try:
         posts=archive[d]
     except KeyError:
@@ -161,21 +161,21 @@ def archive(year, month):
 
 @app.route('/blog/archive')
 def archive_list():
-    archive = get_archive("_posts")
+    archive = get_archive("posts")
     return render_template('archive.html', archive=archive)
 
 
 @app.route('/blog/<post>')
 def blog_post(post):
     post_data = load_post(post)
-    archive = get_archive("_posts", 20)
+    archive = get_archive("posts", 20)
     return render_template('post.html', post=post_data, archive=archive)
 
 
 @app.route('/blog')
 def blog():
     post_data = get_latest_post()
-    archive = get_archive("_posts")
+    archive = get_archive("posts", 20)
     return render_template('post.html', post=post_data, archive=archive)
 
 
