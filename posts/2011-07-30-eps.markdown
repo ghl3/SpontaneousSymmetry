@@ -1,0 +1,43 @@
+---
+author: ghl3
+comments: true
+date: 2011-07-30 17:27:43+00:00
+layout: post
+slug: eps
+title: EPS
+wordpress_id: 418
+---
+
+
+
+Summer conferences are upon us.  Several times a year, members of the high energy experimental physics community gather and share their results with each other.  At these conferences, the major experiments unveil their latest findings to the world, trying to show off the accuracy of their results.  One us conference took place earlier this week in Grenoble, France called the International Europhysics conference on High Energy Physics, or EPS-HEP for short, or even simply EPS.
+
+This particular conference takes place at an extremely interesting time in the history of particle physics.  The Tevatron, the accelerator at Fermi Lab and the former king of high-energy physics, is set to be shut down this Fall.  So, this conference will be one of the last where new data from the Tevatron, mainly from the experiments CDF and D0, will be presented.  At the same time, it’s coming soon after the LHC achieved a milestone by collecting one inverse-femptobarn of data.  As a means of comparison the Tevatron, after about 20 years, has collected 8 inverse femptobarns.  The LHC collected 1 inverse femptobarn since March and is on track to get much more by the end of the year.  So, with this newly produced dataset, made with the record-setting energy of 7 TeV, the LHC experiments have plenty of interesting results.
+
+The most intriguing of these results come from the most up-to-date searches for the Higgs boson.  Both ATLAS and CMS have been working hard to study this elusive particle and are just now getting enough data for those studies to start bearing fruit.  The experiments have many “channels” in which they look for a higgs boson, each consisting of different combinations of measured particles (jets, leptons, missing energy).  Each channel has the potential to discover or put limits on the Higgs, but the real power comes when these channels are statistically combined.
+
+To quickly summarize the results presented:
+
+- Both ATLAS and CMS are now better at searching for the Higgs than the Tevatron, and each individually is able to put stronger limits on the Higgs mass than the Tevatron.
+
+- Both experiments exclude a Higgs boson with about a mass of 150 GeV - 200 GeV
+
+- Neither experiments discovered the Higgs with 5-sigma certainty.
+
+- However, both experiments see a tantalizing excess in the "low" mass range around 120 GeV - 145 GeV, and both see this excess coming from mainly from the Higgs decaying into W boson candidate events.
+
+So, this could be the first taste of finding the Higgs boson. Both experiments will continue to update their results as new data is pouring in at a high rate. Within a year, we should know if the standard model Higgs boson exists with a high level of certainty.
+
+The summaries of the Higgs searches by Atlas and CMS are shown below:
+
+![](http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png)
+
+
+
+![](http://cms.web.cern.ch/cms/News/2011/EPS_2011/images/HIG-11-011-pas-v8-fig18.png)
+
+
+
+The meaning of the y-axis is “upper limit on the higgs cross-section with 95% confidence.”  Recall that the cross-section is a measurement of how often a Higgs boson is produced.  So, the upper limit on this value represents the maximum value, based on what we measure, that the higgs cross section could have with 95% confidence.  These plots are scaled such that a cross section of 1 represents the standard-model theoretical prediction.  So, when the limit that we measure falls below 1, it means that we have excluded the standard model higgs (at a particular mass point).  The central black line in the middle of the green band represents the “expected limit,” or the limits that we would make if we assume the Standard Model but without a Higgs.  The black dots joined together by a curve represent the measured limit.  So, when reading the plots, you should look for two things.  First, you should ask if the measured limits fall below 1.  Wherever they do, that region is said to be “excluded.”  In addition, one should ask if the measured limits follow the expected limits.  If the measured limits fall within the green band, they are close to expectation within 1 sigma.  If they fall within the yellow, they are close to expectation within 2 sigma.  If they leave the yellow band, they have made a greater than 2 sigma variation from the expected limit.
+
+If the measured limit in a particular region is significantly higher than the expected limit, it could indicate the presence of the Higgs.  People have been very excited about these results for this very reason.  If you look at both ATLAS and CMS’s results, the measured limits are found to be higher than the expected limits in the mass region between about 115 and 140 GeV.  This region particularly interesting because it’s low enough not to be in conflict with results from precision electroweak analyses on the Higgs (which tend to favor a light higgs) but it’s not so low to have been excluded by the direct searches at LEP (the precursor to the LHC which collided electrons and positrons).

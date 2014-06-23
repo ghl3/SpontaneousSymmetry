@@ -1,0 +1,29 @@
+---
+author: ghl3
+comments: true
+date: 2009-10-09 15:24:33+00:00
+layout: post
+slug: cap-and-trade
+title: Cap and Trade
+wordpress_id: 146
+categories:
+- Politics
+- Technology
+---
+
+I saw a fascinating talk yesterday here at the Physics department by a representative of ExxonMobile.  The topic was Carbon Capture and Storage, which is the process of removing CO2 from the exhaust of power plants and, well, pumping it deep into the Earth.  It's a technique that is gaining popularity, or at least interest by many governments.  The technology for Carbon Capture and Storage (CCS) exists today, the problem is getting the economics to work out.  And by "getting the economics to work out," I mean that as of now, there is absolutely no monetary incentive for a power plant to implement CCS.  The US does not tax carbon emissions, and therefore the financial pressures to reduce CO2 output simply don't exist in this country.
+
+CCS can function in several ways.  It can be implemented retroactively to already built power plants.  In this case, known as post-combustion capture, the exhaust pipes are fitted with devices which remove the emitted CO2 and sequesters it for later removal and storage.  More complicated methods alter the way that power plants work to make the isolation of C02 easier.  For instance, by burning the fuel (coal, gas, etc) in pure oxygen, one is left with exhaust that is almost completely C02 (when burned in atmosphere, most of the exhaust is nitrogen from the atmosphere, which does not participate in combustion).  Other methods burn fuel in several stages to facilitate carbon removal.  The goals of these advanced methods is to increase the efficiency of carbon removal.
+
+The United States is now becoming quite interested in CCS, but is already lagging behind several countries..  Not surprisingly, Norway (that backward, socialist state) has had a working CCS facility since the early 90's.  The stations run by StatoilHydro in the Sleipner oil fields have been capturing C02 from mining of natural gas for almost two decades.  This project is slightly different from the ultimate intention of CCS.  When natural gas is pumped from the Earth, a lot of C02 comes with it.  It is this C02 which is successfully captured and sequestered by the Norwegians.  The Carbon is pumped deep within the Earth (more than a mile down) and is absorbed by the sand and briney water below many layers of rock.  This Norwegian company pumps about a million tons of Carbon into the Earth every year, carbon that would otherwise be floating around in our atmosphere.  Ultimately, this same technology will be used on Power Plants that produce CO2 from the burning of fuels, instead of just from the mining.
+
+
+Steven Chu, the Science Director for the Obama administration (formerly of BNL), has shown interest in CCS, specifically in a project known  as FutureGen, which was started and eventually killed by the Bush Administration.  The goal of FutureGen is to make a zero emissions Coal plant through the use of CCS.  However, the economics of the project are still questionable, and the US, after an initial survey, will decide sometime in 2010 whether to fully resurrect the project or to scrap it entirely.
+
+Of course, the problem is that there is currently no reason for a power plant to capture carbon.  Why would they, it would only cost them money and efficiency.  Without pressure from the government, CCS will never happen.  Norway's project has been so successful because Norway imposes a tax on carbon.  The gas company saves a lot of Euros in fees by preventing CO2 from entering the atmosphere as a result of the mining of natural gas.
+
+The US is currently wrestling with the idea of imposing a Cap-and-Trade scheme.  Cap-and-Trade is an overly complicated solution to a problem with much easier solutions.  C-and-T, of course, is where the US government puts a "value" on the ability to release carbon into the atmosphere, and shares of that ability can be bought and sold between companies.  So, if company owns more ability to release carbon than it uses, it can sell that ability to release carbon to company B, who releases more carbon than it should.  C-and-T is silly for several reasons.  First, it's SO much easier to simply tax carbon emissions in some way.  There several power plants in the US that make emit the vast majority of carbon into the atmosphere.  All one has to do is count how much CO2 they release, multiply that by some cost rate, and send them a bill.  It would be easy to run and would be effective.  C-and-T, on the other hand, brings a lot of baggage with it.
+
+Imagine that you're company A and you want to build a coal power plant.  You understand quite well the costs of building and operating this plant, you understand the price of coal and its volatility, and you can make a 30 year projection for the cost and profit of this plant.  What you don't understand are the costs associated with C-and-T.  Since shares of carbon release are traded freely between companies, their prices are unpredictable and subject to market forces.  So, do you spend a few hundred million dollars on your plant and hope that the price of C-and-T doesn't skyrocket too high that it makes your plant unfeasible?  Do you simply cross your fingers?  Of course not.  Instead, you do what all companies do when they what to avoid risk: they buy insurance.  By insurance, I mean they find a financial company to create a complicated derivative package to hedge the volatility of C-and-T.  So, a direct result of implementing C-and-T will be the creation of a new sector in Wall Street whose job is to create, buy, and sell financial packages that are linked to the government-set price of the ability to release Carbon into the air.
+
+I wonder what happens when the artificial Carbon bubble bursts?

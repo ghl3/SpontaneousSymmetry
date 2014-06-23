@@ -168,7 +168,7 @@ def archive_list():
 @app.route('/blog/<post>')
 def blog_post(post):
     post_data = load_post(post)
-    archive = get_archive("_posts")
+    archive = get_archive("_posts", 20)
     return render_template('post.html', post=post_data, archive=archive)
 
 

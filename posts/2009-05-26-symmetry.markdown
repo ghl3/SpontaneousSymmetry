@@ -1,0 +1,42 @@
+---
+author: ghl3
+comments: true
+date: 2009-05-26 02:18:00+00:00
+layout: post
+slug: symmetry
+title: Symmetry
+wordpress_id: 13
+categories:
+- Math
+- Physics
+---
+
+Oh, right, so why the title "Spontaneous Symmetry"?  At that rate, what exactly do I mean by symmetry?  
+  
+The concept of symmetry is one of the most important in physics.  It can dramatically simplify problems, and often it is the only road toward an answer.  The symmetries that are used in modern physics are often very abstract and esoteric, and are described by the beautiful field of mathematics known as group theory.  The goal of group theory is to find general rules and patterns for systems that frequently appear in nature, math, physics, computer science, and nearly every field.  Group theory describes things as ranging as a Rubik's cube, the energy levels of the hydrogen atom, cryptography, and countless other applications.  But let's start off slowly.  
+  
+We are all familiar with things that are "symmetric" in the layman sense.  Something is symmetric if I can draw a line through it and it is the same on both sides.  People are nearly symmetric if you draw a line through their head, torso, and between their legs, splitting their body in twain.  For the sake of description, let's imagine a 2-d drawing of a human that indeed is perfectly symmetric.  I can cut the drawing in half, flip one side over, and it will perfectly match the other side.  A mathematician would describe this sort of mirror symmetry in the following way:  I can take every part of the person, each arm, its hands, its fingers, its feet, etc, and I can reflect them to the opposite of the person and I will end up with the exact same image of the person.  
+  
+One can imagine that if the person were holding a cane in his left hand and not in his right hand, he would no longer be symmetric.  If I were to preform the above operation and switch the left and right sides, the cane would now be in the person's right hand.  So, by swapping left and right, I DON'T get back the same image.  The cane in this example breaks the symmetry.  
+  
+Mathematically, this symmetry is described by taking things at position x and moving them to position -x (if we assume that the origin is aligned with the center of the person.  In physics, this is called parity.  The person that we imagined above (without the cane) is "symmetric under parity" or is "symmetric under mirror symmetry" or is "symmetric under reflections" or whatever term you want to use to describe it.  
+  
+The point is that the symmetry that is most common to us is only a very simple example of symmetries.  In general, a symmetry is defined as an operation that I can preform on an object that will leave the object the same.  Consider a perfect circle.  Certainly this circle also possesses the mirror symmetry that we described above.  I can draw a line through the circle and flip each half over this line and the circle will be unchanged.  But for the person, there was only one such line that I could draw.  For the circle, there are infinitely many.  The symmetries of the circle, we are starting to see, are much more rich and interesting than those of the person.  
+  
+Aside from mirror symmetry, we are also free to rotate the circle.  If I place my finger in the middle of the circle and spin the circle, it will appear unchanged (assuming the circle is indeed perfect).  No matter how much I rotate it, I won't do anything.  The circle, we say, is symmetric under rotations.  Notice how this group of symmetries is different than the reflection symmetry from before.  The act of reflecting is in a sense "discrete."  You either do it or you don't.  It's like being pregnant, you either are or you aren't.  But rotations are "continuous."  You can rotate by any amount, including none at all or any arbitrarily small or large amount.  
+  
+Each of the sets of actions that we can do that leave an object the same form a "group."  The set of rotations that we can do to a circle that leave it the same form what is known as the "rotation group" (specifically, for the mathematicians in the audience, it is called U(1), or equivalently SU(1) or O(2).  This is also equivalent to the real numbers modulo the integers, and a fun exercise would be to find the isomorphism).   The defining feature that makes these "symmetries" a "group" is the fact that any two symmetries done in succession make another symmetry.  For example, if I rotate by 30 degrees and then by 80 degrees, it is the same as rotating by 110 degrees.  It's as simple as that.  I can also rotate backwards (ie rotating by -90 degrees is the same as rotating by a right angle in the opposite direction as 90 degrees), or I could just not rotate at all (identity).  
+  
+Groups can be as simple as reflecting things and rotating squares and circles, but they can also be complicated.  The more abstract ones involve matrices and complex numbers, but it's not necessary to bring them up in order to understand the main concepts.  
+  
+So, how does any of this apply to physics?  It turns out that for each continuous symmetry of a system, there is a corresponding "conserved" quantity.  For those unfamiliar with this term, a conserved quantity is something that remains the same no matter what we do.  For example, charge is conserved in the sense that you can't create charge, you can only move it.  Energy is conserved, and you can only change its form, meaning heat is created when I use my laptop's battery.  Momentum is conserved, meaning if I throw something in space in one direction, I will go flying in the opposite direction.  
+  
+All of these conserved quantities can be derived from a symmetry of nature.  The mechanism for doing this is one of the most beautiful theorems in all of physics.  It's called Noether's theorem, which was first discovered by Emmy Noether (seen below).  Einstein apparently called her the most important woman in the field of mathematics.  It says what I just said, that each continuous symmetry leads to a conserved quantity (it just says it in fancy math language).  
+  
+  
+[![](http://upload.wikimedia.org/wikipedia/commons/e/e5/Noether.jpg)](http://upload.wikimedia.org/wikipedia/commons/e/e5/Noether.jpg)  
+  
+  
+Conservation of energy comes from the fact that the laws of physics are constant in time (meaning if I preform an experiment at 3:00 in the morning, it should have the same results as if I did it at 5:00 in the afternoon, ignoring external differences associated with the different times of day such as daylight, weather, etc).  Conservation of momentum comes from the fact that the laws of physics don't care where they take place (meaning they are the same here as well as in the Andromeda galaxy, or they are "symmetric under translations").  
+  
+Conservation of charge comes from the fact that a rotation of electron fields, similar to the circle rotation above, leaves the energy of the system unchanged.  This is of course mostly nonsense to those who aren't familiar with Quantum Field Theory, but I assure you that it's no more difficult than spinning a circle about its center.

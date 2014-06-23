@@ -1,0 +1,67 @@
+---
+author: ghl3
+comments: true
+date: 2010-05-29 14:56:34+00:00
+layout: post
+slug: trigger
+title: Trigger
+wordpress_id: 264
+categories:
+- Particle Physics
+- Technology
+---
+
+I’m working in several different areas while out here at CERN.  Recently, I’ve been focusing my efforts on what is known as the Trigger.  Crucial to data taking, the Trigger is a collection of software and hardware, custom electronics and large computer farms that, in short, determines whether a particular collision was interesting or not.  If, based on some criteria, the trigger deems an event “interesting,” that event is kept and stored on disk to be analyzed later. If not, the information about that event is lost forever.
+
+
+
+
+
+
+
+So, why is it necessary to decide between interesting and not events at all?  Why don’t we just keep all events and decide later to either use them or not?  Well, when it reaches design specifications, the LHC will make a collision once every 25 nanoseconds.  This translates to about 40 million events every seconds.  If you add up all the information obtained by each component of the detector for a collision, each event takes up about a megabyte of memory.  So, this means to store every event, you would take up about 40 terabytes every second.  This would mean you would need to store 10^6 petabytes per year.  This number is comparable to the total amount of memory space in the world, and storing that much information is wildly unfeasible.
+
+
+
+
+So, the LHC needs to dramatically parse through that data and, in real time, decide what data is worthy of storage.  It must do this at a remarkable rate since events occur every 25 nanoseconds.  This turns out to be remarkably difficult, and one runs into very serious bottle necks.  The ATLAS detector itself is shaped like a large cylinder with about a 10 meter radius.  So, two components of the detector could be separated by more than 20 meters.  In 25 nanoseconds, light can only travel about 7 meters, so it’s physically impossible for all parts of the detector to communicate with each other and make a global decision about an event before the next collision occurs.  This is a very serious problem.
+
+
+
+
+ATLAS solved this problem through a combination of design, hardware, and software.  The trigger is able to achieve an extremely high decision rate by making layered decisions and processing events in parallel.  The trigger is actually divided into three parts, the Level 1 trigger, the Level 2 trigger, and the Event Filter.  Each level parses and filters the data into a smaller and smaller set, and events pass all levels of the filter at a rate that is reasonable for permanent storage.
+
+
+
+
+
+
+
+Events enter the Level 1 trigger at a rate of 40 MegaHertz, and the output of Level 1 is 75 KiloHertz, meaning that only about .2 % of events survive.  Those events that pass Level 1 are sent to the level two trigger, which reduces the rate even further.  The Level 2 filter reduces the rate to about 1 kHz and sends those events to the Event Filter.  The final output of Event Filter, and therefore the entire trigger, is about 200 Hz.  So, of the 40 million events that take place every second, ATLAS keeps only about 200 of them.
+
+
+
+
+
+
+
+![](http://www-atlas.desy.de/pictures/trigger_overview.gif)
+
+
+
+
+
+
+
+
+
+
+So, what are the characteristics that could make an event interesting enough to store?  The LHC collides protons into each other, and one can imagine a proton as a bag of quarks.  Often times when these bags collide, they simply glance off of each other.  Sometimes the bags burst, sending quarks flying out.  For the most part, these types of events aren’t really that interesting.  Most physicists are really interested in the rare events where the protons bang into each other and two quarks within the protons collide  with a lot of energy.  These sorts of events can create new and interesting particles, like a Z, a W, a Higgs, a Top, or some sort of undiscovered particle.  These interesting events often result in high energy electrons, muons, objects called “jets,” and could possibly result in missing energy.  The trigger looks for these characteristics and selects relevant events.  There are many possible types of event that the trigger can seek out.  For example, it may look for events with a very energetic electron, or an electron and a muon, or a very energetic jet, or a certain amount of missing energy, or some combination of the above.
+
+
+
+
+
+
+
+I work on the part of the trigger that searches events for missing energy.  Since almost all interesting physics will involve some amount of missing energy, it’s extremely important to have a well-working Missing Energy Trigger.  As we get more data, it will play a crucial role in, for example, Higgs studies and searches for Supersymmetry.  Essentially, when looking for a needle, having a good handle on missing energy makes the haystack that much smaller.

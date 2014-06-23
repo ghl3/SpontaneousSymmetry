@@ -1,0 +1,76 @@
+---
+author: ghl3
+comments: true
+date: 2009-09-23 21:08:49+00:00
+layout: post
+slug: mac-vs-pc
+title: Mac vs PC
+wordpress_id: 118
+categories:
+- Technology
+---
+
+Mac: Pros and Cons
+
+
+So, a few months ago, I got my first Mac.  Well, that’s not true.  I had an Apple II gs many, many years ago, but that was a different lifetime.  I mean to say, got my first “Justin Long” style “I’m a Mac” Mac.  It’s a MacBook pro, to be specific.  I still have my old Thinkpad that I used to run Vista (and Ubuntu until I recently killed Ubuntu.  Note to self: if you ever want to kill Ubuntu again, be sure that you don’t kill the GRUB loader after it already killed the Windows native loader, thus leaving you with no boot loader and therefore no way to launch an OS.  That wasn’t too smart...)
+
+(My thanks to Kyle, my Thesis Advisor, for purchasing said Mac for me.  I’ll put it to good  use, I promise...)
+
+Anyway, there are many things that I like about my new Mac, and there are a few things that I don’t like.  And, since this is MY blog, you can bet you’re going to hear about those things.
+
+What I like:
+
+-The Hardware.  My Mac is pretty beefy.  It has a 2.66 GHz Intel Core 2 Duo, 4 GB DDR3 RAM, about 350 Gigs of hard-drive space, and a nice NVIDIA graphics card.
+
+-The look.  My Mac is pretty.  It feels very solid due to the uniframe design (or whatever Mac calls the fact that it’s made mostly of one solid piece of metal), and it looks quite sleek.  After all, the look is why we pay all that money.  We want to show off to other people in coffee shops that we’re hip and stylish and not a part of the evil corporation Microsoft (a corporation so evil that it’s founder Bill Gates donated nearly $100 Billion to the biggest charity of all time.  I bet he hates the Beatles!)
+
+-Snow Leopard.  I just recently upgraded.  Leopard was great, Snow Leopard is slightly but noticeably better.  It starts us MUCH, MUCH, MUCH, MUCH faster than Vista did on my old machine (though, to be fair, Vista now starts up faster after I freed up a lot of hard drive memory by killing Ubuntu).  It’s nice that, now that it’s built in 16 bit, it can fully take advantage of my 4 Gigs of RAM.  I think the biggest improvement is the advanced version of Expose.
+
+-Expose.  It was okay before, but now it’s a beast.  With one click of the button, I can see every window that I have open (and now!) I can see all windows that are minimized into the dock.  I can also click on any program in the dock and it will bring to front every instance of that program running.  Makes life very easy.
+
+-Mail, iCal.  Nice programs, they work well, and are pretty, etc.
+
+-iTunes.  I don’t know why people don’t like iTunes.  Okay, I think I do.  I think a lot of the issues have to do with using different file types and iTunes not recognizing them.  But it suits my purposes perfectly.  I exclusively buy CD’s in physical form and later rip them to my computer using iTunes, so all my albums are of the same file type and format.  The Genius feature of iTunes is fantastic and is a great way to make a playlist on the fly.
+
+
+-Terminal.  The most important part of owning a Mac is that it is based on UNIX, meaning I can run my Mac via a BASH shell.  This is necessary for anyone who does any sort of (real) computer programming (no, something “visual” doesn’t count, and neither does Mathematica... sorry, Rob).  And since a Particle Physicist is a computer programmer and statistician who can draw and interpret Feynman Diagrams, I do a lot of programming.
+
+-Seamless integration of programs.  This is one of the best features.  I think it’s best summarized with an example.  Imagine that I’m reading a talk that I’ve found on the internet.  I open it up as a PDF using Preview.  There’s an image that I really like and want to incorporate into a talk that I’m writing.  I open up Keynote.  I “grab” the image that I like in Preview.  My Mac copies that image as POSTSCRIPT (!!!), and I can then paste it into Keynote.  Since it’s copied as postscript, and not as an image, I can resize the image without creating distortion or jagged lines if I make it too big.  It creates the image on the fly because it has the PS code used to generate it.  Pretty nice.
+
+-Some nice 3rd party programs.  I’m not going to get into details, but these include Quicksilver, some nice LaTeX programs, and such that are pretty intelligent.
+
+-Spaces.  Mac learned from their Unix brethren and allows you to use several desktops at once, called “spaces.”  Nice feature.
+
+-The trackpad and hotkeys.  They work well.  I can shrink, enlarge, rotate, click, right click (yes, right click!  Thank GOD I don’t have to hold control.  I would kill myself!!).
+
+-The fact that I can simply close my screen and my Mac quickly goes to sleep, and then instantly awakens when I reopen my screen.  I never have to shut it down or worry about loading times or anything like that.  Really good feature for a laptop.
+
+-No viruses.  Oh, wait, I never had a virus on my Thinkpad because I made the slightest effort to not use it like an idiot.  Even the simplest antivirus program, coupled with Microsoft’s defender or whatever it’s called now, does the trick pretty well.
+
+What I don’t like:
+
+-Terminal.  Okay, the terminal is great.  What I don’t like are several annoying issues that are related to using a Mac as a server and the fact that it doesn’t have native X11 support.  But these are technical details and aren’t that difficult to get around.  They were just a bit of a pain at first.  But it made the list anyway, so there.
+
+-Numbers, Pages.  Pretty horrible programs.  I think Keynote is pretty slick.  Pages is a bit annoying.  It’s just a word processor, but I think Word is better.  It’s probably because I grew up using Word.  Maybe Pages isn’t so bad, but why doesn’t it have a grammar check?  And why is it so difficult to format things?  And why do “Bullets and Numbering” suck so much?  And why isn’t there a “Copy and Paste Style” feature?  Again, maybe it isn’t so bad.
+
+But GOD DAMN, Numbers is one of the most obnoxious programs I’ve ever tried to use.  I think a group of people conspired to study me, to figure out how my brain works and how I use a computer.  They came up with all my tendencies, my habits, and my instincts when it comes to computers.  They then went and designed Numbers to work in the exact opposite way that my brain works.  It’s just so annoying, and so Mac like, that it forces you to think “how it thinks,” and not how one would normally think.  Maybe “I just don’t get it.”  No, that’s not true.  I get it.  I spent some time trying to “get” it.  I understand different Tables and why a sheet can have several of them and what not.  But the behavior is just so unpredictable.  If in Table B I reference a cell C:3 in Table A and then sort Table A, the reference in table B will not point to cell C:3, it will point to the cell that USED to be where C:3 was.  I can see circumstances where this would be the desired behavior, but my problem is, IT’S SEEMINGLY IMPOSSIBLE to change this behavior.  If I try to type it in by hand, it just becomes a cute Mac style blue bubble thingy because it “knows what I want” and won’t let me change what it think it knows what I want.  UGH!  Also, it’s really impossible to make things look nice or to be formatted correctly.  Just try putting nice borders around things in a non-trivial way.  I dare you.
+
+-Windows.  I don’t like that I can’t resize windows from any part of the window.  If I want to resize a window, I have to grab the bottom right corner, and ONLY the bottom right corner.  If for some reason the bottom right corner is off the screen, I have to move the window so that the corner is on the screen, and then resize the window, and then move it back.  The reasoning for this goes along the lines of, “the window knows what size it SHOULD be better than you do.”  You’ll notice a consistent theme in my complaints.  Macs think they know what they should do and how they should do it better than you do, and therefore make it impossible to do thinks differently than they want.  You, the user, just have to get used to things the way Mac uses use them.  So, ironically, while the image of a Mac user is someone who doesn’t conform to standards and is an individual, an actual Mac user has to conform Steve Jobs’ view of how computers work.  It’s frustrating for someone like me who is both a) good with computers and b) a bit anal about style and customization.
+
+-Program Issues.  Sometimes programs freeze up, and I have to force quit them.  This isn’t a big deal, but it goes against the idea that Macs “just work.”  They don’t.  Parts of them can brake.  I guess the difference is that it’s rare that the entire OS dies and you have to restart.  But I’ve never really had to do that with Vista either.  That’s sort of a Windows circa the year 2000 issue.
+
+-Dashboard.  Okay, this isn’t a negative.  But it is a bit worthless.  Meh.
+
+-Delete.  My Mac keyboard has no delete key.  Okay, it has a delete key, but it isn’t a delete key, it’s a backspace key.  It deletes to the left, not to the right.  This is annoying in programming when I often like to delete to the right.  Small issue, but seemingly silly.
+
+
+
+
+So, it would see that, aside from a few annoying features, the positives outweigh the negatives.  And, after a bit of getting used to, but not as much as I would have though, I have concluded that I like my Mac and OSX, for the most part.
+
+I still content that most operating systems are pretty much the same, aside from different bells and whistles, or styles.  All OS’s are converging, and in 10 years, I think there will be nearly no difference between Windows, OSX, Ubuntu, or what have you.  They’ll all be fast, stable, and the only differences will be in a few particulars.
+
+And one final word.  Can we all collectively stop using the term “PC” to refer to a machine that is running windows.  Just because, on Macs, the OS and the machine itself are intrinsically coupled doesn’t mean that a Thinkpad is synonymous with Windows.  It’s annoying when Mac commercials compare themselves to PC’s.  There are no PC’s.  There are HP’s, Thinkpads, Gateways, Dell’s, etc.  They’re not all the same.  Heck, you can just build your own from parts and put whatever OS you would like on it.  And now Windows does it in their commercials too.  “It’s a PC.”  No, it’s an HP that has Windows 7.  I can put windows on a Mac too.  Heck, I could sneak into Brookhaven National Labs and load Windows on their BlueGene Supercomputer, with thousands of cores.
+
+Maybe I’ll do that.  It’ll make for some interesting Mac vs PC comparisons.  “It’s a PC!  It’s also a multi-million dollar supercomputer.”

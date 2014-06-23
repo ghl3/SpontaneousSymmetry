@@ -1,0 +1,57 @@
+---
+author: ghl3
+comments: true
+date: 2010-01-13 21:11:53+00:00
+layout: post
+slug: avatar
+title: Avatar
+wordpress_id: 201
+---
+
+James Cameron's 3-d extravaganza has unquestionably made a lot of money.  It looks like it is on track be either the number 2 or potentially the number 1 highest grossing film of all time, both domestically and around the world.  It's competition is another little film by Cameron called Titanic (maybe you've heard of it).  Pretty impressive!
+
+But how impressive, really, is Avatar's box office success?  As of now, here's how the numbers look, according to [BoxOfficeMojo](http://boxofficemojo.com/alltime/):
+
+Domestic:
+
+1 	Titanic                                                $600,788,188       	1997
+2 	The Dark Knight       	  $533,345,358       2008
+3 	Star Wars                   $460,998,007      	1977
+4 	Shrek 2                       $441,226,247       	2004
+5 	Avatar                         	$441,024,441       	2009
+6 	E.T                              	$435,110,554       1982
+
+Worldwide:
+
+1 	Titanic                           $1,842.9      	1997
+2 	Avatar                           	$1,373.0     	2009
+3 Return of the King    	$1,119.1        	2003
+4  Dead Man's Chest     	$1,066.2     	2006
+5 	The Dark Knight        	$1,001.9      	2008
+
+Wow.  But if you think about it, comparing domestic gross is one of the worse ways possible to describe how successful the box office release of a film was.  There are countless reasons why this is a bad idea.  The most obvious of these is inflation; we all know how fast ticket prices are rising.  And Avatar adds new folds to the mix.  Theaters can charge nearly $20 for a 3-d IMAX ticket, which is nearly than 3 times as much as I remember paying for a ticket just a few years ago.
+
+Avatar becomes a lot less impressive when you compare something a bit more sensible.  A better alternative would be comparing box office gross as adjusted for inflation.  An even better alternative would be to compare actual tickets sold (why bother worrying about inflation and the value of the dollar at all?).
+
+According to the same site, the estimated number of ACTUAL tickets sold tell a very different story:
+
+1 	Gone with the Wind                       	 	202,044,600          	$198,676,459    1939
+2 	Star Wars                                       	 	  178,119,600             	$460,998,007  	1977
+3 	The Sound of Music 	Fox              	142,415,400            	$158,671,368     	1965
+4 	E.T                                                    	141,854,300            	$435,110,554     	1982
+5 	The Ten Commandments            	131,000,000           	$65,500,000      	1956
+6 	Titanic 	Par.                                    	128,345,900           $600,788,188     	1997
+
+....
+
+51 	The Towering Inferno                	61,375,700               	$116,000,000    	1974
+52 	Avatar                                           	60,917,000               	$441,024,441     	2009
+53 	Spider-Man 2                              	60,158,700              	$373,585,825     	2004
+
+Based on these numbers, Avatar isn't impressive at all.  It hasn't even sold as many tickets as 101 Dalmatians!  (I believe that the site I liked estimates the number of tickets sold using the gross and knowledge of inflation.  Better data would just use ticket sales directly, but this estimate should give you a good idea of how the numbers look).
+
+But this still isn't the ideal statistic that we're looking for.  When we compare box office numbers, we really want to know how much of a phenomenon the release of a movie was.  So, it probably makes sense to divide the number of domestic tickets sold by the population of the United States at the time.  This would be "domestic ticket sales per person," which I think is a more reasonable indicator.  Also, several movies on the list are very high up in terms of ticket sales because they've been released several times, such as Star Wars and Gone with the Wind.  One certainly may be interested in counting all time ticket sales, but if one wants to compare box office releases, I think it makes sense to count tickets sold in the first year after the release of the movie.  So, I propose counting "domestic ticket sales in the first year per population of the United States."
+
+The overall point is that statistics often lie.  You have to be smart with data in order to get the answers you want.  More importantly, you have to know the question you're asking and be able to phrase it in a meaningful way in order to begin to look for an answer.
+
+The other point is that there is no one PERFECT way to compare different movies.  When Gone with the Wind came out, there was at most one theater in town, and it was probably only playing Gone with the Wind.  There were no multiplexes.  So, anything that you calculate is going to be biased one way or another.  Recognizing and understanding systematic bias is what it's all about.

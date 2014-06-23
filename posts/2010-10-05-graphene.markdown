@@ -1,0 +1,24 @@
+---
+author: ghl3
+comments: true
+date: 2010-10-05 12:10:46+00:00
+layout: post
+slug: graphene
+title: Graphene
+wordpress_id: 288
+categories:
+- Physics
+- Technology
+---
+
+Today, the Nobel Prize for Physics was announced, and it went to a pair of scientists at Manchester University who work on a material known as Graphene.
+
+[Article](http://www.nytimes.com/2010/10/06/science/06nobel.html?hp)
+
+Graphene is an extremely interesting substance, and it has some very nice and odd properties.  It is one of the most simple materials possible: it's simply a 2-d lattice of carbon atoms arranged in a hexagonal pattern.  This is what makes it so strong.  Apparently, if one had a sheet of graphene that was the size of a small piece of seran wrap, that sheet would be strong enough to support the weight of a car.
+
+Since graphene is so small and so simple, it exhibits direct quantum effects.  It is a great conductor, but not in the same way that a normal metal is.  Instead, electrons moving through a graphene act more like light than electricity (meaning that they have a linear momentum-energy spectrum, which is that of a massless boson).  This could potentially make it an excellent and unique component of electronics.
+
+But the most interesting thing about graphene is how much fun it is to make.  You can do this experiment at home.  All you need is a normal pencil and some scotch tape.  Take a piece of the pencil graphite and put it on the sticky side of the tape.  Then, holding the ends of the tape, close the tape over the graphite, and then pull it open again.  Continue to do this, closing and opening the tape.  As you do this, small parts of the graphite will be pulled apart when you open the tape, and it will become thinner and thinner.  If you do this enough, chances are you'll end up with several layers of graphene left on your tape (though you won't know it unless you have an electron microscope).  This is actually how a lot of graphene is made and studied.
+
+I think it's funny that something so foreign and fantastic can be made in such a simple and stupid way.

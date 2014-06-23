@@ -1,0 +1,46 @@
+---
+author: ghl3
+comments: true
+date: 2009-08-09 19:26:20+00:00
+layout: post
+slug: party-ii
+title: Party II
+wordpress_id: 86
+categories:
+- Math
+- Puzzles
+---
+
+So, you had a great time at the party last weekend, you earned $20, and you have decided to throw a party of your own.  However, you're in a bit of a quandary.  You've noticed that when two people know each other at a party but don't know anyone else, they tend to talk only to each other.  This is undesirable because you want the people at your party to interact in groups of at least three.  At the same time, if people at the party don't know each other, it is much less awkward for them to meet each other and talk together in groups of at least three.  Shyness often prevents one on one interactions between strangers.
+
+So, you've decided on a criteria for your party.  You want to be sure that the party EITHER has A) at least three people who all know each other OR B) at least three people who all don't know each other.  If the party DOESN'T satisfy A, then you won't get a group of at least three friends talking with each other, and if it doesn't have B then you won't get a group of at least three strangers mutually meeting one another.
+
+So, how do you accomplish this lofty social goal?  Well, you could go on facebook, look through all your friends, make a detailed map of the interconnections with your friends, and intricately design your party invitation list such that your desired criteria are satisfied.  But that would take a lot of time and effort.  You could simply invite everybody you know and hope that it works out, but that would be expensive and would make the party less intimate.  So, really, you want to find the minimum amount of people that satisfies A or B.
+
+It turns out that if you invite 6 people, you are GUARANTEED to have a group of three people who don't all know each other or a group of 3 who do all know each other.  In this context, 6 is called a Ramsey number.  This problem and its generalization was solved by Frank Ramsey in the 1920's.  Ramsey made great contributions to graph theory before dying at the age of 26.
+
+So, how doe we know that if we invite 6 people, our party will turn out as desired?  Well, let's see:
+
+Pick a person at random from the party.  Let's call him Bob.  There are a total of 6 people at the party, so there are 5 people other than Bob.  Bob either knows at least 3 of them or doesn't know at least 3 of them (this is easy to see.  After all, he can't know 2 of them and not know only 2 of them; what is his status with the 5th person?  He has to either know him or not).  So, let's imagine that Bob knows three people at the party (the argument is exactly the same if he happens to not know three people, or if he knows or doesn't know more than three people).  Let's call these people Alice, Carl, and Ethan.
+
+If any of Alice, Carl, or Ethan know each other, then we have made a group of three.  For example, if Alice and Carl had met before, then our group is Alice, Carl, and Bob who have all met each other before.  So, we're done with this case.
+
+If none of them have met before, then we're also done because we have found a group of three people where none of them have met one another.  So, Alice, Carl, and Ethan can form a triangle of mutual meeting and our party will be a success!
+
+The problem gets harder if we have different demands.  What if we want a group of at least 4 people who either all know each other or all don't know each other?  Or, we could be more general.  What if we want a party where there is a group of at least N people who all know each other or M people who all don't know each other.  What is the minimum number of people that we have to invite to ENSURE that this is satisfied?  The solution is called the Ramsey number R(N,M).  A list of such numbers follows:
+
+R(3,3) = 6 (this is the one we started with)
+R(3,2) = 3
+R(2,2) = 2
+R(4,4) = 18
+R(4,3) = 9
+R(4,2) = 2
+R(5,4) = 25
+R(5,3) = 14
+R(5,2) = 2
+
+Many of these remain unknown.  There is a funny quote attributed to the quirky Mathematician Erdos.  It is paraphrased as the following:
+
+Erdős asks us to imagine an alien force, vastly more powerful than us, landing on Earth and demanding the value of R(5, 5) or they will destroy our planet. In that case, he claims, we should marshal all our computers and all our mathematicians and attempt to find the value. But suppose, instead, that they ask for R(6, 6). In that case, he believes, we should attempt to destroy the aliens.
+
+The point, of course, is that the problem gets very hard very fast.  R(5,5) has been shown to be between 43 and 49, but no one yet knows the exact value.  I'm sure there's good money out there if you can come up with it.  And, more importantly, you'll be able to throw mathematically correct parties from then on!

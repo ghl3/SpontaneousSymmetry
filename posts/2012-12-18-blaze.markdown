@@ -1,0 +1,91 @@
+---
+author: ghl3
+comments: true
+date: 2012-12-18 20:59:42+00:00
+layout: post
+slug: blaze
+title: Blaze
+wordpress_id: 436
+---
+
+I’ve come to believe that the future of data analysis and computation won’t be centered around making faster computers, or quicker processors, or adding more RAM or quicker hard disks/SSD’s.  I believe that the real way forward is being able to leverage many, many processors over many different nodes or computers or virtual machines or cloud services, and being able to process distributed, homogeneous datasets that are located throughout a cluster, or throughout the world.
+
+My opinion is somewhat biased by my work.  As a data scientist, I spend a lot of my time (too much) managing data, moving it around, molding it, and putting it into place so it can be quickly processed.  Babysitting data isn’t fun, but it can be time consuming.  There are many systems that allow one to process data really quickly and efficiency as long as it is in a certain format (Hadoop is the most popular of these large data systems as of right now), but they require putting the data into a special database, or expressing it in a certain way.
+
+For this reason, I’m somewhat excited about a library called ‘[blaze](https://github.com/ContinuumIO/blaze)’ , which is written by the creator of [NumPy](http://www.numpy.org/)(among others).  Blaze is a python module whose goal is to provide the user with the ability to process generalized datasets.  The key point is that these datasets may take many forms (in-memory numpy array, a local text file, a SQL database, or something located on a remote server).  All of these formats can be simultaneously processed, and blaze deals with the varying formats or locations of the data under the hood.  In other words, the user can write his data processing algorithms separate from the form or location of the data.  Factorizing the algorithm from the data management is a powerful idea, and one that I hope works out in the end.
+
+So, I’ve decided to experiment with blaze a bit (which is still very much a work-in-progress).  At this point, I’ve only managed to install the package, import it, and use the most basic functionality.  But I thought it would be worthwhile to share what I had to do to install it so that others can experiment with it themselves:
+
+
+Installing Blaze:
+
+First, I recommend keeping all of these instillations separate from your main python site-packages.
+
+This is only an opinion matter, it appears that 'Continuum' wants users to use their package/build system to be able to use blaze (since they are a commercial enterprise, it makes sense that they would want their users to become addicted to their systems).  
+
+To avoid being infected, I will install everything locally using a virtual environment.  This is a good way of segregating packages that one only wants to run locally.
+
+1) Move to a clean directory:
+mkdir blaze; cd blaze
+
+2) Create a local virtual environment and then activate it.  This assumes that one has '[virtualenv](http://www.virtualenv.org/en/latest/)' installed (it comes with many version of python, such as Enthought, or you can simply do 'pip install virtualenv')
+virtualenv venv --distribute
+. venv/bin/activate
+
+
+3)  Checkout the 'conda' build system (as in anaconda, or whatever)
+git clone git@github.com:ContinuumIO/conda.git
+
+4) Install conda.  This will be install in the virtual area, which can be found under "venv/lib/python2.7/site-packages/conda"
+cd conda
+python setup.sh build
+python setup.sh install
+cd ..
+
+5) Create a 'packages' directory that conda expects
+mkdir venv/pkgs
+
+6) use conda to install other packages (One could add conda to one's python path, etc, but I found it easier to simply do this from within the conda directory)
+cd conda
+./bin/conda install ply
+./bin/conda install blosc
+./bin/conda install aterm
+
+7) Install Cython and Numpy in case they aren't available in your local virtual environment
+pip install Cython
+pip install numpy
+pip install numexpr
+
+
+7.5) Ensure the libraries are available
+Maybe have to do this:
+export DYLD_LIBRARY_PATH=${PWD}/venv/lib:${DYLD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=${PWD}/venv/lib:${LD_LIBRARY_PATH}
+
+But really, I simply did:
+ln -s ../venv/lib/libATerm.a
+tee hee
+
+
+8) Checkout blaze:
+git clone git@github.com:ContinuumIO/blaze.git
+cd blaze
+make build
+make docs
+python setup.py install
+
+9) Checkout the documentation (Uses the 'open' command for MacOSX.  One should open it using a web browser of choice)
+open docs/build/html/index.html
+
+10) Setup your path
+export PYTHONPATH=${PWD}/blaze:$PYTHONPATH
+
+11) viola (ish)  
+python
+> import blaze
+> from blaze import Array, dshape
+> ds = dshape('2, 2, int')
+> a = Array([1,2,3,4], ds)
+
+
+I'm going to continue to experiment with blaze and determine if it can live up to it's lofty claims.  But, my belief is that blaze or something like it will one day allow me to easily run complicated algorithms over abstract datasets without having to think too hard about moving the data, molding it into a single format, and other forms of babysitting.

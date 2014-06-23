@@ -1,0 +1,35 @@
+---
+author: ghl3
+comments: true
+date: 2009-05-08 03:50:00+00:00
+layout: post
+slug: why
+title: WHY
+wordpress_id: 7
+categories:
+- General
+- Particle Physics
+- Physics
+---
+
+So, from time to time, I’m confronted with the question as to why we are spending a lot of resources trying to blow up protons and see funny things called the Higgs Boson.  After all, many countries, including the United States and several in the European Union, have contributed over 8 billion dollars to making a Swiss tunnel and a few big, scary looking devices to surround parts of this tunnel.  So, why are we doing this?  To this question, I have several answers, and any particular answer may depend on my mood.  These answers include:  
+  
+The Angry One  
+-Screw you, I don’t go around criticizing your job and its influence on humanity. So don’t do the same to me, ya bastard.  
+  
+The Pragmatic One  
+-Over the years, particle physics, and CERN especially, have contributed greatly to technology, though often as a side effect.  In fact, the very first computer server was setup at CERN (I saw it, and there was a note on it saying, “This is a ‘server,” do not turn off”).  CERN is famously the epicenter of many major developments that directly led to the internet, including early innovations in TCP/IP protocol and the developments of HTTP and HTML.  So, without particle physics, there would be no internet (maybe).  
+  
+The Scientific One  
+-No one knows at the time what advances in science will lead to technological advancement long in the future, and thus physics should be insulated from concerns about its direct applicability.  No one thought that some odd man thinking about magnetic waves would lead to special relativity, that special relativity would lead to general relativity, and that both would forever change our world (I guess the direct applications of relativity to our everyday lives are limited, but people often cite the need to consider GR corrections when using GPS).  Certainly no one thought that a group of scientists trying to figure out certain oddities of radiation and light would lead to the strange theory of Quantum Mechanics, which is the theoretical basis for every technological advance in the 20th century.  So, it’s impossible to say which of today’s seemingly esoteric theories will become necessary for technological advancement in the future.  
+  
+The Edmund Hillary One  
+-I was going to try to paraphrase a bit, but I decided that it’s best just to quite Sam Seaborn directly:   
+  
+Because it's next. For we came out of the cave, and we looked over the hill, and we saw fire. And we crossed the ocean, and we pioneered the West, and we took to the sky. The history of man is hung on the timeline of exploration, and this is what's next.  
+  
+Theoretical physics is the latest in a series of frontiers.  The LHC is our ship, and ATLAS is our spyglass, and sometime in the next few years we will look forth and see dry land.  
+  
+Speaking of the West Wing:  
+  
+[Theory of Everything](http://www.youtube.com/watch?v=M3DoDMfDa_Q)

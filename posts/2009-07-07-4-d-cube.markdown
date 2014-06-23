@@ -1,0 +1,19 @@
+---
+author: ghl3
+comments: true
+date: 2009-07-07 20:35:00+00:00
+layout: post
+slug: 4-d-cube
+title: 4-d Cube
+wordpress_id: 18
+categories:
+- Puzzles
+---
+
+Here's a quick puzzle:  
+  
+Imagine that you live in 4 dimensions and are playing with toothpicks and sticky tack.  Someone asks you to construct a 4-d cube out of the toothpicks (with the tack to hold them together at the corners).  
+  
+In 4-d, how many toothpicks do you need?  
+  
+How about in n-d?

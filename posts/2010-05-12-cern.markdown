@@ -1,0 +1,30 @@
+---
+author: ghl3
+comments: true
+date: 2010-05-12 18:46:02+00:00
+layout: post
+slug: cern
+title: CERN
+wordpress_id: 249
+categories:
+- Particle Physics
+- Physics
+---
+
+There has been a lot of excitement at CERN as of late.  The Large Hadron Collider came in April for the beginning of a long data-taking run that will last over year.  The machine is now able to collide beams at 7 Terra Electron Volts (TEV), and has thus far collected an "inverse nanobarn" of data (particle physicists use a lot of odd units because the reams that they are studying involve scales that are very different from our familiar scales.  A "inverse barn" is a measurement of how much data we've taken, in a sense.  Technically, it's what's called a luminosity.  The idea is pretty simple, the amount of data that we collect depends on how many protons we collide into each other.  We collide protons by throwing bunches of protons at each other with high frequency.  The unit "inverse nanobarn" takes into account how many protons are in each bunch, and how many times we fired those bunches at each other, which is directly proportional to how many of those protons hit each other.  Anyway, I digress...)
+
+[![](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2010/05/lhclumiapril.png?w=300)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2010/05/lhclumiapril.png)
+
+Above is a plot of how much luminosity the LHC delivered.  The engineers are getting better and better at delivering data to the experiments, and it seems that every weekend, our total amount of data doubles.  So, things are going well.  However, we still are a long way off from having enough data to do really interesting physics.  An analysis to discover the Higgs boson will require at least 10 inverse femptobarns of data, which is 100,000 times what we currently have.  So, something like that is several years off.  However, in a certain sense, the LHC and the experiment that I work on, ATLAS, is advancing rapidly through history.  As we gather more data, we are able to "rediscover" particles that were first seen decades ago.  We've already moved through the 60's and 70's, and in doing so we've discovered the charm quark and a particle known as the J/Psi (another odd name.  It has two names because two different groups discovered it simultaneously and neither wanted to relinquish naming rights).
+
+We're now progressing into the 80's.  Instead of hair metal bands, though, we have W and Z bosons.  About a week ago, ATLAS witnessed its first W boson "candidates."  Of course, for anything that the detector sees, you can only say that it "looks like" a particular type of event.  You can never know for sure because everything involving high energy physics is probabilistic.  Let's look at the images to try to understand better.
+
+[![](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2010/05/wboson0.png?w=300)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2010/05/wboson0.png)[![](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2010/05/wboson1-e1273689081902.png?w=300)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2010/05/wboson1-e1273689081902.png)
+
+Starting with the top image, you can see the collision point where the protons hit each other.  The gray line is the incoming beam.  The yellowish disks are parts of the detector that measure particles that get deflected a little bit (or are "forward" in the detector).  The red line is a Muon, which is a heavy electron (about 200 times heaver).  Muons will eventually decay into electrons, but they live long enough for our detector to see them.  The Muon was created near the interaction point and flies outward, as you can see.  The bluish squares that it passes through are part of the detector that specialize in finding Muons.
+
+It's not too complicated.  There is a label.  The first line gives the momentum of the Muon (pT means momentum in the direction perpendicular, or transverse, to the beam).  The second line describes the angle of the muon using another funny variable called Eta.  The third line is pretty interesting, it tells how much energy was "lost" in the event.  Specifically, it describes something called "Missing Transverse Energy."  Let's talk about that a bit.
+
+A W boson can be created when two protons hit each other hard enough.  But the W boson decays almost instantly, and it can do that by turning into a Muon and a particle called a neutrino.  Neutrinos are very strange particles because they really don't interact with matter very much at all.  So, we are unable to detect them with our machine.  However, we can detect the Muon (as we see above).  So, how do we know the neutrino was there?  Well, neutrinos have energy.  Since energy is conserved, if we measure every particle in an event and find that there is "missing" energy, then that's strong evidence that a neutrino was present.  The label tells us that there was 24 GeV of missing energy in the transverse direction.  So, if you have an event with a muon and with missing energy, it's a good sign that you've seen the decay of a W boson.  Hence, we have a W boson candidate.
+
+The picture on the bottom is of a similar event, only this time the W decays into an electron instead of a Muon (it can do that too).  The electron is the yellow line coming out of the collision.  The rest of those blue lines are basically junk that we have to sift through to find interesting things.  Basically, that's the name of the game for an experimental particle physicist: sifting through lots and lots of junk to find something exciting.

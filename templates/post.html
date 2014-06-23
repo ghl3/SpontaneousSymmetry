@@ -5,9 +5,8 @@
 <!-- Body -->
 {% block body %}
 
-Title: {{ post['meta']['title'] }} <br>
+<h2>{{ post['meta']['title'] }}</h1>
 
-Categories:
 <ul>
   {% for category in post['meta']['categories'] %}
     <li> {{ category }} </li>
@@ -21,7 +20,7 @@ Categories:
 
 {% block sidebar %}
 <div>
-  <h2>Archive:</h1>
+  <h2><a href="{{url_for('archive_list')}}">Archive:</a></h1>
   <ul>
     {% for title, post_list in archive.iteritems() %}
     <li> <a href="{{ url_for('archive', year=title.year, month=title.month) }}"><b>{{title.strftime("%B, %Y")}}</b></a></li>

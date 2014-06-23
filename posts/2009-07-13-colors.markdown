@@ -1,0 +1,100 @@
+---
+author: ghl3
+comments: true
+date: 2009-07-13 21:04:15+00:00
+layout: post
+slug: colors
+title: Colors
+wordpress_id: 42
+categories:
+- Physics
+---
+
+
+
+
+It's surprising to me that the concept of colors is quite confusing.  We learn about colors in Kindergarten, we play with paint, mix yellow and blue to make green, study primary colors, etc.  But I think very few people actually understand how colors work.  The confusion arises because the concept of “color” is one that mixes physics and psychology (or physiology).
+
+
+
+
+  
+
+
+
+  
+
+
+
+If humans were perfectly built robots, we would create and interpret colors very differently.  Physically, a particular color describes a frequency of light.  Light (photons) only have one property which can possibly distinguish them from other photons: their frequency (which determines their wavelength and energy).  Two photons with the same frequency are identical.  A photon's frequency can be any continuous value between zero and infinity.  The light that we can actually see with our eyes is made of of photons of frequencies between 400 Terahertz and 790 Terahertz (about 380 nanometers to 750 nanometers in wavelength).
+
+
+
+
+
+  
+
+
+
+Light of a higher frequency (smaller wavelength) is called ultraviolet, and light of a lower frequency (higher wavelength) is infrared.  These can't be seen by the human eye, and this is the only reason that they aren't considered colors.  A priori, there is no difference between red and infrared other than the physiology of the human eye.  So, if we were robots who had perfect photon frequency detectors as eyes, we would see all wavelengths of light, and most likely the world would be a very different place.  Astronomers, for example, use infrared detectors to “see” far away stars and galaxies that can't be seen using viable light alone (this is because infrared isn't disturbed as much by space dust that floats around between us and the star).  And of course, if you've ever played a Metal Gear Solid game, you know that infrared goggles can be very effective a finding warm bodies.
+
+
+
+
+
+  
+
+
+
+Incidentally, many people equate infrared light with the concept of heat.  I learned this in school and it confused me for quite some time.  If infrared is just the continuation of visible light, why is it associated with something as seemingly unrelated as heat?  The answer has to do with black body radiation.  Anything that has a finite temperature (ie things that aren't absolute 0) gives off light (by light, I don't merely mean visible light, but photons of any frequency).  The relative abundance of photons given off (or “spectrum”) depends on the temperature of the object.  It turns out that things which are about room temperature tend to emit light radiation of infrared frequencies.  So, this reason that you can see “heat” as infrared.  Things that are of temperatures we usually deal with emit most of their light radiation as infrared.
+
+
+
+
+
+  
+
+
+
+So, physically, light is just photons of different frequencies, and we can label different frequencies as “colors.”  Pretty simple.  But, with this simple definition in mind, how are we to interpret the idea of primary colors and the fact that you can mix two colors together to form another color?  If I have a lot of photons of wavelength  500 nm and the same amount of wavelength 700 nm and put them together, they don't become photons of 600 nm.  So, why does red and yellow make orange?
+
+
+
+
+
+  
+
+
+
+Well, the answer comes from the way that the human eye “sees” colors.  We aren't ideal robots and our eyes aren't perfect photodetectors.  Aside from only being able to see a small band of frequencies that we call visible light, we see that light in a very limited way.  The detectors in our eyes come in three varieties that are specialized at seeing small bands of frequencies.  Roughly, we have detectors that can see red, green, and blue.  So, if red light hits a cone that is designed to see red, it is going to react a lot, where as the green and blue cones won't react very much.  But there is a lot of overlap, as illustrated by the following diagram.
+
+
+  
+
+
+
+![](http://upload.wikimedia.org/wikipedia/en/thumb/1/1e/Cones_SMJ2_E.svg/287px-Cones_SMJ2_E.svg.png)
+
+
+  
+
+
+
+The frequency that we call yellow is about 580.  Find that point in the above diagram.  When yellow light its the eye, it falls between the peaks of the green and the red cones.  So, if our red and green cones become stimulated by about the same amount, our eyes think we're seeing yellow.  We can therefore trick our eye into thinking it is seeing yellow by shining red and green light together at the same intensity.  This will have the same physiological effect on our eyes and we will interpret the light as “yellow.”  This is how computer monitors can make up every color using different combinations of red, green, and blue.  A format called Standard Red-Green-Blue is a way to describe how a particular color is made as a combination of red, green and blue.  The intensity of each of the three primary colors in a screen pixel  ranges from 0 to 255.  If you look at the sRGB vector that makes up yellow, it is (R, G, B) = (255, 255, 0), meaning that it is made up of equal parts red and green with no blue.  This is exactly what we predicted by looking at the graph of how different cones see light.  But it's really an illusion.
+
+
+  
+
+
+
+![](http://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/CIExy1931_sRGB.svg/542px-CIExy1931_sRGB.svg.png)
+
+
+  
+
+
+
+
+
+
+White is not a color.  No frequency of photon is considered “white.”  Rather, it is a combination of red, green, and blue at a more or less equal and high intensity.  It is only defined psychologically.  Robots wouldn't be able to see white.  White, according to sRGB is (255, 255, 255).  Robots also wouldn't know what brown was.  Brown is only defined as a combination of frequencies.  Black, like white, involves an almost equal ratio of red, green, and blue, but with a very small intensity (black is really the absence of light).  Black is (0, 0, 0).  Grey is in between the two, and is (128, 128, 128).  A robot seeing sRGB yellow wouldn't see yellow, he'd see equal parts green and blue.  He wouldn't see white, he'd see equal parts red, green, and blue.  He'd be very confused as to why we humans think it's something else called “white,” and he'd probably think that we were in some way broken.

@@ -1,0 +1,26 @@
+---
+author: ghl3
+comments: true
+date: 2009-08-09 18:41:04+00:00
+layout: post
+slug: party
+title: Party
+wordpress_id: 82
+categories:
+- Math
+- Puzzles
+---
+
+This is very simple but pretty interesting, like all good math should be.
+
+You go to a party.  There could be any number of people at the party.  You run into a friend at the party and you decide to make a little wager.  You bet that you can find two people at the party who have shaken hands with the same number of people.  Your friend realizes agrees to the idea of the bet but demands that you give him odds.  You say, "Okay, I'll give you good odds.  If I find two people who have shaken the same number of hands as each other, you give me $20.  If I can't, I'll give you nine hundred trillion dollars.  Do we have a bet?"  Your friend quickly agrees because, after all, what is $20 next to the possibility of getting nine hundred trillion?  You walk around the room, ask everybody how many people they've shaken hands with, eventually find two people that have the same number, and collect your $20.
+
+Of course, you knew going in that, at any party of any number of people with any rate of hand shaking going on, you can always find two people who have shaken the same amount of hands as each other.  The proof of this is actually stupidly simple, but, like all good proofs, it's only simple once you know what it is.  So, I encourage you to think about it.
+
+The generalization of this idea extends into graph theory.  Take a piece of paper and draw a few circles.  Each circle will represent a person, so you can label it with a name or simply a letter.  Draw lines between the circles to represent the shaking of hands.  Draw as many lines as you please.  When you're satisfied, count the number of lines coming out of each circle, or each person, or each node, or whatever you want to call it.  You'll always find that two circles have the same number of lines coming out of them.  Again, very simple but somewhat neat.
+
+![](http://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Graph_theory_tree.svg/542px-Graph_theory_tree.svg.png)
+
+![](http://www.geom.uiuc.edu/~zarembe/graph6.gif)
+
+![](http://delmondogeraldine.blog.lemonde.fr/files/2008/03/random.1205831333.png)
