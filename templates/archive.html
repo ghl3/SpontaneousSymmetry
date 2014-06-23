@@ -7,14 +7,14 @@
 
 {% for month, posts in archive.iteritems() %}
 
-<a href="{{url_for('archive', year=month.year, month=month.month) }}">
+<a href="{{url_for('.archive', year=month.year, month=month.month) }}">
 {{ month.strftime("%Y %B") }}
 </a>
 
 <div>
   <ul>
     {% for name, date, link, file in posts %}
-    <li> <a href="{{url_for('blog_post', post=link) }}">{{name}} ({{date.strftime("%B %d, %Y")}})</a></li>
+    <li> <a href="{{url_for('.blog_post', post=link) }}">{{name}} ({{date.strftime("%B %d, %Y")}})</a></li>
     {% endfor %}
   </ul>
 </div>

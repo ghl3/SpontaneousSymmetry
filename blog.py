@@ -1,9 +1,7 @@
 
 import os
 import re
-import re
 import datetime
-
 
 from flask import Flask
 from flask import render_template
@@ -114,7 +112,7 @@ def get_latest_posts(n=1):
     return [load_post(post_title) for post_title in post_titles]
 
 
-@Blog.route('/blog/archive/<year>/<month>')
+@Blog.route('/archive/<year>/<month>')
 def archive(year, month):
     d = datetime.date(int(year), int(month), 1)
     archive = get_archive("posts")
@@ -125,20 +123,20 @@ def archive(year, month):
     return render_template('archive.html', archive={d : posts})
 
 
-@Blog.route('/blog/archive')
+@Blog.route('/archive')
 def archive_list():
     archive = get_archive("posts")
     return render_template('archive.html', archive=archive)
 
 
-@Blog.route('/blog/<post>')
+@Blog.route('/<post>')
 def blog_post(post):
     post_data = load_post(post)
     archive = get_archive("posts", 20)
     return render_template('post.html', post=post_data, archive=archive)
 
 
-@Blog.route('/blog')
+@Blog.route('/')
 def blog():
     post_data = get_latest_posts(1)[0]
     archive = get_archive("posts", 20)
