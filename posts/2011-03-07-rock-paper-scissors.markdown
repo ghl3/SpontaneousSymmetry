@@ -22,15 +22,16 @@ My Code: [RocksPaper](http://www.spontaneoussymmetry.com/blog/wp-content/upload
 
 I’ve included my python code and an example of how to run it.  I chose python because itsinteractive interpreter allows me to use the code to in real time play against the computer.  An example of a round I played is as follows: After the 8th round:
 
->>> Game.playNext()
-Throws so far:  ['R', 'R', 'P', 'S', 'S', 'R', 'S', 'S']
-Last  4 :  ['S', 'R', 'S', 'S']
-Matching Plays:  []
-Last  3 :  ['R', 'S', 'S']
-Matching Plays:  []
-Last  2 :  ['S', 'S']
-Matching Plays:  ['R']
-Suggested Play: S
+    Game.playNext()
+
+Throws so far:  ['R', 'R', 'P', 'S', 'S', 'R', 'S', 'S']  
+Last  4 :  ['S', 'R', 'S', 'S']  
+Matching Plays:  []  
+Last  3 :  ['R', 'S', 'S']  
+Matching Plays:  []  
+Last  2 :  ['S', 'S']  
+Matching Plays:  ['R']  
+Suggested Play: S  
 
 As you can see, MY algorithm started by looking at my last 4 throws and seeing if there were any such throws in my history.  It found none, and then moved on to 3 and finally 2.  My last two throws were “S,S”.  My code found that I had previously thrown SS starting on the 4th round, and after that pair, I had thrown a R.  The Times’ program, based on that, would anticipate that I would throw a R, so it throws a P.  But since I know it’s going to throw a P, I throw a S.
 

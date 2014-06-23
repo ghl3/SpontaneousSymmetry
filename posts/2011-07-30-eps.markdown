@@ -30,7 +30,7 @@ So, this could be the first taste of finding the Higgs boson. Both experiments w
 
 The summaries of the Higgs searches by Atlas and CMS are shown below:
 
-![](http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png)
+![](http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png =100x20)
 
 
 
