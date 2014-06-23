@@ -50,17 +50,6 @@ def code():
 def rockspaper():
     return render_template('rockspaper.html', title="Rocks Paper")
 
-
-def load_markdown(file_name):
-    """
-    Load a markdown file from disk and convert it into
-    markup.
-    """
-    raw_content = open(file_name).read()
-    raw_content = unicode(raw_content, errors='ignore')
-    return Markup(markdown.markdown(raw_content))
-
-
 def separate_yaml(raw):
     """
     Posts are supposed to be in the following form:
@@ -77,9 +66,9 @@ def separate_yaml(raw):
     """
     tokens = raw.split('---')
     yaml_data = yaml.load(tokens[1])
-    markdown_raw = tokens[2]
+    markdown_raw = "".join(tokens[2:])
     markdown_raw = unicode(markdown_raw, errors='ignore')
-    return (yaml_data, Markup(markdown.markdown(markdown_raw)))
+    return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite'])))
 
 
 def load_post(post):

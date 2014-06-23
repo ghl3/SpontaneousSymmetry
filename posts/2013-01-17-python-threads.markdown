@@ -38,7 +38,7 @@ So, while threading isn’t perfect in python, there are a number of libraries a
 
 Here’s what I learned in developing this code:
 
-A great way to organize both multiple thread input and output is using a “[queue](http://docs.python.org/2/library/queue.html)”.  These are containers that are specially designed to be thread safe and come in a few varieties.  Multiple threads can read from them or write to them without worrying about runtime conditions leading to errors (of course, the order in which items are inserted or removed from the queue is undefined).  The type I chose to use was a “First In, First Out” (FIFO) queue, which is the Queue.Queue class.  One can “join” a queue, which means the main thread will wait at the join statement until the queue is empty.  For my purposes, I found this to be a bad way to use queues and that there are better ways to wait for queue’s to be emptied (see later discussion for details).
+A great way to organize both multiple thread input and output is using a “[queue](http://docs.python.org/2/library/queue.html)”.  These are containers that are specially designed to be thread safe and come in a few varieties. Multiple threads can read from them or write to them without worrying about runtime conditions leading to errors (of course, the order in which items are inserted or removed from the queue is undefined). The type I chose to use was a “First In, First Out” (FIFO) queue, which is the Queue.Queue class.  One can “join” a queue, which means the main thread will wait at the join statement until the queue is empty.  For my purposes, I found this to be a bad way to use queues and that there are better ways to wait for queue’s to be emptied (see later discussion for details).
 
 
 
@@ -50,6 +50,6 @@ One minor difficulty was figuring out how to stop threads.  Threads don’t com
 
 Finally, an issue that one encounters when using python’s threading library is having a program hang and having “ctrl-c” not kill the program.  When one executes a “ctrl-c”, it sends a signal to python’s main thread which normally triggers the throwing of a KeyboardInterrupt exception.  However, if the main thread is being blocked, for example by being in a join, it may never be able to throw the exception and exit the program.  This is why I prefer not to join on queues.  Instead, I prefer to use a while loop along with a short timeout to periodically check if a queue is empty.  This gives the main thread a change to receive any signals and exit on an exception.  However, one should also be sure to stop any running threads upon receiving such an exception to the entirety of the running process can exit gracefully.
 
-The code itself can be found at the following gist on github: [https://gist.github.com/4556336](https://gist.github.com/4556336)
+The code itself can be found at the following gist on github: [https://gist.github.com/4556336](https://gist.github.com/4556336)
 
-[gist id=4556336]
+<!--<script src="https://gist.github.com/ghl3/4556336.js"></script>-->
