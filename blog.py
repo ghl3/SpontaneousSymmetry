@@ -22,7 +22,7 @@ from collections import defaultdict, OrderedDict
 
 import yaml
 
-Blog = Blueprint('blog', __name__)
+Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
 
 def separate_yaml(raw):
