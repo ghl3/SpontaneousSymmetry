@@ -68,7 +68,7 @@ def separate_yaml(raw):
     yaml_data = yaml.load(tokens[1])
     markdown_raw = "".join(tokens[2:])
     markdown_raw = unicode(markdown_raw, errors='ignore')
-    return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite'])))
+    return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite', 'sane_lists'])))
 
 
 def load_post(post):
