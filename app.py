@@ -90,7 +90,7 @@ def load_post(post):
     file_name = "posts/{}.markdown".format(post)
     raw_content = open(file_name).read()
     meta, content = separate_yaml(raw_content)
-    return {'meta': meta, 'content':content}
+    return {'meta': meta, 'content':content, 'url':post}
 
 
 def get_all_posts(post_folder):

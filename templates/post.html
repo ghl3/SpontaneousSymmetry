@@ -5,7 +5,7 @@
 <!-- Body -->
 {% block body %}
 
-<h2>{{ post['meta']['title'] }}</h1>
+<a href="{{url_for('blog_post', post=post['url'])}}"><h2>{{ post['meta']['title'] }}</h1></a>
 
 <ul>
   {% for category in post['meta']['categories'] %}
