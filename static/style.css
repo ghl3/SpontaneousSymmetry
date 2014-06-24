@@ -12,9 +12,21 @@ body {
   font-weight: normal;
 }
 
+nav a {
+  font-family: futura-pt;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: normal;
+  color: rgb(153, 153, 153);
+  letter-spacing: 1px;
+  text-decoration: none solid rgb(153, 153, 153);
+  text-transform: uppercase;
+  line-height: 26px;
+}
+
 div.body {
   background-color: #ffffff;
-  color: #3E4349;
+  /*color: #3E4349;*/
   padding: 0 30px 0 30px;
 }
 
@@ -32,6 +44,25 @@ div.documentwrapper {
   width: 100%;
 }
 
+a {
+  color: #124600;
+  text-decoration: none;
+}
+
+a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+}
+
+a.headerlink:hover {
+  color: #444;
+  background: #eaeaea;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #7FD600;
+  text-decoration: none;
+}
 
 /* SIDEBAR */
 div.sphinxsidebar {
@@ -46,23 +77,26 @@ div.sphinxsidebar {
 div.sphinxsidebar a {
   color: #444;
   text-decoration: none;
-  border-bottom: 1px dotted #999;
 }
 
 div.sphinxsidebar a:hover {
-  border-bottom: 1px solid #999;
+  color: #7FD600;
+  text-decoration: none;
 }
 
 div.sphinxsidebar ul {
   margin: 10px 0;
   padding: 0;
   color: #000;
-
   list-style: none;
 }
 
 div.sphinxsidebarwrapper {
   padding: 10px 5px 0 10px;
+}
+
+.sidebar_image {
+  width: 200px;
 }
 
 /* OTHER STUFF */
@@ -71,43 +105,13 @@ div.clearer {
   clear: both;
 }
 
-#seriously-kick-ass-mcmc h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 0 15px 0;
-}
-
-a {
-  color: #124600;
-}
-
-a.headerlink:hover {
-  color: #444;
-  background: #eaeaea;
-}
-
-a:hover {
-  color: #7FD600;
-}
-
-a:hover tt {
-  background: #EEE;
-}
-
 pre {
   background: #eee;
   padding: 7px 30px;
   margin: 15px -30px;
   line-height: 1.3em;
-}
-
-pre, tt {
   font-family: "Menlo", "Deja Vu Sans Mono", "Bitstream Vera Sans Mono", monospace;
   font-size: 0.9em;
-}
-
-.sidebar_image {
-  width: 200px;
 }
 
 div.footer {
