@@ -1,5 +1,123 @@
 
-	
-.sidebar_image {  
+body {
+  line-height: 1.8em;
+  background-color: white;
+  /*color: #000;*/
+  margin: 0;
+  padding: 0;
+
+  font-family: proxima-nova;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: normal;
+}
+
+div.body {
+  background-color: #ffffff;
+  color: #3E4349;
+  padding: 0 30px 0 30px;
+}
+
+div.bodywrapper {
+  margin: 0 0 0 220px;
+}
+
+div.document {
+  width: 940px;
+  margin: 30px auto 0 auto;
+}
+
+div.documentwrapper {
+  float: left;
+  width: 100%;
+}
+
+
+/* SIDEBAR */
+div.sphinxsidebar {
+  float: left;
+  width: 220px;
+  margin-left: -100%;
+  font-size: 90%;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+div.sphinxsidebar a {
+  color: #444;
+  text-decoration: none;
+  border-bottom: 1px dotted #999;
+}
+
+div.sphinxsidebar a:hover {
+  border-bottom: 1px solid #999;
+}
+
+div.sphinxsidebar ul {
+  margin: 10px 0;
+  padding: 0;
+  color: #000;
+
+  list-style: none;
+}
+
+div.sphinxsidebarwrapper {
+  padding: 10px 5px 0 10px;
+}
+
+/* OTHER STUFF */
+
+div.clearer {
+  clear: both;
+}
+
+#seriously-kick-ass-mcmc h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+}
+
+a {
+  color: #124600;
+}
+
+a.headerlink:hover {
+  color: #444;
+  background: #eaeaea;
+}
+
+a:hover {
+  color: #7FD600;
+}
+
+a:hover tt {
+  background: #EEE;
+}
+
+pre {
+  background: #eee;
+  padding: 7px 30px;
+  margin: 15px -30px;
+  line-height: 1.3em;
+}
+
+pre, tt {
+  font-family: "Menlo", "Deja Vu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+  font-size: 0.9em;
+}
+
+.sidebar_image {
   width: 200px;
+}
+
+div.footer {
+  width: 940px;
+  margin: 20px auto 30px auto;
+  font-size: 14px;
+  color: #888;
+  text-align: right;
+}
+
+div.footer a {
+  color: #888;
 }

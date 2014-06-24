@@ -7,11 +7,15 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta name="keywords" content="spontaneous symmetry, spontaneoussymmetry, george lewis, Higgs, ATLAS, CERN, Statistics, physics, quark" >
     <link rel="shortcut icon" href="/static/images/favicon.ico">
-    
+
     <!-- Include the stylesheet: -->
+    <link rel="stylesheet" href="/static/style.css" type="text/css" />
+
+    <!--
+    <link rel="stylesheet" href="/static/basic.css" type="text/css" media="screen">
     <link rel="stylesheet" href="/static/flasky.css" type="text/css" media="screen">
     <link rel="stylesheet" href="/static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="/static/style.css" type="text/css" />
+    -->
 
     {% block head %}
     <!-- Hook for additional head content -->
@@ -32,21 +36,21 @@
     <div class="document">
 
       <div class="documentwrapper">
-	<div class="bodywrapper">
-	  <div class="body">
-	    {% block body %}
-	    {% endblock %}
-	  </div>
-	</div>
+        <div class="bodywrapper">
+          <div class="body">
+            {% block body %}
+            {% endblock %}
+          </div>
+        </div>
       </div>
 
       <div class="sphinxsidebar">
-	<div class="sphinxsidebarwrapper">
-	  {% block sidebar %}
-	  {% endblock %}
-	</div>
+        <div class="sphinxsidebarwrapper">
+          {% block sidebar %}
+          {% endblock %}
+        </div>
       </div>
-            
+
       <div class="clearer"></div>
 
     </div> <!-- End document -->
@@ -58,12 +62,12 @@
 
     <a href="https://github.com/ghl3" class="github">
       <img style="position: absolute; top: 0; right: 0; border: 0;"
-	   src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
-	   alt="Fork me on GitHub"  class="github"/>
-    </a>                    
+           src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+           alt="Fork me on GitHub"  class="github"/>
+    </a>
 
     {% include "analytics.html" %}
-    
+
   </body>
 
 </html>
