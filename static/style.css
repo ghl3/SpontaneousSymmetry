@@ -8,15 +8,24 @@ body {
 
   /*font-family: proxima-nova;*/
   /*font-family: futura-pt;*/
+
+
+  /* FLASK STYLE */
   line-height: 30.6px;
   font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
   font-size: 17px;
   color: rgb(62, 67, 73);
+
 /*
-  font-style: normal;
-  font-weight: normal;
-  color: rgb(0, 0, 0);
+font-family: Georgia, 'Times New Roman', Times, serif;
+font-size: 19px;
+font-style: normal;
+font-variant: normal;
+font-weight: normal;
+color: rgb(0, 0, 0);
 */
+
+
 }
 
 nav a {
