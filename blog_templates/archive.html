@@ -1,14 +1,8 @@
 
-
-{% extends "main_template.html" %}
-
-<!-- Body -->
-{% block body %}
-
 {% for month, posts in archive.iteritems() %}
 
 <a href="{{url_for('.archive', year=month.year, month=month.month) }}">
-{{ month.strftime("%Y %B") }}
+  {{ month.strftime("%Y %B") }}
 </a>
 
 <div>
@@ -20,5 +14,3 @@
 </div>
 
 {% endfor %}
-
-{% endblock %}

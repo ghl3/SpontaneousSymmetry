@@ -1,27 +1,67 @@
 
 body {
-  line-height: 1.8em;
+  /*line-height: 1.8em;*/
   background-color: white;
   /*color: #000;*/
   margin: 0;
   padding: 0;
 
-  font-family: proxima-nova;
-  font-size: 14px;
+  /*font-family: proxima-nova;*/
+  /*font-family: futura-pt;*/
+  line-height: 30.6px;
+  font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
+  font-size: 17px;
+  color: rgb(62, 67, 73);
+/*
   font-style: normal;
   font-weight: normal;
+  color: rgb(0, 0, 0);
+*/
 }
 
 nav a {
+  font-family: Georgia, serif;
+  font-weight: normal;
+  font-style: italic;
+  text-transform: normal;
+  letter-spacing: 0px;
+  font-family: "futura-pt";
+  font-size: 14px;
+  line-height: 1.6em;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-weight: 400;
+  font-style: normal;
+
+
+font-family: futura-pt;
+font-kerning: auto;
+font-size: 13px;
+font-style: normal;
+font-variant: normal;
+font-variant-ligatures: normal;
+font-weight: normal;
+
+
+  color: rgb(153, 153, 153);
+  text-decoration: none solid rgb(153, 153, 153);
+/*
   font-family: futura-pt;
+ font-family: Helvetica, arial, sans-serif;
+  font-weight: bold;
+  text-transform: normal;
+  font-family: "futura-pt";""
+
   font-size: 13px;
   font-style: normal;
   font-weight: normal;
-  color: rgb(153, 153, 153);
+
   letter-spacing: 1px;
-  text-decoration: none solid rgb(153, 153, 153);
+
   text-transform: uppercase;
   line-height: 26px;
+*/
 }
 
 div.body {
@@ -110,7 +150,9 @@ pre {
   padding: 7px 30px;
   margin: 15px -30px;
   line-height: 1.3em;
-  font-family: "Menlo", "Deja Vu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+  font-size: 15px;
+  font-family: "Consolas, Menlo, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;"
+  /*font-family: "Menlo", "Deja Vu Sans Mono", "Bitstream Vera Sans Mono", monospace;*/
   font-size: 0.9em;
 }
 

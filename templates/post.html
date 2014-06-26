@@ -1,0 +1,22 @@
+
+
+{% extends "main_template.html" %}
+
+<!-- Body -->
+{% block body %}
+<div class="section">
+
+  <div style="text-align: center;">
+    <h2>BLOG</h2>
+  </div>
+
+  {% include "blog_content.html" %}
+
+</div>
+{% endblock %}
+
+{% block sidebar %}
+
+{% include "archive.html" %}
+
+{% endblock %}
