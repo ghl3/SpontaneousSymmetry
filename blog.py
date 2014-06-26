@@ -18,6 +18,8 @@ from flask import Flask
 from flask import render_template
 from flask import Markup
 
+import mdx_mathjax
+
 from collections import defaultdict, OrderedDict
 
 import yaml
@@ -43,7 +45,7 @@ def separate_yaml(raw):
     yaml_data = yaml.load(tokens[1])
     markdown_raw = "".join(tokens[2:])
     markdown_raw = unicode(markdown_raw, errors='ignore')
-    return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite', 'sane_lists'])))
+    return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite', 'sane_lists', 'mathjax'])))
 
 
 def load_post(post):

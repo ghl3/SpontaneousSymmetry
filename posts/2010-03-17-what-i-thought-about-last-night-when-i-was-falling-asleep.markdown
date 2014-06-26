@@ -14,7 +14,7 @@ Actually, I was really thinking about Transcendental Numbers.  There are just so
 
 I mean, there are nice ones that are easy to describe, such as e.  I can write e down in just a line:
 
-$latex \sum_{n=0}^{\inf} \frac{1}{n!} $
+$ \sum_{n=0}^{\inf} \frac{1}{n!} $
 
 Thus, I can calculate any digit given enough time and effort.
 
