@@ -1,6 +1,9 @@
 Flask==0.10.1
 Jinja2==2.7.2
+Markdown==2.4.1
 MarkupSafe==0.19
+PyYAML==3.11
 Werkzeug==0.9.4
+gunicorn==19.0.0
 itsdangerous==0.24
 wsgiref==0.1.2
