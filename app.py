@@ -15,6 +15,7 @@ from flask import jsonify
 
 from blog import Blog
 
+
 app = Flask(__name__)
 
 app.register_blueprint(Blog, url_prefix='/blog')
