@@ -2,3 +2,6 @@ venv
 *.pyc
 blog
 NOTES.txt
+.elasticbeanstalk/
+login.sh
+spontaneoussymmetry.pem
