@@ -2,6 +2,7 @@
 import os
 import re
 import datetime
+from functools import wraps
 
 from flask import Flask
 from flask import render_template
@@ -63,11 +64,18 @@ def separate_yaml(raw):
     return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite', 'sane_lists', 'mathjax'])))
 
 
-def get_latest_posts(n=1):
-    return get_ordered_posts("posts")[:n]
+def memo(func):
+    cache = {}
+    @wraps(func)
+    def wrap(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+        return cache[args]
+    return wrap
 
 
-def get_post_list(post_folder):
+@memo
+def get_all_posts(post_folder):
     """
     Get a list of all post data
     from a directory by looking for
@@ -88,13 +96,13 @@ def get_post_list(post_folder):
     return posts
 
 
-def get_all_posts(post_folder):
-    return get_post_list(post_folder)
-
-
 def get_ordered_posts(post_folder):
     return sorted(get_all_posts(post_folder).values(),
                   key=lambda x: x.date, reverse=True)
+
+
+def get_latest_posts(n=1):
+    return get_ordered_posts("posts")[:n]
 
 
 def get_archive(post_folder, n=None):
@@ -126,11 +134,6 @@ def load_post(post):
     of the post's contents and it's metadata
     """
     return get_all_posts('posts')[post]
-
-#    file_name = "posts/{}.markdown".format(post)
-#    raw_content = open(file_name).read()
-#    meta, content = separate_yaml(raw_content)
-#    return {'meta': meta, 'content':content, 'url':post}
 
 
 @Blog.route('/archive/<year>/<month>')
