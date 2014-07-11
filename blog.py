@@ -83,7 +83,8 @@ def get_post_list(post_folder):
         m = re.match(regex, file)
         if m:
             date_str, name = m.group(1), m.group(2)
-            posts[name] = Post(post_folder+'/'+file, name, date_str)
+            post = Post(post_folder+'/'+file, name, date_str)
+            posts[post.url()] = post
     return posts
 
 
