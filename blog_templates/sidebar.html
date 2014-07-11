@@ -5,8 +5,8 @@
     {% for title, post_list in archive.iteritems() %}
       <li> <a href="{{ url_for('.archive', year=title.year,
                    month=title.month) }}"><b>{{title.strftime("%B,%Y")}}</b></a></li>
-      {% for name, date, link, file in post_list %}
-        <li> <a href="{{url_for('.blog_post',post=link)}}">{{name.replace('-',' ')}}</a></li>
+      {% for post in post_list %}
+        <li> <a href="{{url_for('.blog_post',post=post.link)}}">{{post.url().replace('-',' ')}}</a></li>
       {% endfor %}
     {% endfor %}
   </ul>

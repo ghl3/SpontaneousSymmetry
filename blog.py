@@ -27,6 +27,24 @@ import yaml
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
 
+class Post(object):
+
+    def __init__(self, path, name, date_str):
+        self.name = name
+        self.path = path
+        self.date_str = date_str
+
+        self.date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+        self.raw_content = open(path).read()
+        self.meta, self.content = separate_yaml(self.raw_content)
+
+    def url(self):
+        return self.date_str + "-" + self.name
+
+    def title(self):
+        return self.date_str + "-" + self.name
+
+
 def separate_yaml(raw):
     """
     Posts are supposed to be in the following form:
@@ -59,7 +77,33 @@ def load_post(post):
     return {'meta': meta, 'content':content, 'url':post}
 
 
-def get_all_posts(post_folder):
+def get_latest_posts(n=1):
+    return get_ordered_posts("posts")[:n]
+#    post_titles = [get_ordered_posts("posts")[i].path for i in range(0,n)]
+#    return [load_post(post_title) for post_title in post_titles]
+
+
+# def get_all_posts(post_folder):
+#     """
+#     Get a list of all post data
+#     from a directory by looking for
+#     markdown files of a certain form.
+#     This does not parse the files, it
+#     simply returns a list of:
+#       (name, date, date-name, file-path)
+#     """
+#     regex = r"(\d{4}-\d{2}-\d{2})-(.*).markdown"
+#     posts = {}
+#     files = os.listdir(post_folder)
+#     for file in files:
+#         m = re.match(regex, file)
+#         if m:
+#             date_str, name = m.group(1), m.group(2)
+#             date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+#             posts[name] = (name, date, date_str+"-"+name, file)
+#     return posts
+
+def get_post_list(post_folder):
     """
     Get a list of all post data
     from a directory by looking for
@@ -75,15 +119,19 @@ def get_all_posts(post_folder):
         m = re.match(regex, file)
         if m:
             date_str, name = m.group(1), m.group(2)
-            date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-            posts[name] = (name, date, date_str+"-"+name, file)
+            posts[name] = Post(post_folder+'/'+file, name, date_str)
     return posts
+
+
+def get_all_posts(post_folder):
+    return get_post_list(post_folder)
+#    posts = get_post_list(post_folder)
+#    return {post.name:post.get_post() for post in posts}
 
 
 def get_ordered_posts(post_folder):
     return sorted(get_all_posts(post_folder).values(),
-                  key=lambda (name, date, link, file): date,
-                  reverse=True)
+                  key=lambda x: x.date, reverse=True)
 
 
 def get_archive(post_folder, n=None):
@@ -94,24 +142,19 @@ def get_archive(post_folder, n=None):
 
     d = defaultdict(list)
 
-    for i, (name, date, link, file) in enumerate(get_ordered_posts(post_folder)):
+    for i, post in enumerate(get_ordered_posts(post_folder)):
 
         if n and i >= n:
             break
 
-        year_month = date.replace(day=1)
-        d[year_month].append((name, date, link, file))
+        year_month = post.date.replace(day=1)
+        d[year_month].append(post)
 
     od = OrderedDict()
     for key in sorted(d.keys(), reverse=True):
         od[key] = d[key]
 
     return od
-
-
-def get_latest_posts(n=1):
-    post_titles = [get_ordered_posts("posts")[i][2] for i in range(0,n)]
-    return [load_post(post_title) for post_title in post_titles]
 
 
 @Blog.route('/archive/<year>/<month>')
