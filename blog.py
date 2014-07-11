@@ -41,9 +41,6 @@ class Post(object):
     def url(self):
         return self.date_str + "-" + self.name
 
-    def title(self):
-        return self.date_str + "-" + self.name
-
 
 def separate_yaml(raw):
     """
@@ -66,42 +63,9 @@ def separate_yaml(raw):
     return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite', 'sane_lists', 'mathjax'])))
 
 
-def load_post(post):
-    """
-    Load a post from disk and return a dict
-    of the post's contents and it's metadata
-    """
-    file_name = "posts/{}.markdown".format(post)
-    raw_content = open(file_name).read()
-    meta, content = separate_yaml(raw_content)
-    return {'meta': meta, 'content':content, 'url':post}
-
-
 def get_latest_posts(n=1):
     return get_ordered_posts("posts")[:n]
-#    post_titles = [get_ordered_posts("posts")[i].path for i in range(0,n)]
-#    return [load_post(post_title) for post_title in post_titles]
 
-
-# def get_all_posts(post_folder):
-#     """
-#     Get a list of all post data
-#     from a directory by looking for
-#     markdown files of a certain form.
-#     This does not parse the files, it
-#     simply returns a list of:
-#       (name, date, date-name, file-path)
-#     """
-#     regex = r"(\d{4}-\d{2}-\d{2})-(.*).markdown"
-#     posts = {}
-#     files = os.listdir(post_folder)
-#     for file in files:
-#         m = re.match(regex, file)
-#         if m:
-#             date_str, name = m.group(1), m.group(2)
-#             date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-#             posts[name] = (name, date, date_str+"-"+name, file)
-#     return posts
 
 def get_post_list(post_folder):
     """
@@ -125,8 +89,6 @@ def get_post_list(post_folder):
 
 def get_all_posts(post_folder):
     return get_post_list(post_folder)
-#    posts = get_post_list(post_folder)
-#    return {post.name:post.get_post() for post in posts}
 
 
 def get_ordered_posts(post_folder):
@@ -155,6 +117,19 @@ def get_archive(post_folder, n=None):
         od[key] = d[key]
 
     return od
+
+
+def load_post(post):
+    """
+    Load a post from disk and return a dict
+    of the post's contents and it's metadata
+    """
+    return get_all_posts('posts')[post]
+
+#    file_name = "posts/{}.markdown".format(post)
+#    raw_content = open(file_name).read()
+#    meta, content = separate_yaml(raw_content)
+#    return {'meta': meta, 'content':content, 'url':post}
 
 
 @Blog.route('/archive/<year>/<month>')
