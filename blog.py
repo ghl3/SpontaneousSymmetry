@@ -1,6 +1,8 @@
 
 import os
+import os.path
 import re
+import sys
 import datetime
 from functools import wraps
 
@@ -27,8 +29,7 @@ import yaml
 
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
-
-POST_DIRECTORY = 'posts'
+POST_DIRECTORY = os.path.dirname(sys.modules[__name__].__file__)  + '/posts'
 CACHE_POSTS = True
 
 
