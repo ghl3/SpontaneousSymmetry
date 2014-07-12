@@ -7,9 +7,13 @@ do
     branch=`echo $ref | cut -d/ -f3`
     if [ "production" == "$branch" -o "master" == "$branch" ]; then
 
-        sudo git --work-tree=/var/www/spontaneoussymmetry checkout -f $branch
+        SITE_DIRECTORY=/var/www/spontaneoussymmetry
 
-        echo 'Changes pushed to Amazon EC2 PROD.'
+        echo 'Pushing changes to Amazon EC2 Production'
+        sudo git --work-tree=$SITE_DIRECTORY checkout -f $branch
+
+        echo 'Updating python dependencies'
+        cd $SITE_DIRECTORY && . venv/bin/activate && pip install -r requirements.txt && deactivate && cd -
 
         echo 'Restarting uwsgi service'
         sudo service uwsgi restart
@@ -29,4 +33,3 @@ do
     fi
 
 done
-
