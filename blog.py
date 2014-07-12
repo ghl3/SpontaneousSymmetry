@@ -118,6 +118,13 @@ def get_posts():
 
 
 @memo
+def get_posts_by_index():
+    posts = get_posts().values()
+    things = {str(post.meta['wordpress_id']):post for post in posts}
+    print things
+    return things
+
+@memo
 def get_ordered_posts():
     return sorted(get_posts().values(),
                   key=lambda x: x.date, reverse=True)
@@ -168,6 +175,20 @@ def archive(year, month):
     return render_template('archive.html', archive={d: posts})
 
 
+@Blog.route('/archives/<index>')
+def archive_index(index):
+    """
+    An alternative archive index for backwards
+    compatability with wordpress
+    """
+    archive = get_archive()
+    try:
+        post = get_posts_by_index()[index]
+    except KeyError:
+        abort(404)
+    return render_template('post.html', post=post, archive=archive)
+
+
 @Blog.route('/archive')
 def archive_list():
     archive = get_archive()
@@ -177,15 +198,15 @@ def archive_list():
 @Blog.route('/<post>')
 def blog_post(post):
     try:
-        post_data = load_post(post)
+        post = load_post(post)
     except KeyError:
         abort(404)
     archive = get_archive(20)
-    return render_template('post.html', post=post_data, archive=archive)
+    return render_template('post.html', post=post, archive=archive)
 
 
 @Blog.route('/')
 def blog():
-    post_data = get_latest_posts(1)[0]
+    post = get_latest_posts(1)[0]
     archive = get_archive(20)
-    return render_template('post.html', post=post_data, archive=archive)
+    return render_template('post.html', post=post, archive=archive)
