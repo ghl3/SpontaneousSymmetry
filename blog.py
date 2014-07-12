@@ -6,9 +6,12 @@ import sys
 import datetime
 from functools import wraps
 
+import flask
 from flask import Flask
 from flask import render_template
 from flask import abort
+from flask import redirect
+from flask import url_for
 
 import markdown
 from flask import Markup
@@ -29,8 +32,13 @@ import yaml
 
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
+
+# TODO: Use the register method or the record decorator to
+# dynamically set these based on the flask app
+# See: http://stackoverflow.com/questions/18214612/how-to-access-app-config-in-a-blueprint
 POST_DIRECTORY = os.path.dirname(sys.modules[__name__].__file__)  + '/posts'
 CACHE_POSTS = True
+
 
 
 class Post(object):
@@ -120,9 +128,7 @@ def get_posts():
 @memo
 def get_posts_by_index():
     posts = get_posts().values()
-    things = {str(post.meta['wordpress_id']):post for post in posts}
-    print things
-    return things
+    return {str(post.meta['wordpress_id']):post for post in posts}
 
 @memo
 def get_ordered_posts():
@@ -181,12 +187,11 @@ def archive_index(index):
     An alternative archive index for backwards
     compatability with wordpress
     """
-    archive = get_archive()
     try:
         post = get_posts_by_index()[index]
+        return redirect(url_for(".blog_post", post=post.url()))
     except KeyError:
         abort(404)
-    return render_template('post.html', post=post, archive=archive)
 
 
 @Blog.route('/archive')
