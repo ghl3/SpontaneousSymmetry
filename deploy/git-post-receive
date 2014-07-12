@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo "Pushing to production server"
+
+while read oldrev newrev ref
+do
+    branch=`echo $ref | cut -d/ -f3`
+    if [ "production" == "$branch" -o "master" == "$branch" ]; then
+
+        sudo git --work-tree=/var/www/spontaneoussymmetry checkout -f $branch
+
+        echo 'Changes pushed to Amazon EC2 PROD.'
+
+        echo 'Restarting uwsgi service'
+        sudo service uwsgi restart
+
+        echo 'Current uwsgi status:'
+        service uwsgi status
+
+        echo 'Current nginx status:'
+        service nginx status
+
+    else
+
+        echo "Attempting to push to a branch that isn't master: $branch"
+        echo "Bailing out"
+        exit 1
+
+    fi
+
+done
+
