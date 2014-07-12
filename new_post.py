@@ -1,7 +1,11 @@
 
+import os
+import re
 import string
 from datetime import datetime
 import argparse
+
+import glob
 
 
 def main():
@@ -28,10 +32,10 @@ def main():
 
     title_stripped = args.title.translate(string.maketrans("",""), string.punctuation)
     slug = title_stripped.replace(' ' ,'-')
+    id = get_max_id(args.dir) + 1
     all_args = vars(args)
     all_args['slug'] = slug
-
-    title = "{}/{}-{}.markdown".format(args.dir, args.date.strftime("%Y-%M-%d"), args.slug)
+    all_args['id'] = id
 
     metadata = """---
 author: {author}
@@ -39,20 +43,44 @@ date: {date}
 layout: {layout}
 slug: {slug}
 title: {title}
+id: {id}
 ---
 
 Type Content Here
 """.format(**all_args)
 
-    f = open(title, 'w+')
-    f.write(metadata)
-    f.close()
+    output = "{}/{}-{}.markdown".format(args.dir, args.date.strftime("%Y-%m-%d"), args.slug)
 
+    if not os.path.isfile(output):
+        f = open(output, 'w+')
+        f.write(metadata)
+        f.close()
+    else:
+        print "File {} already exists.  Not overwriting".format(output)
 
-    #print title
-    #print metadata
+def get_max_id(directory):
+    """
+    Look through the given directory for any posts.
+    Collect their set of "id" metadata tags.
+    Return the largest number
+    """
 
+    pattern = r"\s*wordpress_id:\s*(\d+)\s*"
 
+    files = glob.glob(directory+"/*.markdown")
+
+    indices = []
+
+    for file_name in files:
+        for line in open(file_name).readlines():
+            m = re.match(pattern, line)
+            if m:
+                indices.append(int(m.group(1)))
+
+    if indices:
+        return max(indices)
+    else:
+        return -1
 
 
 if __name__=='__main__':
