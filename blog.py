@@ -2,6 +2,7 @@
 import os
 import re
 import datetime
+from functools import wraps
 
 from flask import Flask
 from flask import render_template
@@ -27,6 +28,25 @@ import yaml
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
 
+POST_DIRECTORY = 'posts'
+CACHE_POSTS = True
+
+
+class Post(object):
+
+    def __init__(self, path, name, date_str):
+        self.name = name
+        self.path = path
+        self.date_str = date_str
+
+        self.date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+        self.raw_content = open(path).read()
+        self.meta, self.content = separate_yaml(self.raw_content)
+
+    def url(self):
+        return self.date_str + "-" + self.name
+
+
 def separate_yaml(raw):
     """
     Posts are supposed to be in the following form:
@@ -45,21 +65,32 @@ def separate_yaml(raw):
     yaml_data = yaml.load(tokens[1])
     markdown_raw = "".join(tokens[2:])
     markdown_raw = unicode(markdown_raw, errors='ignore')
-    return (yaml_data, Markup(markdown.markdown(markdown_raw, extensions=['tables', 'codehilite', 'sane_lists', 'mathjax'])))
+    extensions = ['tables', 'codehilite', 'sane_lists', 'mathjax']
+    return (yaml_data,
+            Markup(markdown.markdown(markdown_raw, extensions=extensions)))
 
 
-def load_post(post):
+def memo(func):
     """
-    Load a post from disk and return a dict
-    of the post's contents and it's metadata
+    Memoize the function if the global
+    variable 'CACHE_POSTS' evaluates to true
     """
-    file_name = "posts/{}.markdown".format(post)
-    raw_content = open(file_name).read()
-    meta, content = separate_yaml(raw_content)
-    return {'meta': meta, 'content':content, 'url':post}
+    cache = {}
+
+    @wraps(func)
+    def wrap(*args):
+        if CACHE_POSTS:
+            if args not in cache:
+                cache[args] = func(*args)
+            return cache[args]
+        else:
+            return func(*args)
+
+    return wrap
 
 
-def get_all_posts(post_folder):
+@memo
+def get_posts_in_directory(post_folder):
     """
     Get a list of all post data
     from a directory by looking for
@@ -75,18 +106,37 @@ def get_all_posts(post_folder):
         m = re.match(regex, file)
         if m:
             date_str, name = m.group(1), m.group(2)
-            date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-            posts[name] = (name, date, date_str+"-"+name, file)
+            post = Post(post_folder+'/'+file, name, date_str)
+            posts[post.url()] = post
     return posts
 
 
-def get_ordered_posts(post_folder):
-    return sorted(get_all_posts(post_folder).values(),
-                  key=lambda (name, date, link, file): date,
-                  reverse=True)
+@memo
+def get_posts():
+    return get_posts_in_directory(POST_DIRECTORY)
 
 
-def get_archive(post_folder, n=None):
+@memo
+def get_ordered_posts():
+    return sorted(get_posts().values(),
+                  key=lambda x: x.date, reverse=True)
+
+
+def load_post(post):
+    """
+    Load a post from disk and return a dict
+    of the post's contents and it's metadata
+    """
+    return get_posts()[post]
+
+
+@memo
+def get_latest_posts(n=1):
+    return get_ordered_posts()[:n]
+
+
+@memo
+def get_archive(n=None):
     """
     An archive is an ordered dictionary of
     month-year to a list of posts
@@ -94,52 +144,47 @@ def get_archive(post_folder, n=None):
 
     d = defaultdict(list)
 
-    for i, (name, date, link, file) in enumerate(get_ordered_posts(post_folder)):
+    posts = get_ordered_posts()
 
-        if n and i >= n:
-            break
+    if n is None:
+        n = len(posts)
 
-        year_month = date.replace(day=1)
-        d[year_month].append((name, date, link, file))
+    for post in posts:
+        year_month = post.date.replace(day=1)
+        d[year_month].append(post)
 
-    od = OrderedDict()
-    for key in sorted(d.keys(), reverse=True):
-        od[key] = d[key]
-
-    return od
-
-
-def get_latest_posts(n=1):
-    post_titles = [get_ordered_posts("posts")[i][2] for i in range(0,n)]
-    return [load_post(post_title) for post_title in post_titles]
+    return OrderedDict(sorted(d.items(), reverse=True))
 
 
 @Blog.route('/archive/<year>/<month>')
 def archive(year, month):
     d = datetime.date(int(year), int(month), 1)
-    archive = get_archive("posts")
+    archive = get_archive()
     try:
-        posts=archive[d]
+        posts = archive[d]
     except KeyError:
         posts = []
-    return render_template('archive.html', archive={d : posts})
+    return render_template('archive.html', archive={d: posts})
 
 
 @Blog.route('/archive')
 def archive_list():
-    archive = get_archive("posts")
+    archive = get_archive()
     return render_template('archive.html', archive=archive)
 
 
 @Blog.route('/<post>')
 def blog_post(post):
-    post_data = load_post(post)
-    archive = get_archive("posts", 20)
+    try:
+        post_data = load_post(post)
+    except KeyError:
+        abort(404)
+    archive = get_archive(20)
     return render_template('post.html', post=post_data, archive=archive)
 
 
 @Blog.route('/')
 def blog():
     post_data = get_latest_posts(1)[0]
-    archive = get_archive("posts", 20)
+    archive = get_archive(20)
     return render_template('post.html', post=post_data, archive=archive)
