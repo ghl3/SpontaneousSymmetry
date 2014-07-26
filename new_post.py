@@ -32,8 +32,9 @@ def main():
 
     args = parser.parse_args()
 
-    title_stripped = args.title.translate(string.maketrans("", ""),
-                                          string.punctuation)
+    #title_stripped = args.title.translate(string.maketrans("", ""),
+    #                                      string.punctuation)
+    title_stripped = args.title
     slug = title_stripped.replace(' ', '-')
     id = get_max_id(args.dir) + 1
     all_args = vars(args)
