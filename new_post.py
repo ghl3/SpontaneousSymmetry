@@ -13,7 +13,9 @@ def main():
 
     parser = argparse.ArgumentParser(description='Create a new post')
 
-    parser.add_argument('title', help='Title of the post')
+    parser.add_argument('slug', help='The identifier of the post.  Must be a string with no whitespace')
+
+    parser.add_argument('--title', help='The title of the post.  Inferred from the slug by default.', default=None)
 
     parser.add_argument('--author', default='', help='Author of the post')
 
@@ -32,13 +34,20 @@ def main():
 
     args = parser.parse_args()
 
-    #title_stripped = args.title.translate(string.maketrans("", ""),
-    #                                      string.punctuation)
-    title_stripped = args.title
-    slug = title_stripped.replace(' ', '-')
+    slug = args.slug.lower()
+    for token in string.whitespace:
+        if token in slug:
+            print "Slug (argument 0) must not contain whitespace"
+            return
+
+    title = args.title
+    if title is None:
+        title = slug.replace('-', ' ').title()
+
     id = get_max_id(args.dir) + 1
     all_args = vars(args)
     all_args['slug'] = slug
+    all_args['title'] = title
     all_args['id'] = id
 
     metadata = """---
