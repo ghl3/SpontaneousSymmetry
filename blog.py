@@ -4,40 +4,24 @@ import os.path
 import re
 import sys
 import datetime
-from functools import wraps
 
-import flask
-from flask import Flask
+from functools import wraps
+from collections import defaultdict, OrderedDict
+
+import markdown
+import yaml
+
 from flask import render_template
 from flask import abort
 from flask import redirect
 from flask import url_for
-
-import markdown
 from flask import Markup
-
-from flask import Blueprint, render_template, abort
-from jinja2 import TemplateNotFound
-
-import markdown
-from flask import Flask
-from flask import render_template
-from flask import Markup
-
-import mdx_mathjax
-
-from collections import defaultdict, OrderedDict
-
-import yaml
-
+from flask import Blueprint
 from flask import current_app
+
 
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
-
-# TODO: Use the register method or the record decorator to
-# dynamically set these based on the flask app
-# See: http://stackoverflow.com/questions/18214612/how-to-access-app-config-in-a-blueprint
 POST_DIRECTORY = os.path.dirname(sys.modules[__name__].__file__)  + '/posts'
 CACHE_POSTS_IN_DEBUG = False
 
@@ -66,10 +50,10 @@ class Post(object):
 
         # Sanity checks
         if 'slug' in self.meta and self.meta['slug'] != self._path_name:
-            raise InvalidPost()
+            raise Post.InvalidPost()
 
         if 'date' in self.meta and self.meta['date'].date() != convert_date(path_date):
-            raise InvalidPost()
+            raise Post.InvalidPost()
 
 
     def path(self):
@@ -104,7 +88,7 @@ class Post(object):
         return list(self.meta['categories'])
 
 
-    def past_id(self):
+    def post_id(self):
         try:
             return self.meta['id']
         except KeyError:
@@ -179,9 +163,9 @@ def get_posts_in_directory(post_folder):
     posts = {}
     files = os.listdir(post_folder)
     for file in files:
-        m = re.match(regex, file)
-        if m:
-            date_str, name = m.group(1), m.group(2)
+        match = re.match(regex, file)
+        if match:
+            date_str, name = match.group(1), match.group(2)
             post = Post(post_folder+'/'+file, name, date_str)
             posts[post.url()] = post
     return posts
@@ -240,9 +224,9 @@ def get_archive(n=None):
 @Blog.route('/archive/<year>/<month>')
 def archive(year, month):
     d = datetime.date(int(year), int(month), 1)
-    archive = get_archive()
+    archive_dict = get_archive()
     try:
-        posts = archive[d]
+        posts = archive_dict[d]
     except KeyError:
         posts = []
     return render_template('archive.html', archive={d: posts})
@@ -263,8 +247,8 @@ def archive_index(index):
 
 @Blog.route('/archive')
 def archive_list():
-    archive = get_archive()
-    return render_template('archive.html', archive=archive)
+    archive_dict = get_archive()
+    return render_template('archive.html', archive=archive_dict)
 
 
 @Blog.route('/<post>')
@@ -273,12 +257,12 @@ def blog_post(post):
         post = load_post(post)
     except KeyError:
         abort(404)
-    archive = get_archive(20)
-    return render_template('post.html', post=post, archive=archive)
+    archive_dict = get_archive(20)
+    return render_template('post.html', post=post, archive=archive_dict)
 
 
 @Blog.route('/')
 def blog():
     post = get_latest_posts(1)[0]
-    archive = get_archive(20)
-    return render_template('post.html', post=post, archive=archive)
+    archive_dict = get_archive(20)
+    return render_template('post.html', post=post, archive=archive_dict)
