@@ -30,6 +30,8 @@ from collections import defaultdict, OrderedDict
 
 import yaml
 
+from flask import current_app
+
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
 
@@ -37,8 +39,7 @@ Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 # dynamically set these based on the flask app
 # See: http://stackoverflow.com/questions/18214612/how-to-access-app-config-in-a-blueprint
 POST_DIRECTORY = os.path.dirname(sys.modules[__name__].__file__)  + '/posts'
-CACHE_POSTS = True
-
+CACHE_POSTS_IN_DEBUG = False
 
 
 class Post(object):
@@ -88,7 +89,7 @@ def memo(func):
 
     @wraps(func)
     def wrap(*args):
-        if CACHE_POSTS:
+        if current_app.debug and CACHE_POSTS_IN_DEBUG:
             if args not in cache:
                 cache[args] = func(*args)
             return cache[args]
