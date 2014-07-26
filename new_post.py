@@ -17,9 +17,10 @@ def main():
 
     parser.add_argument('--author', default='', help='Author of the post')
 
-    parser.add_argument('--dir', default='posts', help='Directory where posts are located')
+    parser.add_argument('--dir', default='posts',
+                        help='Directory where posts are located')
 
-    parser.add_argument('--date', default = datetime.now(),
+    parser.add_argument('--date', default=datetime.now(),
                         help='Time the post was generated (defaults to now)')
 
     parser.add_argument('--layout', default='post',
@@ -31,8 +32,9 @@ def main():
 
     args = parser.parse_args()
 
-    title_stripped = args.title.translate(string.maketrans("",""), string.punctuation)
-    slug = title_stripped.replace(' ' ,'-')
+    title_stripped = args.title.translate(string.maketrans("", ""),
+                                          string.punctuation)
+    slug = title_stripped.replace(' ', '-')
     id = get_max_id(args.dir) + 1
     all_args = vars(args)
     all_args['slug'] = slug
@@ -56,8 +58,10 @@ Type Content Here
         f = open(output, 'w+')
         f.write(metadata)
         f.close()
+        print "Created new post stub: {}".format(output)
     else:
         print "File {} already exists.  Not overwriting".format(output)
+
 
 def get_max_id(directory):
     """
@@ -84,5 +88,5 @@ def get_max_id(directory):
         return -1
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main()
