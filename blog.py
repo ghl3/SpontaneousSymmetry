@@ -43,18 +43,84 @@ CACHE_POSTS_IN_DEBUG = False
 
 
 class Post(object):
+    """
+    A representation of a blog post.
+    A markdown file in the "posts" directory can be loaded
+    into memory and represented as a Post object.
 
-    def __init__(self, path, name, date_str):
-        self.name = name
-        self.path = path
-        self.date_str = date_str
+    Posts consist of a number of components, each of which
+    can be defined in the YAML at the top of the post's markdown file
+      - name
+    """
 
-        self.date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-        self.raw_content = open(path).read()
-        self.meta, self.content = separate_yaml(self.raw_content)
+    def __init__(self, path, path_name, path_date):
+
+        # Initialize values based on the file name
+        self._path = path
+        self._path_name = path_name
+        self._path_date = path_date
+
+        # Parse the YAML header and initialize the meta values
+        self._raw_content = open(path).read()
+        self.meta, self.content = separate_yaml(self._raw_content)
+
+        # Sanity checks
+        if 'slug' in self.meta and self.meta['slug'] != self._path_name:
+            raise InvalidPost()
+
+        if 'date' in self.meta and self.meta['date'].date() != convert_date(path_date):
+            raise InvalidPost()
+
+
+    def path(self):
+        return self._path
+
+
+    def date(self):
+        return self.meta['date'].date()
+
+
+    def datetime(self):
+        return self.meta['date']
+
+
+    def stub(self):
+        return self.meta['slug']
+
+
+    def author(self):
+        return self.meta['author']
+
 
     def url(self):
-        return self.date_str + "-" + self.name
+        return self._path_date + "-" + self.stub()
+
+
+    def title(self):
+        return self.meta['title']
+
+
+    def categories(self):
+        return list(self.meta['categories'])
+
+
+    def past_id(self):
+        try:
+            return self.meta['id']
+        except KeyError:
+            return self.meta['wordpress_id']
+
+
+    class InvalidPost(Exception):
+        pass
+
+
+def convert_date(date_str):
+    try:
+        return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+    except ValueError:
+        return datetime.datetime.strptime(date_str.split()[0], '%Y-%m-%d').date()
+
 
 
 def separate_yaml(raw):
@@ -165,7 +231,7 @@ def get_archive(n=None):
         n = len(posts)
 
     for post in posts:
-        year_month = post.date.replace(day=1)
+        year_month = post.date().replace(day=1)
         d[year_month].append(post)
 
     return OrderedDict(sorted(d.items(), reverse=True))
