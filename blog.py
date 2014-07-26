@@ -139,7 +139,7 @@ def memo(func):
 
     @wraps(func)
     def wrap(*args):
-        if current_app.debug and CACHE_POSTS_IN_DEBUG:
+        if not current_app.debug or CACHE_POSTS_IN_DEBUG:
             if args not in cache:
                 cache[args] = func(*args)
             return cache[args]
@@ -184,7 +184,7 @@ def get_posts_by_index():
 @memo
 def get_ordered_posts():
     return sorted(get_posts().values(),
-                  key=lambda x: x.date, reverse=True)
+                  key=lambda x: x.date(), reverse=True)
 
 
 def load_post(post):
