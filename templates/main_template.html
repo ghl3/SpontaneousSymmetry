@@ -47,15 +47,15 @@
 
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
-            {% block body %}
+          <div class="content">
+            {% block content %}
             {% endblock %}
           </div>
         </div>
       </div>
 
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
+      <div class="sidebar">
+        <div class="sidebarwrapper">
           {% block sidebar %}
           {% endblock %}
         </div>
@@ -70,13 +70,6 @@
       &copy; Copyright 2014, George Herbert Lewis.
     </div>
 
-    <!--
-        <a href="https://github.com/ghl3" class="github">
-          <img style="position: absolute; top: 0; right: 0; border: 0;"
-               src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
-               alt="Fork me on GitHub"  class="github"/>
-        </a>
-        -->
     {% include "analytics.html" %}
 
   </body>

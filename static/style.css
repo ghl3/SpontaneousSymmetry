@@ -2,9 +2,6 @@
 body {
 
   background-color: white;
-  margin: 0;
-  padding: 0;
-
   line-height: 30.6px;
   font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
 
@@ -14,9 +11,15 @@ body {
 
   color: rgba(0, 0, 0, 0.8);)
   webkit-font-smoothing: antialiased;
+
 }
 
-body p { 
+.content {
+  overflow: hidden;
+  margin-left: 20px;
+ }
+
+.content p {
   width: 100%;
  }
 
@@ -86,14 +89,14 @@ p a:link, p a:hover, p a:active, p a:visited {
   text-decoration: underline;
 }
 
-p a:hover { 
+p a:hover {
   color: #7FD600;
   text-decoration: underline;
 }
 
 /* SIDEBAR */
 
-div.sphinxsidebar {
+div.sidebar {
   float: left;
   width: 220px;
   margin-left: -100%;
@@ -102,24 +105,24 @@ div.sphinxsidebar {
   line-height: 1.8;
 }
 
-div.sphinxsidebar a {
+div.sidebar a {
   color: #444;
   text-decoration: none;
 }
 
-div.sphinxsidebar a:hover {
+div.sidebar a:hover {
   color: #7FD600;
   text-decoration: none;
 }
 
-div.sphinxsidebar ul {
+div.sidebar ul {
   margin: 10px 0;
   padding: 0;
   color: #000;
   list-style: none;
 }
 
-div.sphinxsidebarwrapper {
+div.sidebarwrapper {
   padding: 10px 5px 0 10px;
 }
 
