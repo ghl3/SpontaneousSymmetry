@@ -1,6 +1,8 @@
 
 {% extends "main_template.html" %}
 
+{% set title = "Rocks Paper" %}
+{% set body_tag = 'onload="prettyPrint()"' %}
 
 <!-- Head -->
 {% block head %}
@@ -12,10 +14,6 @@
 
 <script type="text/javascript" src="/static/RocksPaper.js"></script>  
 
-{% endblock %}
-
-{% block body_tag %}
-<body onload="prettyPrint()" >
 {% endblock %}
 
 <!-- Body -->

@@ -16,6 +16,10 @@ body {
   webkit-font-smoothing: antialiased;
 }
 
+body p { 
+  width: 100%;
+ }
+
 nav a {
 
   text-transform: normal;

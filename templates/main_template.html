@@ -4,8 +4,10 @@
 
   <head>
 
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-    <meta name="keywords" content="spontaneous symmetry, spontaneoussymmetry, george lewis, Higgs, ATLAS, CERN, Statistics, physics, quark" >
+    <title>{{ title }}</title>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" \>
+    <meta name="keywords" content="spontaneous symmetry, spontaneoussymmetry, george lewis, Higgs, ATLAS, CERN, Statistics, physics, quark" \>
     <link rel="shortcut icon" href="/static/images/favicon.ico">
 
     <!-- Include the stylesheet: -->
@@ -33,9 +35,7 @@
 
   </head>
 
-  {% block body_tag %}
-  <body>
-    {% endblock %}
+  <body {{ body_tag |safe }}>
 
     {% block header %}
 
@@ -61,7 +61,8 @@
         </div>
       </div>
 
-      <div class="clearer"></div>
+      <div class="clearer">
+      </div>
 
     </div> <!-- End document -->
 
@@ -70,12 +71,12 @@
     </div>
 
     <!--
-    <a href="https://github.com/ghl3" class="github">
-      <img style="position: absolute; top: 0; right: 0; border: 0;"
-           src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
-           alt="Fork me on GitHub"  class="github"/>
-    </a>
-    -->
+        <a href="https://github.com/ghl3" class="github">
+          <img style="position: absolute; top: 0; right: 0; border: 0;"
+               src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+               alt="Fork me on GitHub"  class="github"/>
+        </a>
+        -->
     {% include "analytics.html" %}
 
   </body>
