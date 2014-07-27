@@ -1,32 +1,12 @@
 
 body {
-  /*line-height: 1.8em;*/
+
   background-color: white;
-  /*color: #000;*/
   margin: 0;
   padding: 0;
 
-  /*font-family: proxima-nova;*/
-  /*font-family: futura-pt;*/
-
-
-  /* FLASK STYLE */
   line-height: 30.6px;
   font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
-
-/*
-  font-family: freight-text-pro, Georgia, Cambria, 'Times New Roman', Times, serif;
-
-  font-family: 'Raleway', sans-serif;
-
-  font-family: 'Roboto', sans-serif;
-
-  font-family: 'Open Sans Condensed', sans-serif;
-
-  font-family: 'Source Sans Pro', sans-serif;
-
-  font-family: 'Rosario', sans-serif;
-*/
 
   font-size: 22px;
   font-style: normal;
@@ -34,81 +14,32 @@ body {
 
   color: rgba(0, 0, 0, 0.8);)
   webkit-font-smoothing: antialiased;
-
-/*
-  font-size: 17px;
-  color: rgb(62, 67, 73);
-*/
-
-/*
-font-family: Georgia, 'Times New Roman', Times, serif;
-font-size: 19px;
-font-style: normal;
-font-variant: normal;
-font-weight: normal;
-color: rgb(0, 0, 0);
-*/
-
-
 }
 
-/*
-body h2 { 
-
-  font-family: jaf-bernino-sans, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
-
-
- }
-*/
-
 nav a {
-  font-family: Georgia, serif;
-  font-weight: normal;
-  font-style: italic;
+
   text-transform: normal;
   letter-spacing: 0px;
-  font-family: "futura-pt";
-  font-size: 14px;
   line-height: 1.6em;
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: 1px;
-  font-weight: 400;
+
+  font-family: futura-pt;
+  font-kerning: auto;
+  font-size: 13px;
   font-style: normal;
-
-
-font-family: futura-pt;
-font-kerning: auto;
-font-size: 13px;
-font-style: normal;
-font-variant: normal;
-font-variant-ligatures: normal;
-font-weight: normal;
-
+  font-variant: normal;
+  font-variant-ligatures: normal;
+  font-weight: normal;
 
   color: rgb(153, 153, 153);
   text-decoration: none solid rgb(153, 153, 153);
-/*
-  font-family: futura-pt;
- font-family: Helvetica, arial, sans-serif;
-  font-weight: bold;
-  text-transform: normal;
-  font-family: "futura-pt";""
 
-  font-size: 13px;
-  font-style: normal;
-  font-weight: normal;
-
-  letter-spacing: 1px;
-
-  text-transform: uppercase;
-  line-height: 26px;
-*/
 }
 
 div.body {
   background-color: #ffffff;
-  /*color: #3E4349;*/
   padding: 0 30px 0 30px;
 }
 
@@ -126,8 +57,7 @@ div.documentwrapper {
   width: 100%;
 }
 
-
-h1 h2 h3 h4 h5 { 
+h1 h2 h3 h4 h5 {
   color: black;
 }
 
@@ -150,21 +80,12 @@ a:hover {
 p a:link, p a:hover, p a:active, p a:visited {
   color: #124600;
   text-decoration: underline;
- }
+}
 
 p a:hover { 
   color: #7FD600;
   text-decoration: underline;
- }
-
-
-/*
-a.headerlink:hover {
-  color: #444;
-  background: #eaeaea;
-  text-decoration: none;
 }
-*/
 
 /* SIDEBAR */
 
@@ -215,7 +136,6 @@ pre {
   line-height: 1.3em;
   font-size: 15px;
   font-family: "Consolas, Menlo, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;"
-  /*font-family: "Menlo", "Deja Vu Sans Mono", "Bitstream Vera Sans Mono", monospace;*/
   font-size: 0.9em;
 }
 
