@@ -46,9 +46,15 @@ def code():
     return render_template('code.html', title="Code")
 
 
-@app.route('/RocksPaper')
-def rockspaper():
-    return render_template('rockspaper.html', title="Rocks Paper")
+APP_MAP = {
+    'RocksPaper' : 'rockspaper.html',
+    'BouncingBalls' : 'bouncingballs.html'
+}
+
+@app.route('/app/<app>')
+def rockspaper(app):
+    if app in APP_MAP:
+        return render_template('apps/' + APP_MAP[app], title=app)
 
 
 @app.errorhandler(404)
