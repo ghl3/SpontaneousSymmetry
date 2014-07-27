@@ -20,6 +20,13 @@
       });
     </script>
 
+    <!-- Highlight current nav section -->
+    {% if current_nav is not none %}
+    <style type="text/css">
+      #nav_{{current_nav}} { font-weight:bold;}
+    </style>
+    {% endif %}
+
     {% block head %}
     <!-- Hook for additional head content -->
     {% endblock %}

@@ -2,13 +2,16 @@
 
 {% extends "main_template.html" %}
 
+{% set title = "Blog Archive" %}
+{% set current_nav = "blog" %}
+
 <!-- Body -->
 {% block body %}
 
 {% for month, posts in archive.iteritems() %}
 
 <a href="{{url_for('.archive', year=month.year, month=month.month) }}">
-{{ month.strftime("%Y %B") }}
+{{ month.strftime("%B, %Y") }}
 </a>
 
 <div>

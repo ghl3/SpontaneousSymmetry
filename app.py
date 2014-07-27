@@ -23,27 +23,27 @@ app.register_blueprint(Blog, url_prefix='/blog')
 
 @app.route('/')
 def index():
-    return render_template('index.html', title="SpontaneousSymmetry")
+    return render_template('index.html'),
 
 
 @app.route('/info')
 def info():
-    return render_template('info.html', title="Info")
+    return render_template('info.html')
 
 
 @app.route('/work')
 def work():
-    return render_template('work.html', title="Work")
+    return render_template('work.html')
 
 
 @app.route('/links')
 def links():
-    return render_template('links.html', title="Links")
+    return render_template('links.html')
 
 
 @app.route('/code')
 def code():
-    return render_template('code.html', title="Code")
+    return render_template('code.html')
 
 
 APP_MAP = {
