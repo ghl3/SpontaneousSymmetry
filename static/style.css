@@ -14,6 +14,10 @@ body {
 
 }
 
+img {
+  max-width: 600px;
+ }
+
 .content {
   overflow: hidden;
   margin-left: 20px;
