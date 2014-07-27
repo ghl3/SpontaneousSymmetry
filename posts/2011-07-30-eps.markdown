@@ -28,15 +28,15 @@ To quickly summarize the results presented:
 
 So, this could be the first taste of finding the Higgs boson. Both experiments will continue to update their results as new data is pouring in at a high rate. Within a year, we should know if the standard model Higgs boson exists with a high level of certainty.
 
-The summaries of the Higgs searches by Atlas and CMS are shown below:
+The summary of the Higgs searches by Atlas is shown below:
 
-![](http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png =100x20)
+<img alt="" width="500" src="http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png" >
 
-
+<!--
+![](http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png =100)
 
 ![](http://cms.web.cern.ch/cms/News/2011/EPS_2011/images/HIG-11-011-pas-v8-fig18.png)
-
-
+-->
 
 The meaning of the y-axis is “upper limit on the higgs cross-section with 95% confidence.”  Recall that the cross-section is a measurement of how often a Higgs boson is produced.  So, the upper limit on this value represents the maximum value, based on what we measure, that the higgs cross section could have with 95% confidence.  These plots are scaled such that a cross section of 1 represents the standard-model theoretical prediction.  So, when the limit that we measure falls below 1, it means that we have excluded the standard model higgs (at a particular mass point).  The central black line in the middle of the green band represents the “expected limit,” or the limits that we would make if we assume the Standard Model but without a Higgs.  The black dots joined together by a curve represent the measured limit.  So, when reading the plots, you should look for two things.  First, you should ask if the measured limits fall below 1.  Wherever they do, that region is said to be “excluded.”  In addition, one should ask if the measured limits follow the expected limits.  If the measured limits fall within the green band, they are close to expectation within 1 sigma.  If they fall within the yellow, they are close to expectation within 2 sigma.  If they leave the yellow band, they have made a greater than 2 sigma variation from the expected limit.
 

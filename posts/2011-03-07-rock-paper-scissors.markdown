@@ -18,7 +18,7 @@ For example, let’s say that after 10 games a person’s history looked like RR
 
 This algorithm is pretty simple, but apparently somewhat effective.  However, since it’s a fixed algorithm, it’s perfectly exploitable.  Simply put, if one were able to perfectly recreate the algorithm based one ones own moves, one could predict the computer’s guess for the human’s move.  With this guess, one knows what the computer will throw, and therefore one can simply throw the hand that beat’s the computer’s move.  It’s simple and quite insidious. So, I set out to do just that.  I wrote a short python script that, as best as it was described by the Times, copies the Times’ algorithm.  By knowing the algorithm, I can do my best to beat the machine at it’s own game.  If the computer thinks that I’ll throw a Rock, it will throw a Paper.  But if I know that the computer think I’ll throw a Rock, I know it’ll throw a paper, and instead I can throw a Scissors.
 
-My Code: [RocksPaper](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/03/RocksPaper.zip)
+My Code: [RocksPaper](/static/uploads/2011/03/RocksPaper.zip)
 
 I’ve included my python code and an example of how to run it.  I chose python because itsinteractive interpreter allows me to use the code to in real time play against the computer.  An example of a round I played is as follows: After the 8th round:
 
@@ -39,7 +39,7 @@ Using this strategy, I overwhelmingly defeated the computer.  It was pretty sati
 
 After 57 games (when I arbitrarily stopped playing), I had amassed 40 wins to the computer’s 6, with 11 ties.
 
-[![](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/03/NYTimesRPS1.png)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/03/NYTimesRPS1.png)
+[![](/static/uploads/2011/03/NYTimesRPS1.png)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/03/NYTimesRPS1.png)
 
 As the complete nerd that I am, I wanted to quantify my victory, so I decided to compare that level of victory to the amount of victories that one would expect using a random-only strategy.  In Stat-speak, I wanted to calculate the p-value of a random RPS strategy.
 
