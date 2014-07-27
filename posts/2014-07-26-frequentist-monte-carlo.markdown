@@ -23,7 +23,7 @@ The experiment is a single draw from this likelihood that consists of the 12 var
 
 The likelihood is therefore:
 
-L(d1…d8 | p, d9, d10, d11) = Prob(p) * Prob(d1…d11 | p)
+$ L(d_1 ... d_8 | p, d_9, d_{10}, d_{11}) = Prob(p) \times Prob(d_1 ... d_{11} | p) $
 
 (this is pretty much what was written in the post, but with explicitly including the unknown draws.
 
