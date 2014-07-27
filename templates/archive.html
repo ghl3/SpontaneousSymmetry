@@ -7,6 +7,11 @@
 
 <!-- Body -->
 {% block body %}
+<div class="section">
+  <div style="text-align: center;">
+    <h2>ARCHIVE</h2>
+  </div>
+
 
 {% for month, posts in archive.iteritems() %}
 
@@ -24,4 +29,5 @@
 
 {% endfor %}
 
+</div>
 {% endblock %}
