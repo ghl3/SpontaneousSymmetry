@@ -39,13 +39,13 @@ Using this strategy, I overwhelmingly defeated the computer.  It was pretty sati
 
 After 57 games (when I arbitrarily stopped playing), I had amassed 40 wins to the computer’s 6, with 11 ties.
 
-[![](/static/uploads/2011/03/NYTimesRPS1.png)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/03/NYTimesRPS1.png)
+[![](/static/uploads/2011/03/NYTimesRPS1.png)](/static/uploads/2011/03/NYTimesRPS1.png)
 
 As the complete nerd that I am, I wanted to quantify my victory, so I decided to compare that level of victory to the amount of victories that one would expect using a random-only strategy.  In Stat-speak, I wanted to calculate the p-value of a random RPS strategy.
 
 It’s easy to show that the probability of a particular end-game result of W wins, T ties, and L loses (ignoring order, which isn’t important) is given by:
 
-[![](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/03/RPSProbEq.png)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/03/RPSProbEq.png)
+[![](/static/uploads/2011/03/RPSProbEq.png)](/static/uploads/2011/03/RPSProbEq.png)
 
 (The brackets indicate the binomial, or "choose," function).
 

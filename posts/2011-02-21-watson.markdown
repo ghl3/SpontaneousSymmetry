@@ -12,7 +12,7 @@ Last week the first of two games of Jeopardy in which the IMB supercomputer Wats
 
 Over the past three days, IBM’s custom supercomputer Watson off against against humans in two televised games of Jeopardy.  The challenge of designing and programming a computer to win at Jeopardy is the successor to IMB’s Deep Blue, which faced off against chess grand master Garry Kasparov.  I will admit that, watching the show, I couldn’t help but root for Ken Jennings and Brad Rutter.  While I have been excited about Watson for a long time, watching the match, I realized that I have a soft spot for humans.
 
-[![](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/02/Watson-300x169.png)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/02/Watson.png)
+[![](/static/uploads/2011/02/Watson-300x169.png)](/static/uploads/2011/02/Watson.png)
 
 So, what does Watson’s victory last night mean in the greater scheme?  Is this the beginning of a revolution in computing?  Is this the beginning of a more literal revolution where computers rise up and take over our planet?  I believe that it’s neither.  While many aspects of Watson are impressive, I found myself a bit underwhelmed by what he showed.  Perhaps he (it?) was too convincing, too good at what he did for me to remain impressed.  As I was watching, I found myself thinking it obvious that a computer would be able to answer many of the questions asked.  At the same time, I knew that my reflex-like skepticism was  ignoring the difficulty in parsing human language, which is the real achievement of Watson.
 

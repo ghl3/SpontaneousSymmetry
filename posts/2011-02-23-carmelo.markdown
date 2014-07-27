@@ -24,7 +24,7 @@ To build upon Silver’s arguments, one can see the distribution of the Knicks p
 Distribution before the trade                           Distribution after the trade
 
 
-[![](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/02/Knicks1.gif)](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2011/02/Knicks1.gif)
+[![](/static/uploads/2011/02/Knicks1.gif)](/static/uploads/2011/02/Knicks1.gif)
 
 If one were to strictly interpret Silver’s method, one would see that the vast majority of wins come from a few players, all of which have a pretty similar ratio of wins to salary.  The rest of the players add relatively few wins at the cost of a small amount of salary.  Before the trade, the Knicks had several players in a middle range in terms of both wins added and salary cost.  Post trade, the Knicks are a much more polarized team, with few high-win players and the rest clustered close to zero in terms of salary and wins.
 

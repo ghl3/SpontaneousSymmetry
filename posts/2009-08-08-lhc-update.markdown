@@ -22,7 +22,7 @@ Last September, the Large Hadron Collider was “switched on” for the first ti
 
 The problem occurred within the giant magnets, known as dipoles, that steer protons around the LHC ring.  A connection between two such dipole magnets, due to heat produced from electrical friction, gained a much higher resistance than designed.  When large current flows through large resistance, a lot of heat is produced.  These connections are normally supercooled to a few degrees Kelvin using a large amount of helium and are designed to run at extremely small temperatures.  The build up of heat within the electrical splice raised the temperature significantly beyond tolerance and caused a magnetic quench.  In other words, the large amount of energy that is stored in the magnetic field, nearly 400 Mega Joules worth, was released in the form of electrical arcs, and these arcs punctured holes in the enclosure that stores the super-cold helium.  This in turned caused a huge release of gas into a vacuum chamber.  The gas expanded at an enormous rate, and the majority of the damage to the system during the incident was a direct result of quickly expanding helium.
 
-![Splice](http://www.spontaneoussymmetry.com/blog/wp-content/uploads/2009/08/splice1.jpg)
+![Splice](/static/uploads/2009/08/splice1.jpg)
 
 The damage done by the incident of September 19th, 2008.  The dipole magnet below isn't supposed to look like this:
 
