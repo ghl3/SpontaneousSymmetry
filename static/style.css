@@ -13,8 +13,32 @@ body {
   /* FLASK STYLE */
   line-height: 30.6px;
   font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
+
+/*
+  font-family: freight-text-pro, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+  font-family: 'Raleway', sans-serif;
+
+  font-family: 'Roboto', sans-serif;
+
+  font-family: 'Open Sans Condensed', sans-serif;
+
+  font-family: 'Source Sans Pro', sans-serif;
+
+  font-family: 'Rosario', sans-serif;
+*/
+
+  font-size: 22px;
+  font-style: normal;
+  font-weight: normal;
+
+  color: rgba(0, 0, 0, 0.8);)
+  webkit-font-smoothing: antialiased;
+
+/*
   font-size: 17px;
   color: rgb(62, 67, 73);
+*/
 
 /*
 font-family: Georgia, 'Times New Roman', Times, serif;
@@ -27,6 +51,15 @@ color: rgb(0, 0, 0);
 
 
 }
+
+/*
+body h2 { 
+
+  font-family: jaf-bernino-sans, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
+
+
+ }
+*/
 
 nav a {
   font-family: Georgia, serif;
@@ -93,18 +126,19 @@ div.documentwrapper {
   width: 100%;
 }
 
+
+h1 h2 h3 h4 h5 { 
+  color: black;
+}
+
+/* LINKS */
+
 a {
-  color: #124600;
   text-decoration: none;
 }
 
 a:hover, a:visited, a:link, a:active {
-    text-decoration: none;
-}
-
-a.headerlink:hover {
-  color: #444;
-  background: #eaeaea;
+  color: black;
   text-decoration: none;
 }
 
@@ -113,7 +147,27 @@ a:hover {
   text-decoration: none;
 }
 
+p a:link, p a:hover, p a:active, p a:visited {
+  color: #124600;
+  text-decoration: underline;
+ }
+
+p a:hover { 
+  color: #7FD600;
+  text-decoration: underline;
+ }
+
+
+/*
+a.headerlink:hover {
+  color: #444;
+  background: #eaeaea;
+  text-decoration: none;
+}
+*/
+
 /* SIDEBAR */
+
 div.sphinxsidebar {
   float: left;
   width: 220px;
