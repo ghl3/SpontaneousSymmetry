@@ -214,7 +214,7 @@ def get_archive(n=None):
     if n is None:
         n = len(posts)
 
-    for post in posts:
+    for post in posts[:n]:
         year_month = post.date().replace(day=1)
         d[year_month].append(post)
 

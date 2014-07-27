@@ -9,5 +9,7 @@
         <li> <a href="{{url_for('.blog_post',post=post.url())}}">{{post.title()}}</a></li>
       {% endfor %}
     {% endfor %}
+
+    <li> <h2><b><a href="{{url_for('.archive_list')}}">Older Posts</a></b></h2> </li>
   </ul>
 </div>
