@@ -6,3 +6,4 @@ TODO
 .elasticbeanstalk/
 login.sh
 spontaneoussymmetry.pem
+.DS_Store
