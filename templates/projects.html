@@ -1,0 +1,62 @@
+
+{% extends "main_template.html" %}
+
+{% set title = "Projects" %}
+{% set current_nav = "projects" %}
+
+
+<!-- Body -->
+{% block content %}
+<div class="section">
+
+  <div style="text-align: center;">
+    <h2>PROJECTS</h2>
+  </div>
+
+  <ul>
+
+    <li> <b><a href="https://github.com/ghl3/SpontaneousSymmetry">Spontaneous
+    Symmetry</a></b>: This very site, written in Flask and served on AWS using nginx.</li>
+
+    <br>
+
+    <li> <b><a href="https://github.com/ghl3/RemindTweets">RemindTweets</a></b>:
+    Automatic reminders using Twitter, written in Scala using the
+    Play! framework.</li>
+
+    <br>
+
+    <li> <b><a href="https://github.com/ghl3/BarkovChain">Barkov
+    Chain</a></b>: A New York City bar recommendation site using
+    Foursquare data and reviews from NYMagazine to plan an evening bar
+    crawl.</li>
+
+    <br>
+
+    <li> <b><a href="https://github.com/ghl3/bamboo">Bamboo</a></b>: A
+    set of helper functions for plotting and data manipulation using
+    python and Pandas.</li>
+
+  </ul>
+
+</div>
+{% endblock %}
+
+<!-- Sidebar -->
+{% block sidebar %}
+
+<img src="/static/images/feynman.jpeg" class="sidebar_image"m>
+
+<div class="caption">
+  Richard Feynman, theoretical physicists, Nobel Laureate, and all around fascinating person.
+</div>
+
+<br>
+
+<img src="/static/images/YoungEinstein.jpeg" class="sidebar_image" >
+
+<div class="caption">
+  A young Einstein around the time when he invented special relativity (a part of his <a href="http://en.wikipedia.org/wiki/Annus_Mirabilis_papers">annus mirabilis</a> in 1905).
+</div>
+
+{% endblock %}

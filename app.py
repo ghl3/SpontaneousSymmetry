@@ -30,10 +30,14 @@ def index():
 def info():
     return render_template('info.html')
 
+@app.route('/projects')
+def projects():
+    return render_template('projects.html')
 
-@app.route('/work')
+
+@app.route('/work/atlas')
 def work():
-    return render_template('work.html')
+    return render_template('atlas.html')
 
 
 @app.route('/links')
