@@ -51,11 +51,18 @@ This intuitively makes sense.  But it completely depends on the setup of the pro
 
 For example, imagine again that the we made R ravens and A apples.  But, when we made a raven, we made it black with probability b = 2*x, and when we made an apple, we made it black with probability x.  In other words, x represents some relative amount of black colored objects in the given universe.  The important point here is that the color of apples is now related (via a hidden variable) to the color of ravens.  So, observations of apple colors can not indeed affect our knowledge of raven colors.  If we start by observing a green apple, we get:
 
-probability (b = b' | observed green apple)
+$$
+\begin{equation}
+\begin{split} 
+\text{probability} & \text{ (b = b' | observed green apple)} \\ 
+& \\
+& = \text{probability (x = b'/2 | observed green apple)}  \\
+& \\
+& = \frac{\text{probability (observed green apple | x=b'/2) * prior(x = b'/2)}} {\text{ probability (observed green apple (averaged over all values of x))}} \\ 
+\end{split}  
+\end{equation} 
+$$
 
-= probability (x = b'/2 | observed green apple) 
-
-= probability (observed green apple | x=b'/2) * prior(x = b'/2) / probability (observed green apple (averaged over all values of x))
 
 Here, the solution depends on the prior probability distribution of x, but there are priors that make the ratio of probability (b = b' | observed green apple) / prior(b') not equal to 1.
 
