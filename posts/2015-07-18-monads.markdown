@@ -54,10 +54,10 @@ x = f(f(f(f(f(f(10))))))
 float x = f(f(f(f(f(f(10))))));
 ```
 
-One can do this until their index finger gets tired of pressing "f".  More generally, if I had several functions that all took floats and returned floats, I could freely compose those with each other and not worry about anything breaking (meaning, it would compile in Java and I wouldn't have any errors in python).  Some people would introduce the concept of a Monoid (not a spelling mistake, it's a different thing than a Monad), but if you understand the above, then adding fancy names isn't necessary at this point (but feel free to read about it yourself).
+One can do this until their index finger gets tired of pressing "f".  More generally, if I had several functions that all took floats and returned floats, I could freely compose those with each other and not worry about anything breaking (meaning, it would compile in Java and I wouldn't have any errors in python).  At this point, may could introduce the concept of a <a href='https://en.wikipedia.org/wiki/Monoid'>Monoid</a> (not a spelling mistake, it's a different thing than a *Monad*), but adding fancy names isn't necessary at this point (feel free to read about it yourself, though).
 
 
-Now, let's imagine a slightly more complicated case.  Imagine we have a function g that takes one type but returns another type (again, in python, type alignment isn't enforced by a compiler, but it's all there).  One can think about this generally, but to be concrete, let's first that g takes a float and returns a list of floating point numbers.  To be really simple, let's just imagine it wraps the input float in a list:
+Now, let's imagine a slightly more complicated case.  Imagine we have a function g that takes one type but returns another type (again, in python, type alignment isn't enforced by a compiler, but it's all there).  One can think about this generally, but to be concrete, let's imagine a function g takes a float and returns a list of floating point numbers.  To be really simple, let's just imagine it wraps the input float in a list:
 
 ```python
 def g(x):
@@ -82,25 +82,24 @@ x = g(g(10.0))
 float x = g(g(10.0))
 ```
 
-The python case will actually run, but it will create a list of lists, and we're going to assume that's not what we want in this case.  The Java version won't compile.
+The python case will actually run, but it will create a list of lists, which isn't what we want in this case.  The Java version won't even compile.
 
-Again, it's not entirely clear why this is interesting, but the goal is to start simple and see how certain patterns emerge.  If we did want to call g many times in a row, we could do the following:
+It's not entirely clear why this is interesting, but the goal is to start simple and see how certain patterns emerge, so bear with me.
+
+If we did want to call g many times in a row, we could do the following:
 
 
 ```python
-x = g(10.0)
-y = g(x[0])
+tmp = g(10.0)
+x = g(tmp[0])
 ```
 
 ```java
-float x = g(10.0);
-float y = g(x.get(0));
+float tmp = g(10.0);
+float x = g(tmp.get(0));
 ```
 
-To use g twice in a row, we have to add an extra step where we get the value out of the list before putting it back into g.  It's unclear why one inherently wants to call g multiple times, but one can imagine that one has many functions that take floating point values and return lists, and if one wanted to call those in a row, one would have to similarly take values out of lists and pass them to these various functions.
-
-
-Let's extend our example by introduction the function h.  h takes a floating point value.  If that value is greater than or equal to 0, it does what g does and puts it into a list.  But, if the value is less than 0, it returns an empty list:
+To use g twice in a row, we have to add an extra step where we get the value out of the list before passing it to the function g.  More generally, if one had many functions with the same signature as g that they wanted to compose, one would have to similarly take values out of lists and pass them to these various functions.  To be concrete about that, let's extend our example by introducing the function h.  h, like g, takes a floating point value and returns a list.  If that value is greater than or equal to 0, it does what g does and puts that value into a list.  But, if the value is less than 0, it returns an empty list:
 
 ```python
 def g(x):
@@ -130,13 +129,13 @@ From before, we know that we have to get the result out of the return value of h
 
 
 ```python
-x = h(10.0)
-y = g(x[0]) 
+tmp = h(10.0)
+x = g(tmp[0]) 
 ```
 
 ```java
-float x = h(10.0);
-float y = g(x.get(0));
+float tmp = h(10.0);
+float x = g(tmp.get(0));
 ```
 
 This works too, but it's clearly broken when we try to use a negative value:
@@ -144,13 +143,13 @@ This works too, but it's clearly broken when we try to use a negative value:
 
 
 ```python
-x = h(-10.0)
-y = g(x[0]) 
+tmp = h(-10.0)
+x = g(tmp[0]) 
 ```
 
 ```java
-float x = h(-10.0);
-float y = g(x.get(0));
+float tmp = h(-10.0);
+float x = g(tmp.get(0));
 ```
 
 The function h will return an empty list, and we'll get an exception in both python and Java when we try to get the first element from that list.  So, if we want to call h and then g on a value, we need to add more logic to make it work every time without throwing an exception.  We can write the following:
@@ -158,33 +157,33 @@ The function h will return an empty list, and we'll get an exception in both pyt
 
 
 ```python
-x = h(-10.0)
-if len(x) > 0:
-	y = g(x[0]) 
+tmp = h(-10.0)
+if len(tmp) > 0:
+	x = g(tmp[0]) 
 else:
-	y = []
+	tmp = []
 ```
 
 ```java
-float x = h(-10.0);
-float y;
-if (x.size() > 0) {
-	y = g(x.get(0));
+float tmp = h(-10.0);
+float x;
+if (tmp.size() > 0) {
+	x = g(tmp.get(0));
 } else {
-	y = new ArrayList<Float>();;
+	x = new ArrayList<Float>();;
 }
 ```
 
-And that works (assuming that we want y to be an empty list when h returns an empty list).  But all we really wanted to do was write g(h(-10.0)).  Instead, we had to write a lot of boilerplate to make that work.  That's not the end of the world, but as programmers, we like to look for patterns that can help us avoid boilerplate whenever possible.
+And that works, though it's a bit cumbersome.  One thing to note is that it makes us explicitly state what we want to do when the tmp list is empty, which we here assume that we want x to be an empty list.  What we really wanted to do was write g(h(-10.0)).  Instead, we had to write boilerplate to make that work.  That's not the end of the world, but as programmers, we like to look for patterns that can help us avoid boilerplate whenever possible.  Perhaps this is an opportunity to decompose the above code into an abstract pattern.
 
-Before we try to decompose the above into a more abstract pattern, let's quickly look at another simple example so we don't over-optimize for our specific functions g and h that work with lists.
+Before doing so, let's quickly look at another simple example so we don't over-optimize for our specific functions g and h.
 
-Let's instead imagine that we have a function that takes a String and returns a pair of strings:
+Let's instead imagine that we have a function that takes a String and returns both a lowercase version of the original string and an integer that represents the length of the input string:
 
 
 ```python
 def p(s):
-	return (s, len(s))
+	return (s.lower(), len(s))
 ```
 
 ```java
@@ -198,10 +197,12 @@ public static class StringPair {
 }
 
 public static StringPair p(String s) {
-	return new StringPair(s, s.size());
+	return new StringPair(s.toLowerCase(), s.size());
 ```
 
-Because Java doesn't have native tuples, we created a simple class to hold two strings.  But, aside from that, both versions of p do the same thing.  Like before, we can't call p twice in a row:
+Because Java doesn't have native tuples, we created a simple class to hold the string and the integer.  But, aside from that, both versions of p do the same thing.
+
+Like before, we can't call p twice in a row:
 
 ```python
 p(p("foo"))
@@ -210,54 +211,50 @@ p(p("foo"))
 The function p returns a string pair, so we can to unpack the pair for this to work:
 
 ```python
-x = p("foo")
-y = p(x[0])
+tmp = p("foo")
+x = p(tmp[0])
 ```
 
 ```java
-StringPair x = p("foo");
-StringPair y = p(x.s);
+StringPair tmp = p("foo");
+StringPair x = p(tmp.s);
 ```
 
-And now, like with our examples with g and h, this works.  However, it seems that we lost information.  What if we want the length returned by p to keep track of the total size of all strings that have gone through the p function?  After one call to "foo" it should be 3, but if we call p twice in a row on "foo", it should return 6 (3+3).  How can we accomplish this?
+And, like our examples with g and h, this works.  However, it seems that we lost information, as we're throwing out the length returned by the first call to *p*.  What if we want to keep track of the total size of all strings that have gone through the p function?  After one call to "foo" it should be 3, but if we call p twice in a row on "foo", it should return 6 (3+3).  How can we accomplish this?
 
 
 ```python
-x = p("foo")
-y = p(x[0])
+tmp = p("foo")
+x = p(tmp[0])
 
-my_string = y[0]
-my_count = x[1] + y[1]
+my_string = x[0]
+my_count = tmp[1] + x[1]
 ```
 
 ```java
-StringPair x = p("foo");
-StringPair y = p(x.s);
+StringPair tmp = p("foo");
+StringPair x = p(tmp.s);
 
-String myString = y.s;
-Integer myCount = x.length + y.length;
+String myString = x.s;
+Integer myCount = tmp.length + x.length;
 ```
 
-This works, but again, we added a lot of boilerplate.  All we wanted to do was call *something* that sort of feels like p(p("foo")).  But but we had to create all these intermediate variables and we had to keep unpacking data to actually get that to work.  Similar to the example with g and h, we'd like to come up with a pattern that makes the above simpler and clearer.
+This works, but again, we added a lot of boilerplate.  All we wanted to do was do something that *sort of* feels like p(p("foo")).  But but we had to create all these intermediate variables and we had to keep unpacking data to actually get that to work.  Similar to the example with g and h, we'd like to come up with a pattern that makes the above simpler and clearer.
 
 
 
-So, what do these two examples have in common, and how can we try to clean them both up to better express their underlying intentions?  In both cases, we want to do something that is conceptually similar to composing functions, but with some extra work that happens as well.  We really want to be able to define a special type of composition for the types of functions we're interested in that have additional rules which define how we pass the data into the functions when composing them.
+So, what do these two examples have in common, and how can we try to clean them both up to better express their underlying intentions?  In both cases, we want to do something that is conceptually similar to composing functions, but we needed to do extra work to unpack types and handle some additional data.  What we really ended up doing was defining a special type of composition for each of our examples that has additional rules which define how we pass the data into the functions when composing them.
 
-Keeping our two examples in mind, let's think of the different type of rules we'd have to define to try to abstract what we're doing when composing these functions.  To be able to talk about both of our examples at the same time, let's label the types that our functions take and return.  In both examples, our functions g, h, and p take an object of type A and return an object of type B.  So, for g and h, A = float and B = List.  For p, A = string and B = Tuple or StringPair.  With that in mind, the main thing we need to abstract is:
+To compose our functions, we essentially had to answer the question:
 
-"Imagine we have an object of type B.  How do we pass that object to a function f that takes an object of type A and returns an object of type B?"
+*Imagine we have an object of type B.  How do we pass that object to a function f that takes an object of type A and returns an object of type B?*
 
-With our g, h example, we did this by taking the first (and only) element (of type float) from the list and passing took function that took a float.  In our second example, we took a StringPair, passed the string component to the function, got back a new string pair, and then added their length fields.
+With our g, h example, we did this by taking the first (and only) float from the list and passing that float to a function.  In our second example, we took a StringPair, passed the string component to the function, got back a new string pair, and then added their length fields.
 
-So, if we have such a rule, then we can freely compose functions that take A and return a B.  This rule defines a special type of composition.  One could, if they were so inclined, give a name to this composition rule.  There are a number of names for it, but a common one is "lift".  In a sense, we're taking a function that takes an A and "lifting" it into a function that takes a B.  (We will later learn that defining a "lift" operation is one of the requirements for satisfying the Monad pattern, but again, that isn't relevant right now).
+If, for a group of functions with the same signature, we were able to come up with such a rule, then we could freely compose those functions.  One can think of this process as defining a function that takes an object of type B and a function of type A to B and returns an object of type B.  There are a number of conventional names for this type of function.  Here, we're going to call it "lift".  In a sense, we're taking a function that takes an A and "lifting" it into a function that takes a B.  (We will later learn that defining a "lift" operation is one of the requirements for satisfying the Monad pattern, but again, that isn't relevant right now).
 
 
-/*
-If there were to do so, it would be very close to the definition of a Monad.  A Monad is just a set of rules that one writes down which allows one to compose functions together (even if they can't be composed using normal function composition).  To be a full Monad, one must specify some additional rules, but we will not here spell out those details.
-*/
-
-Let's define our lift function for the previous examples.  Recall that lift takes (an object of class B) and (a function that takes an A and returns a B) and returns a B.  
+Let's define lift functions for the previous examples.  Recall that lift takes (a function that takes an A and returns a B) and (an object of class B) and returns a B.  
 
 For our g, h example:
 
@@ -288,10 +285,9 @@ For our p example:
 
 ```python
 def lift(p, x):
-	s = x[0]
-	initial_count = x[1]
+	s, length = y
 	y = p(s)
-	return (y[0], y[1]+initial_count)
+	return (y[0], y[1]+length)
 ```
 
 ```java
@@ -301,7 +297,7 @@ public static StringPair lift(Function<String, StringPair> p, StringPair x) {
 }
 ```
 
-We've successfully moved our boilerplate code into our new "lift" functions.  This is a good step in the right direction: encapsulating messy functionality and boilerplate is usually a good thing.  We can now compose our g, h, and p functions in the following way:
+We've successfully moved our boilerplate code into our new "lift" functions.  This is a step in the right direction: encapsulating messy functionality and boilerplate is usually a good thing.  We can now compose our g, h, and p functions in the following way:
 
 
 ```python
@@ -313,9 +309,9 @@ lift(g, lift(h, lift(g, lift(h, List(10.0)))));
 lift(g, lift(h, lift(g, lift(h, new ArrayListList<Float>(10.0)))));
 ``` 
 
-This looks a lot like the composition that we really want to write!  The only somewhat annoying part is the expression in the inner-most nested function call where we have to wrap our raw value, 10.0, in a List.  This is because, as we saw before, our lift function's second parameter is List<Float>, and not float.
+This looks a lot like the composition that we really want to write!  The only somewhat annoying part is the expression in the inner-most nested function call where we have to wrap our raw value, 10.0, in a List.  This is necessary because, as we saw before, our lift function's second parameter is List<Float>, and not a raw float.
 
-For the purpose of abstraction, we can wrap that action into another function that we'll here call "unit".  ("unit" is not a good or clear name at all.  I'll here admit that I'm giving it that name only due to conventions.  I think "wrap" would be a better name for what we want it to do).  Essentially, our new "unit" function takes an object of type A and returns an object of type B.
+We can wrap that action into another function that we'll here call "unit" ("unit" is not a good or clear name at all.  I'll here admit that I'm giving it that name only due to conventions.  I think "wrap" would be a better name for what we want it to do).  Essentially, our new "unit" function takes an object of type A and returns an object of type B.  For our first example, we can define unit as:
 
 ```python
 def unit(x):
@@ -330,7 +326,6 @@ public static List<Float> unit(float x) {
 
 
 With these definitions, our composition looks like:
-
 
 
 ```python
@@ -368,7 +363,7 @@ public static class M {
 As one can guess by it's name, "M" is a Monad (I'm not going to here go over the technical definition of a Monad.  For the purposes of this discussion, a class with the "lift" and "unit" functions is a Monad).  
 
 
-This next step isn't strictly necessary, but it allows me to implement some final syntactic sugar.  In addition to "lift" and "unit", I'm going to define a function called "do".  All "do" will do is call either "lift" or "unit", depending on if the value is an A or a B; a List or a Float
+This next step isn't strictly necessary, but it allows me to implement some final syntactic sugar.  In addition to "lift" and "unit", I'm going to define a function called "do".  All "do" will do is call either "lift" or "unit", depending on if the value is an A or a B.  For our first example, this means either calling lift or unit depending on if the value is a list or a float:
 
 
 ```python
@@ -398,9 +393,9 @@ do(h, do(g, do(h, do(g, 10.0))))
 do(h, do(g, do(h, do(g, 10.0))));
 ```
 
-One can probably do better syntactically to make the composition prettier, but this is as far as I'll go, as I think it makes the point clear.  My expressing our "special composition" into the "lift" and "unit" functions, we are able to compose our g and h functions freely together (leveraging our "do" function).
-
+While some of what we did may seen arbitrary, it ended up allowing us to write the composition we wanted in the above style.  One can probably do better syntactically to make the composition prettier, but this is as far as I'll go, as I think it makes the point clear.  By expressing our "special composition" into the "lift" and "unit" functions, we are able to compose our g and h functions freely together (leveraging our "do" function).  With this syntax, it's easy to see that we're just composing functions together, which is more difficult to see with all the boilerplate code that we managed to remove.
 
 So, once again, why is this a useful thing to have done, or to think about?  If you ask me, I think the most useful part of this exercise is in flexing our abstraction powers: to learn how to take a few examples of messy, boilerplate code and to be able to merge it into simpler constructs that better express the intent of what we want.  But, more tangibly, we've managed to separate the "what" (composing multiple functions) with the "how".  We can write the "how" in one place and then freely compose any functions that have our desired signature.  This all seems like a lot of work in the case where g and h are so simple, but in more complicated cases, being able to write f, g, and M separately and later combine them allows us to write business logic more clearly, and that's really one of the primary goals of any abstraction.
 
+So, what then is a Monad?  It's a set of rules for composing functions that can't normally be composed because they return a different type than they take.  Okay, there's a lot more complexity to Monads, but I think that definition gets to the heart of what they are and why they're useful.  Monads are useful because function composition is easy to write and understand.  Monads take potentially complicated interactions between functions and making them simpler and easier to reason about.
 
