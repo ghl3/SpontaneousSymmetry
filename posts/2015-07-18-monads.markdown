@@ -375,12 +375,12 @@ def do(g, x):
 ```
 
 ```java
-	public static List<Float> do(Function<Float, List<Float>> f, List<Float> x) {
-		return lift(f, x);
-	}
-	public static List<Float> do(Function<Float, List<Float>> f, Float x) {
-		return lift(f, unit(x));
-	}
+public static List<Float> do(Function<Float, List<Float>> f, List<Float> x) {
+    return lift(f, x);
+}
+public static List<Float> do(Function<Float, List<Float>> f, Float x) {
+    return lift(f, unit(x));
+}
 ```
 
 Finally, I can now write the full composition with this do function:
