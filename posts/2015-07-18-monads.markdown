@@ -17,14 +17,14 @@ Okay, let's for now forget the word Monad.  It's not helpful here.  Imagine inst
 
 Python:
 
-```
+```python
 def f(x):
 	return x*x
 ```
 
 
 Java:
-```
+```java
 public static float f(float x) {
 	return x*x;
 }
@@ -34,21 +34,21 @@ public static float f(float x) {
 Simple.  What can we do with f?  It's clear that, because f takes and returns objects of the same type, we can call f twice in a row, or "compose" f with itself:
 
 
-```
+```python
 x = f(f(10.0))
 ```
 
-```
+```java
 float x = f(f(10.0));
 ```
 
 In fact, we can do this as many times as we like, since we're always taking floats and returning floats:
 
-```
+```python
 x = f(f(f(f(f(f(10))))))
 ```
 
-```
+```java
 float x = f(f(f(f(f(f(10))))));
 ```
 
@@ -57,13 +57,13 @@ One can do this until their index finger gets tired of pressing "f".  This is al
 
 Now, let's imagine a slightly more complicated case.  Imagine we have a function g that takes one type but returns another type (again, in python, type alignment isn't enforced by a compiler, but it's all there).  One can think about this generally, but to be concrete, let's first that g takes a float and returns a list of floating point numbers.  To be really simple, let's just imagine it wraps the input float in a list:
 
-```
+```python
 def g(x):
 	return [x]
 ```
 
 
-```
+```java
 public static List<Float> g(float x) {
 	return new ArrayList<Float>(x);
 }
@@ -72,11 +72,11 @@ public static List<Float> g(float x) {
 This is just as simple before.  However, because the input type and the output types don't line up, we can't simply compose g with itself.  The following won't work:
 
 
-```
+```python
 x = g(g(10.0))
 ```
 
-```
+```java
 float x = g(g(10.0))
 ```
 
@@ -85,12 +85,12 @@ The python case will actually run, but it will create a list of lists, and we're
 Again, it's not entirely clear why this is interesting, but the goal is to start simple and see how certain patterns emerge.  If we did want to call g many times in a row, we could do the following:
 
 
-```
+```python
 x = g(10.0)
 y = g(x[0])
 ```
 
-```
+```java
 float x = g(10.0);
 float y = g(x.get(0));
 ```
@@ -100,7 +100,7 @@ To use g twice in a row, we have to add an extra step where we get the value out
 
 Let's extend our example by introduction the function h.  h takes a floating point value.  If that value is greater than or equal to 0, it does what g does and puts it into a list.  But, if the value is less than 0, it returns an empty list:
 
-```
+```python
 def g(x):
 	if x >= 0:
 		return [x]
@@ -108,7 +108,7 @@ def g(x):
 		return []
 ```
 
-```
+```java
 public static List<Float> g(float x){
 	if (x >= 0) {
 		return new ArrayList<Float>(x);
@@ -120,19 +120,19 @@ public static List<Float> g(float x){
 
 Let's say our goal was to call h on an value and then call g.  We know that we can't simply do this:
 
-```
+```python
 g(h(10.0))
 ```
 
 From before, we know that we have to get the result out of the return value of h before putting it into g.  Following our example before, we can try writing:
 
 
-```
+```python
 x = h(10.0)
 y = g(x[0]) 
 ```
 
-```
+```java
 float x = h(10.0);
 float y = g(x.get(0));
 ```
@@ -141,12 +141,12 @@ This works too, but it's clearly broken when we try to use a negative value:
 
 
 
-```
+```python
 x = h(-10.0)
 y = g(x[0]) 
 ```
 
-```
+```java
 float x = h(-10.0);
 float y = g(x.get(0));
 ```
@@ -155,7 +155,7 @@ The function h will return an empty list, and we'll get an exception in both pyt
 
 
 
-```
+```python
 x = h(-10.0)
 if len(x) > 0:
 	y = g(x[0]) 
@@ -163,7 +163,7 @@ else:
 	y = []
 ```
 
-```
+```java
 float x = h(-10.0);
 float y;
 if (x.size() > 0) {
@@ -180,12 +180,12 @@ Before we try to decompose the above into a more abstract pattern, let's quickly
 Let's instead imagine that we have a function that takes a String and returns a pair of strings:
 
 
-```
+```python
 def p(s):
 	return (s, len(s))
 ```
 
-```
+```java
 public static class StringPair {
 	public final String s;
 	public final Integer length;
@@ -201,18 +201,18 @@ public static StringPair p(String s) {
 
 Because Java doesn't have native tuples, we created a simple class to hold two strings.  But, aside from that, both versions of p do the same thing.  Like before, we can't call p twice in a row:
 
-```
+```python
 p(p("foo"))
 ```
 
 The function p returns a string pair, so we can to unpack the pair for this to work:
 
-```
+```python
 x = p("foo")
 y = p(x[0])
 ```
 
-```
+```java
 StringPair x = p("foo");
 StringPair y = p(x.s);
 ```
@@ -220,7 +220,7 @@ StringPair y = p(x.s);
 And now, like with our examples with g and h, this works.  However, it seems that we lost information.  What if we want the length returned by p to keep track of the total size of all strings that have gone through the p function?  After one call to "foo" it should be 3, but if we call p twice in a row on "foo", it should return 6 (3+3).  How can we accomplish this?
 
 
-```
+```python
 x = p("foo")
 y = p(x[0])
 
@@ -228,7 +228,7 @@ my_string = y[0]
 my_count = x[1] + y[1]
 ```
 
-```
+```java
 StringPair x = p("foo");
 StringPair y = p(x.s);
 
@@ -259,7 +259,7 @@ Let's define our lift function for the previous examples.  Recall that lift take
 
 For our g, h example:
 
-```
+```python
 def lift(g, x):
 	if len(x) > 0:
 		return g(x[0])
@@ -267,8 +267,7 @@ def lift(g, x):
 		return []
 ```
 
-```
-
+```java
 public interface Function<T, U> {
 	U call(T t);
 }
@@ -285,7 +284,7 @@ public static List<Float> lift(Function<Float, List<Float>> g, List<Float> x) {
 
 For our p example:
 
-```
+```python
 def lift(p, x):
 	s = x[0]
 	initial_count = x[1]
@@ -293,7 +292,7 @@ def lift(p, x):
 	return (y[0], y[1]+initial_count)
 ```
 
-```
+```java
 public static StringPair lift(Function<String, StringPair> p, StringPair x) {
 	StringPair y = p.call(x.s);
 	return new StringPair(y.x, x.length + y.length);
@@ -303,12 +302,12 @@ public static StringPair lift(Function<String, StringPair> p, StringPair x) {
 We've successfully moved our boilerplate code into our new "lift" functions.  This is a good step in the right direction: encapsulating messy functionality and boilerplate is usually a good thing.  We can now compose our g, h, and p functions in the following way:
 
 
-```
+```python
 lift(g, lift(h, lift(g, lift(h, List(10.0)))));
 ``` 
 
 
-```
+```java
 lift(g, lift(h, lift(g, lift(h, new ArrayListList<Float>(10.0)))));
 ``` 
 
@@ -316,12 +315,12 @@ This looks a lot like the composition that we really want to write!  The only so
 
 For the purpose of abstraction, we can wrap that action into another function that we'll here call "unit".  ("unit" is not a good or clear name at all.  I'll here admit that I'm giving it that name only due to conventions.  I think "wrap" would be a better name for what we want it to do).  Essentially, our new "unit" function takes an object of type A and returns an object of type B.
 
-```
+```python
 def unit(x):
 	return [x]
 ```
 
-```
+```java
 public static List<Float> unit(float x) {
 	return new ArrayList<Float>(x);
 }
@@ -332,12 +331,12 @@ With these definitions, our composition looks like:
 
 
 
-```
+```python
 lift(g, lift(h, lift(g, lift(h, unit(10.0)))))
 ``` 
 
 
-```
+```java
 lift(g, lift(h, lift(g, lift(h, unit(10.0)))));
 ``` 
 
@@ -347,13 +346,13 @@ lift(g, lift(h, lift(g, lift(h, unit(10.0)))));
 We're nearly done.  The next step is to encapsulate our "lift" and "unit" functions into a class (since we may want to define many different "lift" and "unit" functions for different examples, such as g, h vs p).  Let's go ahead and do it:
 
 
-```
+```python
 class M:
 	def lift(...)
 	def unit(...)
 ```
 
-```
+```java
 public static class M {
 	public static List<Float> lift(Function<Float, List<Float>> f, List<Float> x) {
 		...
@@ -370,7 +369,7 @@ As one can guess by it's name, "M" is a Monad (I'm not going to here go over the
 This next step isn't strictly necessary, but it allows me to implement some final syntactic sugar.  In addition to "lift" and "unit", I'm going to define a function called "do".  All "do" will do is call either "lift" or "unit", depending on if the value is an A or a B; a List or a Float
 
 
-```
+```python
 def do(g, x):
 	if isinstance(x, list):
 		return g(x)
@@ -378,7 +377,7 @@ def do(g, x):
 		return g(unit(x))
 ```
 
-```
+```java
 	public static List<Float> do(Function<Float, List<Float>> f, List<Float> x) {
 		return lift(f, x);
 	}
@@ -389,11 +388,11 @@ def do(g, x):
 
 Finally, I can now write the full composition with this do function:
 
-```
+```python
 do(h, do(g, do(h, do(g, 10.0))))
 ```
 
-```
+```java
 do(h, do(g, do(h, do(g, 10.0))));
 ```
 
