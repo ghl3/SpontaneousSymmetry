@@ -102,7 +102,7 @@ float x = g(tmp.get(0));
 To use g twice in a row, we have to add an extra step where we get the value out of the list before passing it to the function g.  More generally, if one had many functions with the same signature as g that they wanted to compose, one would have to similarly take values out of lists and pass them to these various functions.  To be concrete about that, let's extend our example by introducing the function h.  h, like g, takes a floating point value and returns a list.  If that value is greater than or equal to 0, it does what g does and puts that value into a list.  But, if the value is less than 0, it returns an empty list:
 
 ```python
-def g(x):
+def h(x):
 	if x >= 0:
 		return [x]
 	else:
@@ -110,7 +110,7 @@ def g(x):
 ```
 
 ```java
-public static List<Float> g(float x){
+public static List<Float> h(float x){
 	if (x >= 0) {
 		return new ArrayList<Float>(x);
 	} else {
@@ -301,7 +301,7 @@ We've successfully moved our boilerplate code into our new "lift" functions.  Th
 
 
 ```python
-lift(g, lift(h, lift(g, lift(h, List(10.0)))));
+lift(g, lift(h, lift(g, lift(h, [10.0]))));
 ``` 
 
 
@@ -360,40 +360,40 @@ public static class M {
 }
 ```
 
-As one can guess by it's name, "M" is a Monad (I'm not going to here go over the technical definition of a Monad.  For the purposes of this discussion, a class with the "lift" and "unit" functions is a Monad).  
+As one can guess by it's name, "M" is a Monad (I'm not going to here go over the technical definition of a Monad.  For the purposes of this discussion, a class with the "lift" and "unit" functions is a Monad).
 
 
-This next step isn't strictly necessary, but it allows me to implement some final syntactic sugar.  In addition to "lift" and "unit", I'm going to define a function called "do".  All "do" will do is call either "lift" or "unit", depending on if the value is an A or a B.  For our first example, this means either calling lift or unit depending on if the value is a list or a float:
+This next step isn't strictly necessary, but it allows me to implement some final syntactic sugar.  In addition to "lift" and "unit", I'm going to define a function called "comp".  All "comp" will do is call either "lift" or "unit", depending on if the value is an A or a B.  For our first example, this means either calling lift or unit depending on if the value is a list or a float:
 
 
 ```python
-def do(g, x):
+def comp(g, x):
 	if isinstance(x, list):
-		return g(x)
+		return lift(g, x)
 	else:
-		return g(unit(x))
+		return lift(g, unit(x))
 ```
 
 ```java
-public static List<Float> do(Function<Float, List<Float>> f, List<Float> x) {
+public static List<Float> comp(Function<Float, List<Float>> f, List<Float> x) {
     return lift(f, x);
 }
-public static List<Float> do(Function<Float, List<Float>> f, Float x) {
+public static List<Float> comp(Function<Float, List<Float>> f, Float x) {
     return lift(f, unit(x));
 }
 ```
 
-Finally, I can now write the full composition with this do function:
+Finally, I can now write the full composition with this comp function:
 
 ```python
-do(h, do(g, do(h, do(g, 10.0))))
+comp(h, comp(g, comp(h, comp(g, 10.0))))
 ```
 
 ```java
-do(h, do(g, do(h, do(g, 10.0))));
+comp(h, comp(g, comp(h, comp(g, 10.0))));
 ```
 
-While some of what we did may seen arbitrary, it ended up allowing us to write the composition we wanted in the above style.  One can probably do better syntactically to make the composition prettier, but this is as far as I'll go, as I think it makes the point clear.  By expressing our "special composition" into the "lift" and "unit" functions, we are able to compose our g and h functions freely together (leveraging our "do" function).  With this syntax, it's easy to see that we're just composing functions together, which is more difficult to see with all the boilerplate code that we managed to remove.
+While some of what we did may seen arbitrary, it ended up allowing us to write the composition we wanted in the above style.  One can probably do better syntactically to make the composition prettier, but this is as far as I'll go, as I think it makes the point clear.  By expressing our "special composition" into the "lift" and "unit" functions, we are able to compose our g and h functions freely together (leveraging our "comp" function).  With this syntax, it's easy to see that we're just composing functions together, which is more difficult to see with all the boilerplate code that we managed to remove.
 
 So, once again, why is this a useful thing to have done, or to think about?  If you ask me, I think the most useful part of this exercise is in flexing our abstraction powers: to learn how to take a few examples of messy, boilerplate code and to be able to merge it into simpler constructs that better express the intent of what we want.  But, more tangibly, we've managed to separate the "what" (composing multiple functions) with the "how".  We can write the "how" in one place and then freely compose any functions that have our desired signature.  This all seems like a lot of work in the case where g and h are so simple, but in more complicated cases, being able to write f, g, and M separately and later combine them allows us to write business logic more clearly, and that's really one of the primary goals of any abstraction.
 
