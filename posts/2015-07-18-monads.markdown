@@ -7,13 +7,14 @@ title: Monads
 id: 446
 ---
 
-Monads
 
-I know that everyone has already written an introduction to Monads point, and at this point it's either a right-of-passage for a technical blog for some and for others it may be borderline spam.  But this is my blog, and I'll allowed to write about whatever I want, so I'm going to do my version anyway.  I'm not claiming that this is version is better or more complete than any other; only that it's mine.
+I know that everyone has already written an introduction to Monads at some point.  For a technical blog, it is either a right-of-passage, a sign of egomania, or perhaps even borderline spam.  My goal in writing this post is not to claim that it is in some way superior to other, similar posts out there.  Instead, it's to solidify the concepts in my own mind and to motivate the concept of a Monad from a perspective that is most effective to me.  The goal of this post is to describe what a Monad is and why it's a useful thing to think about, and to do so for a person who doesn't program in a language like Haskell (where Monads are a first-class concept).  
 
-The goal of this post is to describe what a Monad is and why it's a useful thing to think about to a person who knows how to program but doesn't necessarily use a language like Haskall (where it's more deeply embedded into the language).  In the end, a Monad, or the concept of Monads, is just a programming pattern that may be produce better code in certain situations, and that is the core of it's usefulness.  In Haskall, a monad is a bit more than that, as it has specific language syntax that makes it particularly useful.  I've found that many people who write about what Monads are come from that perspective, where both Haskall's syntax and Haskall's emphasis on purity make them more important.  To those, talking about a Mondad is similar to talking about a dictionary in python (which is core to the language and has nice syntactic support built-in).  My goal is to avoid that perspective and motivate the concept of Monads as a useful programming pattern.
+A Monad is really just a programming pattern that *may be* useful or may produce better code in certain situations.  That's it, and there's nothing particularly magical about it.  In Haskell, Monads have specific language syntax that makes it particularly useful, but such syntax magic isn't necessary to motivate or understand the Monad pattern.  I've found that many people who write about Monads do so from the perspective of Haskell, whose syntax and emphasis on purity makes them core to the language, and so their usefulness is more clear.  My goal is to avoid that perspective and motivate the concept of Monads as a useful programming pattern in and of itself.
 
-Okay, let's for now forget the word Monad.  It's not helpful here.  Imagine instead that you're writing a program and you've created a function f.  Imagine further that f is a function that takes an object of one type and returns an object of that same type.  In a staticly typed langauge like Java one can enforce this constraint using the compiler.  In a dynamic language like python, this isn't enforced by the language, but certainly one can write such a function.  To be concrete, let's imagine that f takes a floating point value and returns a floating point value (for example, it may square that value):
+Okay, having said all that, let's now forget the word Monad.  It's not helpful here.
+
+Imagine instead that you're writing a program in a language like Python or Java.  In your language of choice, you write a function *f*.  Let's suppose that the function *f* takes an object of one type and returns an object of that same type.  (In a statically typed language like Java, one can enforce this constraint using the compiler.  In a dynamic language like python, this isn't enforced by the language, but certainly one can write such a function and keep its signature in mind.)  To be concrete, let's imagine that f takes a floating point value and returns a floating point value (for example, it may square that value):
 
 Python:
 
@@ -24,6 +25,7 @@ def f(x):
 
 
 Java:
+
 ```java
 public static float f(float x) {
 	return x*x;
@@ -31,7 +33,7 @@ public static float f(float x) {
 ```
 
 
-Simple.  What can we do with f?  It's clear that, because f takes and returns objects of the same type, we can call f twice in a row, or "compose" f with itself:
+Simple.  What can we do with f?  It's clear that, because f takes and returns objects of the same type, we can call f twice in a row, or *compose* f with itself:
 
 
 ```python
@@ -52,7 +54,7 @@ x = f(f(f(f(f(f(10))))))
 float x = f(f(f(f(f(f(10))))));
 ```
 
-One can do this until their index finger gets tired of pressing "f".  This is all simple.  If I had a bunch of functions that all took floats and returned floats, I could freely compose those with each other and not worry about anything breaking (meaning, it would compile in Java and I wouldn't have any errors in python).  Some people would introduce the concept of a Monoid (not a spelling mistake, it's a different thing than a Monad), but if you understand the above, then adding fancy names isn't necessary at this point (but feel free to read about it yourself).
+One can do this until their index finger gets tired of pressing "f".  More generally, if I had several functions that all took floats and returned floats, I could freely compose those with each other and not worry about anything breaking (meaning, it would compile in Java and I wouldn't have any errors in python).  Some people would introduce the concept of a Monoid (not a spelling mistake, it's a different thing than a Monad), but if you understand the above, then adding fancy names isn't necessary at this point (but feel free to read about it yourself).
 
 
 Now, let's imagine a slightly more complicated case.  Imagine we have a function g that takes one type but returns another type (again, in python, type alignment isn't enforced by a compiler, but it's all there).  One can think about this generally, but to be concrete, let's first that g takes a float and returns a list of floating point numbers.  To be really simple, let's just imagine it wraps the input float in a list:
