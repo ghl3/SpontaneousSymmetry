@@ -138,13 +138,13 @@ def memo(func):
     cache = {}
 
     @wraps(func)
-    def wrap(*args):
-        if not current_app.debug or CACHE_POSTS_IN_DEBUG:
+    def wrap(*args, **kwargs):
+        if current_app and (not current_app.debug or CACHE_POSTS_IN_DEBUG):
             if args not in cache:
-                cache[args] = func(*args)
+                cache[args] = func(*args, **kwargs)
             return cache[args]
         else:
-            return func(*args)
+            return func(*args, **kwargs)
 
     return wrap
 
@@ -172,18 +172,18 @@ def get_posts_in_directory(post_folder):
 
 
 @memo
-def get_posts():
-    return get_posts_in_directory(POST_DIRECTORY)
+def get_posts(dir=None):
+    return get_posts_in_directory(dir) if dir else get_posts_in_directory(POST_DIRECTORY)
 
 
 @memo
-def get_posts_by_index():
-    posts = get_posts().values()
+def get_posts_by_index(dir=None):
+    posts = get_posts(dir=dir).values()
     return {str(post.meta['wordpress_id']):post for post in posts}
 
 @memo
-def get_ordered_posts():
-    return sorted(get_posts().values(),
+def get_ordered_posts(dir=None):
+    return sorted(get_posts(dir=dir).values(),
                   key=lambda x: x.date(), reverse=True)
 
 
@@ -201,7 +201,7 @@ def get_latest_posts(n=1):
 
 
 @memo
-def get_archive(n=None):
+def get_archive(n=None, dir=None):
     """
     An archive is an ordered dictionary of
     month-year to a list of posts
@@ -209,7 +209,7 @@ def get_archive(n=None):
 
     d = defaultdict(list)
 
-    posts = get_ordered_posts()
+    posts = get_ordered_posts(dir=dir)
 
     if n is None:
         n = len(posts)
