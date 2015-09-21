@@ -60,48 +60,32 @@ When a user wants to update their metadata, they simply create a new row in the 
 
 Similarly, deleting a user simply means adding a row for that user in the user_deletion table.  One may allow a user to become un-deleted by leveraging a boolean "deleted?" column in there (if the most recent row is "false" for a given user, that user isn't deleted.
 
-The question then is: how can one work with these tables in a reasonable way.  Having the raw data laid out like this puts a lot of onus on the app or analyst to determine the state of a user at any given time.  To make this easier, one should create views that 
+The question then is: how can one work with these tables in a reasonable way.  Having the raw data laid out like this puts a lot of onus on the app or analyst to determine the state of a user at any given time.  To make this easier, one should create views that summarize the current state of a user.
 
-When a user wants to update their m
+view user
+id | creation_time | name | email | firstname | lastname
 
-This allows for a few things
+Using a view pattern allows for a number of nice features:
+- One can create multiple views a user for whatever business logic one represents.  One can create an "initial user" view, a "current user" view, or a "user at start of year" view.  There is a lot of flexibility here.
+- One can hide any fields that one doesn't want to be queried.  Here, we're opting to not show the password_hash field for this user, and we're also hiding the times and ids of the various fact tables (though, we're free to show those if we so desire).  This is a good way to create simple tables that an app developer or an analyst can understand.
+- The view automatically looks for the latest non-null value in each column of each fact table (more on implementing this later).
+- A row for the user in the view will simply not exist if the user is in a deleted state.
 
 
-What are the pieces of data, or facts, about a user that we're here going to recognize?  First of all, a user has a core nebulous that we're here going to call a "base" that forms the central hub of all facts about the user.
+The concurrency model is much simpler since all data is immutable.  One has a few options here, but one is free to simply allow multiple threads or queries to update a fact table and leverage the view to enforce "last write wins" on the table.  The database's concurrency model will ensure that all updates appear in the table, and when you query the view, you simply get the the latest data for each fact table.  So, a lot of the concurrency headaches involved with mutating data in-place go away.  But one can still leverage the database's beautiful concurrency primitives.  For example, if one wants to query two different views and ensure that the state of those views are consistent with each other, the database can enforce that (for example, by making the queries in a single transaction and leveraging the database's consistency and isolation guarantees).
 
-Example:
+One can also pretty easily implement optimistic locking on fact tables if one wants a stricter concurrency model than "last write wins", and "select for update" is always available if so desired.  But, for many cases, these aren't necessary
 
-User
-What are the stages of a user?
-- User creation
-- User update
-- Additional User Metadata
-- Delete user
+One big advantage of this type of setup is that it eliminates the need for an ORM.  Without having to mutate objects, one doesn't need data entities to come with a ".save()" method.  One simply needs to be able to do two things:
+- Add new rows to fact tables
+- Read from views
 
-Tables
-
-user_signup
-id | time | name | email | password_hash
-12 | XX-YY-2015 | user@site.com | #####
-
-user_metadata
-id | time | user_id | firstname | lastname
-15 | 01-01-ZZZZ | 12 | John | Doe
-16  | 01-02-ZZZZ | 12 | Jane | NULL
-
-User:
-View of user_signup + latest non-null column in user_metadata
-
-Optionally, one can create a view of user_metadata_latest
-
-Notes
-- Concurrency: The concurrency model is much simpler since all data is immutable.  The database will ensure that all views are consistent.  One can leverage transactions to get consistent values of a view over a longer duration.  If, for example, one needs two views to be consistent, one should still leverage a transaction to pull them with separate queries.  But, one can also simply pull an updated view on-demand instead of holding a transaction open, or just pull data once and be done with it.
-- ORM: This eliminates much of the need of an ORM.  One can leverage queriers that return data.  This data can map to in-memory objects in your data model, but the need for those objects to be "magic" and to have "save" functions is eliminated.  Rows are not saved.  One has functions which generate new rows from objects, and one has functions that return objects from existing rows.
-
-Example:
+One can therefore create a data model for an in-memory representation of one's data, but those objects don't need to be "magic" and won't have to be polluted by an ORM.  One can instead leverage plain-old-objects simple-to-reason-about functions.  For example, in a Java-like language:
 
 public class User {
      public final String name;
+     public final String firstname;
+     public final String lastname;
      public final String email;
 }
 
@@ -110,9 +94,14 @@ public static User getUser(Long id) {
      ...
 }
 
-public static Boolean saveUserSignUp(String name, String email) {
-     if (! valid) { return false;}
-     ... save ...
-     if (success) { return true;}
-     else { return false; }
+public static Long createNewUser(name) {
+	return id;
 }
+
+public static User updateMetadata(Long id, String firstname, String lastname) {
+	validate(firstname, lastname);
+	DB.newRow(id, firstname, lastname);
+	return getUser(id);
+}
+
+The above functions are pseudo-code.  They may internally be wrapped in database transactions.  But the main point is that the data going into them or coming out of them is simple data.  Since that data doesn't have the entire global state of the database attached to it (as is the case for data entities attached to an ORM), they can be freely passed to pure functions without fear of side effects.
