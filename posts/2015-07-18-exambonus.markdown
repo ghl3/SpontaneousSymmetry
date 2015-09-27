@@ -1,9 +1,9 @@
 ---
-author: 
+author: George
 date: 2015-07-18 17:55:10.607992
 layout: post
 slug: exambonus
-title: Exambonus
+title: Exam Bonus
 id: 446
 ---
 
