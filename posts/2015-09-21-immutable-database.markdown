@@ -121,3 +121,46 @@ One can therefore create a data model for an in-memory representation of one's d
     }
 
 The above functions are pseudo-code.  They may internally be wrapped in database transactions.  But the main point is that what goes into them or comes out of them is pure and simple data.  Since that data doesn't have the entire global state of the database attached to it (as is the case for data entities attached to an ORM), they can be freely passed to pure functions without fear of side effects.
+
+## Example Data
+
+To test out this concept, I've created a gist that instantiates a database following these principals and fills it with fake data.  The gist can be found <a href=https://gist.github.com/ghl3/7e8147ae4dcf08f3d325>here</a>.  Specifically, one can see a script populate the database with fake data <a href="https://gist.github.com/ghl3/7e8147ae4dcf08f3d325#file-generate_data-py">here</a>.
+
+Adding 100,000 rows, with occasional updates and deletes, we see similar performance in direct-user queries both by looking at the simple user_base table and by querying the view:
+
+
+<pre>
+immutable_database=> EXPLAIN ANALYZE SELECT * FROM user_base WHERE id=177526;
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using user_base_pkey on user_base  (cost=0.29..8.31 rows=1 width=12) (actual time=0.025..0.026 rows=1 loops=1)
+   Index Cond: (id = 177526)
+ Total runtime: 0.062 ms
+(3 rows)
+</pre>
+
+
+<pre>
+immutable_database=> EXPLAIN ANALYZE SELECT * FROM users WHERE id=177526;
+                                                                                QUERY PLAN                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop Left Join  (cost=20.56..36.67 rows=1 width=108) (actual time=0.210..0.212 rows=1 loops=1)
+   ->  Nested Loop Left Join  (cost=10.07..26.15 rows=1 width=44) (actual time=0.094..0.096 rows=1 loops=1)
+         ->  Nested Loop Left Join  (cost=0.58..16.63 rows=1 width=12) (actual time=0.029..0.030 rows=1 loops=1)
+               Join Filter: (user_deletion.user_id = user_base.id)
+               Filter: (user_deletion.id IS NULL)
+               ->  Index Scan using user_base_pkey on user_base  (cost=0.29..8.31 rows=1 width=12) (actual time=0.018..0.018 rows=1 loops=1)
+                     Index Cond: (id = 177526)
+               ->  Index Scan using user_deletion_user_id_time_is_deleted_idx on user_deletion  (cost=0.29..8.30 rows=1 width=8) (actual time=0.005..0.005 rows=0 loops=1)
+                     Index Cond: (user_id = 177526)
+         ->  Aggregate  (cost=9.49..9.50 rows=1 width=27) (actual time=0.062..0.062 rows=1 loops=1)
+               ->  Index Scan using user_credentials_user_id_idx on user_credentials  (cost=0.42..8.49 rows=4 width=27) (actual time=0.007..0.008 rows=1 loops=1)
+                     Index Cond: (user_id = user_base.id)
+   ->  Aggregate  (cost=10.49..10.50 rows=1 width=21) (actual time=0.114..0.114 rows=1 loops=1)
+         ->  Index Scan using user_metadata_user_id_idx_idx on user_metadata  (cost=0.42..8.49 rows=4 width=21) (actual time=0.010..0.011 rows=4 loops=1)
+               Index Cond: (user_id = user_base.id)
+ Total runtime: 0.303 ms
+(16 rows)
+</pre>
+
+So, there's clearly overhead in pulling al the additional data, looking for the most recent values, etc.  But at a runtime of < 1 ms, this pattern should be sufficiently performant for most apps without further optimizations.  (On the other hand, doing a COUNT(*) is much slower on the user table, but this isn't a common operation for production apps, and is more likely to be used in offline analytics where it can be specifically optimized).
