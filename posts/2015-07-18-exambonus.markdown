@@ -26,16 +26,17 @@ However, because the strategy is driven by randomness, the perfect 90%/10% split
 
 We can actually calculate the success of this strategy.  Let's assume that we have classrooms consisting of 1, 10, 20, 50, and 100 students taking the exam, and in each group, each student selects 6 bonus points with a probability of p.  Here is what the average number of points looks like in each such scenario (averaged over 100 experiments per test point):
 
-<img src="https://gist.githubusercontent.com/ghl3/8e306f920ce08bd1f23e/raw/0c30e30cc80fbe3a2ef46c4325db7abab6cd1fba/experiment_distribution.png"></img>
+<img src="https://gist.githubusercontent.com/ghl3/8e306f920ce08bd1f23e/raw/56837fdcb941f7d6c5197834e9bd41ca1054b848/experiment_distribution.png"></img>
 
 As one can see, the number of students in the class determines the size of the tail to the right.  With fewer students, we can afford to pick p with a higher probability and still get non-negligable points on average.  But, as the number of students goes up, the standard deviation does down, and the overall distribution approaches the mean.  So, with high number of students, any probability of picking 6 greater than 0.10 will likely result in > 10% of students picking 6 and therefore no students earning any bonus points.
 
 For each class size, we can optimize the probability with which each student should pick 6 bonus points to maximize the average number of bonus points earned by the group:
 
-<img src="https://gist.github.com/ghl3/8e306f920ce08bd1f23e/raw/0c30e30cc80fbe3a2ef46c4325db7abab6cd1fba/optimal_probability.png"></img>
+<img src="https://gist.githubusercontent.com/ghl3/8e306f920ce08bd1f23e/raw/56837fdcb941f7d6c5197834e9bd41ca1054b848/optimal_probability.png"></img>
 
 Interestingly, as the number of students goes up, the optimal probability goes up.  This is because, as the number of students approaches infinity, the probability will approach 10%.  But, for any finite number of students, the recommendation is to pick 6 with a probability < 10%.  So, the optimal strategy is actually to be pretty conservative: Only a small fraction of the total students will get those valuable 6 bonus points, leaving the majority of the class with only 2.  This is necessary to avoid the risk of total ruin that happens when one breaks that dreaded 10% student population threshold.
 
 
 
+<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>expected_points</th>      <th>probability</th>    </tr>  </thead>  <tbody>    <tr>      <th>1 student</th>      <td>2.000000</td>      <td>0.000</td>    </tr>    <tr>      <th>10 students</th>      <td>2.037600</td>      <td>0.018</td>    </tr>    <tr>      <th>20 students</th>      <td>2.080000</td>      <td>0.024</td>    </tr>    <tr>      <th>50 students</th>      <td>2.135520</td>      <td>0.046</td>    </tr>    <tr>      <th>100 students</th>      <td>2.180340</td>      <td>0.050</td>    </tr>    <tr>      <th>500 students</th>      <td>2.268472</td>      <td>0.072</td>    </tr>    <tr>      <th>1000 students</th>      <td>2.300432</td>      <td>0.078</td>    </tr>  </tbody></table>
 
