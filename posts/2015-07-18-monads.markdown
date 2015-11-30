@@ -95,7 +95,7 @@ x = g(tmp[0])
 ```
 
 ```java
-float tmp = g(10.0);
+Lis<Float> tmp = g(10.0);
 float x = g(tmp.get(0));
 ```
 
@@ -134,7 +134,7 @@ x = g(tmp[0])
 ```
 
 ```java
-float tmp = h(10.0);
+List<Float> tmp = h(10.0);
 float x = g(tmp.get(0));
 ```
 
@@ -148,7 +148,7 @@ x = g(tmp[0])
 ```
 
 ```java
-float tmp = h(-10.0);
+List<Float> tmp = h(-10.0);
 float x = g(tmp.get(0));
 ```
 
@@ -165,7 +165,7 @@ else:
 ```
 
 ```java
-float tmp = h(-10.0);
+List<Float> tmp = h(-10.0);
 float x;
 if (tmp.size() > 0) {
 	x = g(tmp.get(0));
@@ -174,7 +174,9 @@ if (tmp.size() > 0) {
 }
 ```
 
-And that works, though it's a bit cumbersome.  One thing to note is that it makes us explicitly state what we want to do when the tmp list is empty, which we here assume that we want x to be an empty list.  What we really wanted to do was write g(h(-10.0)).  Instead, we had to write boilerplate to make that work.  That's not the end of the world, but as programmers, we like to look for patterns that can help us avoid boilerplate whenever possible.  Perhaps this is an opportunity to decompose the above code into an abstract pattern.
+And that works, though it's a bit cumbersome.  One thing to note is that it makes us explicitly state what we want to do when the tmp list is empty (we here assume that we want x to be the empty list).  What we really wanted to do was write g(h(-10.0)).  Instead, we had to write boilerplate to make that work.
+
+That's not the end of the world, but as programmers, we like to look for patterns that can help us avoid boilerplate whenever possible.  Perhaps this is an opportunity to decompose the above code into an abstract pattern.
 
 Before doing so, let's quickly look at another simple example so we don't over-optimize for our specific functions g and h.
 
@@ -251,15 +253,15 @@ To compose our functions, we essentially had to answer the question:
 
 With our g, h example, we did this by taking the first (and only) float from the list and passing that float to a function.  In our second example, we took a StringPair, passed the string component to the function, got back a new string pair, and then added their length fields.
 
-If, for a group of functions with the same signature, we were able to come up with such a rule, then we could freely compose those functions.  One can think of this process as defining a function that takes an object of type B and a function of type A to B and returns an object of type B.  There are a number of conventional names for this type of function.  Here, we're going to call it "lift".  In a sense, we're taking a function that takes an A and "lifting" it into a function that takes a B.  (We will later learn that defining a "lift" operation is one of the requirements for satisfying the Monad pattern, but again, that isn't relevant right now).
+If, for a group of functions with the same signature, we were able to come up with such a rule, then we could freely compose those functions.  One can think of this process as defining a function that takes an object of type B and a function of type A to B and returns an object of type B.  There are a number of conventional names for this type of function.  Here, we're going to call it "bind".  (We will later learn that defining a "bind" operation is one of the requirements for satisfying the Monad pattern, but again, that isn't relevant right now).
 
 
-Let's define lift functions for the previous examples.  Recall that lift takes (a function that takes an A and returns a B) and (an object of class B) and returns a B.  
+Let's define bind functions for the previous examples.  Recall that bind takes (a function that takes an A and returns a B) and (an object of class B) and returns a B.  
 
 For our g, h example:
 
 ```python
-def lift(g, x):
+def bind(g, x):
 	if len(x) > 0:
 		return g(x[0])
 	else:
@@ -271,7 +273,7 @@ public interface Function<T, U> {
 	U call(T t);
 }
 
-public static List<Float> lift(Function<Float, List<Float>> g, List<Float> x) {
+public static List<Float> bind(Function<Float, List<Float>> g, List<Float> x) {
 	if (x.size() > 0) {
 		return f.call(x.get(0));
 	} else {
@@ -284,32 +286,32 @@ public static List<Float> lift(Function<Float, List<Float>> g, List<Float> x) {
 For our p example:
 
 ```python
-def lift(p, x):
+def bind(p, x):
 	s, length = y
 	y = p(s)
 	return (y[0], y[1]+length)
 ```
 
 ```java
-public static StringPair lift(Function<String, StringPair> p, StringPair x) {
+public static StringPair bind(Function<String, StringPair> p, StringPair x) {
 	StringPair y = p.call(x.s);
 	return new StringPair(y.x, x.length + y.length);
 }
 ```
 
-We've successfully moved our boilerplate code into our new "lift" functions.  This is a step in the right direction: encapsulating messy functionality and boilerplate is usually a good thing.  We can now compose our g, h, and p functions in the following way:
+We've successfully moved our boilerplate code into our new "bind" functions.  This is a step in the right direction: encapsulating messy functionality and boilerplate is usually a good thing.  We can now compose our g, h, and p functions in the following way:
 
 
 ```python
-lift(g, lift(h, lift(g, lift(h, [10.0]))));
+bind(g, bind(h, bind(g, bind(h, [10.0]))));
 ``` 
 
 
 ```java
-lift(g, lift(h, lift(g, lift(h, new ArrayListList<Float>(10.0)))));
+bind(g, bind(h, bind(g, bind(h, new ArrayListList<Float>(10.0)))));
 ``` 
 
-This looks a lot like the composition that we really want to write!  The only somewhat annoying part is the expression in the inner-most nested function call where we have to wrap our raw value, 10.0, in a List.  This is necessary because, as we saw before, our lift function's second parameter is List<Float>, and not a raw float.
+This looks a lot like the composition that we really want to write!  The only somewhat annoying part is the expression in the inner-most nested function call where we have to wrap our raw value, 10.0, in a List.  This is necessary because, as we saw before, our bind function's second parameter is List<Float>, and not a raw float.
 
 We can wrap that action into another function that we'll here call "unit" ("unit" is not a good or clear name at all.  I'll here admit that I'm giving it that name only due to conventions.  I think "wrap" would be a better name for what we want it to do).  Essentially, our new "unit" function takes an object of type A and returns an object of type B.  For our first example, we can define unit as:
 
@@ -329,29 +331,29 @@ With these definitions, our composition looks like:
 
 
 ```python
-lift(g, lift(h, lift(g, lift(h, unit(10.0)))))
+bind(g, bind(h, bind(g, bind(h, unit(10.0)))))
 ``` 
 
 
 ```java
-lift(g, lift(h, lift(g, lift(h, unit(10.0)))));
+bind(g, bind(h, bind(g, bind(h, unit(10.0)))));
 ``` 
 
 (It's satisfying that, at this point, the python and the java are exactly the same, other than a semi-colon.  Actually, semi-colons are legal in python, so I could make them literally the same code.  That's a good sign that our abstractions are moving in the right direction).
 
 
-We're nearly done.  The next step is to encapsulate our "lift" and "unit" functions into a class (since we may want to define many different "lift" and "unit" functions for different examples, such as g, h vs p).  Let's go ahead and do it:
+We're nearly done.  The next step is to encapsulate our "bind" and "unit" functions into a class (since we may want to define many different "bind" and "unit" functions for different examples, such as g, h vs p).  Let's go ahead and do it:
 
 
 ```python
 class M:
-	def lift(...)
+	def bind(...)
 	def unit(...)
 ```
 
 ```java
 public static class M {
-	public static List<Float> lift(Function<Float, List<Float>> f, List<Float> x) {
+	public static List<Float> bind(Function<Float, List<Float>> f, List<Float> x) {
 		...
 	}
 	public static List<Float> unit(Float f) {
@@ -360,26 +362,26 @@ public static class M {
 }
 ```
 
-As one can guess by it's name, "M" is a Monad (I'm not going to here go over the technical definition of a Monad.  For the purposes of this discussion, a class with the "lift" and "unit" functions is a Monad).
+As one can guess by it's name, "M" is a Monad (I'm not going to here go over the technical definition of a Monad.  For the purposes of this discussion, a class with the "bind" and "unit" functions is a Monad).
 
 
-This next step isn't strictly necessary, but it allows me to implement some final syntactic sugar.  In addition to "lift" and "unit", I'm going to define a function called "comp".  All "comp" will do is call either "lift" or "unit", depending on if the value is an A or a B.  For our first example, this means either calling lift or unit depending on if the value is a list or a float:
+This next step isn't strictly necessary, but it allows me to implement some final syntactic sugar.  In addition to "bind" and "unit", I'm going to define a function called "comp".  All "comp" will do is call either "bind" or "unit", depending on if the value is an A or a B.  For our first example, this means either calling bind or unit depending on if the value is a list or a float:
 
 
 ```python
 def comp(g, x):
 	if isinstance(x, list):
-		return lift(g, x)
+		return bind(g, x)
 	else:
-		return lift(g, unit(x))
+		return bind(g, unit(x))
 ```
 
 ```java
 public static List<Float> comp(Function<Float, List<Float>> f, List<Float> x) {
-    return lift(f, x);
+    return bind(f, x);
 }
 public static List<Float> comp(Function<Float, List<Float>> f, Float x) {
-    return lift(f, unit(x));
+    return bind(f, unit(x));
 }
 ```
 
@@ -393,7 +395,7 @@ comp(h, comp(g, comp(h, comp(g, 10.0))))
 comp(h, comp(g, comp(h, comp(g, 10.0))));
 ```
 
-While some of what we did may seen arbitrary, it ended up allowing us to write the composition we wanted in the above style.  One can probably do better syntactically to make the composition prettier, but this is as far as I'll go, as I think it makes the point clear.  By expressing our "special composition" into the "lift" and "unit" functions, we are able to compose our g and h functions freely together (leveraging our "comp" function).  With this syntax, it's easy to see that we're just composing functions together, which is more difficult to see with all the boilerplate code that we managed to remove.
+While some of what we did may seen arbitrary, it ended up allowing us to write the composition we wanted in the above style.  One can probably do better syntactically to make the composition prettier, but this is as far as I'll go, as I think it makes the point clear.  By expressing our "special composition" into the "bind" and "unit" functions, we are able to compose our g and h functions freely together (leveraging our "comp" function).  With this syntax, it's easy to see that we're just composing functions together, which is more difficult to see with all the boilerplate code that we managed to remove.
 
 So, once again, why is this a useful thing to have done, or to think about?  If you ask me, I think the most useful part of this exercise is in flexing our abstraction powers: to learn how to take a few examples of messy, boilerplate code and to be able to merge it into simpler constructs that better express the intent of what we want.  But, more tangibly, we've managed to separate the "what" (composing multiple functions) with the "how".  We can write the "how" in one place and then freely compose any functions that have our desired signature.  This all seems like a lot of work in the case where g and h are so simple, but in more complicated cases, being able to write f, g, and M separately and later combine them allows us to write business logic more clearly, and that's really one of the primary goals of any abstraction.
 
