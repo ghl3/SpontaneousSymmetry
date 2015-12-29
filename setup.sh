@@ -26,7 +26,7 @@ cd SpontaneousSymmetry.git
 sudo git --work-tree=$SITE_DIRECTORY checkout -f master
 rm hooks/*.sample
 cd hooks
-ln -s $SITE_DIRECTORY/deploy/git-post-receive
+ln -s $SITE_DIRECTORY/deploy/git-post-receive post-receive
 
 
 # Setup nginx
