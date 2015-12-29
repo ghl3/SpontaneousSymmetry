@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 echo "Pushing to production server"
 
@@ -13,7 +13,7 @@ do
         sudo git --work-tree=$SITE_DIRECTORY checkout -f $branch
 
         echo 'Updating python dependencies'
-        cd $SITE_DIRECTORY && . venv/bin/activate && pip install -r requirements.txt && deactivate && cd -
+        cd $SITE_DIRECTORY && . venv/bin/activate && sudo pip install -r requirements.txt && deactivate && cd -
 
         echo 'Restarting uwsgi service'
         sudo service uwsgi restart
