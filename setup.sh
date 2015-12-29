@@ -18,6 +18,7 @@ sudo apt-get install -y python-dev
 
 mkdir -p /home/ubuntu/git-repo/ && cd /home/ubuntu/git-repo/
 git clone --bare https://github.com/ghl3/SpontaneousSymmetry.git
+sudo chown -R ubuntu SpontaneousSymmetry.git/
 export SITE_DIRECTORY=/var/www/spontaneoussymmetry
 sudo mkdir -p $SITE_DIRECTORY
 sudo chown www-data $SITE_DIRECTORY
