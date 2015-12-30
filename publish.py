@@ -1,4 +1,6 @@
 
+import os
+
 import argparse
 
 from flask import Flask
@@ -49,13 +51,8 @@ def publish_post(post, archive_dict, target_directory, overwrite):
 
     with app.app_context():
         html = render_template('post.html', post=post, archive=archive_dict)
-    #html = render_without_request('post.html', post=post, archive=archive_dict)
 
-    target = target_directory + '/' + post.path()
-
-    print target
-    print html
-    return
+    target = target_directory + '/' + post.url()
 
     if overwrite:
         f = open(target, 'w+')
@@ -66,21 +63,6 @@ def publish_post(post, archive_dict, target_directory, overwrite):
 
     f.write(html)
     f.close()
-
-
-
-
-# def render_without_request(template_name, **template_vars):
-#     """
-#     Usage is the same as flask.render_template:
-
-#     render_without_request('my_template.html', var1='foo', var2='bar')
-#     """
-#     env = jinja2.Environment(
-#         loader=jinja2.PackageLoader('blog', 'blog_templates')
-#     )
-#     template = env.get_template(template_name)
-#     return template.render(**template_vars)
 
 
 if __name__ == '__main__':
