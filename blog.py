@@ -26,6 +26,8 @@ POST_DIRECTORY = os.path.dirname(sys.modules[__name__].__file__)  + '/posts'
 CACHE_POSTS_IN_DEBUG = False
 
 
+
+
 class Post(object):
     """
     A representation of a blog post.
@@ -179,7 +181,7 @@ def get_posts(dir=None):
 @memo
 def get_posts_by_index(dir=None):
     posts = get_posts(dir=dir).values()
-    return {str(post.meta['wordpress_id']):post for post in posts}
+    return {str(post.post_id()): post for post in posts}
 
 @memo
 def get_ordered_posts(dir=None):
@@ -219,6 +221,11 @@ def get_archive(n=None, dir=None):
         d[year_month].append(post)
 
     return OrderedDict(sorted(d.items(), reverse=True))
+
+
+def warm_cache():
+    get_archive()
+    get_posts_by_index()
 
 
 @Blog.route('/archive/<year>/<month>')

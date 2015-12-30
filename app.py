@@ -13,12 +13,15 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
+import blog
 from blog import Blog
 
 
 app = Flask(__name__)
 
 app.register_blueprint(Blog, url_prefix='/blog')
+
+blog.warm_cache()
 
 
 @app.route('/')
