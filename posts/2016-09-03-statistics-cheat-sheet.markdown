@@ -11,6 +11,12 @@ id: 446
 This is a short reference guide, or cheat sheet, for how to solve some well-defined and well studied statistical questions.  
 
 
+
+## I have an observation consisting of a single count.  Is it consistent with an expected count?
+
+
+
+
 ## I have a single set of data.  Does it come from a given distribution?
 
 
@@ -65,6 +71,7 @@ To calculate the p-value, one compares this test statistic to the CDF of a t-dis
 
 A t-distribution approaches a gaussian as sample size increases.
 
+For further discussion of t-tests, see <a href="#students-t">here</a>.
 
 References:
 
@@ -85,10 +92,51 @@ References:
 
 - http://www.itl.nist.gov/div898/handbook/eda/section3/eda35g.htm
 
+___
+
 
 ***Does my binned data come from a known distribution?***
 
-Use a chi-squared test.  Take the difference between the expected value and the bin height, divide by the error, square it and sum, and this follows a chi-squared distribution with n degrees of freedom, where n are the data points.
+Use a chi-squared goodness-of-fit test.  This is an approximate that depends on sufficient sample sizes to be fully accurate.
+
+It is performed by defining:
+
+- $O_i$ as the bin height
+- $T_i$ is the theoretical bin height
+
+If the theoretical distribution is continuous, the theoretical bin height, $T_i$, *can* be obtained by taking the value of the continuous variable at the center of each bin, $f_i$, and multiplying it by the sample size, $n$:
+
+- $T_i$ = $f_i$n (if the distribution is continuous)
+
+One need not use the bin center and there are other ways to define this.
+
+The test statistic is calculated as:
+
+$$
+\chi^2 = \sum_i (O_i - T_i)^2 / T_i
+$$
+
+Note that, in a typical chi-square test, we are summing the square difference between the observed value and the theoretical value divided by the square of the error.
+
+Here, we assume that the error on the size of each bin is the square root of the theoretical value, $T_i$.  This makes sense in the case where the theoretical bin hight is given by drawing poisson counts with some overall expected rate.  However, if one has other external knowledge of the errors, one can leverage these here.
+
+This test statistic is follows a chi-squared distribution with degrees of freedom, $d$, given by:
+
+$$
+d = (number of non-empty bins) - (number of parameters fitted in obtaining the theoretical distribution)
+$$
+
+(If you are simply handed the theoretical distribution, then $d$ is equal to the number of non-empty bins).
+
+For further discussion of chi-squared tests, see <a href="#chi-squared">here</a>.
+
+
+References: 
+
+- http://www.itl.nist.gov/div898/handbook/eda/section3/eda35f.htm
+- http://stattrek.com/chi-square-test/goodness-of-fit.aspx?Tutorial=AP
+
+___
 
 
 ## I have two samples of 1-d data.  Do they come from the same distribution?
@@ -193,10 +241,13 @@ Another common set of examples is when examining the maximum likelihood estimate
 
 $$({\hat{\theta }}-\theta _{0})/{{\rm {SE}}}({\hat  {\theta }})$$
 
+
+<a name="students-t"></a>
 #### What is a Student's t test?
 
 
 
+<a name="chi-squared"></a>
 #### What is a chi-squared test?
 
 
