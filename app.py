@@ -20,14 +20,11 @@ from blog import Blog
 app = Flask(__name__)
 
 app.register_blueprint(Blog, url_prefix='/blog')
-
 blog.warm_cache()
-
 
 @app.route('/')
 def index():
     return render_template('index.html'),
-
 
 @app.route('/info')
 def info():
@@ -37,19 +34,24 @@ def info():
 def projects():
     return render_template('work.html')
 
-
 @app.route('/work/atlas')
 def work():
     return render_template('atlas.html')
-
 
 @app.route('/links')
 def links():
     return render_template('links.html')
 
-
 @app.route('/code')
 def code():
+    return render_template('code.html')
+
+@app.route('/stats/cheat-sheet')
+def code():
+
+    content = Markup(markdown.markdown(content))
+    return render_template('index.html', **locals())
+
     return render_template('code.html')
 
 
