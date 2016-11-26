@@ -45,23 +45,28 @@
     {% endblock %}
 
     <div class="document">
-
       <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="content">
-            {% block content %}
+
+        <div class="sidebar leftbar">
+          <div class="sidebarwrapper">
+
+            {% block sidebar %}
             {% endblock %}
+
           </div>
         </div>
-      </div>
 
-
-      <div class="sidebar">
-        <div class="sidebarwrapper">
-          {% block sidebar %}
+        <div class="content">
+          {% block content %}
           {% endblock %}
         </div>
-      </div>
+
+        <div class="sidebar rightbar">
+          <div class="sidebarwrapper">
+          </div>
+        </div>
+
+      </div> <!-- End Document Wrapper -->
 
       <div class="clearer">
       </div>
@@ -69,7 +74,7 @@
     </div> <!-- End document -->
 
     <div class="footer">
-      &copy; Copyright 2014, George Herbert Lewis.
+      &copy; Copyright 2016, George Herbert Lewis.
     </div>
 
     {% include "analytics.html" %}

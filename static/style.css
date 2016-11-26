@@ -20,8 +20,11 @@ img {
 
 .content {
   overflow: hidden;
-  margin-left: 20px;
- }
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 600px;
+ display: inline-block;
+}
 
 .content p {
   width: 100%;
@@ -54,19 +57,16 @@ div.body {
   padding: 0 30px 0 30px;
 }
 
-div.bodywrapper {
-  margin: 0 0 0 220px;
-}
-
 div.document {
-  width: 940px;
-  margin: 30px auto 0 auto;
+  width: 1080px;
+  margin: 30px auto 30px auto;
 }
 
 div.documentwrapper {
   float: left;
   width: 100%;
 }
+
 
 h1 h2 h3 h4 h5 {
   color: black;
@@ -101,12 +101,20 @@ p a:hover {
 /* SIDEBAR */
 
 div.sidebar {
-  float: left;
   width: 220px;
-  margin-left: -100%;
+  min-width: 220px;
+  min-height: 10px;
   font-size: 90%;
   font-size: 14px;
   line-height: 1.8;
+}
+
+div.leftbar {
+  float:left;
+}
+
+div.rightbar {
+  float:right;
 }
 
 div.sidebar a {
@@ -127,7 +135,7 @@ div.sidebar ul {
 }
 
 div.sidebarwrapper {
-  padding: 10px 5px 0 10px;
+  padding: 0px 0px 0 0px;
 }
 
 .sidebar_image {
