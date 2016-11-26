@@ -33,9 +33,9 @@ def index():
 def info():
     return render_template('info.html')
 
-@app.route('/projects')
+@app.route('/work')
 def projects():
-    return render_template('projects.html')
+    return render_template('work.html')
 
 
 @app.route('/work/atlas')
@@ -54,12 +54,13 @@ def code():
 
 
 APP_MAP = {
-    'RocksPaper' : 'rockspaper.html',
-    'BouncingBalls' : 'bouncingballs.html'
+    'rockspaper' : 'rockspaper.html',
+    'bouncingballs' : 'bouncingballs.html'
 }
 
 @app.route('/app/<app>')
 def rockspaper(app):
+    app = app.lower()
     if app in APP_MAP:
         return render_template('apps/' + APP_MAP[app], title=app)
 

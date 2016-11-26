@@ -171,3 +171,14 @@ div.footer {
 div.footer a {
   color: #888;
 }
+
+div.break {
+    content: '';
+    display: block;
+    width: 150px;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    margin: 30px auto;
+     padding: 0;
+
+
+}
