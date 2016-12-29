@@ -47,7 +47,7 @@ def code():
     return render_template('code.html')
 
 @app.route('/stats/cheat-sheet')
-def code():
+def cheat_shet():
 
     content = Markup(markdown.markdown(content))
     return render_template('index.html', **locals())
