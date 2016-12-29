@@ -61,41 +61,32 @@ class Post(object):
     def path(self):
         return self._path
 
-
     def date(self):
         return self.meta['date'].date()
-
 
     def datetime(self):
         return self.meta['date']
 
-
     def stub(self):
         return self.meta['slug']
-
 
     def author(self):
         return self.meta['author']
 
-
     def url(self):
         return self._path_date + "-" + self.stub()
-
 
     def title(self):
         return self.meta['title']
 
-
     def categories(self):
         return list(self.meta['categories'])
-
 
     def post_id(self):
         try:
             return self.meta['id']
         except KeyError:
             return self.meta['wordpress_id']
-
 
     class InvalidPost(Exception):
         pass
@@ -106,7 +97,6 @@ def convert_date(date_str):
         return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
     except ValueError:
         return datetime.datetime.strptime(date_str.split()[0], '%Y-%m-%d').date()
-
 
 
 def separate_yaml(raw):
@@ -188,6 +178,20 @@ def get_ordered_posts(dir=None):
     return sorted(get_posts(dir=dir).values(),
                   key=lambda x: x.date(), reverse=True)
 
+
+@memo
+def load_and_render_page(path):
+    """
+    Load a generic page (not a blog post) from disk
+    given a path to the markdown.
+    Render the markdown as html and return the html
+    as a string.
+    """
+    with open(path, 'r') as f:
+        raw = f.read()
+        meta, content = separate_yaml(raw)
+        html = Markup(markdown.markdown(content))
+        return meta, html
 
 def load_post(post):
     """

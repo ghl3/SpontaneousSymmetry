@@ -47,12 +47,14 @@ def code():
     return render_template('code.html')
 
 @app.route('/stats/cheat-sheet')
-def cheat_shet():
+def cheat_sheet():
+    meta, body = blog.load_and_render_page('pages/statistics-cheat-sheet.markdown')
+    return render_template('page.html', content=body)
+    #return html
+    #content = Markup(markdown.markdown(content))
+    #return render_template('index.html', **locals())
 
-    content = Markup(markdown.markdown(content))
-    return render_template('index.html', **locals())
-
-    return render_template('code.html')
+    #return render_template('code.html')
 
 
 APP_MAP = {
