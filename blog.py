@@ -22,7 +22,8 @@ from flask import current_app
 
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
-POST_DIRECTORY = os.path.dirname(sys.modules[__name__].__file__)  + '/posts'
+BASE_PATH = os.path.dirname(sys.modules[__name__].__file__)
+POST_DIRECTORY = BASE_PATH + '/posts'
 CACHE_POSTS_IN_DEBUG = False
 
 

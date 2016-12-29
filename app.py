@@ -48,7 +48,7 @@ def code():
 
 @app.route('/stats/cheat-sheet')
 def cheat_sheet():
-    meta, body = blog.load_and_render_page('pages/statistics-cheat-sheet.markdown')
+    meta, body = blog.load_and_render_page(blog.BASE_PATH + '/pages/statistics-cheat-sheet.markdown')
     return render_template('page.html', content=body)
     #return html
     #content = Markup(markdown.markdown(content))
