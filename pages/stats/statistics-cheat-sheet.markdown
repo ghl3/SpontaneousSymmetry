@@ -8,34 +8,33 @@ id: 446
 ---
 
 
-This is a short reference guide, or cheat sheet, for how to solve some well-defined and well studied statistical questions.  
+This is a short reference guide, or cheat sheet, for how to solve some well-defined and well studied statistical questions.
+
+<hr>
 
 
 
-## I have an observation consisting of a single count.  Is it consistent with an expected count?
+### Comparing measured data to an expected distribition
 
 
+***I have a dataset consisting of a number of 1-d observations.  Does my data comes from a Gaussian distribution with a specific mean and variance?***
 
+To answer this question, one can apply a Gaussian Z-Test.  This is a hypothesis test that calculates the p-value of your data given a gaussian distribution with fully specified mean and variance.  There are no nuisance parameters, so the p-value is well defined.  The p-value is calculated analytically using known properties of the gaussian distribution.
 
-## I have a single set of data.  Does it come from a given distribution?
-
-
-***Does my data comes from a Gaussian distribution with a specific mean and variance***
-
-One should apply a Gaussian Z-Test.  To perform this test, first define:
+To perform this test, first define:
 
 - $\bar{x}$ as the sample mean
 - n is the sample size
 - $\mu$ is theoretical mean of the distribution we're testing against
 - $\sigma$ is the theoretical variance of the distribution we're testing against
 
-One then calculate the test statistic as 
+Next, calculate the test statistic as 
 
 $$
 z = \frac{\hat{x} - \mu}{\sigma/\sqrt{n}}
 $$
 
-This test statistic follows a gaussian distribution and one can use gaussian CDF tables to determine p values (either one-tailed or two-tailed).
+This test statistic follows a gaussian distribution and one can use gaussian CDF tables to determine the p-value of the given data (either one-tailed or two-tailed).
 
 References:
 
@@ -45,8 +44,12 @@ References:
 
 ___
 
-***Does my data come from a Guassian distribution with a known mean but unknown variance*** 
+***I have a dataset consisting of a number of 1-d observations.  Does my data come from a Guassian distribution with a known mean but unknown variance*** 
 <!--If I assume that my data comes from some Gaussian distribution with unknown mean and unknown variance, does it come from a gaussian with a given mean (regardless of the unknown variance)?-->
+
+In this instance, we are going to perform a p-value test to compare our data to a gaussian model with a known mean.  However, we are allowing any possible variance for the gaussian, which introduces a nuisance parameter.  We must first think through what we are really trying to determine.  One interpretation is, "Does there exist a gaussian distribution with the given mean and SOME variance which is consistent with the data I'm observing".  
+
+
 
 
 One should apply a one-sample t-test.  This is essentially a Z-test where one doesn't know the population variance.  One therefore must estimate it from the sample, which adds additional uncertainty.
@@ -76,6 +79,7 @@ For further discussion of t-tests, see <a href="#students-t">here</a>.
 References:
 
 - http://lap.umd.edu/psyc200/handouts/psyc200_0810.pdf
+- http://www.statisticssolutions.com/manova-analysis-one-sample-t-test/
 
 ___
 

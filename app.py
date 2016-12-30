@@ -46,15 +46,10 @@ def links():
 def code():
     return render_template('code.html')
 
-@app.route('/stats/cheat-sheet')
-def cheat_sheet():
-    meta, body = blog.load_and_render_page(blog.BASE_PATH + '/pages/statistics-cheat-sheet.markdown')
+@app.route('/stats/<page>')
+def stats(page):
+    meta, body = blog.load_and_render_page('{}/pages/stats/{}.markdown'.format(blog.BASE_PATH, page))
     return render_template('page.html', content=body)
-    #return html
-    #content = Markup(markdown.markdown(content))
-    #return render_template('index.html', **locals())
-
-    #return render_template('code.html')
 
 
 APP_MAP = {
