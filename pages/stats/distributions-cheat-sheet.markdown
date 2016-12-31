@@ -72,35 +72,29 @@ Examples are the number of raindrops hitting your roof in a short period of time
 
 The Poisson distribution is a 1-parameter model, and the single parameter, $\lambda$, represents the expected number of event occurrences (usually in some unit time interval).  The typical setup is to have some ground truth for how many events are expected to occur on average.  For example, one could have measured over the past year the average number of people who walk into a bank in a 15 minute interval.  Based on that average, and assuming that people's schedules are independent, one can assume that the number of people arriving at the bank in a SINGLE day is described by the Poisson distribution.
 
-The assumption of independence of individual events and knowing the expected value is sufficient to derive the probability density function for the poisson distribution.  
+One way to derive the poisson distribution is to think of a period of time T, during which we expect on average $\lambda$ events to occur, as consisting of many infinitesimal periods of time, $\delta t$.  We assume that that the $\delta t$s are small enough such that only one event can occur in each time window.  The question we are asking is, "How many total events occurred in time $T$" which, with these assumptions, becomes, "How many of the $\delta t$ events resulted in success?".  
 
-We use the fact that $\lambda$ is the expected number of events in some time interval T.  This implies that, in half that interval, $T/2$, we would expect $\lambda/2$ events.  In addition, the independence of events implies that the number of events occurring in an interval of $T/2$ is independent of the number of events occurring in the next $T/2$ interval.  Therefore, we can arrive at the following equations:
 
-$$
-\begin{align}
-P(0|\lambda) = & P(0 | \frac{\lambda}{2})  P(0 | \frac{\lambda}{2}) \\
-P(1|\lambda) = & P(0 | \frac{\lambda}{2})  P(1 | \frac{\lambda}{2}) + P(1 | \frac{\lambda}{2})  P(0 | \frac{\lambda}{2})
-...
-\end{align}
-$$
+This is the equivalent of a binomial distribution where we have MANY individual coin flips, each with a very small probability of being heads.  
+We overall expect $\lambda$ events in this period T, so the rate of occurrence of an event is $\lambda / T$.  In each small period of time, the probability of an event occurring is $rate * \delta t = (\lambda / T) * (T/N) = \lambda / N$
 
-or
+We therefore take the binomial equation  $binom(n | N, p)$ and make the replacements:
 
-$$
-\begin{align}
-P(0|\lambda) = & P(0 | \frac{\lambda}{2})^2 \\
-P(1|\lambda) = & 2P(0 | \frac{\lambda}{2})  P(1 | \frac{\lambda}{2})
-...
-\end{align}
-$$
+- $N \rightarrow \infty$
+- $p = \lambda/N$
 
-These equations, plus some calculus, is sufficient to derive the poisson distribution, which is given by:
+Making these substitutions and taking the limit, one arrives at the formula for the Poisson distribution: 
 
 $$
 pois(n|\lambda) = \frac{\lambda^n}{e^{-\lambda}}{n!}
 $$
 
+which is the probability of n events occurring in a time period during which we expect $\lambda$ events on average.
+
+
 https://www.pp.rhul.ac.uk/~cowan/stat/notes/PoissonNote.pdf
+
+http://www.math.wm.edu/~leemis/chart/UDR/PDFs/BinomialPoisson.pdf
 
 
 ## Gaussian Distribution
