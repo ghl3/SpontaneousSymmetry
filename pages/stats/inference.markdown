@@ -121,12 +121,23 @@ Assume that we have an analytic formula for $p(g | \theta)$, and further assume 
 Note that this procedure makes a strong assumption: $C_L(\alpha)$ and $C_U(\alpha)$ must not be functions of $\theta$.  (In the gaussian example, $C_L(\alpha) = -1.96$ and $C_U(\alpha) = 1.96$, which are independent of $\mu$.  This was because we constructed the function $\frac{\hat{\mu} - \mu}{\sigma / \sqrt{N}}$ to be independent of $\mu$, as subtracting $\mu$ in the equation cancels out the dependence of $\mu$ in $\hat{\mu}$).
 
 
+
+"Whatever the true value is, it will produce data within the band 95% of the time..."
+
 ## Discussion
 
 The procedure outlined above, where we scan over every possible value of $\theta$ and use the distribution of the data given that value of $\theta$ to build a confidence interval, is known as the Neyman Construction.  An important note is that the problem that the examples we've looked at only have a single parameter for which we're interested in calculating confidence intervals, and there are no other free parameters in the model (we assume that other parameters are both known and fixed).
 
 [7] J. Neyman. Outline of a theory of statistical estimation based on the classical theory of probability.
 Phil. Trans. Royal Soc. London, Series A, 236, 1937.
+
+ORDERING RULE
+
+What is a good choice of region?  Want to maximize "power".
+
+LIKELIHOOD FUNCTION GAUSSIAN APPROXIMATION
+
+RELATIONSHIP TO HYPOTHESIS TESTING
 
 Notes:
 
