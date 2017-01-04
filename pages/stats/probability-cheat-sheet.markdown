@@ -53,7 +53,56 @@ A "random variable" and a "probability distribution" are essentially the same th
 
 
 
-## Computations on distributions vs computations on distributed quantities
+## Pitfalls and Sources of Confusion
+
+- Marginalization and bayesian inference
+
+There are two probabilistic operations that superficially look similar, so it is best to not confuse them.
+
+The first is the marginalization of a probability density functions.  Imagine on has a pdf that describes the probability of two random variables x and y:
+
+$$
+p(x, y) = ...
+$$
+
+If one doesn't care about values of y and only wants the distribution of x, one can "marginalize" y by integrating it away:
+
+$$
+p(x) = \int p(x, y) dy
+$$
+
+Note that, in this case, our pdf describes two random variables, x and y, each of which can be drawn from the model.
+
+Consider a similar situation where we have a pdf of a single variable x given a parameter a:
+
+$$
+p(x | a) = ...
+$$
+
+If they don't care about the parameter $a$, one may be tempted to "marginalize" it away by doing:
+
+$$
+p(x) = \int p(x | a) da
+$$
+
+but this is an invalid transformation.  In order to remove the functional dependence on $a$, one must factorize the distribution by doing:
+
+$$
+p(x, a) = p(x|a)*p(a)
+$$
+
+NOW, we can perform a marginalization:
+
+$$
+p(x) = \int p(x, a) da = \int p(x|a)*p(a) da
+$$
+
+Note that this requires having $p(a)$ handy.  This may be problematic for two reasons:
+- One may not have a reasonable model for $p(a)$
+- One may be a frequentist and may think of $a$ merely as a parameter and may believe that the probability of a parameter is a meaningless notion.
+
+
+- Functions of random variables
 
 A common source of confusion when dealing with probabilities is understanding the distribution of functions of probabilistically distributed variables.  Let's say that I have two variables, x and y, which each follow a probability distribution: P(x) and P(y).  Let's then say that I create a quantity z which is the sum of these two variables: $z = x + y$.  What is the probability distribution of z, p(z)?
 
