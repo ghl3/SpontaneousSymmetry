@@ -114,3 +114,24 @@ $$ p(z) = p(x) + p(y) $$
 
 But this is not the case.  It's clear that this is wrong because, as defined above, p(z) would not add up to 1.  Moreover, it has invalid units (note that p(x) has units of 1/[x] and p(y) has units of 1/[y], and these cannot be added together.
 
+
+- Parameters vs estimators
+
+An estimator is simply a function that can be evaluated on observed data.  On the surface, it should be clear that this is a separate concept than a parameter of a model.  However, due to poor notation and conventions, these can often be confused.
+
+Consider the model:
+
+$$
+p(x | \mu, \sigma)
+$$
+
+and the estimator:
+
+$$
+\hat{\mu}(\vec{x}) = \frac{\sum(\vec(x))} {\sqrt{n-1}}
+$$
+
+The parameter of the model $\mu$ is a very different beast than the function defined above.  Yet, they are both referred to with $\mu$ in their name.  And there IS a reason for this: Given lots of data, we would expect that these would be close to each other, so in a very loose sense, measuring $\hat{\mu}$ gives us a "ballpark" estimation of the true mean $\mu$. And this statement can be made more rigorous using the techniques of statistical inference.  But this fact, emphasized by the naming convention, should not lead one to be confused about the meaning of the two concepts.
+
+
+

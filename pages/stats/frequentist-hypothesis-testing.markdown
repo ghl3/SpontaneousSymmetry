@@ -12,6 +12,7 @@ We will discuss the seemingly straightforward scenario of having a model and a d
 The classical frequentist way of answering this question was pioneered by Fischer and is based on a calculated quantity known as the "p-value".  Given a model and a dataset, the p-value is defined as the probability of that model generating that dataset OR generating a dataset "more extreme" than the measured dataset.  The logical underpinning of this calculation is answer the question, "Is my data so rare given my model that I should reject my model?".  If the model is very likely to generate the given dataset, or i it is likely to generate data that is even more "extreme", then one intuitively should not reject the model based on the measured data.  If I flip a coin and get 2 heads in a row, but I know that the odds of getting even 3 heads in a row given a fair coin aren't SO low, then I shouldn't conclude that my coin isn't fair.  If I roll a dice and get 2 1's in a row, but I know that the total probability of getting the any number twice in a row isn't so low, then I shouldn't conclude that my dice is somehow faulty.
 
 It is clear how to calculate the probability of the measured dataset given the model, but it remains to be defined what hypothetical datasets should be included in the set of "more extreme" data.  This definition may vary depending on the problem.  These definitions of "extreme" may include:
+
 - Any dataset that is equally likely or less likely than the measured dataset
 - In the case of 1-d data, any value that is less likely than the measured data and is on the same side relative to the mode of the distribution as the measured data (one-sided p-value).
 - Any dataset having some chosen summary statistic whose probability is less than or equal to the value of the summary statistic calculated on the observed data
@@ -21,6 +22,7 @@ There are numerous other ways, and choosing a good definition of more extreme da
 I'll emphasize that this procedure is merely a heuristic.  It is meant to be a check that should be considered when comparing data and a model.  It should not be interpreted religiously and has little meaning outside of its definition.  
 
 Given the definition of a p-value, a typical p-value test consists of the following steps:
+
 - Determine in advance a p-value threshold that will be used to conclude if the model and data are consistent or not.  A typical values is 0.05 (5%).
 - Measure your data and calculate the p-value using the model
 - If the p-value is < the threshold value, then conclude that the data and model are inconsistent.  If not, maintain belief that they are consistent.
@@ -48,6 +50,7 @@ The name "Simple Hypothesis" does not mean that the models corresponding to the 
 This version of hypothesis testing ultimately boils down to considering the possible space of data and labeling certain regions of that space as supporting $H_0$ and other regions as supporting $H_1$ in a way that fully partitions the space.  If the data lands in a region of space that supports $H_0$, you maintain the null hypothesis and reject the alternate hypothesis.  Otherwise, you reject the null and support this alternate hypothesis.  There are a number of properties to consider when determining these partitions.
 
 Any partitioning of the space can be considered in terms of the following:
+
 - The probability of rejecting the null hypothesis GIVEN THAT the null hypothesis is actually true
 - The probability of continuing to support the null hypothesis GIVEN THAT the alternative hypothesis is true
 
@@ -56,6 +59,7 @@ Rejecting the null hypothesis when it is actually true is known as a "Type 1 Err
 In this language, this process of testing a Simple Hypothesis is easy.  You can just partition the space however you choose, measure your data, pick $H_0$ or $H_1$ based on your partitioning, and then go home.  But, clearly, some partitioning must be better than others, so let's figure out what it means to be "better" and how to actually calculate those partitions that have the property of being "better".
 
 The typical way to think about these properties and the constraints on the data space partitions that on draws is the following:
+
 - Pick a fixed value for the size of the test (the probability of rejecting the null hypothesis GIVEN that it's true)
 - Find the distribution of your data given $H_0$ and $H_1$.  Typically, this is done by calculating a single value representative of your data (a "summary statistic") and finding the probability distribution of that single-valued summary statistic given both hypotheses.  For high dimensional data, this is often easier to contemplate and visualize.
 - Using those distributions, find the partitioning of the data space that maximizes the power of the test given the chosen size of the test.  This partitioning fully specifies the test.
@@ -110,19 +114,51 @@ Calculating a confidence interval means coming up with a procedure that will con
 
 To me, the simplest way conceptually to calculate a confidence interval is using what I'll call the "brute force" method.  This method relies on generating many possible datasets for many possible values of the parameter of interest, which will be used to infer the distribution of our data for every possible parameter value (or as many as we need to satisfy our desired level of exactness).  We will first describe this procedure and then discuss why it creates confidence intervals (as defined above).
 
-Let's label our data as $x$ and our single parameter as $\theta$, and assume that we want to generate a confidence interval of size $\alpha$.  Given that. the brute force procedure is as follows:
-- For each value of our parameter $\theta$, generate many datasets.  For each value of $\theta$, using the generated data, create a distribution $p(x | \theta)$. <!-- and for each dataset generated from that value, calculate $g = g(x, \theta)$ and build up a distribution $p(g | \theta)$.-->
-- For every value of $\theta$, choose a window in the domain of the data ($x \ele [a, b]$) such that the total probability of that window is the size of the confidence window: $\int_a^b $p(x | \theta)$ dx = \alpha$.  Record these windows $[a, b]$ for each value of $\theta$.
+Let's label our data as $x$ and our single parameter as $\theta$, and assume that we want to generate a confidence interval of size $\alpha$.  Given that, the brute force procedure is as follows:
+
+
+- For each value of our parameter $\theta$, generate many datasets.  For each value of $\theta $ , using the generated data, create a distribution $p(x | \theta)$ 
+
+- For every value of $\theta$, choose a window in the domain of the data ($x \in [a, b]$) such that the total probability of that window is the size of the confidence window: $\int_a^b p(x | \theta) dx = \alpha$.  Record these windows $[a(\theta), b(\theta)]$ for each value of $\theta$.
 - Run the experiment and measure the observed value of x
-- Given that measured data, find all values of the parameter $\theta$ such that x falls in the window created above.  In other words, determine the set ${\theta : a(\theta) < x b(\theta)}$.
+- Given that measured data, find all values of the parameter $\theta$ such that x falls in the window created above.  In other words, determine the set $\{\theta : a(\theta) < x < b(\theta)\}$.
 - That set of values of $\theta$ forms the confidence interval on the parameter $\theta$ of size $\alpha$.
    
+TODO: Define "Confidence Band"
+
+Why does an interval, defined in this way, have the properties of the confidence interval that we desire (namely that it contains the true value of $\theta$ with probability $\alpha$)?
+
+Well, we start with the statement that here is only one TRUE value of $\theta$.  It is unknown to the person performing the experiment, but it exists.  For that fixed value of $\theta$, there will be a distribution of $\x$ generated (and we will measure a single random variable from that distribution when we perform the experiment).  
+
+By tautology, there is a 95% change that the value of $x$ that we draw will be in a 95% interval of the distribution of $x$ given $\theta_{\text{true}}$.  There are two cases to example:
+
+- Case 1: Given $\theta_{\text{true}}$, the value of $x$ that we draw **IS** in that interval.  In this case, when the experimenter builds their confidence interval as described above, it will contain the true value of $\theta$, since $\theta_{\text{true}}$ will be one of the $\theta$ values whose 95% confidence window contains $x$
+- Case 2: Given $\theta_{\text{true}}$, the value of $x$ that we draw **IS NOT** in that interval.  Therefore, by the same logic, the experimenter's confidence interval will NOT contain the true value of $\theta$, since the measured value of $x$ is outside of the 95% window of $x$ given $\theta$.
+
+And, as described, we know that case 1 occurs 95% of the time and case 2 5% of the time.  Therefore, we have proven that a confidence interval, as described above, will have the properties that we desire.
+
+There is one loose end remaining.  When picking the interval $[a, b]$ for a given value of $\theta$ GIVEN a distribution $p(x | \theta)$, we required that it must have a total probability of $\alpha$.  However, there are many ranges $[a, b]$ that contain that total probability (infinitely many for a continuous parameter).  Any choice of values of $[a, b]$ will create confidence intervals, as our proof above didn't depend on any choice of $[a, b]$.  So, would could then wonder, given a distribution, what particular range of $[a, b]$ should one choose (given that it must contain a total probability of $\alpha$).
+
+To help inform the answer, the goal of a confidence interval is to give bounds that are useful in considering the true value of a parameter.  Intuitively, the smaller those bounds are, the more useful they are in constraining that parameter.  Therefore, one possible way of determining which intervals are valuable are those that are smallest.  It is relatively straight-forward to show that those intervals which contain the highest values of $p(x | \theta)$ will be the shortest (the higher the values of p(x | \theta) you choose, the fewer values of $\theta$ you must integrate over to obtain $\int_a^b p(x | \theta) dx = \alpha$).  As an alternative, one may choose to pick intervals that are symmetric around some value (though, this will not be possible in general).  One may also choose to start from $-\infty$ until the distribution integrates to $\alpha$.  There are many choices, and any particular choice should be considered in the context of the problem you are solving or the type of statistical statement you are trying to make.  The choice that one makes here is known as an "ordering rule", since it determines the order you move in through the space of data while accumulating points to determine the interval $[a, b]$.
+
+
+This procedure is known as the "Neyman Procedure".  It is in many ways an extension of the Neyman-Pearson procedure of solving the Simple Hypothesis problem, as described above.  One can define similar properties to confidence intervals as on can to hypothesis tests:
+
+- A "Type 1" error in the context of a confidence interval is when the confidence interval does not contain the true parameter.  From the definition of the confidence interval, it follows that the probability of a "Type 1" error is the "size" of the confidence interval, or $\alpha$.
+- Power, however, doesn't have a direct analog in the context of Confidence Intervals, unless one fully specifies how a confidence interval is to be used to perform a hypothesis test.  This is because there is no single alternate hypothesis, but many different alternate models (one for every possible value of our parameter, $\theta$).  Any confidence interval will contain an infinite number of parameter values $\theta$ that are not equal to $\theta_{\text{true}}$.  So, in one sense, every confidence interval makes a "Type 2" error by including incorrect parameter values.  But, intuitively, confidence intervals that are thinner for many possible values of $\theta_{\text{true}}$ are "better", and one can interpret that as a loose analogy to "power".
+
+Continuing with analogies from previous sections, a Confidence Interval can be thought of as the set of all parameter points that are not rejected when performing a p-value test given the observed data.  Let's show that this gives us the same procedure as described above.
+
+Imagine that we measure a value of our data $x_0$ and we want to perform a p-value test on the model defined by $\theta$ using a threshold of $1-\alpha$.  We would reject the parameter point $\theta$ if the integral of the probability of $x$ over points more extreme than $x_0$ is less than $1-\alpha$.  This is the equivalent of asking, "Does the measured value $x_0$ fall inside a window of size $\alpha$" (assuming that window corresponds to the region of data that is not considered extreme)".  This region will correspond to the slice of the Confidence Band if the band is defined with an ordering principle that matches the definition of "extreme" used in the p-value test.
+
+For example, if we create one-sided confidence intervals (starting from $-\infty$), that will be the equivalent of performing a 1-sided p-value test on all possible values of the parameter given some measured dataset.
+
 
 ## Analytic Calculation
 
+
+
 ## Approximations
-
-
 
 
 
