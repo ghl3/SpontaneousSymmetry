@@ -68,7 +68,7 @@ Typically, people choose a size of the test to be 0.05 (5% chance of wrongly rej
 
 Fortunately, in the case of a Simple Hypothesis, there is a way to find a division of space between the null and alternate hypothesis that maximizes the power of the test for a fixed value of the size of the test.  This procedure can be proven, and the proof is called the Neyman–Pearson Lemma.
 
-The lemma simply states that on should parametarize the partitions of space by a single parameter, $\eta$, which is defined by:
+The lemma simply states that on should parameterize the partitions of space by a single parameter, $\eta$, which is defined by:
 
 $$
 \frac {L(data | H_0)} {L(data | H_1)} <= \eta
@@ -85,6 +85,7 @@ http://www.stat.ualberta.ca/~wiens/stat665/TAS%20-%20testing.pdf
 
 http://stats.stackexchange.com/questions/23142/when-to-use-fisher-and-neyman-pearson-framework
 
+
 # Scenario 3: Finding values of a parameter that are consistent with data
 
 
@@ -98,7 +99,7 @@ Before doing so, I'll note that a confidence interval is only an example of one 
 
 
 
-## Definition
+## Confidence Interval Definition
 
 Formally, a confidence interval is a procedure for calculating an interval in parameter space based on observed data that has a fixed probability of containing the "true" value of the parameter.  I emphasize that the interval is based on the data.  Because the data is based on a random distribution, then the interval itself is a random variable (different data would produce a different interval).  To a frequentist, the true value of a parameter is NOT a random variable: it is some fixed (but unknown) value.  Therefore, a frequentist does not talk about the probability that the true value is in some fixed interval.  Instead, they talk about the probability that an interval contains the true value.  For any fixed interval, it either DOES contain the true value or DOES NOT.
 
@@ -124,8 +125,8 @@ Let's label our data as $x$ and our single parameter as $\theta$, and assume tha
 - Given that measured data, find all values of the parameter $\theta$ such that x falls in the window created above.  In other words, determine the set $\{\theta : a(\theta) < x < b(\theta)\}$.
 - That set of values of $\theta$ forms the confidence interval on the parameter $\theta$ of size $\alpha$.
    
-TODO: Define "Confidence Band"
-
+This procedure is known as the Neyman Construction.  The set of all points that fall in the union of each window for all values of the parameter is sometimes called the Confidence Band, as it traces out a 2-d sheet in parameter/data space.
+   
 Why does an interval, defined in this way, have the properties of the confidence interval that we desire (namely that it contains the true value of $\theta$ with probability $\alpha$)?
 
 Well, we start with the statement that here is only one TRUE value of $\theta$.  It is unknown to the person performing the experiment, but it exists.  For that fixed value of $\theta$, there will be a distribution of $\x$ generated (and we will measure a single random variable from that distribution when we perform the experiment).  
@@ -142,7 +143,7 @@ There is one loose end remaining.  When picking the interval $[a, b]$ for a give
 To help inform the answer, the goal of a confidence interval is to give bounds that are useful in considering the true value of a parameter.  Intuitively, the smaller those bounds are, the more useful they are in constraining that parameter.  Therefore, one possible way of determining which intervals are valuable are those that are smallest.  It is relatively straight-forward to show that those intervals which contain the highest values of $p(x | \theta)$ will be the shortest (the higher the values of p(x | \theta) you choose, the fewer values of $\theta$ you must integrate over to obtain $\int_a^b p(x | \theta) dx = \alpha$).  As an alternative, one may choose to pick intervals that are symmetric around some value (though, this will not be possible in general).  One may also choose to start from $-\infty$ until the distribution integrates to $\alpha$.  There are many choices, and any particular choice should be considered in the context of the problem you are solving or the type of statistical statement you are trying to make.  The choice that one makes here is known as an "ordering rule", since it determines the order you move in through the space of data while accumulating points to determine the interval $[a, b]$.
 
 
-This procedure is known as the "Neyman Procedure".  It is in many ways an extension of the Neyman-Pearson procedure of solving the Simple Hypothesis problem, as described above.  One can define similar properties to confidence intervals as on can to hypothesis tests:
+The Neyman Procedure, as described above, is in many ways an extension of the Neyman-Pearson procedure of solving the Simple Hypothesis problem, as described above.  One can define similar properties to confidence intervals as on can to hypothesis tests:
 
 - A "Type 1" error in the context of a confidence interval is when the confidence interval does not contain the true parameter.  From the definition of the confidence interval, it follows that the probability of a "Type 1" error is the "size" of the confidence interval, or $\alpha$.
 - Power, however, doesn't have a direct analog in the context of Confidence Intervals, unless one fully specifies how a confidence interval is to be used to perform a hypothesis test.  This is because there is no single alternate hypothesis, but many different alternate models (one for every possible value of our parameter, $\theta$).  Any confidence interval will contain an infinite number of parameter values $\theta$ that are not equal to $\theta_{\text{true}}$.  So, in one sense, every confidence interval makes a "Type 2" error by including incorrect parameter values.  But, intuitively, confidence intervals that are thinner for many possible values of $\theta_{\text{true}}$ are "better", and one can interpret that as a loose analogy to "power".
@@ -155,6 +156,54 @@ For example, if we create one-sided confidence intervals (starting from $-\infty
 
 
 ## Analytic Calculation
+
+In the above procedure, iterated over small steps in our parameter to create the confidence band in a "brute force" fashion.  However, for a small subset of problems, the confidence band can be calculated exactly because the probability distribution can be handled analytically.
+
+Given a probability density function $p(x | \theta)$, the procedure for generating a confidence interval of size $\alpha$ is:
+
+- Find $C_L(\theta)$ and $C_U(\theta)$ such that the probability of $C_L(\theta) < x < C_U(\theta)$ is equal to  $\alpha$. This is typically done by integrating over the known pdf $p(g | \theta)$.
+- Invert this inequality to find: $x^{-1}(C_L(\alpha)) < \theta < x^{-1}(C_U(\alpha))$
+- The confidence interval is then given by $[x^{-1}(C_L(\alpha)), x^{-1}(C_U(\alpha))]$.
+
+The inversion above is made simpler when $C_L(\alpha)$ is independent of x.  
+
+The gaussian distribution is an example of one for which analytic confidence intervals can be calculated.  This plus the fact that it commonly occurs in a wide range of problems makes it very useful and important to understand.
+
+The pdf of the gaussian distribution is given by:
+
+$$
+pdf(x | \mu, \sigma) = \frac{1}{\sqrt{2\sigma^2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} 
+$$
+
+We here assume that $\sigma$ is known or "fixed".
+
+We would like to build the confidence band for this distribution analytically.  Before we do so, we have to decide how we want to distribute the confidence interval, or our "ordering scheme".  Since this PDF is symmetric around $\mu$, it seems reasonable to choose confidence intervals that are centered around $\mu=x$.  This is also equivalent of picking confidence intervals of the minimum width (by including the highest-values of the likelihood first).
+
+The first step is to, for every point $\mu$, find a window $[a, b]$ in x such that:
+
+$$
+\int_a^b gauss(x|\mu, \sigma) dx = \alpha
+$$
+
+Since we want the interval $[a, b]$ to be symmetric about $x=\mu$, we can re-write this as the following:
+
+$$
+\int_{\mu-\delta(x)}^{\mu+\delta(x)} gauss(x|\mu, \sigma) dx = \alpha
+$$
+
+In this case, the confidence interval, for a measured value of x, would go from $[x-\delta(x), x+\delta(x)]$.  We just need to solve for $\delta(x)$.  The solution comes from using the error function.  This example turns out to be simple because delta ends up being a constant, independent of the measured value of x (this can be understood since the underlying pdf as well as our confidence intervals are symmetric under translations of x and $\mu$).
+
+This means that if you measure a value of x from a gaussian distribution, your confidence interval is given by:
+
+$$
+[x - \sqrt{2}erf^{-1}(\alpha)\sigma, x + \sqrt{2}erf^{-1}(\alpha)\sigma]
+$$
+
+(Note that this problem is concerned with a single measurement x that is gaussian distributed with mean $\mu$.  We will later talk about building confidence intervals for the mean from n measurements from a single gaussian distribution).
+
+This is a remarkable result: It means that I can easily build confidence intervals for gaussian distributions, simply by consulting a look-up table or by using a computer.
+
+http://mathworld.wolfram.com/ConfidenceInterval.html
 
 
 
