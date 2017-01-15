@@ -147,10 +147,13 @@ The Neyman Procedure, as described above, is in many ways an extension of the Ne
 
 - A "Type 1" error in the context of a confidence interval is when the confidence interval does not contain the true parameter.  From the definition of the confidence interval, it follows that the probability of a "Type 1" error is the "size" of the confidence interval, or $\alpha$.
 - Power, however, doesn't have a direct analog in the context of Confidence Intervals, unless one fully specifies how a confidence interval is to be used to perform a hypothesis test.  This is because there is no single alternate hypothesis, but many different alternate models (one for every possible value of our parameter, $\theta$).  Any confidence interval will contain an infinite number of parameter values $\theta$ that are not equal to $\theta_{\text{true}}$.  So, in one sense, every confidence interval makes a "Type 2" error by including incorrect parameter values.  But, intuitively, confidence intervals that are thinner for many possible values of $\theta_{\text{true}}$ are "better", and one can interpret that as a loose analogy to "power".
+(Power = Probability of not covering a false value of theta = 1-beta, via https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf, slide 121)
 
-Continuing with analogies from previous sections, a Confidence Interval can be thought of as the set of all parameter points that are not rejected when performing a p-value test given the observed data.  Let's show that this gives us the same procedure as described above.
 
-Imagine that we measure a value of our data $x_0$ and we want to perform a p-value test on the model defined by $\theta$ using a threshold of $1-\alpha$.  We would reject the parameter point $\theta$ if the integral of the probability of $x$ over points more extreme than $x_0$ is less than $1-\alpha$.  This is the equivalent of asking, "Does the measured value $x_0$ fall inside a window of size $\alpha$" (assuming that window corresponds to the region of data that is not considered extreme)".  This region will correspond to the slice of the Confidence Band if the band is defined with an ordering principle that matches the definition of "extreme" used in the p-value test.
+
+Continuing with analogies from previous sections, a Confidence Interval can be thought of as the set of all parameter points that are not rejected when performing a p-value test on the model with that value of the parameter given the observed data.  In this sense, a confidence interval can be thought of as an "inverted hypothesis test".  The hypothesis test for a given parameter point is "2-sided", as we're open to more extreme values in either direction.  (For a 2-sided test, there is no "uniformly most powerful" test https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf)
+
+Let's show that this gives us the same procedure as described above.  Imagine that we measure a value of our data $x_0$ and we want to perform a p-value test on the model defined by $\theta$ using a threshold of $1-\alpha$.  We would reject the parameter point $\theta$ if the integral of the probability of $x$ over points more extreme than $x_0$ is less than $1-\alpha$.  This is the equivalent of asking, "Does the measured value $x_0$ fall inside a window of size $\alpha$" (assuming that window corresponds to the region of data that is not considered extreme)".  This region will correspond to the slice of the Confidence Band if the band is defined with an ordering principle that matches the definition of "extreme" used in the p-value test.
 
 For example, if we create one-sided confidence intervals (starting from $-\infty$), that will be the equivalent of performing a 1-sided p-value test on all possible values of the parameter given some measured dataset.
 
@@ -207,12 +210,195 @@ http://mathworld.wolfram.com/ConfidenceInterval.html
 
 
 
+## Test Statistics
+
+One can generalize the above approach by considering what is known as a "test statistic".  A test statistic is a quantity that can be used in place of the data x in the above arguments.  One can simply re-run all of the above arguments with the replacement of $x -> f(x)$ with f being any function of the data.  Distributions of x will be replaced with distributions of f(x), and the rest of the statistical argument will remain the same.
+
+However, a test statistic may also be a function of the parameter of interest, $\theta$.  We will here show how to generate confidence intervals using such a test statistic.  Consider the test statistic $t = t(x, \theta)$.  $t$ is a function of the data and of our parameter (note that it is not a probability distribution, it is an arbitrary function that evaluates to a real number).  How can we use this to generate confidence intervals?
+
+The procedure we followed using the raw data was to:
+- Consider each point in the parameter space, $\theta_0$
+- Generate the distribution of the data at that point: $p(x | \theta_0)$
+- Create an "acceptance region" of size $\alpha$ in that distribution
+- Measure an experimental value of x
+- The confidence interval is the set of all values of $\theta$ whose acceptance region contains the measured value x.
+
+Using a test statistic, we can follow an analogous procedure:
+- Consider each point in the parameter space, $\theta_0$
+- Given the model and the value $\theta=\theta_0$, generate datasets of {x_1, x_2, ...x_n}.  Calculate {t(x_1, \theta_0), t(x_2, \theta_0), ...,  t(x_n, \theta_0)}.  Use this to generate the distribution $p(t(x, \theta_0) | \theta=\theta_0)$.
+- OR, if one is lucky enough, use an analytic formula for the distribution of the test statistic (at evaluated with $\theta=\theta_0$).
+- Using that distribution, pick an acceptance region of size $\alpha$ in the distribution of $t(x, \theta=\theta_0)$.  Do this for every value of $\theta$.
+- Measure the data x
+- For each value of $\theta$, calculate $t(x, \theta)$
+- The confidence interval consists of all values of $\theta=\theta_0$ such that $t(x, \theta_0)$ is in the acceptance region.
+
+This method requires obtaining a distribution for the test statistic evalauted at each point $\theta=\thteta_0$ GIVEN the assumption that the true value of $\theta$ is $\theta_0$.  The potentially confusing point here is that the test statistic itself varies at each test point $\theta_0$ (and therefore it's distribution may also vary as a function of $\theta$).  And, as a result, we must calculate the test statistic at every value in our parameter space to invert it.
+
+But it's easy to show that this procedure does indeed generate confidence intervals.  There is one true value of theta, $\theta_{true$}.  We simply need to show thtat $\theta_{true}$ falls in our confidence region $\alpha$ of the time.  But, by construction, $t(x, \theta_{true})$ will fall in the acceptance region of $\theta=\theta_{true}$ a fraction of the time equal to $\alpha$.  Therefore, when we invert the acceptance region, $\theta=\theta_{true}$ will fall in our confidence interval at a rate of $\alpha$.
+
+Thus, we can generalize our approach by considering test statistics that may depend on the parameter we are interested in.  This is valuable in part because we may be able to generate distributions of these test statistics easier than we can generate distributions of the draw data.  In addition, by varying them as a function of our parameter of interest, can can make confidence intervals that are more powerful (since the test statistic can be chosen for it's power for each value of $\theta_0$ separately).
+
+As before, we can interpret this as performing a p-value at each point in the parameter space of $\theta$, and creating a confidence interval as the set of all points that are not rejected by that p-value test.  By using a test statistic, we can consider the distribution of a different value at each point in parameter space to perform this $p-value$ test.
+
+
 ## Approximations
 
 
+As demonstrated above, confidence intervals for some models can be calculated exactly, as the model's pdf can be inverted analytically (or, at least the inversion can be arbitrarily approximated by a computer or a table).  However, this is not the case for what I presume is the majority of real-world problems.  Fortunately, there is a useful approximation that allows one to calculate approximate confidence intervals for a wide range of problems.
 
-There are two formal ways that we can answer this initially-vague question.  The first is to create what's called a "Confidence Interval" for the this parameter given the data.  The second is to consider each individual point to specify a model and to perform a p-value hypothesis test on each point to determine those that aren't rejected.  These two approached, it turns out, will result in the same answer.
+### Approximation via Central Limit Theorem
 
+Consider the case of a compound pdf, which is defined as a probability distribution function that can be decomposed into a product of identical pdfs, that has a single unknown parameter: 
+
+$$
+p(\vec{x_1}, \vec{x_2}...\vec{x_n} | \theta) = \prod{n} pdf(\vec{x_i) | \theta)
+$$
+
+This pdf models $n$ independent draws from a single distribution and is very common in the real world.  Models of this form have a very useful property: As n gets large, the distribution of the maximum likelihood estimator of $\theta$ is approximately normal.  Let's first discuss what it means and then show why it's useful for estimating confidence intervals.
+
+The likelihood function, $L(x | \theta)$, is the above pdf but viewed as a function of the parameter $\theta$ (instead of as a function of the data).  The maximum likelihood estimator of $\theta$, denoted as $\hat{\theta}$, is defined as the value of $\theta$ that maximizes the likelihood function $L(x | \theta)$.  Equivalently, $\hat{\theta}$ minimizes the negative log of the likelihood function, $-log(L(X | \theta))$.
+
+The property that we'd like to take advantage of is that $\hat{\theta}$ has a gaussian distribution about the true value of $\theta$:
+
+$$
+pdf(\hat{\theta} | \theta) = gauss(\hat{\theta} | \theta, \sigma_\theta)
+$$
+
+with some variance $\sigma_\theta$.  The variance, as it turns out, is equal to one over a quantity called the Fischer Information of the PDF:
+
+$$
+pdf(\hat{\theta} | \theta) = gauss(\hat{\theta} | \theta, \frac{1}{FI(\theta)}).
+$$
+
+where 
+
+$$
+FI(x | \theta) = -\frac{(d^2L(x | \theta)}{d\theta^2}
+$$
+
+We will not prove this, but the proof essentially follows from the central limit theorem: The log likelihood is a sum of the logs of the individual likelihoods, each of which is an independent random variable.  The central limit theorem states that the sum of independent random variables is gaussian distributed.  The main thing to note is that, as n gets larger, the approximation becomes better.  So, for experiments with a large number of observations, this approximation becomes very useful.
+
+This is valuable because we already have a way to exactly calculate confidence for gaussian distributions.  So, if the likelihood function is very close to a gaussian distribution, we can approximately calculate confidence intervals for the variable $\theta$.
+
+Recall that the confidence interval for the mean parameter of a gaussian distribution is given by:
+
+$$
+[x - \sqrt{2}erf^{-1}(\alpha)\sigma, x + \sqrt{2}erf^{-1}(\alpha)\sigma]
+$$
+
+which we here replace with:
+$$
+[\hat{\theta} - \sqrt{2}erf^{-1}(\alpha)\frac{1}{FI(\theta)}, \hat{\theta} + \sqrt{2}erf^{-1}(\alpha)\frac{1}{FI(\theta)}]
+$$.
+
+If one has an analytic formula for the likelihood and if one has sufficient data to trust the gaussian approximation, one can take the derivatives of the likelihood, calculate the Fischer Information, and plug it into the above to obtain your confidence intervals.
+
+
+### Approximation via Wilks Theorem
+
+
+Often, however, one may not have an analytic formula for the likelihood function.  This is often the case when the likelihood is very complicated and is represented only as a function in a computer program.  One is able to calculate it for any input values of the data or the parameters, but one cannot write it down or readily take derivatives analytically.  Therefore, the above approximations will not work.
+
+However, one can make use of another theorem which enables the calculation of approximate confidence intervals in the "asymptotic" case of a compound likelihood where n grows large.
+
+Consider the likelihood of data of a single parameter, $L(x | \theta)$ (the data $x$ may be multi dimensional or arbitrarily complex).  As above, we define $\hat{\theta}$ as the value of $\theta$ that maximizes the likelihood function.  We now define the likelihood ratio as the following function:
+
+$$
+LR(\theta) = \frac {L(x | \theta)} {L(x | \hat{\theta}}
+$$
+
+It can be thought of as the ratio between the likelihood's maximum value and it's value at any point $\theta$.  
+
+We will also defined the negative log likelihood ratio as:
+
+$
+nll(\theta) = -Log(\frac {L(x | \theta)} {L(x | \hat{\theta}})
+$
+
+In the case of a composite likelihood with large n, a result known as Wilks' Theorem tells us that the distribution of the $nll$ evaluated at the true (unknown) value of $\theta$ is distributed as a Chi-Squared distribution:
+
+$$
+p(nll(\theta_{\text{true}})) ~ \Xi_m^2(nll(\theta _{\text{true}}))
+$$
+
+where $m$, the number of free parameters, here is equal to 1 because $\theta$ is the only unknown parameter.  In other words, if you assume that some value of $\theta$ is true (say, $\theta_0$), use your model to generate data with the distribution $p(x | \theta_0)$, and calculate $nll(x | \theta_0)$ on each of those datasets, the values ${nll(x1 | \theta_0), nll(x2 | \theta_0)...}$ will be distributed as $\Xi^2_1$.  Note that this Chi-Squared distribution does NOT depend on the value of $\theta_0$ that we chose (this remarkable result is why Wilks theorem is useful).
+
+Thus, we can use the function $nll(x, \theta)$ as a test statistic to generate confidence intervals on $\theta$.  The fact that the distribution of the test statistic $nll(x, \theta=\theta_0)$ under the assumption that $\theta=\theta_0$ doesn't depend on the value of $\theta_0$ makes calculating the confidence intervals easier ($nll(x, \theta)$ DOES depend on $\theta$, by construction, but it's distribution doesn't).  The procedure is therefore to:
+- Calculate nll(x, \theta)
+- Pick a value of $\alpha$
+- Use the CDF of the chi-squared distribution to find the value of the nll such that $\int_0^{nll_{\text{critical}}p(nll)d(nll) = \alpha$
+- Invert $nll(\theta) <  nll_{\text{critical}}$ to get all values of $\theta$ for which the probability of $nll(\theta) > \alpha$
+
+These values of $\theta$ form the confidence region.  In this case, since we know that the distribution is $\Xi^2$, we know that the critical value of the nll for each value of $\alpha$.  For a 68.3% confidence interval, the critical value is 1/2.  Therefore, the bounds of the confidence region are those values of $\theta$ for which the log likelihood is half of its maximum value.  This is a useful trick if one does not haven a expression for the confidence interval: scan along the parameter of interest $\theta$, starting from $\hat{\theta}$, evaluating the log likelihood at each step.  When it drops to half of it's maximum value, that value of $\theta$ is the boundary of the confidence interval.
+
+
+https://arxiv.org/pdf/1007.1727v2.pdf
+
+
+https://arxiv.org/pdf/1503.07622.pdf
+
+S.S. Wilks. The large-sample distribution of the likelihood ratio for testing composite hypotheses.
+Ann. Math. Statist., 9:60–2, 1938
+
+https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf
+
+http://www.astro.princeton.edu/~strauss/AST303/bayesian_paper.pdf
+
+- The distribution of $nll(\theta=\theta_{true})$ is independent of $\theta$
+- It is distributed as a Chi-Squared distribution
+<!-- that the distribution of $nll(\theta)$ approaches a Chi-Squared distribution: -->
+
+
+<!--         EXTRA BELOW          -->
+
+
+We can therefore calculate the Fischer Information from the likelihood and plug it into the above equation for $\sigma$, as well as 
+
+If we were able to calculate $\sigma$ for a PDF, we could plug that into the above equation, setting $x \rightarrow \hat{theta}$ and obtain confidence intervals.  However, calculating $\sigma$ directly may be challenging (we haven't discussed how to do it).  Instead, however, there is a valuable trick:
+
+If we assume that the likelihood function is gaussian, we can determine it's standard deviation by starting at the maximum value of the likelihood and 
+
+
+
+A common and useful estimation of confidence intervals for a wide variety of problems is based on the fact that the  uses the likelihood function.  
+
+
+  Instead, an approximate confidence interval is used.  One of the most common ways of approximating a confidence interval is the following procedure:
+
+
+Imagine we have a pdf for data (either a single value or a vector) that is a function of a single parameter:
+
+$$
+pdf = pdf(\vec{x} | \theta)
+$$
+
+One can consider this pdf to be a function of $\theta$.  Interpreting a pdf as a function of it's parameters (as opposed to it's data) creates a Likelihood function.  One can maximize this function over the range of the parameter $\theta.  The value of $\theta$ that maximizes this function we will denote as $\hat{\theta}$, and the value of the pdf at $\hat{\theta}$ is $pdf_{max}$.  We can then Taylor expand our full pdf function as the following:
+
+$$
+pdf(\vec{x} | \theta) = pdf_{max} + pdf'(\vec{x}|\hat{\theta})(\theta - \hat{\theta}) + \frac{1}{2}pdf''(\vec{x}|\hat{\theta})(\theta - \hat{\theta})^2 + ...
+$$
+
+where the derivative denoted by ' is taken in terms of $\theta$.  Since the pdf is maximized at $\hat{\theta}$, we know that the term linear in theta drops out and we get the following expression for the PDF:
+
+$$
+pdf(\vec{x} | \theta) = pdf_{max} + pdf'(\vec{x}|\hat{\theta})(\theta - \hat{\theta}) + \frac{1}{2}pdf''(\vec{x}|\hat{\theta})(\theta - \hat{\theta})^2 + ...
+$$
+
+
+
+https://books.google.com/books?id=jGUVmjGP9qkC&pg=PA51&lpg=PA51&dq=likelihood+gaussian+approximation&source=bl&ots=YbM-PRTW3R&sig=atiY_p4yo8O1fH55jPUffRbD0jI&hl=en&sa=X&ved=0ahUKEwi1l_3DxcLRAhWrllQKHQ2vDrE4ChDoAQghMAE#v=onepage&q=likelihood%20gaussian%20approximation&f=false
+
+https://arxiv.org/pdf/physics/0311105v1.pdf
+
+https://arxiv.org/pdf/physics/9711021.pdf
+
+http://www2.econ.iastate.edu/classes/econ671/hallam/documents/Asymptotic_Dist.pdf
+
+http://www.konstantinkashin.com/notes/stat/Maximum_Likelihood_Estimation.pdf
+
+http://www.math.chalmers.se/Stat/Grundutb/CTH/mve300/1112/files/Lecture4/Lecture4.pdf
+
+http://sites.stat.psu.edu/~sesa/stat504/Lecture/lec3_4up.pdf
 
 
 *A (1 − α) confidence region can be defined simply as a collection of parameter values that would not be rejected by a Fisherian α level test, that is, a collection of parameter values that are consistent with the data as judged by an α level test.*
