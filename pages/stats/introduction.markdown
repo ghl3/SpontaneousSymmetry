@@ -7,6 +7,8 @@ title: Statistics Inroduction
 id: 446
 ---
 
+# Statistics
+
 Statistics is an extremely deep topic, and one whose complexity I initially underestimated.  At it's heart, statistics aims to answer the question, "What do we know and how do we know it?"  It is therefore the bedrock on which modern science stands.  Understanding statistics well is necessary both for creating a working model of the world and for making predictions of the future.
 
 While its usefulness is clear, statistic is a difficult tool to wield.  I have studied it in many ways for a long time, and yet I consistently find myself having to go back to the basics, to review what I know, and to re-ground my understanding.
@@ -15,9 +17,9 @@ The goal of these pages is to serve as a reference guide for when I need to re-l
 
 This guide consists of the following sections, each of which stands alone but build off of each other in order:
 
-- <a href="/statistics-cheat-sheet">Statistics</a>
-- <a href="/probability-cheat-sheet">Probability</a>
-- <a href="/distributions-cheat-sheet">Distributions</a>
-- <a href="/inference">Inference</a>
-- <a href="/frequentist-hypothesis-testing">Hypothesis Testing</a>
+- <a href="/stats/probability">Probability</a>
+- <a href="/stats/distributions">Distributions</a>
+- <a href="/stats/statistical-tools">Statistical Tools</a>
+- <a href="/stats/inference">Inference</a>
+- <a href="/stats/frequentist-hypothesis-testing">(Frequentist) Hypothesis Testing</a>
 
