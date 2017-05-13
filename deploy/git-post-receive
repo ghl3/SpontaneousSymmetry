@@ -11,8 +11,6 @@ do
 
         echo 'Pushing changes to Amazon EC2 Production'
         sudo git --work-tree=$SITE_DIRECTORY checkout -f $branch
-        sudo git --work-tree=$SITE_DIRECTORY submodule init
-        sudo git --work-tree=$SITE_DIRECTORY submodule update
 
         echo 'Updating python dependencies'
         cd $SITE_DIRECTORY && . venv/bin/activate && sudo pip install -r requirements.txt && deactivate && cd -
