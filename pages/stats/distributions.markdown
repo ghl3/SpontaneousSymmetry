@@ -188,51 +188,30 @@ Reference: http://courses.education.illinois.edu/EdPsy580/lectures/6ChiSq_Fdist_
 
 The Student's t-distribution is motivated similarly to the Chi-Square distribution.  We imagine that we have a single gaussian distribution with mean $\mu$ and standard deviation $\sigma$.  We draw n points from that distribution, $x_1$, $x_2$, ..., $x_n$.  
 
-From this distribution, we calculate the sample variance, $s^2 = \frac{1}{n} \sum (x_i - \mu)^2$.
+From this distribution, we calculate the sample mean $\mu_s$ and the sample variance, $s^2 = \frac{1}{n} \sum (x_i - \mu)^2$.
 
+We then calculate a quantity similar to what we calculated in the Chi-Squared example.  However, instead of dividing by the true standard deviation, $\sigma$, we divide by our sample variance:
 
+$$
+t = \frac{Z}{s} = \frac{\mu_s - \mu}{\sqrt{s/n}}
+$$
 
+Note that w're here using the sample standard deviation and not the true standard deviation.  Recall from above that the gaussian distribution has the following properties:
 
+- The sample mean is gaussian distributed
+- Th sample standard deviation is Chi-Squared distributed
+- The sample man is independent of the sample standard deviation
 
+Thus, the distribution of $t$ follows the distribution of a gaussian divided by the distribution of a chi-squared (with n degrees-of-freedom)
 
-A Student's T distribution is derived from a Gaussian distribution and a Chi-Squared distribution with `r` degrees of freedom.  Specifically, one can generate a student's t-distribution by generating a random variable "Z" distributed according to a Gaussian distribution (with mean 0 and variance 1) and a random variable "U" distributed according to a Chi-Squared distribution with `r` degrees of freedom (independent of Z) and calculating:
+$$t \sim \frac{Z}{\sqrt{U/n}}$$
 
-$$ \frac{Z}{\sqrt{U/r}}$$
-
-The first questions one may ask are, "When would this distribution be useful?" or "What situations give rise to this distribution?".
-
-There are two (related) ways to motivate the student's t distribution:
-
-1) Marginalization of $\sigma$ in join distribution of sample mean and variance from a gaussian distribution
-
-Imagine we took the following procedure:
-
-- Start with a gaussian distribution with mean $\mu$ and standard deviation $\sigma$
-- Calculate the joint probability of sample mean $\hat{\mu}$ and $s^2$
-- Integrate out $\sigma$ to get the probability of $\hat{\mu}$ and $s^2$ given fixed $\mu$ but with any $\sigma$.
-
-This can be thought of as a marginalization of the $\sigma$ parameter or a bayesian inversion using a flat prior for $\sigma$.
-
-
-Or, to generate sample means and variances:
-- Pick a fixed $\mu$
-- Generate $\sigma$ randomly (using a flat distribution across all values)
-- Using the distribution $Gauss(\mu, \sigma)$, generate n data points
-- Calculate the sample $\hat{\mu}$ and $s^2$.
-
-
-2) Summary Statistic of gaussian distributed data that is independent of the true mean, $\sigma$.
-
-One can generate a variable from a gaussian distribution that whose distribution is a student's t-distribution using the following procedure:
-
-Imagine that I generated N data points from a gaussian distribution (with mean 0 and variance 1).  We know that the sample mean of those generated points, $\\hat{\mu}}$ is a random number that depends on the data, and it is distributed as a gaussian.  We further know that the sample variance, $\hat{s}$ is distributed according to a Chi-Squared distribution with n degrees of freedom.  Finally, we know that the sample mean and the sample variance are independent.  So, if we define 
-
-$$ t = \frac{\hat{\mu}}{\sqrt{\hat{s}/n}} $$
-
-then we know that t will be distributed according to a student's t-distribution, as defined above.
-
-
-One can calculate the PDF of the student's t-distribution by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation.
+The distribution of this quantity, known as the student's t distribution, can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation.
 
   
 - http://www.math.ntu.edu.tw/~hchen/teaching/StatInference/notes/lecture35.pdf
+
+
+It is shaped like a gaussian, but has larger tails (because the fact that we are using the sample mean and not the true mean adds additional "uncertainty" to the distribution).
+
+
