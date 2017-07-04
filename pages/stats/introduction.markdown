@@ -3,7 +3,7 @@ author: George Lewis
 date: 2017-05-13 13:44:25.403028
 layout: post
 slug: statistics-introduction
-title: Statistics Inroduction
+title: Statistics Introduction
 id: 446
 ---
 
@@ -19,7 +19,8 @@ This guide consists of the following sections, each of which stands alone but bu
 
 - <a href="/stats/probability">Probability</a>
 - <a href="/stats/distributions">Distributions</a>
-- <a href="/stats/statistical-tools">Statistical Tools</a>
 - <a href="/stats/inference">Inference</a>
 - <a href="/stats/frequentist-hypothesis-testing">(Frequentist) Hypothesis Testing</a>
+- <a href="/stats/statistical-tests">Statistical Tests</a>
+
 
