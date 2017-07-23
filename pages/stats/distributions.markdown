@@ -119,7 +119,17 @@ $$ p(\hat{\mu} | \mu, \sigma, n) = Gauss(\mu, \frac{\sigma}{\sqrt{n}}) $$
 Reference: https://onlinecourses.science.psu.edu/stat414/node/173
 
 
-The $\frac{1}{\sqrt{n}}$ part of that formula is important: it means that the standard deviation of the sample mean drops by $1/\sqrt{n}$ as you draw more and more points.  If you are trying to measure the true $\mu$ of a gaussian distribution, you can do so by observing many points drawn from it and calculating the sample mean of those points, $\mu_s$.  If you observe many points, that distribution of $\mu_s$ will be tightly centered around the expected sample mean, $\frac{\mu}{\sqrt{n}}$, and you can use that to infer the true value of $\mu$.  This is an informal way of performing inference, 
+The $\frac{1}{\sqrt{n}}$ part of that formula is important: it means that the standard deviation of the sample mean drops by $1/\sqrt{n}$ as you draw more and more points.  If you are trying to measure the true $\mu$ of a gaussian distribution, you can do so by observing many points drawn from it and calculating the sample mean of those points, $\mu_s$.  If you observe many points, that distribution of $\mu_s$ will be tightly centered around the expected sample mean, $\frac{\mu}{\sqrt{n}}$, and you can use that to infer the true value of $\mu$.
+
+TODO: Introduce Maximum Likelihood Estimators somewhere...
+Similarly, the maximum likelihood estimator for $\sigma$ is given by:
+
+$$
+\hat{\sigma^2} = \frac{1}{n} \sum(x_i - \overbar{x})^2
+$$
+
+
+
 
 
 ## Chi-Squared Distribution

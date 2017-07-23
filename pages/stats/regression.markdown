@@ -57,12 +57,15 @@ The solution to this is the following (we simplify notation by interpreting the 
 
 $$
 \hat{\vec{w}} = (X^TX)^{-1}X^T\vec{y} \\\\
-\hat{\sigma} = \frac{1}{N} \sum_n (y_i - X \vec{w})^2 \\\\
+\hat{\sigma} = \frac{1}{N} \sum_n (y_i - X \vec{\hat{w}})^2 \\\\
 $$
 
-where $X^T$ stands for the transpose of the full matrix of observables (all n observations and all i variables per observation.  Note that the solution for $\hat{\sigma}$ depends on the unknown values of $w$.  One typically substitutes the values of $\hat{w}$ in that equation to obtain the estimator $\hat{\sigma}$.
+where $X^T$ stands for the transpose of the full matrix of observables (all n observations and all i variables per observation.  Note that the solution for $\hat{\sigma}$ is written in terms of $\hat{\vec{w}}$ (it turns out that the  solution for $\hat{\vec{w}}$ is independent of $\sigma$ but not visa versa).
 
 
 http://www.le.ac.uk/users/dsgp1/COURSES/MATHSTAT/13mlreg.pdf
+
+http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/05/lecture-05.pdf
+http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/06/lecture-06.pdf
 
 # Logistic Regression
