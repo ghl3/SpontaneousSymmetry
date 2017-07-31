@@ -31,7 +31,7 @@ where $C$ is a constant known as the "intercept".
 The likelihood function for this model can be written as:
 
 $$
-L(y | \vec{x}) = Gauss(y | \sum_i w_ix_i + C, \sigma)
+L(y, x_1...x_i | w_1...w_i, C, \sigma) = Gauss(y | \sum_i w_ix_i + C, \sigma)
 $$
 
 This likelihood has i+2 parameters, where $i$ is the number of features chosen for the model (different choices of features would result in different models with different likelihood functions).  An important assumption here is the fact that $\sigma$ is a constant: It doesn't depend on the values of $\vec{x}$.  This means that the gaussian "noise" is independent of the features.  Because of this property, it is said that the errors are "heteroscedastic" (this sounds fancy, but just means that the $\sigma$ in the gaussian likelihood is a constant).
@@ -46,10 +46,10 @@ Note that including more points $(y_n, \vec{x}_n)$ doesn't add more parameters t
 
 It turns out that one can obtain the maximum likelihood estimators for these parameters exactly (which is one of the most important properties of linear regression).  Before presenting this result, we will re-write the likelihood function as the log-likelhood (to better match how it is most commonly encountered in statistical textbooks):
 
-\begin{align\*}
-log(\vec{y}, x_{i, j} | \vec{w}, \sigma)  & = &  \sum_n log(Gauss(y_n | \vec{x}_n \cdot \vec{w}   + C, \sigma))) \\\\
-  & = &  \sum_n  \frac{(y_n - (\vec{x}_n \cdot \vec{w} + C))^2}{\sigma} + \frac{N?{2} log(\sigma^2) \\\\
-\end{align\*} 
+\begin{align}
+log(\vec{y}, x_{i, j} | \vec{w}, \sigma)   & = &  \sum_n log(Gauss(y_n | \vec{x}_n \cdot \vec{w} + C, \sigma)) \\\\
+   & = & \sum_n  \frac{(y_n - (\vec{x}_n \cdot \vec{w} + C))^2}{\sigma} + \frac{N}{2} log(\sigma^2) \\\\
+\end{align}
 
 Since maximizing the likelihood is equivalent to minimizing the log-likelihood, one can obtain the maximum likelihood estimators by minimizing the above equation for the log-likelihood.  Most people, when thinking about linear regression, interpret the above as a "cost" function that is defines linear regression and proceeds to minimize it.  But it is instructive to understand how it follows from a likelihood-based model definition.
 
@@ -61,6 +61,24 @@ $$
 $$
 
 where $X^T$ stands for the transpose of the full matrix of observables (all n observations and all i variables per observation.  Note that the solution for $\hat{\sigma}$ is written in terms of $\hat{\vec{w}}$ (it turns out that the  solution for $\hat{\vec{w}}$ is independent of $\sigma$ but not visa versa).
+
+
+TODO:
+
+- Distribution of fitted variables
+- P Valus
+- F Statistic to determine improvement based on variables
+- Discussion on Correlated inputs
+
+Correlated Inputs
+Contrary to a common mis-understanding, a regression model doesn't assume that input features are statistically uncorrelated.  The only assumption is that the mean of the dependent variable, $y$, is determined by the weighted sum of the inputs.  Two features being statistically correlated with each other (one tends to be high when the other is high and visa versa, in some population) doesn't break this assumption.  However, it may lead to misleading interpretations when fitting the data.  Specifically, the presence of correlated features will cause the variance on the fitted value of the features to be larger than the variance of any individual feature would be.  Intuitively, if you copy a feature exactly, the model has full freedom to adjust the coefficients for those features as long as their sum remains the same.  This can be thought of as high variance on the fitted parameters (since they cannot be fitted unquely).  This can hurt the interpretability of a model: you may want to draw a conclusion based on the value of one of the fitted parameters, but since it is so volitile, your conclusion will have little statistical significance.
+
+The extent to which the variance of fitted predictors is increased is known as the Variance Inflation Factor (VIF).
+
+However, multicollinearity often does not effect the overall performance of the model.  
+
+The variances of the fitted parameters are higher
+
 
 
 http://www.le.ac.uk/users/dsgp1/COURSES/MATHSTAT/13mlreg.pdf

@@ -170,19 +170,51 @@ $$
 
 ## Gaussian Distribution, continued
 
-With the Chi-Squared distribution in hand, we can state another property of the gaussian distribution.  Imagine that we draw n samples from a gaussian distribution with mean $\mu$ and standard deviation $\sigma$.  We then calculate the variance of the sample:
+With the Chi-Squared distribution in hand, we can state another property of the gaussian distribution.  Imagine that we draw n samples from a gaussian distribution with mean $\mu$ and standard deviation $\sigma$.  We then calculate the quantity:
 
 $$
-s^2 = \frac{1}{n} \sum (x_i - \mu)^2
+z^2 = \frac{1}{n} \sum (x_i - \mu)^2
 $$
 
-The distribution of the sample variance, $s^2$, is given by:
+This is like a variance, but we are using the true mean, $\mu$, and not the sample mean.  We can re-write this equation as:
 
 $$
-\frac{s^2}{\sigma^2} \sim \frac{1}{n-1} \chi^2_{n-1}
+\frac{z^2n}{\sigma^2} = \sum \frac{(x_i - \mu)^2}{\sigma^2}
 $$
 
-An important fact is that the sample mean and the sample standard deviation obtained from draws of a gaussian distribution are independent of each other.  In fact, this characterizes the gaussian distribution, as it's the only probability distribution with this property.  This fact can be shown using either Cochran's theorem or Basu's theorem.
+We see that quantity on the right-side of this equation is described by a Chi-Squared distribution with n degrees of freedom (as $x_i$ are drawn from a gaussian with mean $\mu$ and standard deviation $\sigma$).  We can then directly state that the distribution of $s^2$ is given by:
+
+$$
+\frac{z^2}{\sigma^2} \sim \frac{1}{n} \chi^2_{n}
+$$
+
+Note that, in the above equation, we are assuming that we know the true standard deviation $\sigma$.     A more useful relationship uses the sample mean, $\hat{X}$, and the sample variance, $s^2$, defined as:
+
+$$
+s^2 = \sum (x_i - \bar{x})^2
+$$
+
+We start with the quantities
+
+$$
+U_i = \frac{x_i - \mu}{\sigma}
+$$
+
+and re-writing it as:
+
+$$
+\sum U_i^2 = \sum(\frac{x_i - \mu}{\sigma})^2 = \sum \frac{x_i - \bar{x}}{\sigma}^2 + N (\frac{\bar{x} - \mu}{\sigma})^2
+$$
+
+This final quantity is the sum of quadratic terms in $x_i$, where the $x_i$ are independent.  A theorem called Cochran's theorem states the two quantities, $\sum (\frac{x_i - \bar{x}}{\sigma})^2$ and $(\frac{\bar{x} - \mu}{\sigma})^2$ are each distributed by a Chi-Square distribution (of degrees n-1 and 1, respectively) and are independent (Cochran's theorem specifies that the degrees of the distribution of each term is the number of linearly independent combinations of the $x_i$ variables in that term).
+
+The first of these terms can be related to the sample variance and the second can be related to the sample mean (given fixed true values of $\mu$ and $\sigma$).  This allows us to show that the distribution of the sample variance is given by:
+
+$$
+s^´2 = \frac{1}{(n-1)} \sum(x_i - \hat{x})^2 \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1}
+$$
+
+and, importantly, that it is independent of the distribution of the sample mean.  The fact that the sample mean and sample standard deviation are independent is unique to the gaussian distribution and, in fact, fully specifies the gaussian, a property known as Basu's theorem). These facts will be important when performing inference on the gaussian distribution (trying to infer $\sigma$ and $\mu$ given a sample of gaussian-distributed data).  This will be discussed in a later section.
 
 https://stats.stackexchange.com/questions/121662/why-is-the-sampling-distribution-of-variance-a-chi-squared-distribution
 
