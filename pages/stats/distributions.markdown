@@ -242,13 +242,13 @@ Note that w're here using the sample standard deviation and not the true standar
 
 - The sample mean is gaussian distributed
 - Th sample standard deviation is Chi-Squared distributed
-- The sample man is independent of the sample standard deviation
+- The sample mean is independent of the sample standard deviation
 
-Thus, the distribution of $t$ follows the distribution of a gaussian divided by the distribution of a chi-squared (with n degrees-of-freedom)
+Thus, the distribution of $t$ follows the distribution of a gaussian divided by an independent distribution of a chi-squared distributed variable (with n degrees-of-freedom)
 
 $$t \sim \frac{Z}{\sqrt{U/n}}$$
 
-The distribution of this quantity, known as the student's t distribution, can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation.
+The distribution of this quantity, known as the student's t distribution (with n degrees of freedom), can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation.
 
   
 - http://www.math.ntu.edu.tw/~hchen/teaching/StatInference/notes/lecture35.pdf
@@ -256,4 +256,5 @@ The distribution of this quantity, known as the student's t distribution, can be
 
 It is shaped like a gaussian, but has larger tails (because the fact that we are using the sample mean and not the true mean adds additional "uncertainty" to the distribution).
 
+The student's t distribution is useful because, given a set of gaussian distributed data, we can easily calculate $\hat{x}$ and $s^2$, and therefore we can calculate $t$ from a sample of gaussian distributed data.  Assuming that we know the fixed $\mu$ and $\sigma$ in the original distribution, we therefore know the distribution of $t$ and can use the t-distribution to perform inference and hypothesis tests on the gaussian distribution.
 
