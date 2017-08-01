@@ -167,6 +167,9 @@ $$
 \chi^2_n + \chi ^2_m \sim \chi ^2_{n+m}
 $$
 
+Note that the Chi-Squared distribution with 1 degree of freedom is simply the distribution of the square of a gaussian-distributed variable.
+
+In order to calculate the test statistic $Z^2_N$, one must know BOTH the true mean, $\mu$, and the true standard deviation, $\sigma$.  We will later show how one can use the Chi-Squared distribution to perform inference on these parameters.  However, often one only wants to perform inference on one of these parameters, usually the true mean $\mu$.  In these cases, one must either know the true standard deviation, must assume it, or must use another test statistic (with another distribution). 
 
 ## Gaussian Distribution, continued
 
@@ -206,7 +209,11 @@ $$
 \sum U_i^2 = \sum(\frac{x_i - \mu}{\sigma})^2 = \sum \frac{x_i - \bar{x}}{\sigma}^2 + N (\frac{\bar{x} - \mu}{\sigma})^2
 $$
 
-This final quantity is the sum of quadratic terms in $x_i$, where the $x_i$ are independent.  A theorem called Cochran's theorem states the two quantities, $\sum (\frac{x_i - \bar{x}}{\sigma})^2$ and $(\frac{\bar{x} - \mu}{\sigma})^2$ are each distributed by a Chi-Square distribution (of degrees n-1 and 1, respectively) and are independent (Cochran's theorem specifies that the degrees of the distribution of each term is the number of linearly independent combinations of the $x_i$ variables in that term).
+This final quantity is the sum of quadratic terms in $x_i$, where the $x_i$ are independent.  A theorem called Cochran's theorem states that sums of quadratic terms of gaussian variables can be expressed as the sum of terms where each term is distributed as a Chi-Squared, and the number of degrees of freedom of each chi-squared is the number of linearly independent combinations of the $x_i$ variables in that term.  This theorem can be used to prove the following important facts:
+
+- $\sum (\frac{x_i - \bar{x}}{\sigma})^2$ is distributed as a Chi-Squared with n-1 degrees of freedom
+- $ N\frac{(\bar{x} - \mu)^2}{\sigma^2}$ is distributed as a Chi-Squared with 1 degree of freedom
+- These two quantities are independent of each other
 
 The first of these terms can be related to the sample variance and the second can be related to the sample mean (given fixed true values of $\mu$ and $\sigma$).  This allows us to show that the distribution of the sample variance is given by:
 
@@ -227,34 +234,45 @@ Reference: http://courses.education.illinois.edu/EdPsy580/lectures/6ChiSq_Fdist_
 
 ## Student's t-distribution
 
-
-The Student's t-distribution is motivated similarly to the Chi-Square distribution.  We imagine that we have a single gaussian distribution with mean $\mu$ and standard deviation $\sigma$.  We draw n points from that distribution, $x_1$, $x_2$, ..., $x_n$.  
-
-From this distribution, we calculate the sample mean $\mu_s$ and the sample variance, $s^2 = \frac{1}{n} \sum (x_i - \mu)^2$.
-
-We then calculate a quantity similar to what we calculated in the Chi-Squared example.  However, instead of dividing by the true standard deviation, $\sigma$, we divide by our sample variance:
+Imagine we have a gaussian-distributed variable $Z$ and a Chi-Square distributed variable $V$ with $N$ degrees-of-freedom, where $Z$ is independent of $V$.  We define the student's t distribution as the distribution of the quantity:
 
 $$
-t = \frac{Z}{s} = \frac{\mu_s - \mu}{\sqrt{s/n}}
+t = \frac{Z}{\sqrt{V/N}}
 $$
 
-Note that w're here using the sample standard deviation and not the true standard deviation.  Recall from above that the gaussian distribution has the following properties:
 
-- The sample mean is gaussian distributed
-- Th sample standard deviation is Chi-Squared distributed
-- The sample mean is independent of the sample standard deviation
+The canonical example motivating this distribution is similar to the example motivating the Chi-Squared distribution.  Imagine that we have a single gaussian distribution with true mean $\mu$ and true standard deviation $\sigma$.  We draw n points from that distribution, $x_1$, $x_2$, ..., $x_n$.
 
-Thus, the distribution of $t$ follows the distribution of a gaussian divided by an independent distribution of a chi-squared distributed variable (with n degrees-of-freedom)
+From the above section we know:
 
-$$t \sim \frac{Z}{\sqrt{U/n}}$$
+- The quantity $N\frac{\bar{x} - \mu}{\sigma}$ is gaussian distributed
+- The quantity $\sum{\frac{(x_i - \bar{x})^2}{\sigma^2}}$ is Chi-Square distributed with N-1 degrees-of-freedom
+- The distribution of these two quantities is independent
 
-The distribution of this quantity, known as the student's t distribution (with n degrees of freedom), can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation.
+Therefore, by the definition of the student's t distribution, we know that the following quantity is follows the student's t distribution:
+
+$$
+t = \frac{\frac{\bar{x} - \mu}{\sigma/\sqrt{N}}}{\sqrt{\sum{\frac{(x_i - \bar{x})^2}{\sigma^2}}/(N-1)}}
+$$
+
+We can then define the sample standard deviation as 
+
+$$
+s^2 = \frac{1}{n-1} \sum (x_i - \bar{x})^2
+$$
+
+and cancel out the factors of $\sigma$ in the definition of $t$ to obtain:
+
+$$
+t = \sqrt{N} \frac{ \bar{x} - \mu}{\sqrt{s^2}}
+$$
+
+which is follows the student's t distribution with n-1 degrees of freedom.  The important aspect of this quantity is that it depends on the true mean $\mu$ but does not depend on the true standard deviation $\sigma$ (it canceled out above).  We will later show that we can use this test statistic to perform inference on the true mean $\mu$ without knowing or assuming the true standard deviation $\sigma$ (we only need to assume that the underlying distribution is a Gaussian).
+
+The probability distribution for the student's t distribution can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation.
 
   
 - http://www.math.ntu.edu.tw/~hchen/teaching/StatInference/notes/lecture35.pdf
 
 
 It is shaped like a gaussian, but has larger tails (because the fact that we are using the sample mean and not the true mean adds additional "uncertainty" to the distribution).
-
-The student's t distribution is useful because, given a set of gaussian distributed data, we can easily calculate $\hat{x}$ and $s^2$, and therefore we can calculate $t$ from a sample of gaussian distributed data.  Assuming that we know the fixed $\mu$ and $\sigma$ in the original distribution, we therefore know the distribution of $t$ and can use the t-distribution to perform inference and hypothesis tests on the gaussian distribution.
-
