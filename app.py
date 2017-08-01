@@ -49,7 +49,7 @@ def code():
 @app.route('/stats/<page>')
 def stats(page):
     meta, body = blog.load_and_render_page('{}/pages/stats/{}.markdown'.format(blog.BASE_PATH, page))
-    return render_template('page.html', content=body)
+    return render_template('page.html', content=body, title=page)
 
 
 APP_MAP = {
