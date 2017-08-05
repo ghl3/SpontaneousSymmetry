@@ -56,40 +56,6 @@ $$
 A probability distribution, $p(x)$ is a function.  If may be parameterized by some parameter, $a$, in which case we write it as $p(x | a)$.  Here, $a$ is simply a number that appears in the definition of the function, and $p(x| a_1)$ and $p(x|a_2)$ are different probability distribution functions for the random variable $x$.  We often think of $a$ as a parameter whose value we want to know or a "parameter of interest".  We will discuss how to perform this inference in later sections.
 
 
-
-## Likelihood
-
-The likelihood function for a given model (with some parameters) and a given dataset is the probability distribution function of that model evaluated on the data and interpreted as a function of the model's parameters.
-
-Imagine we have a model for a single probabilistic variable $x$ that is described by a single parameter $\mu$:
-
-$$
-model = p(x) = p(x | \mu)
-$$
-
-$p$ is a function of the data (given $\mu$) that returns the probability of the data.  The likelihood function for $p$, $x$, and $\mu$ is given by:
-
-$$
-likelihood = L(\mu) = p(x | \mu)
-$$
-
-It looks the same as the model, but it is interpreted as a function of the parameter $\mu$.  In a likelihood, the data is fixed, and we instead vary the possible models that could have produced that data.
-
-
-## Maximum Likelihood Estimator
-
-
-Given a family of models specified by one or more parameters and an observed dataset, the maximum likelihood estimator is the set of parameters that maximize the value of the likelihood function (over the fixed observed data):
-
-Given model $p$ that takes parameters $\mu_1$, $\mu_2$, ... and observed data $\vec{x}$, the maximum likelihood estimator is given by:
-
-$$
-mle(s) = \{\hat{\mu_1}, ..., \hat{\mu_N}\} = argmax_{\mu_1, ..., \mu_N} (L(\vec{x} | \mu_1, ..., \mu_N)
-$$
-
-Intuitively, it is the set of the model parameters that "best" fit the data (in the sense that they produce the highest probability of the data given the model).
-
-
 ### Marginalization and bayesian inference
 
 There are two probabilistic operations that superficially look similar but represent different concepts all together.  
@@ -162,3 +128,24 @@ If x and y are not independent, as was implied in our example, then one must wri
 $$
 p(z) = \int \int p(x, y) \delta(z = x+y) dx dy
 $$
+
+
+## Likelihood
+
+The likelihood function for a given model (with some parameters) and a given dataset is the probability distribution function of that model evaluated on the data and interpreted as a function of the model's parameters.
+
+Imagine we have a model for a single probabilistic variable $x$ that is described by a single parameter $\mu$:
+
+$$
+model = p(x) = p(x | \mu)
+$$
+
+$p$ is a function of the data (given $\mu$) that returns the probability of the data.  The likelihood function for $p$, $x$, and $\mu$ is given by:
+
+$$
+likelihood = L(\mu) = p(x | \mu)
+$$
+
+It looks the same as the model, but it is interpreted as a function of the parameter $\mu$.  In a likelihood, the data is fixed, and we instead vary the possible models that could have produced that data.
+
+

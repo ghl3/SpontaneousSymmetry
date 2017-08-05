@@ -30,6 +30,8 @@ $$
 
 An estimator is a function of the data $x$ that approximates the value of $\mu$.  Importantly, an estimator is a single number; it is a "point estimate" of the unknown parameter, and not some range.  It does not have a level of confidence associated with it or any errors.  One must simply believe it, or at least think it to be valuable, based on how it's constructed and the properties it obeys (or not believe it and ignore it).  Again, the argument in favor of an estimator being valuable are ad-hoc and must be unique to the distribution and estimator in question.
 
+We will use the notation that an estimator for a parameter $\mu$ is written as $\hat{\mu}$.  One should not confuse an estimator, which is a function of the data and is itself a random variable, with the underlying parameter, which is a fixed (but usually unknown) quantity describing the true model of a system.
+
 
 ### Estimator for mean of a gaussian distribution
 
@@ -102,36 +104,53 @@ $$
 
 where $I$ is the Fisher information of the distribution.  We will not concern ourselves with the details of this calculation here, but instead will note that the existence of such a bound means that it's possible in some cases to obtain the "best" unbiased estimator as the one whose variance is falls right on the boundary.  The efficiency of an estimator is the ratio of it's variance to the Cramer-Rao variance bound, where an efficiency of 1 is the best an estimator can do.
 
+## Maximum Likelihood Estimator
 
-### Maximum Likelihood estimators
+One of the most useful estimators, and certainly one of the most widely applicable, is the so-called Maximum Likelihood Estimator.
 
-
-TODO: Introduce Maximum Likelihood Estimators somewhere...
-Similarly, the maximum likelihood estimator for $\sigma$ is given by:
-
-$$
-\hat{\sigma^2} = \frac{1}{n} \sum(x_i - \bar{x})^2
-$$
-
-
-
-### Parameters vs estimators
-
-An estimator is simply a function that can be evaluated on observed data.  On the surface, it should be clear that this is a separate concept than a parameter of a model.  However, due to poor notation and conventions, these can often be confused.
-
-Consider the model:
+For a probability distribution function p that generates data $x$ and has a single parameter $\mu$, the maximum likelihood estimator for the parameter $\mu$ is the value of $\mu$ that maximizes the likelihood function:
 
 $$
-p(x | \mu, \sigma)
+\hat{\mu}_{mle} = argmax_{\mu} p(x|\mu)
 $$
 
-and the estimator:
+where the argmax views p as a likelihood function, meaning the parameter is $\mu$ and the data $x$ is fixed.  In the general case of multiple parameters, the maximum likelihood estimators are given by:
 
 $$
-\hat{\mu}(\vec{x}) = \frac{\sum(\vec(x))} {\sqrt{n-1}}
+mle(s) = \{\hat{\mu_1}, ..., \hat{\mu_N}\} = argmax_{\mu_1, ..., \mu_N} (L(\vec{x} | \mu_1, ..., \mu_N)
 $$
 
-The parameter of the model $\mu$ is a very different concept than the value of the function $\hat{\mu}(\vec{x})$.  Yet, they are both referred to with $\mu$ in their name.  And there IS a reason for this: Given lots of data, we would expect that these would be close to each other, so in a very loose sense, measuring $\hat{\mu}$ gives us a "ballpark" estimation of the true mean $\mu$. And this statement can be made more rigorous using the techniques of statistical inference.  This fact is what motivates labeling $\hat{mu}$ to look like $\mu$, but one should not confuse these two separate concepts.
+The concept of a maximum likelihood estimator makes intuitive sense.  It is the value of the parameter that corresponds to a model that has the highest probability of generating the observed data.  If we saw data and had to infer which model generated it, we may feel well-justified in picking the model that has the highest probability of producing that data (from among the family of models that we're considering).
+
+Other than that intuitive motivation, the maximum likelihood estimator has a number of desirable properties.
+
+
+Given a family of models specified by one or more parameters and an observed dataset, the maximum likelihood estimator is the set of parameters that maximize the value of the likelihood function (over the fixed observed data):
+
+- A mle is consistent, as defined above
+- If considered on a compound likelihood, the distribution of the mle approaches a gaussian distribution around the true parameter as $n \lim \inf$
+- It tends to an efficiency of 1 as $n \lim \inf$
+
+The property that the distribution of a mle tends to a gaussian turns out to be a very useful one.  Given sufficiently large n, it means that one can obtain a good estimate of the distribution of an estimator.  Specifically, the distribution of $\sqrt{n}(\hat{\mu}_mle - \mu)$ converges to a gaussian with mean 0 and variance given by:
+
+$$
+var(\hat{\mu}_mle) = \frac{1}{nI}
+$$
+
+where, again, $I$ is the Fisher information.  This variance, as discussed above, is the one defined by the Cramer-Rao bound.  Given an closed form likelihood, one can calculate the Fisher information $I$ exactly and therefor obtain an asymptotic distribution (the distribution as $n \lim \inf$) for a mle.  This is true for any likelihood, making this method of obtaining estimators very useful.  We will later take advantage of this same property when calculating confidence intervals.
+
+
+For the gaussian example, one can show that the maximum likelihood estimators for $\mu$ and $\sigma$ are given by:
+
+$$
+\hat{\mu}_mle = \bar{x}
+$$
+
+$$
+\hat{\sigma}_mle = \frac{1}{n} \sum (x_i - \bar{x})^2
+$$
+
+The mle for $\mu$ for a gaussian is the familiar sample mean.  Note that the mle for $\sigma$ is not our usual definition for the sample variance $s^2$, as it has a factor of $\frac{1}{n}$ and not $\frac{1}{n-1}$.  This implies that the mle for $\sigma$ is biased (but it is still consistent, as the difference between $\frac{1}{n}$ and $\frac{1}{n-1}$ goes to 0 as $n \lim \inf$).
 
 
 ### Test Statistics
