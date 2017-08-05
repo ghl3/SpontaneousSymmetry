@@ -9,13 +9,14 @@ title: Inference
 
 Up until now, we've been discussing probability.  But the real value of statistics is the ability to use probability distributions and models to learn facts about the real world and, crucially, to know how certain one should be in those facts.
 
-We will here deal with 3 frequentist ways of performing inference:
+There are a number of different ways to infer the values of parameters given measured data.  The ones we will discuss in this work are:
 
 - Estimators
-- p-values
 - Confidence Intervals
+- p-values
+- Posterior Distributions
 
-Each of these is a way of using probability distributions and data to make statements about the values of unknown parameters.  Importantly, the nature of those statements should be understood in detail.  The statements that frequentists can make about unknown parameters (given data) are mathematically rigorous and are unambiguous, but are often confusing or contrary to how a lay person may think about them (possibly to a fault!).  
+Each of these is a way of using probability distributions and data to make statements about the values of unknown parameters.  Importantly, the nature of those statements should be understood in detail.  The statements that frequentists can make about unknown parameters (given data) are mathematically rigorous and are unambiguous, but are often confusing or contrary to how a lay person may think about them (possibly to a fault!).  Bayesian posterior distributions are somewhat more intuitive, but require more assumptions about the nature of the universe
 
 
 ## Estimators
@@ -153,7 +154,17 @@ $$
 The mle for $\mu$ for a gaussian is the familiar sample mean.  Note that the mle for $\sigma$ is not our usual definition for the sample variance $s^2$, as it has a factor of $\frac{1}{n}$ and not $\frac{1}{n-1}$.  This implies that the mle for $\sigma$ is biased (but it is still consistent, as the difference between $\frac{1}{n}$ and $\frac{1}{n-1}$ goes to 0 as $n \lim \inf$).
 
 
+## Confidence Intervals
+
+
 ### Test Statistics
+
+
+
+
+
+<INSERT SECTION ON WHAT A CONFIDENCE INTERVAL IS>
+
 
 
 A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.  A test statistic is used as the starting point of a statistical test (to be covered in detail).  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).
@@ -173,13 +184,6 @@ We will point out examples of sufficient statistics when discussing how to perfo
 
 
 If the distribution of the test statistic does not depend on the parameter of interest, is known as a Ancillary statistic.  A test statistic that is Ancillary to a parameter $\mu$ cannot tell us anything about the true value of $\mu$; we cannot use it for inference.  In a certain sense, an Ancillary statistic is the opposite of a sufficient statistic.  Specifically, Basu's Theorem tells us that a statistic that is both sufficient and complete for a parameter of interest is independent of an Ancillary statistic for that parameter.
-
-
-
-
-
-
-<INSERT SECTION ON WHAT A CONFIDENCE INTERVAL IS>
 
 
 ## Example: Gaussian Distribution
