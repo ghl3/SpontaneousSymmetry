@@ -7,6 +7,158 @@ title: Inference
 ---
 
 
+Up until now, we've been discussing probability.  But the real value of statistics is the ability to use probability distributions and models to learn facts about the real world and, crucially, to know how certain one should be in those facts.
+
+We will here deal with 3 frequentist ways of performing inference:
+
+- Estimators
+- p-values
+- Confidence Intervals
+
+Each of these is a way of using probability distributions and data to make statements about the values of unknown parameters.  Importantly, the nature of those statements should be understood in detail.  The statements that frequentists can make about unknown parameters (given data) are mathematically rigorous and are unambiguous, but are often confusing or contrary to how a lay person may think about them (possibly to a fault!).  
+
+
+## Estimators
+
+An estimator is a algorithm used to create a value from data that approximates, or is a stand-in for, the value of an unknown parameter.  The precise meaning of "approximates" depends on the estimator, and we will discuss properties that estimators can have which make them good or bad approximations.
+
+Imagine one has a probability distribution, $p$, which generates data $x$ and is a function of a single parameter $\mu$:
+
+$$
+p = p(x | \mu)
+$$
+
+An estimator is a function of the data $x$ that approximates the value of $\mu$.  Importantly, an estimator is a single number; it is a "point estimate" of the unknown parameter, and not some range.  It does not have a level of confidence associated with it or any errors.  One must simply believe it, or at least think it to be valuable, based on how it's constructed and the properties it obeys (or not believe it and ignore it).  Again, the argument in favor of an estimator being valuable are ad-hoc and must be unique to the distribution and estimator in question.
+
+
+### Estimator for mean of a gaussian distribution
+
+The most common estimator is the sample mean.  Imagine I have a gaussian distribution $g(x_i | \mu, \sigma)$ and I draw n points from it.  I'd like to use my measured data, ${x_i}$, to estimate the value of $\mu$.  The simplest estimator that one may come up with is the sample mean:
+
+$$
+\mu \sim \bar{x} = \sum_i \frac{x_i}{n}
+$$
+
+In other words, if a person showed you this data, told you that it came from a gaussian distribution, and asked you for a good guess for $\mu$, you could simply say $\bar{x}$.  But why would this guess be justified?
+
+From the discussion of the gaussian distribution, we know that the distribution of $\bar{x}$ given $\mu$ is also a gaussian:
+
+$$
+p(\bar{x} | \mu, \sigma) = gauss(\bar{x} | \mu, \frac{\sigma}{\sqrt{n}})
+$$
+
+This implies that if n is very large, the distribution of $\bar{x}$ will be tightly centered around $\mu$.  SO, if you draw many points and measure $\bar{x}$, it is very likely to be close to the true value of $\mu$.  And this may be sufficient for your purposes, so in such cases, using $\bar{x}$ to estimate $\mu$ is well justified.
+An important thing to note about the above example is that the distribution of $\bar{x}$ given $\mu$ was centered around the true value of $\mu$.  
+
+### Properties of estimators
+
+In the general case, imagine we have a parameter $\mu$ that we are estimating.  We will define our estimator for that parameter to be $\hat{\mu}$ (following common notation).  In the above gaussian example, $\hat{\mu} = \bar{x}$, which reads as "an estimator to the value of $\mu$ is the sample mean."
+
+An estimator whose distribution is centered around the value it is attempting to estimate is said to be "unbiased".  (Conversely, if the mean of the distribution of the estimator was greater than the true value of the parameter, than measuring the estimator would give you a number that, on average, was greater than the true value of the parameter, and your inference of that parameter would be biased on the high side).  We can mathematically define bias as:
+
+$$
+bias = E[\hat{\mu}] - \mu
+$$
+
+We say that an estimator whose bias is equal to 0 is "unbiased", which is usually a desirable property of an estimator.
+
+Another important property to consider is how far off of the true value is the estimator.  One can do this by measuring the mean square error (or distance) between the value of the estimator and the true parameter:
+
+$$
+MSE = E[(\hat{\mu} - \mu)^2]
+$$
+
+In addition, one can measure the variance of the estimator itself.  In contrast with the mean square error, the variance of estimator isn't considered in terms of the true value of the parameter.  It is defined as:
+
+$$
+variance = E[(\hat{\mu} - E[\hat{\mu}])^2]
+$$
+
+It is the mean square distance between the value of the estimator and the mean value of the estimator.
+
+A fact that directly follows from these definitions is known as the bias-variance trade-off, which states that:
+
+$$
+MSE = bias^2 + variance
+$$
+
+In other words, for fixed MSE, one can reduce the variance, but this will case the bias to increase, and visa versa. 
+
+
+A "consistent" estimator is one that converges to the true value of the parameter, usually defined as a function of sample size.  It is defined by finding an estimator that, for all $\epsilon$ and [0 < $\delta$ < 1], there exists a sample size $n$ such that:
+
+$$
+prob (|\hat{\mu} - \mu| < \epsilon) > \delta
+$$
+
+In other words, with high enough n, the probability that the estimator is arbitrarily close to the true value approaches 1.  Our gaussian example above was consistent, which was intuitively why we liked it as an estimator of $\mu$.  An estimator can be consistent but biased (as long as the bias gets arbitrarily small for large n).
+
+
+As mentioned above, it may be a desirable property for an estimator to be unbiased.  A common concept is the "Minimum Variance Unbiased Estimator", which is exactly what the name suggestions.  An important theorem is that there is a minimum bound for the variance of any unbiased estimator.  This is known as the Cramer-Rao bound and states that the variance for any unbiased estimator must obey:
+
+$$
+var > \frac{1}{I}
+$$
+
+where $I$ is the Fisher information of the distribution.  We will not concern ourselves with the details of this calculation here, but instead will note that the existence of such a bound means that it's possible in some cases to obtain the "best" unbiased estimator as the one whose variance is falls right on the boundary.  The efficiency of an estimator is the ratio of it's variance to the Cramer-Rao variance bound, where an efficiency of 1 is the best an estimator can do.
+
+
+### Maximum Likelihood estimators
+
+
+TODO: Introduce Maximum Likelihood Estimators somewhere...
+Similarly, the maximum likelihood estimator for $\sigma$ is given by:
+
+$$
+\hat{\sigma^2} = \frac{1}{n} \sum(x_i - \bar{x})^2
+$$
+
+
+
+### Parameters vs estimators
+
+An estimator is simply a function that can be evaluated on observed data.  On the surface, it should be clear that this is a separate concept than a parameter of a model.  However, due to poor notation and conventions, these can often be confused.
+
+Consider the model:
+
+$$
+p(x | \mu, \sigma)
+$$
+
+and the estimator:
+
+$$
+\hat{\mu}(\vec{x}) = \frac{\sum(\vec(x))} {\sqrt{n-1}}
+$$
+
+The parameter of the model $\mu$ is a very different concept than the value of the function $\hat{\mu}(\vec{x})$.  Yet, they are both referred to with $\mu$ in their name.  And there IS a reason for this: Given lots of data, we would expect that these would be close to each other, so in a very loose sense, measuring $\hat{\mu}$ gives us a "ballpark" estimation of the true mean $\mu$. And this statement can be made more rigorous using the techniques of statistical inference.  This fact is what motivates labeling $\hat{mu}$ to look like $\mu$, but one should not confuse these two separate concepts.
+
+
+### Test Statistics
+
+
+A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.  A test statistic is used as the starting point of a statistical test (to be covered in detail).  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).
+
+So, important properties of the test statistic are that:
+
+- It can be easily calculated
+- It's distribution (given a fixed model or model parameters) is known
+
+For a given model, there are many possible test statistics.  So, how should one go about picking the "best" test statistic, or what does it even mean for a test statistic to be good?  When using a test statistic for inference a requirement is that the test statistic be a function of the parameter of interest (after all, if the distribution of the test statistic didn't depend on the parameter of interest, than measuring the test statistic wouldn't tell us anything about that parameter).  With that requirement satisfied, as a rule of thumb, a test statistic is good if it's distribution under different values of the parameter(s) of interest varies dramatically.  This allows one to use the test statistic to determine which model is most likely the "true" model (again, this loose language will be made more formal later).
+
+As described above, we want the distribution of the test statistic to depend on the parameter of interest.  However, the calculation of the test statistic may or may not depend on the parameter of interest.  Say that we have a test statistic t and a probability distribution function pdf for t under a given model, and we are interested in a parameter $\mu$.  We want pdf(t) = pdf(t | $\mu$).  However it may be the case that t itself depends on mu: $t = t(\vec{x}, \mu)$ or that t is independent of the parameter: $t = t(\vec{x})$.
+
+For certain models and parameters of that model that we're interested in learning about, there may be one (or more) "best" test statistic to choose.  A "sufficient statistic" is a statistic for a given model and parameter(s) of interest that has as much information as the full set of raw data.  In other words, for the purpose of performing inference on the parameter of interest, one does not lose any information by summarizing the data with the value of that test statistic.
+
+We will point out examples of sufficient statistics when discussing how to perform inference for various distributions and parameters.
+
+
+If the distribution of the test statistic does not depend on the parameter of interest, is known as a Ancillary statistic.  A test statistic that is Ancillary to a parameter $\mu$ cannot tell us anything about the true value of $\mu$; we cannot use it for inference.  In a certain sense, an Ancillary statistic is the opposite of a sufficient statistic.  Specifically, Basu's Theorem tells us that a statistic that is both sufficient and complete for a parameter of interest is independent of an Ancillary statistic for that parameter.
+
+
+
+
+
 
 <INSERT SECTION ON WHAT A CONFIDENCE INTERVAL IS>
 

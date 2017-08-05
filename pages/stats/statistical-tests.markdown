@@ -74,13 +74,57 @@ __
 
 ***I have a dataset consisting of a number of 1-d observations.  Does my data comes from a Gaussian distribution with a specific mean and variance?***
 
-To answer this question, one would naively need to consider all possible points in the space of ($\mu$, $\sigma$).  He would scan over every pair, determine the probability of the measured data given those parameters, and use that to create a 2-d confidence interval.
+Unlike previous examples, we're here looking to perform simultaneous inference on two parameters.  Instead of making a confidence interval for a single parameter, we instead will attempt to make a confidence region, consisting of a 2-d region in ($\mu$, $\sigma$) space.
 
-Luckily, we know that the distribution of the sample mean and sample variance of a gaussian distribution are independent.  In addition, the sample mean and sample variance are sufficient statistics for the gaussian distribution (when considering $\mu$ and $\sigma$).   Therefore, for this case, it is actually not necessary to consider the joint distribution of ($\mu$, $\sigma$), but instead can consider them separately and create their confidence intervals independently (in other words, the confidence interval will be a square).
+The brute force procedure to accomplish this is well defined:
+- Pick a test statistic (which may be a pair of statistics)
+- For each point in ($\mu$, $\sigma$) space, find the distribution of the test statistic
+- Using each distribution, define a region whose integral contains $\alpha$ of integrated probability (where $\alpha$ is the size of the test)
+- Measure the test statistic
+- The confidence region consists of all points in ($\mu$, $\sigma$) where the measured value of the test statistic falls within the $\alpha$ sized region.
 
-So, we can obtain a confidence interval for $\mu$ using the t-test, as outlined above.  In addition, we can obtain a confidence interval for $\sigma$.
+This procedure, however, can be computationally intensive.  Moreover, it requires coming up with a test statistic that has power to constrain both $\mu$ and $\sigma$, which may be difficult (or, it may be difficult to determine the distribution of that statistic and to integrate it to find regions of size $\alpha$.
 
-To do so, one can take advantage of the fact that the distribution of the sample standard deviation follows a Chi-Squared distribution.  One can use this to obtain confidence intervals for $\sigma$.
+Luckily, the gaussian distribution has properties that make this calculation easier.  If we recall the definitions:
+
+$$
+t = \frac{\bar{x} - \mu}{s/ \sqrt{n}}
+$$
+$$
+s^2 = \sum (\frac{x_i - \hat{x}}{\sigma})^2
+$$
+
+then, we can leverage the following properties:
+
+- The distribution of t is a Student's T distribution and the distribution is independent of the true values of $\mu$ or $\sigma$
+- The distribution of $s^2$ is a Chi-Squared distribution and is also independent of the true values of $\mu$ or $\sigma$
+- The two distributions are independent of each other
+- t only depends on $\mu$ (not $\sigma$) and $s^2$ only depends on $\sigma$ (not $\mu$)
+
+Knowing this, one can consider the somewhat simple test statistic $(t, s^2)$.  These two variables are independent, and therefore we can write down the distribution:
+
+$$
+p(t, s^2) = t_{n-1}\chi^2_{n-1}
+$$
+
+Importantly, as we discussed above, this is the distribution for all values of $\mu$ and $\sigma$ (and this is possible because $\mu$ and $\sigma$ are used in the definitions of $t$ and $s^2$ to cancel out their influence on the distribution).
+
+Even with this distribution in hand, however, we are not done.  There is a lot of ambiguity in how we use this distribution to define the confidence regions.  Specifically, we must find a region in $(t, s^2)$ with total integrated probability of size $\alpha$.  There are many such regions!  And so we have to agree in advance on which region we're interested in.  In doing so, one may think through the following considerations:
+
+- Simplicity of defining the region
+- Symmetry of the region
+- Minimizing the overall area of the region
+
+(In this example, one has freedom to, in a sense, divvy the $alpha$ between the distributions of $t$ or $s^2$, making the region very wide in $t$ and narrow in $\sigma$, or visa versa, as long as it's total area integrates to $alpha$).
+
+One reasonable choice is to define a region defined by $(-|a| < t < |a|)$ and $(b < s^2 < c)$ with $a = \alpha_1/2$ 
+
+$$
+Region = \{ \bar{x} - a \frac{\sigma}{\sqrt{n}} < \mu < \bar{x} + a \frac{\sigma}{\sqrt{n}}, \\
+ \frac{\sum(x_i - \bar{x})^2}{c} < \sigma^2 <  \frac{\sum(x_i - \bar{x})^2}{b}\}
+$$
+
+This region is a trapezoid, as $\bar{x}$ appears in both the $\mu$ and $\sigma$ region.
 
 https://www.math.tecnico.ulisboa.pt/~apacheco/ID1/artigo%20n%BA2.pdf
 

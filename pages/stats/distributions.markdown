@@ -111,23 +111,14 @@ $$
 
 The Gaussian distribution will be important for understanding following distributions, so we will take some time to understand it's properties.  Using the formula above, one can confirm that the mean and standard deviation are indeed $\mu$ and $\sigma$, respectively.
 
-Because the gaussian distribution is so ubiquitous, it is worthwhile to spend some time to understand it's properties.  Imagine w draw $n$ points from a gaussian and measure the mean of those points.  We define that mean as $\mu_s$, the mean of the sample we drew (or "sample mean").  The quantity $\mu_s$ is itself a random variable: it as a real value after drawing the $n$ points and it depends on the random draws of individual gaussians.  On can mathematically show that the distribution of $\mu_s$ is itself a gaussian and is given by 
+Because the gaussian distribution is so ubiquitous, it is worthwhile to spend some time to understand it's properties.  Imagine w draw $n$ points from a gaussian and measure the mean of those points.  We define that "sample mean" of the random variable $x$, $\bar{x}$, and the mathematical mean of the values of $x$, drawn from a specific realized sample.  The quantity $\bar{x}$ is itself a random variable (as it is just a function of the data) and therefore it has a distribution that depends on the model and it's parameters.  On can mathematically show that the distribution of $\mu_s$ is itself a gaussian and is given by 
 
-
-$$ p(\hat{\mu} | \mu, \sigma, n) = Gauss(\mu, \frac{\sigma}{\sqrt{n}}) $$
+$$ p(\bar{x} | \mu, \sigma, n) = Gauss(\mu, \frac{\sigma}{\sqrt{n}}) $$
 
 Reference: https://onlinecourses.science.psu.edu/stat414/node/173
 
 
 The $\frac{1}{\sqrt{n}}$ part of that formula is important: it means that the standard deviation of the sample mean drops by $1/\sqrt{n}$ as you draw more and more points.  If you are trying to measure the true $\mu$ of a gaussian distribution, you can do so by observing many points drawn from it and calculating the sample mean of those points, $\mu_s$.  If you observe many points, that distribution of $\mu_s$ will be tightly centered around the expected sample mean, $\frac{\mu}{\sqrt{n}}$, and you can use that to infer the true value of $\mu$.
-
-TODO: Introduce Maximum Likelihood Estimators somewhere...
-Similarly, the maximum likelihood estimator for $\sigma$ is given by:
-
-$$
-\hat{\sigma^2} = \frac{1}{n} \sum(x_i - \overbar{x})^2
-$$
-
 
 
 
@@ -218,7 +209,7 @@ This final quantity is the sum of quadratic terms in $x_i$, where the $x_i$ are 
 The first of these terms can be related to the sample variance and the second can be related to the sample mean (given fixed true values of $\mu$ and $\sigma$).  This allows us to show that the distribution of the sample variance is given by:
 
 $$
-s^´2 = \frac{1}{(n-1)} \sum(x_i - \hat{x})^2 \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1}
+s^2 = \frac{1}{(n-1)} \sum(x_i - \hat{x})^2 \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1}
 $$
 
 and, importantly, that it is independent of the distribution of the sample mean.  The fact that the sample mean and sample standard deviation are independent is unique to the gaussian distribution and, in fact, fully specifies the gaussian, a property known as Basu's theorem). These facts will be important when performing inference on the gaussian distribution (trying to infer $\sigma$ and $\mu$ given a sample of gaussian-distributed data).  This will be discussed in a later section.
