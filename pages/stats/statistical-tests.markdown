@@ -17,7 +17,8 @@ This is a short reference guide, or cheat sheet, for how to solve some well-defi
 ### Comparing measured data to an expected distribition
 
 
-***I have a dataset consisting of a number of 1-d observations.  Does my data comes from a Gaussian distribution with a specific mean and variance?***
+
+***I have a dataset consisting of a number of 1-d observations.  I know the true variance of my sample, but the mean is unknown to me.  Does the data come from a model with mean $\mu$?***
 
 To answer this question, one can apply a Gaussian Z-Test.  This is a hypothesis test that calculates the p-value of your data given a gaussian distribution with fully specified mean and variance.  There are no nuisance parameters, so the p-value is well defined.  The p-value is calculated analytically using known properties of the gaussian distribution.
 
@@ -34,7 +35,7 @@ $$
 z = \frac{\hat{x} - \mu}{\sigma/\sqrt{n}}
 $$
 
-This test statistic follows a gaussian distribution and one can use gaussian CDF tables to determine the p-value of the given data (either one-tailed or two-tailed).
+This test statistic follows a gaussian distribution and one can use gaussian CDF tables to determine the p-value of the given data (either one-tailed or two-tailed).  The sample mean is a sufficient test statistic for estimating the mean of a gaussian distribution, so this test is the best that one can do (we lose no information relative to the full data distribution when we take the mean as our test statistic).
 
 References:
 
@@ -42,44 +43,46 @@ References:
 - http://www.statsdirect.com/help/parametric_methods/z_normal.htm
 - https://people.richland.edu/james/lecture/m170/ch09-mu.html
 
-___
 
-***I have a dataset consisting of a number of 1-d observations.  Does my data come from a Guassian distribution with a known mean but unknown variance*** 
+__
+
+
+***I have a dataset consisting of a number of 1-d observations.  Does my data come from a Guassian distribution with a known mean (without knowing or caring about the value of the true variance)*** 
+
 <!--If I assume that my data comes from some Gaussian distribution with unknown mean and unknown variance, does it come from a gaussian with a given mean (regardless of the unknown variance)?-->
 
-In this instance, we are going to perform a p-value test to compare our data to a gaussian model with a known mean.  However, we are allowing any possible variance for the gaussian, which introduces a nuisance parameter.  We must first think through what we are really trying to determine.  One interpretation is, "Does there exist a gaussian distribution with the given mean and SOME variance which is consistent with the data I'm observing".  
+In this instance, we are going to perform a p-value test to compare our data to a gaussian model with a known mean.  However, we are allowing any possible variance for the gaussian, which introduces a nuisance parameter.  In order to perform the test, we must think of a way to handle the nuisance parameter.  When calculating a p-value, we can always scan over the full space of nuisance parameters and take the extrema among all calculated p-values.  But, in general, this procedure tends to be less powerful than other alternatives.
 
+Thankfully, in this case, we can apply a t-test.  As discussed in the <a href="#students-t">section</a> on the t-distribution, the following test statistic follows a t-distribution:
 
-
-
-One should apply a one-sample t-test.  This is essentially a Z-test where one doesn't know the population variance.  One therefore must estimate it from the sample, which adds additional uncertainty.
-
-Note that it does not depend on the population size: it is applicable to small populations, assuming the initially stated assumptions are met.
-
-
-To perform this test, first define:
-
-- $\bar{x}$ as the sample mean
-- $s$ is the sample variance
-- n is the sample size
-- $\mu$ is theoretical mean of the distribution we're testing against
-
-One then calculate the test statistic as 
 
 $$
 t = \frac{\hat{x} - \mu}{s/\sqrt{n}}
 $$
 
-To calculate the p-value, one compares this test statistic to the CDF of a t-distribution, where the degrees of freedom is n-1 (n being the sample size).
+where,  $\bar{x}$ is the sample mean, $s$ is the sample variance, and n is the sample size.
 
-A t-distribution approaches a gaussian as sample size increases.
-
-For further discussion of t-tests, see <a href="#students-t">here</a>.
+We can use the t-distribution to create a confidence interval in the parameter $\mu$ with size $\alpha$ by finding all points in the space of $\mu$ that have a probability of data (p-value) greater than $\alpha$.
 
 References:
 
 - http://lap.umd.edu/psyc200/handouts/psyc200_0810.pdf
 - http://www.statisticssolutions.com/manova-analysis-one-sample-t-test/
+
+__
+
+
+***I have a dataset consisting of a number of 1-d observations.  Does my data comes from a Gaussian distribution with a specific mean and variance?***
+
+To answer this question, one would naively need to consider all possible points in the space of ($\mu$, $\sigma$).  He would scan over every pair, determine the probability of the measured data given those parameters, and use that to create a 2-d confidence interval.
+
+Luckily, we know that the distribution of the sample mean and sample variance of a gaussian distribution are independent.  In addition, the sample mean and sample variance are sufficient statistics for the gaussian distribution (when considering $\mu$ and $\sigma$).   Therefore, for this case, it is actually not necessary to consider the joint distribution of ($\mu$, $\sigma$), but instead can consider them separately and create their confidence intervals independently (in other words, the confidence interval will be a square).
+
+So, we can obtain a confidence interval for $\mu$ using the t-test, as outlined above.  In addition, we can obtain a confidence interval for $\sigma$.
+
+To do so, one can take advantage of the fact that the distribution of the sample standard deviation follows a Chi-Squared distribution.  One can use this to obtain confidence intervals for $\sigma$.
+
+https://www.math.tecnico.ulisboa.pt/~apacheco/ID1/artigo%20n%BA2.pdf
 
 ___
 
@@ -151,14 +154,61 @@ If we first assume that the two distributions are both normal (gaussian) distrib
 
 #### If we assume they are Guassian random variables and that their underlying distributions have the same variance (but possibly different means)
 
-We use the student's t-test.  
+This can be solved by performing a t-test.
 
-The sample sizes may vary here, but if the sample sizes are the same, the test is robust against deviations from the assumption of equal underlying variance of the two distributions.
+Assume that we have:
+
+- Sample X consisting of n samples with true mean $\mu_X$, sample mean $\bar{X}$ and sample variance $S_X^2$
+- Sample Y consisting of m samples with true mean $\mu_Y$, sample mean $\bar{Y}$, and sample variance $S_X^2$.
+- The true variance of samples X and Y are the same (which is an unknown nuisance parameter $\sigma$)
+
+Define the "pooled sample variance" to be:
+
+$$
+S_p^2 = \frac{(n-1)S_X^2 + (m-1)S_Y^2}{n+m-2}
+$$
+
+Under these conditions, the following test statistic is t-distributed:
+
+$$
+T = \frac {(\bar{X} - \bar{Y}) - (\mu_X - \mu_Y)} {S_p \sqrt{\frac{1}{n} + \frac{1}{m}}}
+$$
+
+This can be shown by noting that the distribution of $\bar{X}$ is a gaussian with mean $\mu_X$ and variance $\frac{\sigma}{n}$, and similarly for sample Y.  Since the samples are independent, their difference is also a gaussian:
+
+$$
+\bar{X} - \bar{Y} \sim Gauss(\mu_X - \mu_y, \frac{\sigma^2}{n} + \frac{\sigma^2}{m})
+$$
+
+By the properties of the gaussian distribution, we also know that the sample variances are Chi-Square distributed (with n-1 and m-1 degrees of freedom) and are independent of the sample means, and are independent of each other.  This implies that their sum is also distributed like a Chi-Squared with (n+m-2) degrees of freedom:
+
+$$
+U = \frac{(n-1)S^2_X}{\sigma^2} + \frac{(m-1)S^2_Y}{\sigma^2} \sim \chi^2_{n+m-2}
+$$
+
+So, we have two quantities, T and U.  T is a gaussian, and U is a Chi-Squared.  We can use them to construct a variable that is t-distributed by calculating:
+
+$$
+T = \frac{Z}{\sqrt{U/(n+m-2)}}
+$$
+
+This follows the student's t distribution by construction, and it reduces to the value of $T$ above (importantly, the value of $\sigma$ cancels out, making the test statistic independent of the nuisance parameter).
+
+The distribution of the difference in mean of the two samples (assuming that they are both gaussian with the sam variance) follows a t-distribution.
+
+https://onlinecourses.science.psu.edu/stat414/node/201
+
+This is an exact test, applicable for all values of n and m.  Further, if the sample sizes n and m are the same, this test will be robust against deviations from the normal distribution assumption.
 
 
 #### If we assume they are Guassian random variables but with different means and variances
 
-We use Welch's t-test
+This problem is known as the Behrens-Fisher Problem.  A number of approximate solutions exist.
+
+The most famous approximate solution is "Welch's t-test", which creates a test statistic that is approximately t-distributed (under certain conditions).
+
+https://en.wikipedia.org/wiki/Behrens%E2%80%93Fisher_problem
+
 
 
 #### If we are simply wondering if they come from the same distribution, regardless of what that distribution is

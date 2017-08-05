@@ -33,14 +33,13 @@ $$
 
 A Bayesian would describe this model as a probability distribution function for the data $x$ in terms of the parameter $\alpha$, where $\alpha$ has a prior probability whose shape is $p(\alpha) = e^{-(\alpha - 1.0)^2}$.  
 
-But a frequentist is free to construct and consider this model as well.  To him, the term $e^{-(\alpha - 1.0)^2}$ is not a statement about the prior belief on the parameter $\alpha$, but instead is typically referred to as a "constraint term" and can be thought of as describing some previous measurement on the parameter $\alpha$ whose result is included in the current likelihood.  The functional form of this probability distribution is the same for both philosophies.
+But a frequentist is free to construct and consider this model as well.  To him, the term $e^{-(\alpha - 1.0)^2}$ is not a statement about the prior belief on the parameter $\alpha$, but instead is typically referred to as a "constraint term" and can be thought of as describing some previous measurement on the parameter $\alpha$ whose result is included in the current model.  The functional form of this probability distribution is the same for both philosophies.
 
 In practice, he main difference between how a Frequentist and Bayesian uses this distribution function is that a Bayesian is free to integrate over the parameter $\alpha$ to get a probability that depends only on $x$.  A frequentist cannot perform this integral.
 
 One is fully free to build deep, hierarchical models in a frequentist settings, they simply cannot eliminate model parameters by integrating them away (using a prior probability).  A frequentist must instead handle these parameters in a different way (which we will discuss later).
 
-
-## Terminology
+## Probabilistic Variables
 
 The theory of probability has a number of similar but subtly different concepts, which is a large source of confusion.  To make matters worse, the notation employed often elides these differences instead of using unambiguous syntax.  We will try here to be clarify all the possible meanings of this syntax, but will later fall back to the usual sloppiness, for convenience.
 
@@ -57,7 +56,39 @@ $$
 A probability distribution, $p(x)$ is a function.  If may be parameterized by some parameter, $a$, in which case we write it as $p(x | a)$.  Here, $a$ is simply a number that appears in the definition of the function, and $p(x| a_1)$ and $p(x|a_2)$ are different probability distribution functions for the random variable $x$.  We often think of $a$ as a parameter whose value we want to know or a "parameter of interest".  We will discuss how to perform this inference in later sections.
 
 
-## Pitfalls and Sources of Confusion
+
+## Likelihood
+
+The likelihood function for a given model (with some parameters) and a given dataset is the probability distribution function of that model evaluated on the data and interpreted as a function of the model's parameters.
+
+Imagine we have a model for a single probabilistic variable $x$ that is described by a single parameter $\mu$:
+
+$$
+model = p(x) = p(x | \mu)
+$$
+
+$p$ is a function of the data (given $\mu$) that returns the probability of the data.  The likelihood function for $p$, $x$, and $\mu$ is given by:
+
+$$
+likelihood = L(\mu) = p(x | \mu)
+$$
+
+It looks the same as the model, but it is interpreted as a function of the parameter $\mu$.  In a likelihood, the data is fixed, and we instead vary the possible models that could have produced that data.
+
+
+## Maximum Likelihood Estimator
+
+
+Given a family of models specified by one or more parameters and an observed dataset, the maximum likelihood estimator is the set of parameters that maximize the value of the likelihood function (over the fixed observed data):
+
+Given model $p$ that takes parameters $\mu_1$, $\mu_2$, ... and observed data $\vec{x}$, the maximum likelihood estimator is given by:
+
+$$
+mle(s) = \{\hat{\mu_1}, ..., \hat{\mu_N}\} = argmax_{\mu_1, ..., \mu_N} (L(\vec{x} | \mu_1, ..., \mu_N)
+$$
+
+Intuitively, it is the set of the model parameters that "best" fit the data (in the sense that they produce the highest probability of the data given the model).
+
 
 ### Marginalization and bayesian inference
 
@@ -76,9 +107,9 @@ $$
 p(x) = \int p(x, y) dy
 $$
 
-Our original pdf, $p(x, y)$, described two random variables, x and y, and one generates them in pairs using this joint distribution.  The new pdf, $p(x)$, represents the distribution of x if we draw many join values of $(x, y)$ and discard y values to get a list of x values.
+Our original pdf, $p(x, y)$, described two random variables, x and y, and one generates them in pairs using this joint distribution.  The new pdf, $p(x)$, represents the distribution of x if we draw many join values of $(x, y)$ and discard y values to get a list of x values.  An important thing to note is that one can only "marginalize" the data that a pdf describes; one cannot marginalize away any parameters of a pdf.
 
-One should not confuse this with a similar Bayesian operation.  Consider a similar situation where we have a pdf of a single variable x given the parameter $a$:
+One should not confuse this with a similar Bayesian operation.  Consider the situation where we have a pdf of a single variable x given the parameter $a$:
 
 $$
 p(x | a) = ...
@@ -116,7 +147,7 @@ Before we answer that, let's make sure that we understand what it means to add t
 
 Naively, one may think that the probability p(z) is given by:
 
-$$ p(z) = p(x) + p(y) $$
+$$ p(z) = p(x) + p(y)$$
 
 But this is not the case.  It's clear that this is wrong because, as defined above, p(z) would not add up to 1.  Moreover, it has invalid units (note that p(x) has units of 1/[x] and p(y) has units of 1/[y], and these cannot be added together.
 
@@ -152,7 +183,25 @@ $$
 The parameter of the model $\mu$ is a very different concept than the value of the function $\hat{\mu}(\vec{x})$.  Yet, they are both referred to with $\mu$ in their name.  And there IS a reason for this: Given lots of data, we would expect that these would be close to each other, so in a very loose sense, measuring $\hat{\mu}$ gives us a "ballpark" estimation of the true mean $\mu$. And this statement can be made more rigorous using the techniques of statistical inference.  This fact is what motivates labeling $\hat{mu}$ to look like $\mu$, but one should not confuse these two separate concepts.
 
 
+### Test Statistics
 
-### Maximum Likelihood Estimator
 
-TODO: Fill this out
+A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.  A test statistic is used as the starting point of a statistical test (to be covered in detail).  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).
+
+So, important properties of the test statistic are that:
+
+- It can be easily calculated
+- It's distribution (given a fixed model or model parameters) is known
+
+For a given model, there are many possible test statistics.  So, how should one go about picking the "best" test statistic, or what does it even mean for a test statistic to be good?  When using a test statistic for inference a requirement is that the test statistic be a function of the parameter of interest (after all, if the distribution of the test statistic didn't depend on the parameter of interest, than measuring the test statistic wouldn't tell us anything about that parameter).  With that requirement satisfied, as a rule of thumb, a test statistic is good if it's distribution under different values of the parameter(s) of interest varies dramatically.  This allows one to use the test statistic to determine which model is most likely the "true" model (again, this loose language will be made more formal later).
+
+As described above, we want the distribution of the test statistic to depend on the parameter of interest.  However, the calculation of the test statistic may or may not depend on the parameter of interest.  Say that we have a test statistic t and a probability distribution function pdf for t under a given model, and we are interested in a parameter $\mu$.  We want pdf(t) = pdf(t | $\mu$).  However it may be the case that t itself depends on mu: $t = t(\vec{x}, \mu)$ or that t is independent of the parameter: $t = t(\vec{x})$.
+
+For certain models and parameters of that model that we're interested in learning about, there may be one (or more) "best" test statistic to choose.  A "sufficient statistic" is a statistic for a given model and parameter(s) of interest that has as much information as the full set of raw data.  In other words, for the purpose of performing inference on the parameter of interest, one does not lose any information by summarizing the data with the value of that test statistic.
+
+We will point out examples of sufficient statistics when discussing how to perform inference for various distributions and parameters.
+
+
+If the distribution of the test statistic does not depend on the parameter of interest, is known as a Ancillary statistic.  A test statistic that is Ancillary to a parameter $\mu$ cannot tell us anything about the true value of $\mu$; we cannot use it for inference.  In a certain sense, an Ancillary statistic is the opposite of a sufficient statistic.  Specifically, Basu's Theorem tells us that a statistic that is both sufficient and complete for a parameter of interest is independent of an Ancillary statistic for that parameter.
+
+

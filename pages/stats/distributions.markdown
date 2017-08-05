@@ -264,10 +264,10 @@ $$
 and cancel out the factors of $\sigma$ in the definition of $t$ to obtain:
 
 $$
-t = \sqrt{N} \frac{ \bar{x} - \mu}{\sqrt{s^2}}
+t = \frac{ \bar{x} - \mu}{\sqrt{s^2 / N}}
 $$
 
-which is follows the student's t distribution with n-1 degrees of freedom.  The important aspect of this quantity is that it depends on the true mean $\mu$ but does not depend on the true standard deviation $\sigma$ (it canceled out above).  We will later show that we can use this test statistic to perform inference on the true mean $\mu$ without knowing or assuming the true standard deviation $\sigma$ (we only need to assume that the underlying distribution is a Gaussian).
+which follows the student's t distribution with $n-1$ degrees of freedom.  The important aspect of this quantity is that it depends on the true mean $\mu$ but does not depend on the true standard deviation $\sigma$ (it canceled out above).  We will later show that we can use this test statistic to perform inference on the true mean $\mu$ without knowing or assuming the true standard deviation $\sigma$ (we only need to assume that the underlying distribution is a Gaussian).
 
 The probability distribution for the student's t distribution can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation.
 
