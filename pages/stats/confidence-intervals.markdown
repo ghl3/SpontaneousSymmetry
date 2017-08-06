@@ -33,15 +33,15 @@ $$
 p = p(x | \theta)
 $$
 
-The data $x$ may be multi-dimensional.  However, we are free to choose a function of the data (and possibly the parameter of interest) whose value is 1 dimensional.  This is known as a test statistic: $t = t(\vec{x}, \theta) in {All Real Numbers}$.  We note that the test statistic may be defined in terms of the parameter of interest.  We will discuss the details of test statistics and how to choose a "good" test statistic later.
+The data $x$ may be multi-dimensional.  However, we are free to choose a function of the data (and possibly the parameter of interest) whose value is 1 dimensional.  This is known as a test statistic: $t = t(\vec{x}, \theta)$ with $t \in \mathbb{R}$.  We note that the test statistic may be defined in terms of the value of the parameter of interest for a hypothetical model.  We will discuss the details of test statistics and how to choose a "good" test statistic later.
 
 The procedure for producing a confidence interval is the following:
 
-- Choose a "test statistic" t(x)
+- Choose a "test statistic" $t(x)$
 - For each possible value of the parameter $\theta$, determine the distribution of the test statistic: $p(t(x, \theta) | \theta)$.
 - For every value of $\theta$, using the distributions above, choose a window in the domain of the data ($t \in [a, b]$) such that the total probability of that window is the size of the confidence window: $\int_a^b p(t | \theta) dt = \alpha$.  Record these windows $[a(\theta), b(\theta)]$ for each value of $\theta$.
-- Measure the data $x$ and calculate the measured value of the test statistic $t_0$
-- Given that measured data, find all values of the parameter $\theta$ such that $t_0$ falls in the windows $[a(\theta), b(\theta)]$ that we chose above.  In other words, determine the set $\{\theta : a(\theta) < t_0 < b(\theta)\}$.
+- Measure the data $x$ and calculate the measured value of the test statistic $t_0 = t(x)$
+- Find all values of the parameter $\theta$ such that $t_0$ falls in the windows $[a(\theta), b(\theta)]$ that we chose above.  In other words, determine the set $\{\theta : a(\theta) < t_0 < b(\theta)\}$.
 - This set of values of $\theta$ forms the confidence interval on the parameter $\theta$ of size $\alpha$.
 
 
@@ -59,31 +59,33 @@ Let's label our data as $x$ and our single parameter as $\theta$, and assume tha
 - That set of values of $\theta$ forms the confidence interval on the parameter $\theta$ of size $\alpha$.
 -->
 
-This procedure is known as the Neyman Construction.  The set of all points that fall in the union of each window for all values of the parameter is sometimes called the Confidence Band, as it traces out a 2-d sheet in parameter/data space.
+This procedure is known as the Neyman Construction.  The set of all points that fall in the union of each window $[a(\theta), b(\theta)]$ for all values of the parameter $\theta$ is sometimes called the Confidence Band, as it traces out a 2-d sheet in parameter/data space.
    
-Why does an interval, defined in this way, have the properties of the confidence interval that we desire (namely that it contains the true value of $\theta$ with probability $\alpha$)?  Well, we start with the statement that here is only one TRUE value of $\theta$: $\theta_{true}$.  It is unknown to the person performing the experiment, but it exists.  Given that fixed value of $\theta_{true}$, there is a true distribution of t: $p(t) = p(t | \theta_0)$. <!--there will be a distribution of $\t$ generated (and we will measure a single random variable from that distribution when we perform the experiment).  -->  In our procedure to generate confidence intervals, we picked an window for all possible values of $\theta$ where the probability of t falling into that window is exactly $\alpha$.  In particular, this is true of $\theta_{true}$.
+Why does an interval, defined in this way, have the properties of the confidence interval that we desire (namely that it contains the true value of $\theta$ with probability $\alpha$)?  Well, we start with the fact that there is only one TRUE value of $\theta$: $\theta_{true}$, which is of course unknown to the person performing the experiment.  Given that fixed value of $\theta_{true}$, there is a true distribution of t: $p(t) = p(t | \theta_{true})$. <!--there will be a distribution of $\t$ generated (and we will measure a single random variable from that distribution when we perform the experiment).  -->  In our procedure to generate confidence intervals, we picked windows $[a(\theta), b(\theta)]$ for all possible values of $\theta$ where the probability of t falling into that window is exactly $\alpha$.  In particular, this is true of $\theta_{true}$.
 
-The key point is that $\theta_0$ will fall into the set ${\theta : a(\theta) < t_0 < b(\theta)\}$ if and only if the measured value $t_0$ falls between $[a(\theta_{true} < t_0 < b(\theta_{true})]$.  But, by construction, $t_0$ falls into this window $\alpha$ of the time (because we defined the window to have total probability of t equal to $\alpha$).  Therefore, the confidence interval defined by ${\theta : a(\theta) < t_0 < b(\theta)\}$ will contain the true value of the parameter $\theta_{true}$ a fraction of the time equal to $\alpha$.  This is the property that we are looking to show, which proves that our procedure produces confidence intervals.
+The key point is that the set $\{\theta : a(\theta) < t_0 < b(\theta)\}$ will contain  $\theta_{true}$ if and only if the measured value $t_0$ falls between $[a(\theta_{true}), b(\theta_{true})]$.  But, by construction, $t_0$ falls into this window $\alpha$ of the time (because we defined the window to have total probability of t equal to $\alpha$).  Therefore, the confidence interval defined by $\{\theta : a(\theta) < t_0 < b(\theta)\}$ will contain the true value of the parameter $\theta_{true}$ a fraction of the time equal to $\alpha$.  This is the property that we are looking to show, which proves that our procedure produces confidence intervals.
 
+<!--
 To summarize, there are two possible cases that can take place:
 
 - Case 1: Given $\theta_{\text{true}}$, the value of $t_0$ that we draw **IS** in that window.  In this case, when the experimenter builds their confidence interval as described above, it will contain the true value of $\theta$, since $\theta_{\text{true}}$ will be one of the $\theta$ values whose confidence interval of size $\alpha$ contains $t_0$
 - Case 2: Given $\theta_{\text{true}}$, the value of $t$ that we draw **IS NOT** in that window.  Therefore, by the same logic, the experimenter's confidence interval will NOT contain the true value of $\theta$, since the measured value of $t_0$ is outside of the confidence interval of size $\alpha$.
+-->
+
 
 <!--
 And, as described, we know that case 1 occurs 95% of the time and case 2 5% of the time.  Therefore, we have proven that a confidence interval, as described above, will have the properties that we desire.
 -->
 
-There is one loose end remaining.  When picking the window $[a, b]$ for a given value of $\theta$ (knowing the distribution $p(x | \theta)$), we required that it must have a total probability of $\alpha$.  However, there are many windows $[a, b]$ that contain that total probability (infinitely many for a continuous parameter).  Any choice of values of $[a, b]$ will create confidence intervals, as our proof above didn't depend on any choice of $[a, b]$.  So, would could then wonder, given a distribution, what particular range of $[a, b]$ should one choose (given that it must contain a total probability of $\alpha$).
+There is one loose end remaining.  When picking the window $[a, b]$ for a given value of $\theta$ (knowing the distribution $p(t | \theta)$), we required that it must have a total probability of $\alpha$.  However, there are many windows $[a, b]$ that contain that total probability (infinitely many for a continuous parameter).  Any choice of values of $[a, b]$ will create confidence intervals, as our proof above didn't depend on any particular choice of $[a, b]$.  So, would could then wonder, given a distribution, what particular range of $[a, b]$ should one choose (given that it must contain a total probability of $\alpha$)?
 
-To help inform the answer, the goal of a confidence interval is to give bounds that are useful in considering the true value of a parameter.  Intuitively, the smaller those bounds are, the more useful they are in constraining that parameter.  Therefore, one possible way of determining which intervals are valuable are those that are smallest.  It is relatively straight-forward to show that those intervals which contain the highest values of $p(x | \theta)$ will be the shortest (the higher the values of p(x | \theta) you choose, the fewer values of $\theta$ you must integrate over to obtain $\int_a^b p(t | \theta) dt = \alpha$).  As an alternative, one may choose to pick intervals that are symmetric around some value (though, this will not be possible in general).  One may also choose to start from $-\infty$ until the distribution integrates to $\alpha$.  There are many choices, and any particular choice should be considered in the context of the problem you are solving or the type of statistical statement you are trying to make.  The choice that one makes here is known as an "ordering rule", since it determines the order you move in through the space of data while accumulating points to determine the interval $[a, b]$.  And difference choices will produce different confidence intervals that have different properties.  We will discuss the details of this later.
+To help inform the answer, recall that the goal of a confidence interval is to give bounds that are useful in considering the true value of a parameter.  Intuitively, the smaller those bounds are, the more useful they are in constraining that parameter.  Therefore, one possible way of determining which intervals are valuable are those that are smallest.  It is relatively straight-forward to show that those intervals which contain the highest values of $p(t | \theta)$ will be the shortest (the higher the values of $p(t | \theta)$ you choose, the fewer values of $\theta$ you must integrate over to obtain $\int_a^b p(t | \theta) dt = \alpha$).  As an alternative, one may choose to pick intervals that are symmetric around some value (though, this will not be possible in general).  One may also choose to start from $-\infty$ until the distribution integrates to $\alpha$.  There are many choices, and any particular choice should be considered in the context of the problem you are solving or the type of statistical statement you are trying to make.  The choice that one makes here is known as an "ordering rule", since it determines the order you move in through the space of data while accumulating points to determine the interval $[a, b]$.  And difference choices will produce different confidence intervals that have different properties.  We will discuss the details of this later.
 
 
 The Neyman Procedure, as described above, is in many ways an extension of the Neyman-Pearson procedure of solving the Simple Hypothesis problem, as described above.  One can define similar properties to confidence intervals as on can to hypothesis tests:
 
 - A "Type 1" error in the context of a confidence interval is when the confidence interval does not contain the true parameter.  From the definition of the confidence interval, it follows that the probability of a "Type 1" error is the "size" of the confidence interval, or $\alpha$.
 - Power, however, doesn't have a direct analog in the context of Confidence Intervals, unless one fully specifies how a confidence interval is to be used to perform a hypothesis test.  This is because there is no single alternate hypothesis, but many different alternate models (one for every possible value of our parameter, $\theta$).  Any confidence interval will contain an infinite number of parameter values $\theta$ that are not equal to $\theta_{\text{true}}$.  So, in one sense, every confidence interval makes a "Type 2" error by including incorrect parameter values.  But, intuitively, confidence intervals that are thinner for many possible values of $\theta_{\text{true}}$ are "better", and one can interpret size of the confidence interval as a loose analogy to "power".
-(Power = Probability of not covering a false value of theta = 1-beta, via https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf, slide 121)
 
 
 Continuing with comparison to hypothesis tests, one can interpret the Neyman procedure for producing confidence intervals as finding the set of all parameter points that are not rejected when performing a p-value test on the model associated with that parameter point (given the observed data).  In this sense, a confidence interval can be thought of as an "inverted hypothesis test". <!-- The hypothesis test for a given parameter point is "2-sided", as we're open to more extreme values in either direction.  (For a 2-sided test, there is no "uniformly most powerful" test https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf)
@@ -109,6 +111,7 @@ The typical frequentist method for addressing this problem is by calculating wha
 Before doing so, I'll note that a confidence interval is only an example of one thing that a person *could* do when faced with this scenario; it is not be-all-and-end-all thing that **can** be done.  It is a procedure, motivate by statistical intuition, that can be a useful took when thinking about a problem or making a decision.  But how one chooses to use data or what one wants to calculate all depend on one's purposes, the level of rigor necessary, and one's philosophy.  For now, let's assume that calculating a confidence interval is what we'd like to do here.
 -->
 
+https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf
 
 ## Calculating Intervals
 
@@ -117,9 +120,9 @@ The above procedure required on being able to do the following:
 - Determine the distribution $p(t | \theta)$ for all values of $\theta$
 - Integrate that distribution and find values $[a, b]$ such that the integral of that distribution sums to $\alpha$
 
-If $\theta$ is a continuous parameter, this may seem to be a daunting task, if not impossible.  One can achieve the above in a "brute-force" way by picking discrete values of $\theta$ and, for each value in this grid, generating values of x using the model $p(x | \theta)$ and then building up a distribution for $p(t | \theta)$.  One can then use computational techniques to integrate this distribution and obtain intervals for each value of $\theta$.
+If $\theta$ is a continuous parameter, this may seem to be a daunting task, if not impossible.  One can achieve the above in a "brute-force" way by picking discrete values of $\theta$ and, for each value in this grid, generating values of x using the model $p(x | \theta)$ and then building up a distribution for $p(t | \theta)$.  One can then use computational techniques to integrate this distribution and obtain windows $[a, b]$ for each value of $\theta$, which one would then invert to form confidence intervals.
 
-However, for a number of examples, one can choose a test statistic $t(x, \theta)$ such that the distribution $p(t(x, \theta) | \theta)$ is independent of $\theta$.  We will show examples below where this is the case, making this more clear.  If this is true, one does not need to pick discrete points in $\theta$ and generate intervals $[a, b]$ separately for each point.  One can do this once, as the distribution $p(t(x, \theta) | \theta)$  and therefore the intervals $[a, b]$ are independent of $\theta$.  Further, if one can analytically integrate $p(t(x, \theta) | \theta)$ (or at least leverage well-studied lookup tables), then one doesn't need to perform integrals oneself.  Examples that satisfy this criteria are therefore much simpler to use.  In fact, MOST examples of confidence intervals that appear in textbooks have this property, which is nice, but I find that it hides the more general procedure that one needs to take to calculate confidence intervals for arbitrary models.
+Thankfully, there are a number of examples that have properties which allows one to calculate a confidence interval without resorting to a brute force procedure.  For example, if can choose a test statistic $t(x, \theta)$ such that the distribution $p(t(x, \theta) | \theta)$ is independent of $\theta$, then one does not need to pick discrete points in $\theta$ and generate intervals $[a, b]$ separately for each point.  One can do this once, as the distribution $p(t(x, \theta) | \theta)$ and therefore the intervals $[a, b]$ are independent of $\theta$.  Further, if one can analytically integrate $p(t(x, \theta) | \theta)$ (or at least leverage well-studied lookup tables), then one doesn't need to perform manual integrals oneself.  Examples that satisfy this criteria are therefore much simpler to use.  In fact, MOST examples of confidence intervals that appear in textbooks have this property, which is nice, but I find that it hides the more general procedure that one needs to take to calculate confidence intervals for arbitrary models.
 
 <!--
 In the above procedure, iterated over small steps in our parameter to create the confidence band in a "brute force" fashion.  However, for a small subset of problems, the confidence band can be calculated exactly because the probability distribution can be handled analytically.
@@ -155,7 +158,7 @@ To start, we need to determine our test statistic and our ordering rule.  For th
 We then have to find a window $[a, b]$ in x, for every value of $\mu$, such that:
 
 $$
-\int_a^b gauss(x|\mu, \sigma) dx = \alpha
+\int_{a(\mu)}^{b(\mu)} gauss(x|\mu, \sigma) dx = \alpha
 $$
 
 Since we want the interval $[a, b]$ to be symmetric about $x=\mu$, we can re-write this as the following:
@@ -164,28 +167,34 @@ $$
 \int_{\mu-\delta(\mu)}^{\mu+\delta(\mu)} gauss(x|\mu, \sigma) dx = \alpha
 $$
 
-where we assume the general case that we will need a different value of $\delta$ for every possible value of $\mu$.  The integral of a gaussian is a well-studied quantity, and therefore we can re-write the integral and leverage terms of well-known error function.  Let's perform a change of variables:
+where we assume the general case that we will need a different value of $\delta$ for every possible value of $\mu$.  The integral of a gaussian is a well-studied quantity, and therefore we can re-write the integral and leverage terms of well-known error function.  Let's assume that:
 
 $$
-m = \frac{(x - \mu)}{\sigma}, \delta' = \sigma \delta
+\delta(\mu) = \Delta - \mu
+$$
+
+with $\Delta$ an unknown constant and perform a change of variables:
+
+$$
+m = \frac{(x - \mu)}{\sigma}
 $$
 
 giving us
 
 $$
-\int_{-\delta'(\mu)}^{\delta'(\mu)} gauss(m|0, 1) dm = \alpha
+\int_{-\Delta}^{\Delta} gauss(m|0, 1) dm = \alpha
 $$
 
 The dependence of $\mu$ has dropped out, leaving us with the equation
 
 $$
-erf(\delta') - erf(- \delta') = \alpha
+\text{erf}(\Delta) - \text{erf}(- \Delta) = \alpha
 $$
 
 which we can invert to get:
 
 $$
-\delta' = \sqrt{2}erf^{-1}(\alpha)
+\Delta = \sqrt{2}\text{erf}^{-1}(\alpha)
 $$
 
 Our confidence interval is therefore:
@@ -343,7 +352,7 @@ Assume that we have an analytic formula for $p(g | \theta)$, and further assume 
 Note that this procedure makes a strong assumption: $C_L(\alpha)$ and $C_U(\alpha)$ must not be functions of $\theta$.  (In the gaussian example, $C_L(\alpha) = -1.96$ and $C_U(\alpha) = 1.96$, which are independent of $\mu$.  This was because we constructed the function $\frac{\hat{\mu} - \mu}{\sigma / \sqrt{N}}$ to be independent of $\mu$, as subtracting $\mu$ in the equation cancels out the dependence of $\mu$ in $\hat{\mu}$).
 
 "Whatever the true value is, it will produce data within the band 95% of the time..."
--->
+
 
 ### Discussion
 
@@ -359,7 +368,7 @@ LIKELIHOOD FUNCTION GAUSSIAN APPROXIMATION
 RELATIONSHIP TO HYPOTHESIS TESTING
 
 Notes:
-
+-->
 
 ### Test Statistics
 
@@ -395,15 +404,20 @@ As before, we can interpret this as performing a p-value at each point in the pa
 -->
 
 
-As seen above, an important step in the building of confidence intervals is the choice of the test statistic.  A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.  <!--A test statistic is used as the starting point of a statistical test.  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).-->
+As seen above, an important step in the building of confidence intervals is the choice of the test statistic.  A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.
 
-Requirements on a test statistic are:
+(Some places define a statistic as a function of the data only which cannot depend on the parameter of interest. But, as we've seen above, defining a function in terms of the parameter of interest can lead to it having useful properties, specifically that it's distribution is independent of the parameter of interest.  Some references distinguish this as a "quantity" and not a statistic.  We will here adopt a looser language: A test statistic is just a of the data and possibly model parameters that is useful in performing inference).
+
+<!--A test statistic is used as the starting point of a statistical test.  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).-->
+
+Requirements for a useful test statistic are:
 
 - It can be easily calculated
 - Its distribution (given a fixed model or model parameters) is known
 - It or its distribution must depend on the parameter of interest
 - It and it's distribution does not depend on any unknown (nuisance) parameters
 
+<!--
 Note that a test statistic may or may not be defined in terms of the parameter of interest.  For example, we found above that a good test statistic to infer the value of $\mu$ from a gaussian distribution was:
 
 $$
@@ -411,6 +425,7 @@ t(x) = \frac{(x - \mu)}{\sigma}
 $$
 
 In this example, the test statistic is a function of the parameter of interest $\mu$ (we assumed that we knew the fixed value of $\sigma$, so the fact that it depends on this as well is irrelevant).
+-->
 
 <!--
 As described above, we want the distribution of the test statistic to depend on the parameter of interest.  However, the calculation of the test statistic may or may not depend on the parameter of interest.  Say that we have a test statistic t and a probability distribution function pdf for t under a given model, and we are interested in a parameter $\mu$.  We want pdf(t) = pdf(t | $\mu$).  However it may be the case that t itself depends on mu: $t = t(\vec{x}, \mu)$ or that t is independent of the parameter: $t = t(\vec{x})$.
@@ -420,16 +435,22 @@ For a given model, there are many possible test statistics.  So, how should one 
 
 There are a number of important qualities that a statistic may have.
 
-A pivotal statistic 
+A pivotal quantity is a function of the data, and possibly parameters of the model, whose distribution does not depend on the parameter of interest.  As noted above, the most common example is for a gaussian distribution, where the distribution of the quantity:
+
+$$
+q(x, \mu) = \frac{\bar{x} - \mu}{\sigma}
+$$ 
+
+is $gauss(q, 0, 1)$ and does not depend on $\mu$.  As exemplified above, if one can define a pivotal quantity in terms of a parameter of interest (such that the pivotal quantity is defined  in terms of the parameter of interest but whose distribution is independent of the parameter of interest), then calculating confidence intervals is easy.
 
 
-A "sufficient statistic" is a function of the data that, for the purpose of inferring a given parameter, contains as much information as the raw data.  Specifically, a statistic $t$ is sufficient if, given fixed values of $t$ and the parameter of interest $\mu$, the distribution of the data $x$ does not depend on $\mu$.  A statistic is sufficient if and only if the likelihood can be written as:
+As a somewhat related definition, a "sufficient statistic" is a function of the data that, for the purpose of inferring a given parameter, contains as much information as the raw data.  Specifically, a statistic $t$ is sufficient if, given fixed values of $t$ and the parameter of interest $\mu$, the distribution of the data $x$ does not depend on $\mu$.  A statistic is sufficient if and only if the likelihood can be written as:
 
 $$
 L(x | \mu) = h(x)g(t(x), \mu) 
 $$
 
-where x is the data, \mu is the parameter of interest, and $t(x)$ is our test statistic.  Specifically, this means that the part of the likelihood that depends on the parameter of interest $\mu$ only depends on x via $t(x)$.  Intuitively, the $h(x)$ term gives us no information about $\mu$, so we can ignore it.  In other words, for the purpose of performing inference on the $\mu$, one does not lose any information by summarizing the data with the value of the test statistic $t$.
+where x is the data, $\mu$ is the parameter of interest, and $t(x)$ is our test statistic.  Specifically, this means that the part of the likelihood that depends on the parameter of interest $\mu$ only depends on x via $t(x)$.  Intuitively, the $h(x)$ term gives us no information about $\mu$, so we can ignore it.  In other words, for the purpose of performing inference on the $\mu$, one does not lose any information by summarizing the data with the value of the test statistic $t$.
 
 As an example, consider the gaussian distribution for a set of measurements $x_1...x_i$.  We can write the likelihood as:
 
@@ -443,15 +464,15 @@ $$
 L(x_1...x_i | \mu, \sigma) = c e^{-\frac{n}{2}(\bar{x} - \mu)^2} e^{-\frac{n}{2}\sum(x_i - \bar{x})}
 $$
 
-If our parameter of interest is $\mu$, then we can see that only the first exponential depends on $\mu$, and it depends on it via $t = \bar{x}$.  Therefore, if we are performing inference on  $\mu$, it is sufficient to know only $\bar{x}$.
+If our parameter of interest is $\mu$, then we can see that only the first exponential depends on $\mu$, and it depends on the data $x$ only via $t = \bar{x}$.  Therefore, if we are performing inference on  $\mu$, it is sufficient to know only $\bar{x}$.
 
-More generally, when inferring parameters $\mu_1...mu_i$, if I can write the likelihood as:
+More generally, when inferring parameters $\mu_1...\mu_i$, if I can write the likelihood as:
 
 $$
-L(x | mu_1...mu_i) = h(x) g(mu_1...mu_i, t(x)_1...t(x)_i)
+L(x | \mu_1...\mu_i) = h(x) g(\mu_1...\mu_i, t_1(x)...t_i(x))
 $$
 
-then the set ${t_1...t_i}$ are sufficient statistics for inferring $\mu_1...mu_i$.
+then the set ${t_1...t_i}$ are sufficient statistics for inferring $\mu_1...\mu_i$.
 
 In contrast, an ancillary statistic when considering a parameter $\mu$ is a function of the data whose distribution does not depend on the parameter $\mu$.  In other words, measuring the value of an ancillary statistic doesn't give you any power to constrain the true value of the parameter $\mu$.
 
