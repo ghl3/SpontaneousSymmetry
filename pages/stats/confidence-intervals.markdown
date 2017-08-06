@@ -491,39 +491,21 @@ https://stats.stackexchange.com/questions/203520/can-a-statistic-depend-on-a-par
 ## Approximate Confidence Intervals
 
 
-As demonstrated above, confidence intervals for some models can be calculated exactly, as the model's pdf can be inverted analytically (or, at least the inversion can be arbitrarily approximated by a computer or a table).  However, this is not the case for what I presume is the majority of real-world problems.  Fortunately, there is a useful approximation that allows one to calculate approximate confidence intervals for a wide range of problems.
+As demonstrated above, confidence intervals for some models can be calculated exactly, as the model's pdf can be inverted analytically (or, at least the inversion can be arbitrarily approximated by a computer or a table).  However, this is not the case for many real-world problems.  Fortunately, there is a useful approximation that allows one to calculate approximate confidence intervals for a wide range of problems.
 
 ### Approximation via Central Limit Theorem
 
 Consider the case of a compound pdf, which is defined as a probability distribution function that can be decomposed into a product of identical pdfs, that has a single unknown parameter: 
 
 $$
-p(\vec{x_1}, \vec{x_2}...\vec{x_n} | \theta) = \prod{n} pdf(\vec{x_i) | \theta)
+p(\vec{x_1}, \vec{x_2}...\vec{x_n} | \theta) = \prod{n} pdf(\vec{x_i} | \theta)
 $$
 
-This pdf models $n$ independent draws from a single distribution and is very common in the real world.  Models of this form have a very useful property: As n gets large, the distribution of the maximum likelihood estimator of $\theta$ is approximately normal.  Let's first discuss what it means and then show why it's useful for estimating confidence intervals.
-
-The likelihood function, $L(x | \theta)$, is the above pdf but viewed as a function of the parameter $\theta$ (instead of as a function of the data).  The maximum likelihood estimator of $\theta$, denoted as $\hat{\theta}$, is defined as the value of $\theta$ that maximizes the likelihood function $L(x | \theta)$.  Equivalently, $\hat{\theta}$ minimizes the negative log of the likelihood function, $-log(L(X | \theta))$.
-
-The property that we'd like to take advantage of is that $\hat{\theta}$ has a gaussian distribution about the true value of $\theta$:
+This pdf models $n$ independent draws from a single distribution and is very common in the real world.  As discussed in the section on estimators, as n gets large, the distribution of the maximum likelihood estimator of $\theta$ is approximately normal.:
 
 $$
 pdf(\hat{\theta} | \theta) = gauss(\hat{\theta} | \theta, \sigma_\theta)
 $$
-
-with some variance $\sigma_\theta$.  The variance, as it turns out, is equal to one over a quantity called the Fischer Information of the PDF:
-
-$$
-pdf(\hat{\theta} | \theta) = gauss(\hat{\theta} | \theta, \frac{1}{FI(\theta)}).
-$$
-
-where 
-
-$$
-FI(x | \theta) = -\frac{(d^2L(x | \theta)}{d\theta^2}
-$$
-
-We will not prove this, but the proof essentially follows from the central limit theorem: The log likelihood is a sum of the logs of the individual likelihoods, each of which is an independent random variable.  The central limit theorem states that the sum of independent random variables is gaussian distributed.  The main thing to note is that, as n gets larger, the approximation becomes better.  So, for experiments with a large number of observations, this approximation becomes very useful.
 
 This is valuable because we already have a way to exactly calculate confidence for gaussian distributions.  So, if the likelihood function is very close to a gaussian distribution, we can approximately calculate confidence intervals for the variable $\theta$.
 
@@ -551,36 +533,50 @@ However, one can make use of another theorem which enables the calculation of ap
 Consider the likelihood of data of a single parameter, $L(x | \theta)$ (the data $x$ may be multi dimensional or arbitrarily complex).  As above, we define $\hat{\theta}$ as the value of $\theta$ that maximizes the likelihood function.  We now define the likelihood ratio as the following function:
 
 $$
-LR(\theta) = \frac {L(x | \theta)} {L(x | \hat{\theta}}
+LR(\theta) = \frac {L(x | \theta)} {L(x | \hat{\theta})}
 $$
 
-It can be thought of as the ratio between the likelihood's maximum value and it's value at any point $\theta$.  
-
-We will also defined the negative log likelihood ratio as:
-
-$
-nll(\theta) = -Log(\frac {L(x | \theta)} {L(x | \hat{\theta}})
-$
-
-In the case of a composite likelihood with large n, a result known as Wilks' Theorem tells us that the distribution of the $nll$ evaluated at the true (unknown) value of $\theta$ is distributed as a Chi-Squared distribution:
+It can be thought of as the ratio between the likelihood's maximum value and it's value at any point $\theta$.  We will also defined the negative log likelihood ratio as:
 
 $$
-p(nll(\theta_{\text{true}})) ~ \Xi_m^2(nll(\theta _{\text{true}}))
+nll(\theta) = -log(\frac {L(x | \theta)} {L(x | \hat{\theta})})
 $$
 
-where $m$, the number of free parameters, here is equal to 1 because $\theta$ is the only unknown parameter.  In other words, if you assume that some value of $\theta$ is true (say, $\theta_0$), use your model to generate data with the distribution $p(x | \theta_0)$, and calculate $nll(x | \theta_0)$ on each of those datasets, the values ${nll(x1 | \theta_0), nll(x2 | \theta_0)...}$ will be distributed as $\Xi^2_1$.  Note that this Chi-Squared distribution does NOT depend on the value of $\theta_0$ that we chose (this remarkable result is why Wilks theorem is useful).
+In the case of a composite likelihood with large n, a result known as Wilks' Theorem tells us that the distribution of the $nll$ evaluated at the true (unknown) value of $\theta=\theta_{true}$ (and assuming that the model associated with  $\theta_{true}$ is true) follows a Chi-Squared distribution:
 
-Thus, we can use the function $nll(x, \theta)$ as a test statistic to generate confidence intervals on $\theta$.  The fact that the distribution of the test statistic $nll(x, \theta=\theta_0)$ under the assumption that $\theta=\theta_0$ doesn't depend on the value of $\theta_0$ makes calculating the confidence intervals easier ($nll(x, \theta)$ DOES depend on $\theta$, by construction, but it's distribution doesn't).  The procedure is therefore to:
-- Calculate nll(x, \theta)
-- Pick a value of $\alpha$
-- Use the CDF of the chi-squared distribution to find the value of the nll such that $\int_0^{nll_{\text{critical}}p(nll)d(nll) = \alpha$
+$$
+p(nll(\theta_{\text{true}})) \sim \chi^2_m(2*nll(\theta _{\text{true}}))
+$$
+
+where $m$, the number of free parameters, here is equal to 1 because $\theta$ is the only unknown parameter.  In other words, if you assume that some value of $\theta_{true}$, use your model to generate data with the distribution $p(x | \theta_{true})$, and calculate $nll(x | \theta_{true})$ on each of those datasets, the values ${nll(x_1 | \theta_{true}), nll(x_2 | \theta_{true})...}$ will be distributed as $\chi^2_1$.  Note that this Chi-Squared distribution does NOT depend on the value of $\theta_{true}$ that we chose (this remarkable result is why Wilks theorem is useful).
+
+Thus, we can use the function $t = 2*nll(x, \theta)$ as a test statistic to generate confidence intervals on $\theta$.  The fact that the distribution of the test statistic $nll(x, \theta=\theta_{true})$ under the assumption that $\theta=\theta_{true}$ doesn't depend on the value of $\theta_{true}$ makes $nll(x, \theta)$ a pivotal quantity (asymptotically).  Therefore, we can use the $\chi^2$ distribution directly to lookup confidence intervals using the following procedure:
+
+- Pick a size $\alpha$
+- Using the $\chi^2$ distribution, find the values $[0, nll_{\text{critical}}$ such that$\int_0^{nll_{\text{critical}}}p(nll)d(nll) = \alpha$
 - Invert $nll(\theta) <  nll_{\text{critical}}$ to get all values of $\theta$ for which the probability of $nll(\theta) > \alpha$
 
-These values of $\theta$ form the confidence region.  In this case, since we know that the distribution is $\Xi^2$, we know that the critical value of the nll for each value of $\alpha$.  For a 68.3% confidence interval, the critical value is 1/2.  Therefore, the bounds of the confidence region are those values of $\theta$ for which the log likelihood is half of its maximum value.  This is a useful trick if one does not haven a expression for the confidence interval: scan along the parameter of interest $\theta$, starting from $\hat{\theta}$, evaluating the log likelihood at each step.  When it drops to half of it's maximum value, that value of $\theta$ is the boundary of the confidence interval.
+<!--
+calculating the confidence intervals easier (not that $nll(x, \theta)$ DOES depend on $\theta$, by construction, but it's distribution doesn't).  The procedure is therefore to:
+
+- Calculate $nll(x, \theta)$
+- Pick a value of $\alpha$
+- Use the CDF of the chi-squared distribution to find the value of the nll such that $\int_0^{nll_{\text{critical}}}p(nll)d(nll) = \alpha$
+- Invert $nll(\theta) <  nll_{\text{critical}}$ to get all values of $\theta$ for which the probability of $nll(\theta) > \alpha$
+-->
+
+These values of $\theta$ form the confidence region.  This works if one can invert the $nll$ to find the values of the parameter $\theta$ such that $nll(\theta) =  nll_{\text{critical}}$.  One can do this inversion analytically (if they know the functional form of $nll(\theta)$).  Or, if one does not have access to the analytic form of $nll$, or if it's not readily invertible, one can simply scan over values of $\theta$ until they find a $\theta_{\text{critical}}$ such that $nll(\theta_{\text{critical}}) =  nll_{\text{critical}}$.
+
+This procedure leads to a nice trick.  Because $\int_0^2\chi^2(x)dx = 0.683$, we know the critical value of the test statistic for a 68.3% confidence interval is 1.0.  Therefore, the bounds of the confidence region are those values of $\theta$ for which
+
+$$
+t = 2*nll = 2 \frac{log(x | \theta_{\text{critical}})}{log(x | \hat{\theta})} = 1.0
+$$
+
+Using the above, we can directly see that the critical value of $\theta$ for a 68.3% confidence interval is the one such that: $\frac{log(x | \theta_{\text{critical}})}{log(x | \hat{\theta})} = \frac{1}{2}$.  Thus, to find a 68.3% confidence interval for the parameter $\theta$, simply find the value of $\theta$ that maximizes nll (the center of the confidence interval), note $nll_{max}$ at that point, and scan along values of $\theta$ until the value drops to half of the max.  That value is the boundary of the confidence interval.
 
 
 https://arxiv.org/pdf/1007.1727v2.pdf
-
 
 https://arxiv.org/pdf/1503.07622.pdf
 
@@ -590,48 +586,6 @@ Ann. Math. Statist., 9:60–2, 1938
 https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf
 
 http://www.astro.princeton.edu/~strauss/AST303/bayesian_paper.pdf
-
-- The distribution of $nll(\theta=\theta_{true})$ is independent of $\theta$
-- It is distributed as a Chi-Squared distribution
-<!-- that the distribution of $nll(\theta)$ approaches a Chi-Squared distribution: -->
-
-
-<!--         EXTRA BELOW          -->
-
-
-We can therefore calculate the Fischer Information from the likelihood and plug it into the above equation for $\sigma$, as well as 
-
-If we were able to calculate $\sigma$ for a PDF, we could plug that into the above equation, setting $x \rightarrow \hat{theta}$ and obtain confidence intervals.  However, calculating $\sigma$ directly may be challenging (we haven't discussed how to do it).  Instead, however, there is a valuable trick:
-
-If we assume that the likelihood function is gaussian, we can determine it's standard deviation by starting at the maximum value of the likelihood and 
-
-
-
-A common and useful estimation of confidence intervals for a wide variety of problems is based on the fact that the  uses the likelihood function.  
-
-
-  Instead, an approximate confidence interval is used.  One of the most common ways of approximating a confidence interval is the following procedure:
-
-
-Imagine we have a pdf for data (either a single value or a vector) that is a function of a single parameter:
-
-$$
-pdf = pdf(\vec{x} | \theta)
-$$
-
-One can consider this pdf to be a function of $\theta$.  Interpreting a pdf as a function of it's parameters (as opposed to it's data) creates a Likelihood function.  One can maximize this function over the range of the parameter $\theta$.  The value of $\theta$ that maximizes this function we will denote as $\hat{\theta}$, and the value of the pdf at $\hat{\theta}$ is $pdf_{max}$.  We can then Taylor expand our full pdf function as the following:
-
-$$
-pdf(\vec{x} | \theta) = pdf_{max} + pdf'(\vec{x}|\hat{\theta})(\theta - \hat{\theta}) + \frac{1}{2}pdf''(\vec{x}|\hat{\theta})(\theta - \hat{\theta})^2 + ...
-$$
-
-where the derivative denoted by ' is taken in terms of $\theta$.  Since the pdf is maximized at $\hat{\theta}$, we know that the term linear in theta drops out and we get the following expression for the PDF:
-
-$$
-pdf(\vec{x} | \theta) = pdf_{max} + pdf'(\vec{x}|\hat{\theta})(\theta - \hat{\theta}) + \frac{1}{2}pdf''(\vec{x}|\hat{\theta})(\theta - \hat{\theta})^2 + ...
-$$
-
-
 
 https://books.google.com/books?id=jGUVmjGP9qkC&pg=PA51&lpg=PA51&dq=likelihood+gaussian+approximation&source=bl&ots=YbM-PRTW3R&sig=atiY_p4yo8O1fH55jPUffRbD0jI&hl=en&sa=X&ved=0ahUKEwi1l_3DxcLRAhWrllQKHQ2vDrE4ChDoAQghMAE#v=onepage&q=likelihood%20gaussian%20approximation&f=false
 

@@ -100,10 +100,15 @@ In other words, with high enough n, the probability that the estimator is arbitr
 As mentioned above, it may be a desirable property for an estimator to be unbiased.  A common concept is the "Minimum Variance Unbiased Estimator", which is exactly what the name suggestions.  An important theorem is that there is a minimum bound for the variance of any unbiased estimator.  This is known as the Cramer-Rao bound and states that the variance for any unbiased estimator must obey:
 
 $$
-var > \frac{1}{I}
+var > \frac{1}{FI}
 $$
 
-where $I$ is the Fisher information of the distribution.  We will not concern ourselves with the details of this calculation here, but instead will note that the existence of such a bound means that it's possible in some cases to obtain the "best" unbiased estimator as the one whose variance is falls right on the boundary.  The efficiency of an estimator is the ratio of it's variance to the Cramer-Rao variance bound, where an efficiency of 1 is the best an estimator can do.
+where $FI$ is the Fisher information of the distribution, which is defined as:
+$$
+FI(x | \theta) = -\frac{(d^2L(x | \theta)}{d\theta^2}
+$$
+
+We will not concern ourselves with the details of this calculation here, but instead will note that the existence of such a bound means that it's possible in some cases to obtain the "best" unbiased estimator as the one whose variance is falls right on the boundary.  The efficiency of an estimator is the ratio of it's variance to the Cramer-Rao variance bound, where an efficiency of 1 is the best an estimator can do.
 
 ## Maximum Likelihood Estimator
 
@@ -132,23 +137,29 @@ Given a family of models specified by one or more parameters and an observed dat
 - If considered on a compound likelihood, the distribution of the mle approaches a gaussian distribution around the true parameter as $n \lim \inf$
 - It tends to an efficiency of 1 as $n \lim \inf$
 
-The property that the distribution of a mle tends to a gaussian turns out to be a very useful one.  Given sufficiently large n, it means that one can obtain a good estimate of the distribution of an estimator.  Specifically, the distribution of $\sqrt{n}(\hat{\mu}_mle - \mu)$ converges to a gaussian with mean 0 and variance given by:
+The property that the distribution of a mle tends to a gaussian turns out to be a very useful one.  Specifically, it means that, given sufficiently large n, the distribution of the estimator approaches:
+
 
 $$
-var(\hat{\mu}_mle) = \frac{1}{nI}
+pdf(\hat{\theta} | \theta) = gauss(\hat{\theta} | \theta, \frac{1}{FI(\theta)}).
 $$
 
-where, again, $I$ is the Fisher information.  This variance, as discussed above, is the one defined by the Cramer-Rao bound.  Given an closed form likelihood, one can calculate the Fisher information $I$ exactly and therefor obtain an asymptotic distribution (the distribution as $n \lim \inf$) for a mle.  This is true for any likelihood, making this method of obtaining estimators very useful.  We will later take advantage of this same property when calculating confidence intervals.
+where, as above, $FI$ stands for the Fisher Information.  In particular, it means that one can obtain a good estimate of the distribution of an estimator.  Specifically, the distribution of $\sqrt{n}(\hat{\mu}_{mle} - \mu)$ converges to a gaussian with mean 0 and variance given by $\frac{1}{FI}$.
 
+We will not prove this, but the proof essentially follows from the central limit theorem: The log likelihood is a sum of the logs of the individual likelihoods, each of which is an independent random variable.  The central limit theorem states that the sum of independent random variables is gaussian distributed.  The main thing to note is that, as n gets larger, the approximation becomes better.  So, for experiments with a large number of observations, this approximation becomes very useful.
+
+This variance, as discussed above, is the one defined by the Cramer-Rao bound.  Given an closed form likelihood, one can calculate the Fisher information $FI$ exactly and therefor obtain an asymptotic distribution (the distribution as $n \lim \inf$) for a mle.  This is true for any likelihood, making this method of obtaining estimators very useful.  We will later take advantage of this same property when calculating confidence intervals.
 
 For the gaussian example, one can show that the maximum likelihood estimators for $\mu$ and $\sigma$ are given by:
 
 $$
-\hat{\mu}_mle = \bar{x}
+\hat{\mu}_{mle} = \bar{x}
 $$
 
 $$
-\hat{\sigma}_mle = \frac{1}{n} \sum (x_i - \bar{x})^2
+\hat{\sigma}_{mle} = \frac{1}{n} \sum (x_i - \bar{x})^2
 $$
 
 The mle for $\mu$ for a gaussian is the familiar sample mean.  Note that the mle for $\sigma$ is not our usual definition for the sample variance $s^2$, as it has a factor of $\frac{1}{n}$ and not $\frac{1}{n-1}$.  This implies that the mle for $\sigma$ is biased (but it is still consistent, as the difference between $\frac{1}{n}$ and $\frac{1}{n-1}$ goes to 0 as $n \lim \inf$).
+
+https://ocw.mit.edu/courses/mathematics/18-443-statistics-for-applications-fall-2006/lecture-notes/lecture3.pdf
