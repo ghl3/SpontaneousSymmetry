@@ -138,7 +138,9 @@ The gaussian distribution is an example of one for which analytic confidence int
 
 ## Gaussian Example
 
+As a simple but useful example, let's calculate confidence intervals for the parameter $\mu$ of a 1-d gaussian distribution (assuming that $\sigma$ is known and fixed).
 
+<!--
 The pdf of the gaussian distribution is given by:
 
 $$
@@ -146,10 +148,11 @@ pdf(x | \mu, \sigma) = \frac{1}{\sqrt{2\sigma^2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma
 $$
 
 We here assume that $\sigma$ is known or "fixed".
+-->
 
-We would like to build the confidence band for this distribution analytically.  Before we do so, we have to decide how we want to distribute the confidence interval, or our "ordering scheme".  Since this PDF is symmetric around $\mu$, it seems reasonable to choose confidence intervals that are centered around $\mu=x$.  This is also equivalent of picking confidence intervals of the minimum width (by including the highest-values of the likelihood first).
+To start, we need to determine our test statistic and our ordering rule.  For the simple 1-d case, it makes sense to simply take the value of $x$ as our test statistic: $t(x) = x$.  And, since this PDF is symmetric around $\mu$, it seems reasonable to choose confidence intervals that are centered around $\mu=x$.  This is also equivalent of picking confidence intervals of the minimum width (by including the highest-values of the likelihood first).
 
-The first step is to, for every point $\mu$, find a window $[a, b]$ in x such that:
+We then have to find a window $[a, b]$ in x, for every value of $\mu$, such that:
 
 $$
 \int_a^b gauss(x|\mu, \sigma) dx = \alpha
@@ -158,8 +161,55 @@ $$
 Since we want the interval $[a, b]$ to be symmetric about $x=\mu$, we can re-write this as the following:
 
 $$
-\int_{\mu-\delta(x)}^{\mu+\delta(x)} gauss(x|\mu, \sigma) dx = \alpha
+\int_{\mu-\delta(\mu)}^{\mu+\delta(\mu)} gauss(x|\mu, \sigma) dx = \alpha
 $$
+
+where we assume the general case that we will need a different value of $\delta$ for every possible value of $\mu$.  The integral of a gaussian is a well-studied quantity, and therefore we can re-write the integral and leverage terms of well-known error function.  Let's perform a change of variables:
+
+$$
+m = \frac{(x - \mu)}{\sigma}, \delta' = \sigma \delta
+$$
+
+giving us
+
+$$
+\int_{-\delta'(\mu)}^{\delta'(\mu)} gauss(m|0, 1) dm = \alpha
+$$
+
+The dependence of $\mu$ has dropped out, leaving us with the equation
+
+$$
+erf(\delta') - erf(- \delta') = \alpha
+$$
+
+which we can invert to get:
+
+$$
+\delta' = \sqrt{2}erf^{-1}(\alpha)
+$$
+
+Our confidence interval is therefore:
+
+$$
+[x - \sqrt{2}erf^{-1}(\alpha)\sigma, x + \sqrt{2}erf^{-1}(\alpha)\sigma]
+$$
+
+The key to being able to calculate this analytically was that the dependence of $\mu$ dropped out after a well-chosen change of variables.  In fact, we could have saved ourselves a lot of trouble had we defined our test statistic from the beginning as being:
+
+$$
+t(x) = \frac{x - \mu}{\sigma}
+$$
+
+since we already know that the distribution of this variable is independent of both $\mu$ and $\sigma$.  This emphasizes an important point: choosing the right test statistic can make a confidence interval calculation much easier.
+
+http://mathworld.wolfram.com/ConfidenceInterval.html
+
+[7] J. Neyman. Outline of a theory of statistical estimation based on the classical theory of probability.
+Phil. Trans. Royal Soc. London, Series A, 236, 1937.
+
+
+<!--
+Our confidence interval is then defined as: ${\mu: 
 
 In this case, the confidence interval, for a measured value of x, would go from $[x-\delta(x), x+\delta(x)]$.  We just need to solve for $\delta(x)$.  The solution comes from using the error function.  This example turns out to be simple because delta ends up being a constant, independent of the measured value of x (this can be understood since the underlying pdf as well as our confidence intervals are symmetric under translations of x and $\mu$).
 
@@ -172,11 +222,10 @@ $$
 (Note that this problem is concerned with a single measurement x that is gaussian distributed with mean $\mu$.  We will later talk about building confidence intervals for the mean from n measurements from a single gaussian distribution).
 
 This is a remarkable result: It means that I can easily build confidence intervals for gaussian distributions, simply by consulting a look-up table or by using a computer.
-
-http://mathworld.wolfram.com/ConfidenceInterval.html
-
+-->
 
 
+<!--
 
 ## Example: Gaussian Distribution
 
@@ -194,6 +243,9 @@ So, how do we calculate it in this gaussian example?  Recall that a confidence i
 
 It isn't immediately clear how to translate the definition of a confidence interval into an actual calculation.  The definition is more of a description of the properties that an interval must have and not a prescription of how to create an interval with such properties.  Let's walk through how to actually translate this description into an actual interval.
 
+-->
+
+<!--
 
 ### Procedure 1: Brute Force
 
@@ -204,7 +256,7 @@ How does generating this distribution help us to create the confidence interval?
 Using our "brute-forced" distribution, we will attempt to do this by construction.  We do this with the following procedure:
 
 - Scan over values of $\mu$ and, for each value, generate fake data to build a distribution of our sample mean, $\hat{\mu}$.
-- For each value of $\mu$, using that distribution, find a window of $\hat{\mu}$ whose total probability given $\mu$% is $\alpha$ (this is a valid statement to make in the frequentist framework since it describes the probability of data, $\hat{\mu}$, based on a model, summarized by $\mu$). <!--  We then find an interval in that distribution of size $\alpha$.  In other words, for a given value of $\mu$, the value of $\hat{\mu}$ will be in THAT interval with probability $\alpha$. -->  Thus, for each value of $\mu$, we have built a window of $\hat{\mu}$.
+- For each value of $\mu$, using that distribution, find a window of $\hat{\mu}$ whose total probability given $\mu$% is $\alpha$ (this is a valid statement to make in the frequentist framework since it describes the probability of data, $\hat{\mu}$, based on a model, summarized by $\mu$). <! --  We then find an interval in that distribution of size $\alpha$.  In other words, for a given value of $\mu$, the value of $\hat{\mu}$ will be in THAT interval with probability $\alpha$. -- >  Thus, for each value of $\mu$, we have built a window of $\hat{\mu}$.
 - For the measured value of $\hat{\mu}$, find all values of $\mu$ whose window, as defined above, contains that measured value of $\hat{\mu}$.
 - The set of all such values of $\mu$ is the confidence interval of $\mu$ for this particular value of $\hat{\mu}.  
 
@@ -218,6 +270,7 @@ By tautology, there is a 95% change that the value of $\hat{\mu}$ that we draw w
 - Case 2: Given our true $\mu$, the value of $\hat{\mu}$ that we draw **IS NOT** in that interval.  Therefore, by the same logic, the experimenter's confidence interval will NOT contain the true value of $\mu$, since the measured value of $\hat{\mu}$ is outside of the 95% window of $\hat{\mu}$ given $\mu$.
 
 And, as described, we know that case 1 occurs 95% of the time and case 2 5% of the time.  Therefore, we have proven that a confidence interval, as described above, will have the properties that we desire.
+
 
 
 ### Procedure 2: Exact Distribution
@@ -246,6 +299,7 @@ $$
 
 To reiterate, this inequality gives us the set of all values of $\mu$ such that a given value of $\hat{\mu}$ is in the 95% probability window of $p(\hat{\mu} | \mu)$.  From this inequality, one can simply read off the confidence interval: Just plug in the measured value of $\hat{\mu}$ to obtain the upper and lower bounds on the confidence interval of $\mu$.  And, as demonstrated in the brute force example, we know that 95% of confidence intervals generated this way (across all hypothetical datasets) will contain $\mu_{true}$.
 
+-->
 
 <!--
   It is sufficient to pick an arbitrary value of $\mu$ and show that the confidence intervals we generate contain the $\,mu$ 95% of the time.  Here's how: For our measured value of $\hat{\mu}$, we will find the distribution of $\mu$ and create an interval that contains 95% of the values of $\mu$ (or whatever $\alpha$ is.  The next step is to convince you that this procedure will result in 95% of confidence intervals containing the true mean $\mu$.
@@ -259,6 +313,7 @@ $$
 where $I_{interval(\hat{\mu}) \text{ contains } \mu}$ is an indicator function whose value is 1 when the confidence interval created for the measured value $\hat{\mu}$ contains the true mean $\mu$ and 0 otherwise.
 -->
 
+<!--
 ## Generalizing
 
 Let's try to generalize what we did above for a general probability distribution.  For now, we'll require that it has only one unknown parameter (just as the only unknown parameter of the gaussian example was $\mu$).  We'll later discuss how to handle multiple unknown parameters.
@@ -287,16 +342,13 @@ Assume that we have an analytic formula for $p(g | \theta)$, and further assume 
 
 Note that this procedure makes a strong assumption: $C_L(\alpha)$ and $C_U(\alpha)$ must not be functions of $\theta$.  (In the gaussian example, $C_L(\alpha) = -1.96$ and $C_U(\alpha) = 1.96$, which are independent of $\mu$.  This was because we constructed the function $\frac{\hat{\mu} - \mu}{\sigma / \sqrt{N}}$ to be independent of $\mu$, as subtracting $\mu$ in the equation cancels out the dependence of $\mu$ in $\hat{\mu}$).
 
-
-
 "Whatever the true value is, it will produce data within the band 95% of the time..."
+-->
 
-## Discussion
+### Discussion
 
 The procedure outlined above, where we scan over every possible value of $\theta$ and use the distribution of the data given that value of $\theta$ to build a confidence interval, is known as the Neyman Construction.  An important note is that the problem that the examples we've looked at only have a single parameter for which we're interested in calculating confidence intervals, and there are no other free parameters in the model (we assume that other parameters are both known and fixed).
 
-[7] J. Neyman. Outline of a theory of statistical estimation based on the classical theory of probability.
-Phil. Trans. Royal Soc. London, Series A, 236, 1937.
 
 ORDERING RULE
 
@@ -309,11 +361,113 @@ RELATIONSHIP TO HYPOTHESIS TESTING
 Notes:
 
 
+### Test Statistics
+
+<!--
+One can generalize the above approach by considering what is known as a "test statistic".  A test statistic is a quantity that can be used in place of the data x in the above arguments.  One can simply re-run all of the above arguments with the replacement of $x -> f(x)$ with f being any function of the data.  Distributions of x will be replaced with distributions of f(x), and the rest of the statistical argument will remain the same.
+
+However, a test statistic may also be a function of the parameter of interest, $\theta$.  We will here show how to generate confidence intervals using such a test statistic.  Consider the test statistic $t = t(x, \theta)$.  $t$ is a function of the data and of our parameter (note that it is not a probability distribution, it is an arbitrary function that evaluates to a real number).  How can we use this to generate confidence intervals?
+
+The procedure we followed using the raw data was to:
+- Consider each point in the parameter space, $\theta_0$
+- Generate the distribution of the data at that point: $p(x | \theta_0)$
+- Create an "acceptance region" of size $\alpha$ in that distribution
+- Measure an experimental value of x
+- The confidence interval is the set of all values of $\theta$ whose acceptance region contains the measured value x.
+
+Using a test statistic, we can follow an analogous procedure:
+- Consider each point in the parameter space, $\theta_0$
+- Given the model and the value $\theta=\theta_0$, generate datasets of {x_1, x_2, ...x_n}.  Calculate {t(x_1, \theta_0), t(x_2, \theta_0), ...,  t(x_n, \theta_0)}.  Use this to generate the distribution $p(t(x, \theta_0) | \theta=\theta_0)$.
+- OR, if one is lucky enough, use an analytic formula for the distribution of the test statistic (at evaluated with $\theta=\theta_0$).
+- Using that distribution, pick an acceptance region of size $\alpha$ in the distribution of $t(x, \theta=\theta_0)$.  Do this for every value of $\theta$.
+- Measure the data x
+- For each value of $\theta$, calculate $t(x, \theta)$
+- The confidence interval consists of all values of $\theta=\theta_0$ such that $t(x, \theta_0)$ is in the acceptance region.
+
+This method requires obtaining a distribution for the test statistic evalauted at each point $\theta=\thteta_0$ GIVEN the assumption that the true value of $\theta$ is $\theta_0$.  The potentially confusing point here is that the test statistic itself varies at each test point $\theta_0$ (and therefore it's distribution may also vary as a function of $\theta$).  And, as a result, we must calculate the test statistic at every value in our parameter space to invert it.
+
+But it's easy to show that this procedure does indeed generate confidence intervals.  There is one true value of theta, $\theta_{true$}.  We simply need to show thtat $\theta_{true}$ falls in our confidence region $\alpha$ of the time.  But, by construction, $t(x, \theta_{true})$ will fall in the acceptance region of $\theta=\theta_{true}$ a fraction of the time equal to $\alpha$.  Therefore, when we invert the acceptance region, $\theta=\theta_{true}$ will fall in our confidence interval at a rate of $\alpha$.
+
+Thus, we can generalize our approach by considering test statistics that may depend on the parameter we are interested in.  This is valuable in part because we may be able to generate distributions of these test statistics easier than we can generate distributions of the draw data.  In addition, by varying them as a function of our parameter of interest, can can make confidence intervals that are more powerful (since the test statistic can be chosen for it's power for each value of $\theta_0$ separately).
+
+As before, we can interpret this as performing a p-value at each point in the parameter space of $\theta$, and creating a confidence interval as the set of all points that are not rejected by that p-value test.  By using a test statistic, we can consider the distribution of a different value at each point in parameter space to perform this $p-value$ test.
+
+-->
 
 
+As seen above, an important step in the building of confidence intervals is the choice of the test statistic.  A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.  <!--A test statistic is used as the starting point of a statistical test.  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).-->
+
+Requirements on a test statistic are:
+
+- It can be easily calculated
+- Its distribution (given a fixed model or model parameters) is known
+- It or its distribution must depend on the parameter of interest
+- It and it's distribution does not depend on any unknown (nuisance) parameters
+
+Note that a test statistic may or may not be defined in terms of the parameter of interest.  For example, we found above that a good test statistic to infer the value of $\mu$ from a gaussian distribution was:
+
+$$
+t(x) = \frac{(x - \mu)}{\sigma}
+$$
+
+In this example, the test statistic is a function of the parameter of interest $\mu$ (we assumed that we knew the fixed value of $\sigma$, so the fact that it depends on this as well is irrelevant).
+
+<!--
+As described above, we want the distribution of the test statistic to depend on the parameter of interest.  However, the calculation of the test statistic may or may not depend on the parameter of interest.  Say that we have a test statistic t and a probability distribution function pdf for t under a given model, and we are interested in a parameter $\mu$.  We want pdf(t) = pdf(t | $\mu$).  However it may be the case that t itself depends on mu: $t = t(\vec{x}, \mu)$ or that t is independent of the parameter: $t = t(\vec{x})$.
+-->
+
+For a given model, there are many possible test statistics.  So, how should one go about picking the "best" test statistic, or what does it even mean for a test statistic to be good?  <!--When using a test statistic for inference a requirement is that the test statistic be a function of the parameter of interest (after all, if the distribution of the test statistic didn't depend on the parameter of interest, than measuring the test statistic wouldn't tell us anything about that parameter).-->  Intuitively, a test statistic is good if it's distribution under different values of the parameter(s) of interest varies dramatically.  This allows one to use the test statistic to determine which model is most likely the "true" model (again, this loose language will be made more formal later).
+
+There are a number of important qualities that a statistic may have.
+
+A pivotal statistic 
 
 
-## Approximations
+A "sufficient statistic" is a function of the data that, for the purpose of inferring a given parameter, contains as much information as the raw data.  Specifically, a statistic $t$ is sufficient if, given fixed values of $t$ and the parameter of interest $\mu$, the distribution of the data $x$ does not depend on $\mu$.  A statistic is sufficient if and only if the likelihood can be written as:
+
+$$
+L(x | \mu) = h(x)g(t(x), \mu) 
+$$
+
+where x is the data, \mu is the parameter of interest, and $t(x)$ is our test statistic.  Specifically, this means that the part of the likelihood that depends on the parameter of interest $\mu$ only depends on x via $t(x)$.  Intuitively, the $h(x)$ term gives us no information about $\mu$, so we can ignore it.  In other words, for the purpose of performing inference on the $\mu$, one does not lose any information by summarizing the data with the value of the test statistic $t$.
+
+As an example, consider the gaussian distribution for a set of measurements $x_1...x_i$.  We can write the likelihood as:
+
+$$
+L(x_1...x_i | \mu, \sigma) = \prod gauss(x_i | \mu, \sigma)
+$$
+
+but we can also write it as:
+
+$$
+L(x_1...x_i | \mu, \sigma) = c e^{-\frac{n}{2}(\bar{x} - \mu)^2} e^{-\frac{n}{2}\sum(x_i - \bar{x})}
+$$
+
+If our parameter of interest is $\mu$, then we can see that only the first exponential depends on $\mu$, and it depends on it via $t = \bar{x}$.  Therefore, if we are performing inference on  $\mu$, it is sufficient to know only $\bar{x}$.
+
+More generally, when inferring parameters $\mu_1...mu_i$, if I can write the likelihood as:
+
+$$
+L(x | mu_1...mu_i) = h(x) g(mu_1...mu_i, t(x)_1...t(x)_i)
+$$
+
+then the set ${t_1...t_i}$ are sufficient statistics for inferring $\mu_1...mu_i$.
+
+In contrast, an ancillary statistic when considering a parameter $\mu$ is a function of the data whose distribution does not depend on the parameter $\mu$.  In other words, measuring the value of an ancillary statistic doesn't give you any power to constrain the true value of the parameter $\mu$.
+
+There is another property of statistics called "completeness".  We will not discuss this further except to mention a fact called Basu's theorem that states that a sufficient AND complete statistic for a parameter $\mu$ is independent of any ancillary statistic for $\mu$.
+
+
+http://math.arizona.edu/~tgk/466/sufficient.pdf
+
+https://onlinecourses.science.psu.edu/stat414/node/285
+
+http://www.stat.umn.edu/geyer/old03/5102/notes/ci.pdf
+
+https://stats.stackexchange.com/questions/203520/can-a-statistic-depend-on-a-parameter
+
+
+## Approximate Confidence Intervals
 
 
 As demonstrated above, confidence intervals for some models can be calculated exactly, as the model's pdf can be inverted analytically (or, at least the inversion can be arbitrarily approximated by a computer or a table).  However, this is not the case for what I presume is the majority of real-world problems.  Fortunately, there is a useful approximation that allows one to calculate approximate confidence intervals for a wide range of problems.
@@ -444,7 +598,7 @@ $$
 pdf = pdf(\vec{x} | \theta)
 $$
 
-One can consider this pdf to be a function of $\theta$.  Interpreting a pdf as a function of it's parameters (as opposed to it's data) creates a Likelihood function.  One can maximize this function over the range of the parameter $\theta.  The value of $\theta$ that maximizes this function we will denote as $\hat{\theta}$, and the value of the pdf at $\hat{\theta}$ is $pdf_{max}$.  We can then Taylor expand our full pdf function as the following:
+One can consider this pdf to be a function of $\theta$.  Interpreting a pdf as a function of it's parameters (as opposed to it's data) creates a Likelihood function.  One can maximize this function over the range of the parameter $\theta$.  The value of $\theta$ that maximizes this function we will denote as $\hat{\theta}$, and the value of the pdf at $\hat{\theta}$ is $pdf_{max}$.  We can then Taylor expand our full pdf function as the following:
 
 $$
 pdf(\vec{x} | \theta) = pdf_{max} + pdf'(\vec{x}|\hat{\theta})(\theta - \hat{\theta}) + \frac{1}{2}pdf''(\vec{x}|\hat{\theta})(\theta - \hat{\theta})^2 + ...
@@ -476,22 +630,10 @@ http://sites.stat.psu.edu/~sesa/stat504/Lecture/lec3_4up.pdf
 *A (1 − α) confidence region can be defined simply as a collection of parameter values that would not be rejected by a Fisherian α level test, that is, a collection of parameter values that are consistent with the data as judged by an α level test.*
 
 
-
-
-
-
-
-
-
-
 ## Using the Likelihood Function
 
 
-
-
 ## Bootstrapping
-
-
 
 
 We need to assume that $p(\hat{mu} | \mu)$ is independent of mu.
@@ -499,70 +641,5 @@ We need to assume that $p(\hat{mu} | \mu)$ is independent of mu.
 http://www.stat.ucla.edu/~hqxu/stat105/pdf/ch08.pdf
 
 
-
-
-
-
-
-### Test Statistics
-
-
-
-----ORIGINAL----
-
-
-
-## Test Statistics
-
-One can generalize the above approach by considering what is known as a "test statistic".  A test statistic is a quantity that can be used in place of the data x in the above arguments.  One can simply re-run all of the above arguments with the replacement of $x -> f(x)$ with f being any function of the data.  Distributions of x will be replaced with distributions of f(x), and the rest of the statistical argument will remain the same.
-
-However, a test statistic may also be a function of the parameter of interest, $\theta$.  We will here show how to generate confidence intervals using such a test statistic.  Consider the test statistic $t = t(x, \theta)$.  $t$ is a function of the data and of our parameter (note that it is not a probability distribution, it is an arbitrary function that evaluates to a real number).  How can we use this to generate confidence intervals?
-
-The procedure we followed using the raw data was to:
-- Consider each point in the parameter space, $\theta_0$
-- Generate the distribution of the data at that point: $p(x | \theta_0)$
-- Create an "acceptance region" of size $\alpha$ in that distribution
-- Measure an experimental value of x
-- The confidence interval is the set of all values of $\theta$ whose acceptance region contains the measured value x.
-
-Using a test statistic, we can follow an analogous procedure:
-- Consider each point in the parameter space, $\theta_0$
-- Given the model and the value $\theta=\theta_0$, generate datasets of {x_1, x_2, ...x_n}.  Calculate {t(x_1, \theta_0), t(x_2, \theta_0), ...,  t(x_n, \theta_0)}.  Use this to generate the distribution $p(t(x, \theta_0) | \theta=\theta_0)$.
-- OR, if one is lucky enough, use an analytic formula for the distribution of the test statistic (at evaluated with $\theta=\theta_0$).
-- Using that distribution, pick an acceptance region of size $\alpha$ in the distribution of $t(x, \theta=\theta_0)$.  Do this for every value of $\theta$.
-- Measure the data x
-- For each value of $\theta$, calculate $t(x, \theta)$
-- The confidence interval consists of all values of $\theta=\theta_0$ such that $t(x, \theta_0)$ is in the acceptance region.
-
-This method requires obtaining a distribution for the test statistic evalauted at each point $\theta=\thteta_0$ GIVEN the assumption that the true value of $\theta$ is $\theta_0$.  The potentially confusing point here is that the test statistic itself varies at each test point $\theta_0$ (and therefore it's distribution may also vary as a function of $\theta$).  And, as a result, we must calculate the test statistic at every value in our parameter space to invert it.
-
-But it's easy to show that this procedure does indeed generate confidence intervals.  There is one true value of theta, $\theta_{true$}.  We simply need to show thtat $\theta_{true}$ falls in our confidence region $\alpha$ of the time.  But, by construction, $t(x, \theta_{true})$ will fall in the acceptance region of $\theta=\theta_{true}$ a fraction of the time equal to $\alpha$.  Therefore, when we invert the acceptance region, $\theta=\theta_{true}$ will fall in our confidence interval at a rate of $\alpha$.
-
-Thus, we can generalize our approach by considering test statistics that may depend on the parameter we are interested in.  This is valuable in part because we may be able to generate distributions of these test statistics easier than we can generate distributions of the draw data.  In addition, by varying them as a function of our parameter of interest, can can make confidence intervals that are more powerful (since the test statistic can be chosen for it's power for each value of $\theta_0$ separately).
-
-As before, we can interpret this as performing a p-value at each point in the parameter space of $\theta$, and creating a confidence interval as the set of all points that are not rejected by that p-value test.  By using a test statistic, we can consider the distribution of a different value at each point in parameter space to perform this $p-value$ test.
-
-
-
-
-----NEWEST-----
-
-A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.  A test statistic is used as the starting point of a statistical test (to be covered in detail).  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).
-
-So, important properties of the test statistic are that:
-
-- It can be easily calculated
-- It's distribution (given a fixed model or model parameters) is known
-
-For a given model, there are many possible test statistics.  So, how should one go about picking the "best" test statistic, or what does it even mean for a test statistic to be good?  When using a test statistic for inference a requirement is that the test statistic be a function of the parameter of interest (after all, if the distribution of the test statistic didn't depend on the parameter of interest, than measuring the test statistic wouldn't tell us anything about that parameter).  With that requirement satisfied, as a rule of thumb, a test statistic is good if it's distribution under different values of the parameter(s) of interest varies dramatically.  This allows one to use the test statistic to determine which model is most likely the "true" model (again, this loose language will be made more formal later).
-
-As described above, we want the distribution of the test statistic to depend on the parameter of interest.  However, the calculation of the test statistic may or may not depend on the parameter of interest.  Say that we have a test statistic t and a probability distribution function pdf for t under a given model, and we are interested in a parameter $\mu$.  We want pdf(t) = pdf(t | $\mu$).  However it may be the case that t itself depends on mu: $t = t(\vec{x}, \mu)$ or that t is independent of the parameter: $t = t(\vec{x})$.
-
-For certain models and parameters of that model that we're interested in learning about, there may be one (or more) "best" test statistic to choose.  A "sufficient statistic" is a statistic for a given model and parameter(s) of interest that has as much information as the full set of raw data.  In other words, for the purpose of performing inference on the parameter of interest, one does not lose any information by summarizing the data with the value of that test statistic.
-
-We will point out examples of sufficient statistics when discussing how to perform inference for various distributions and parameters.
-
-
-If the distribution of the test statistic does not depend on the parameter of interest, is known as a Ancillary statistic.  A test statistic that is Ancillary to a parameter $\mu$ cannot tell us anything about the true value of $\mu$; we cannot use it for inference.  In a certain sense, an Ancillary statistic is the opposite of a sufficient statistic.  Specifically, Basu's Theorem tells us that a statistic that is both sufficient and complete for a parameter of interest is independent of an Ancillary statistic for that parameter.
 
 
