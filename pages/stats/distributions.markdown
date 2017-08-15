@@ -267,3 +267,39 @@ The probability distribution for the student's t distribution can be calculated 
 
 
 It is shaped like a gaussian, but has larger tails (because the fact that we are using the sample mean and not the true mean adds additional "uncertainty" to the distribution).
+
+
+
+## F-Distribution
+
+
+The F-Statistic is a random variable that can be generated from two Chi-Squared distributed variables.  Imagine one has a variable $U_1$ which follows a Chi-Squared distribution with $d_1$ degrees of freedom and $U_2$ with $d_2$ degrees of freedom.  We further assume that $U_1$ and $U_2$ are independent.
+
+We define the F-Distribution (with degrees $d_1$ and $d_2$) as the distribution of the random variable defined as:
+
+$$
+F = \frac{U_1/d_1}{U_2/d_2}
+$$
+
+Equivalently, one can define an F-statistic from Gaussian distributions.  Imagine we have a gaussian distributed variable $g_1$ with parameter $\sigma_1$ and another independent variable $g_2$ with parameter $\sigma_2$, and we draw $n_1$ values from $g_1$ and $n_2$ values from $g_2$.  Letting $s_1$ be the sample variance of the draws from $g_1$ and $s_2$ be the sample variance from the draws from $g_2$, then the following quantity follows the F-Distribution (with $n_1-1$ and $n_2-1$ degrees of freedom):
+
+$$
+F = \frac{s_1^2/\sigma_1^2}{s_2^2/\sigma_2^2}
+$$
+
+Note that the F distribution is NOT symmetric in terms of its parameters $d_1$ and $d_2$.  The domain of $F$ is from 0 to infinity.
+
+The mean of an F distribution with $d_1$ and $d_2$ is given by:
+
+$$
+\bar{F}_{d_1, d_2} = d_2 / ( d_2 - 2 )
+$$
+
+and it's variance is given by:
+
+$$
+var(F_{d_1, d_2}) = \frac{ 2 * d_2^2 * ( d_1 + d_1 - 2 ) }  { d_1 * ( d_2 - 2 )^2 * ( d_2 - 4 ) }
+$$
+
+http://stattrek.com/probability-distributions/f-distribution.aspx
+
