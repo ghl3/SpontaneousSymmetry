@@ -30,8 +30,10 @@ where $C$ is a constant known as the "intercept".  We will use a simplified nota
 The likelihood function for this model can be written as:
 
 $$
-L({y_n, x_n^i} | w_0...w_i, \sigma) = \prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma)
+L({y_n, x_n^i} | w_0...w_i, \sigma) = \prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma)L(\vec{x})
 $$
+
+Note that we likelihood consists of two parts: The likelihood for the values of $\vec{x}$ and the likelihood for the value of $y$ conditional on those values of $x^i$.  For the rest of this discussion, we will ignore the second part of the likelihood $L(\vec{x})$, as when performing regression we are typically interested in obtaining the set of weights $w_i$, which do not appear in the term $L(\vec{x})$.
 
 This likelihood has i+2 parameters, where $i$ is the number of non-intercept features chosen for the model (different choices of features would result in different models with different likelihood functions).  An important assumption here is the fact that $\sigma$ is a constant: It doesn't depend on the values of $x_n^i$.  This means that the gaussian "noise" is independent of the features.  Because of this property, it is said that the errors are "heteroscedastic" (this sounds fancy, but just means that the $\sigma$ in the gaussian likelihood is a constant).
 
@@ -154,7 +156,19 @@ It can be shown that the estimators $\hat{\vec{w}}$ are unbiased (even in the no
 On the other hand, the estimator for $\sigma$ is biased.  One can create an unbiased version by dividing by $N-i$ instead of simply $N$ (the version with $N-i$ is what people often ad-hoc state the estimate of the variance to be.  But it's the same as the maximum likelihood estimator).
 
 
-### F Distribution
+With the distribution of $\hat{\vec{w}}$ in hand, one of the common things to do is to, parameter by parameter, find those features whose parameter's estimator is nonzero with statistical significance.  Specifically, this means testing (and possibly rejecting) the hypothesis that the parameter's true value is 0.  This can be tested directly using a p-value test: Assuming the null hypothesis that the parameter is equal to exactly 0, what is the probability of seeing a fitted value of the coefficient as far from zero or farther.  Note that this is a 2-sided test: we consider possible parameter values in both the positive and negative direction.  To do this, set $w_i=0$ in the equation above, calculate the t test-statistic, and compare it to the 2-sided tails defined above of total size $\alpha$.  The interpretation is that a parameter whose p-value is very small "rejects" the null hypothesis of the parameter's true value being 0.  Thus, that parameter is likely "significant", or is an important component of the model.  While the calculation defined above is exact, since very few real life situations perfectly meet the assumptions of a regression, this procedure should mostly be thought of as a heuristic for determining which features in a model may be considered for dropping and which ones are likely to be important to the model's overall performance.
+
+http://reliawiki.org/index.php/Simple_Linear_Regression_Analysis
+
+### F Test
+
+We above described how to do a p-value test to determine if a parameter is significant.  One may be tempted to perform this test on every parameter and find those that are not significant.  However, with many parameters, the probability of finding ANY parameter that is not significant becomes significant.  Do enough p-value tests and you're bound to find an interesting result eventually!
+
+As an alternative, one can perform a test to see if a model with fewer variables is as good as the model with all variables.  Typically, this test is performed against the most minimal model possible: one in which the only variable is the intercept.  In other words, one performs a tests to see if the model is significantly better than a model with no coefficients.  A model with more coefficients will always produce a better overall fit than a model with fewer or no free coefficients (since it is more flexible).  The question is whether this fit is significantly better than the 0-parameter model.
+
+http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/10/lecture-10.pdf
+
+
 
 https://stats.stackexchange.com/questions/258461/proof-that-f-statistic-follows-f-distribution
 

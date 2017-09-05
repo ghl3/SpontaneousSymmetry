@@ -23,5 +23,6 @@ This guide consists of the following sections, each of which stands alone but bu
 - <a href="/stats/frequentist-hypothesis-testing">Hypothesis Testing</a>
 - <a href="/stats/confidence-intervals">Confidence Intervals</a>
 - <a href="/stats/statistical-tests">Statistical Tests</a>
+- <a href="/stats/regression">Regression</a>
 
 

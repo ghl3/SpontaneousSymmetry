@@ -8,34 +8,40 @@ id: 446
 ---
 
 
-This is a short reference guide, or cheat sheet, for how to solve some well-defined and well studied statistical questions.
-
-<hr>
+Having spent some time building up a framework for statistical reasoning, let's apply it to a number of examples.  Many of these were touched upon in previous sections, but are here repeated to make this a complete reference for common statistical tests and problems.
 
 
+### Comparing measured data to a Gaussian Distribution
 
-### Comparing measured data to an expected distribition
+***I have a dataset consisting of a number of 1-d observations.  I know the true variance of my sample, but the mean is unknown to me.  I would like to perform inference on the mean $\mu$.***
 
+Apply a Gaussian Z-test.  A Z-test allows us to perform two types of inference:
+- Calculate a p-value that the data is generated form a fixed $\mu_0$
+- Calculate a confidence interval on the inferred value of $\mu$
 
-
-***I have a dataset consisting of a number of 1-d observations.  I know the true variance of my sample, but the mean is unknown to me.  Does the data come from a model with mean $\mu$?***
-
-To answer this question, one can apply a Gaussian Z-Test.  This is a hypothesis test that calculates the p-value of your data given a gaussian distribution with fully specified mean and variance.  There are no nuisance parameters, so the p-value is well defined.  The p-value is calculated analytically using known properties of the gaussian distribution.
-
-To perform this test, first define:
-
-- $\bar{x}$ as the sample mean
-- n is the sample size
-- $\mu$ is theoretical mean of the distribution we're testing against
-- $\sigma$ is the theoretical variance of the distribution we're testing against
-
-Next, calculate the test statistic as 
+The test statistic is the Z-score of the data:
 
 $$
 z = \frac{\hat{x} - \mu}{\sigma/\sqrt{n}}
 $$
 
-This test statistic follows a gaussian distribution and one can use gaussian CDF tables to determine the p-value of the given data (either one-tailed or two-tailed).  The sample mean is a sufficient test statistic for estimating the mean of a gaussian distribution, so this test is the best that one can do (we lose no information relative to the full data distribution when we take the mean as our test statistic).
+where
+
+- $\bar{x}$ as the sample mean
+- n is the sample size
+- $\mu$ is theoretical mean of the distribution we're testing against
+- $\sigma$ is the known variance of the distribution
+
+This test statistic follows a gaussian distribution:
+
+$$
+z ~ gauss(1, 0)
+$$
+
+- To perform a p-value test for a fixed $\mu_0$, plug  $\mu_0$ in for $\mu$ in the definition for $Z$, calculate $Z$ for the given dataset, and then use the known CDF distribution to calculate either the 1-sided or 2-sided p-value.  Compare this to a threshold to see if $\mu_0$ is accepted or rejected
+- To calculate a confidence interval of size $\alpha$, use the known gaussian CDF to find the value of $z_0$ such that the 2-sided probability of $|z| < z_0 = \alpha$.  Invert the equation for $z(\mu_0) = z_0$ to find $\mu_0$, the boundary of the confidence interval on $\mu$
+
+Note that sample mean is a sufficient test statistic for estimating the mean of a gaussian distribution, so this test is the best that one can do (we lose no information relative to the full data distribution when we take the mean as our test statistic).  This fact makes tests with gaussians much easier to calculate without loss of power.
 
 References:
 
@@ -47,7 +53,7 @@ References:
 __
 
 
-***I have a dataset consisting of a number of 1-d observations.  Does my data come from a Guassian distribution with a known mean (without knowing or caring about the value of the true variance)*** 
+***I have a dataset consisting of a number of 1-d observations.  I don't know what the true variance is, but I don't need to infer it.  Does my data come from a Guassian distribution with a known mean?*** 
 
 <!--If I assume that my data comes from some Gaussian distribution with unknown mean and unknown variance, does it come from a gaussian with a given mean (regardless of the unknown variance)?-->
 
@@ -130,13 +136,58 @@ https://www.math.tecnico.ulisboa.pt/~apacheco/ID1/artigo%20n%BA2.pdf
 
 ___
 
-***Does my distribution come from some known (but arbitrary) probability distribution?***
+### Comparing measured data to a various distributions
+
+***I have measured $N_succ$ successes out of a total of N trials.  I assume that my data comes from a binomial distribution and I want to perform inference on the true success rate p***
+
+If N is large, one can take into account the fact that a binomial distribution approaches a normal distribution.  The mean of the gaussian approximation is given by:
+
+$$
+\mu = p*N
+$$
+
+and the standard deviation parameter is given by:
+
+$$
+\sigma = \sqrt{\frac{1}{n}p(1-p)}
+$$
+
+Following the normal logic of calculating gaussian confidence intervals, 
+
+TODO:
+- Wilson Approximate Interval
+- Clopper–Pearson exact interval
+
+
+https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+
+
+***I have measured $N$ counts.  I assume that my data comes from a poisson distribution and I want to perform inference on the true rate $\lambda$***
+
+TODO: Gaussian Approximation
+TODO: Garwood exact interval
+
+https://arxiv.org/pdf/1412.0442.pdf
+https://www.immagic.com/eLibrary/ARCHIVES/GENERAL/WIKIPEDI/W121109P.pdf
+https://www.ine.pt/revstat/pdf/rs120203.pdf
+
+
+
+***Does my data come from some known (but arbitrary) continuous probability distribution?***
 
 Perform a one-sample Kolmogorov-Smirnov test.
 
 A K-S test is an exact test comparing the distribution of a sample to a known theoretical distribution.  The K-S test is valid regardless of the underlying distribution the data is being compared to.  The exactness, however, only applies if the theoretical distribution being compared against is fully specified: one cannot fit parameters from the data and then perform a K-S test.
 
-The test is performed by taking the maximum deviation between the theoretical CDF and the CDF of the measured data  It is performed by comparing the CDF of both distributions in question and does not depend on the underlying CDF being tested.  This test statistic is compared to a look-up table.
+The test statistic for a K-S test is is the the maximum deviation between the theoretical CDF and the empirical CDF of the measured data.
+
+$$
+Dn=sup_x[|Fn(x)−F_0(x)|]
+$$
+
+where the $sup_x$ is the suprema (maximum), $Fn(x)$ is the nth value of the empirical cumulative distribution, and $F_0(x)$ is the value of the true distribution at point $x$.
+
+The distribution of this test statistic, under the hypothesis that the data is drawn from the true distribution $F$, is independent of the true distribution $F$.  Therefore, one can use it as a pivotal quantity and compare the value of the test statistic to the known distribution of a K-S test statistic.  The distribution of this test statistic is typically used via a lookup table.
 
 
 References:
@@ -146,38 +197,34 @@ References:
 ___
 
 
-***Does my binned data come from a known distribution?***
+***Does my binned data come from a known distribution (describing binned data)?***
 
-Use a chi-squared goodness-of-fit test.  This is an approximate that depends on sufficient sample sizes to be fully accurate.
+If one has a binned dataset consisting of measured bin counts and a theoretical distribution that predicts the expected bin count, one can use a Chi-Squared test (goodness-of-fit test) to calculate the p-value that the data was generated by the theoretical distribution.
 
-It is performed by defining:
+If one's theoretical distribution is continuous, but one is drawing many values from it and binning them, one may also uses this Chi-Squared test.  One may determine the theoretical number of counts in a bin by the total number of values drawn times the total probability within a given bin.
 
-- $O_i$ as the bin height
-- $T_i$ is the theoretical bin height
+This is an approximate test.  It assumes that the number of data points in each bin are large enough for their uncertainties to be approximated by a gaussian distribution.
 
-If the theoretical distribution is continuous, the theoretical bin height, $T_i$, *can* be obtained by taking the value of the continuous variable at the center of each bin, $f_i$, and multiplying it by the sample size, $n$:
-
-- $T_i$ = $f_i$n (if the distribution is continuous)
-
-One need not use the bin center and there are other ways to define this.
-
-The test statistic is calculated as:
+To perform the test, one calculates the test statistic:
 
 $$
-\chi^2 = \sum_i (O_i - T_i)^2 / T_i
+\chi^2 = \sum_i (h_i - T_i)^2 / T_i
 $$
 
-Note that, in a typical chi-square test, we are summing the square difference between the observed value and the theoretical value divided by the square of the error.
+where:
+- $h_i$ is the measured number of counts in bin i (the measured height)
+- $T_i$ is the theoretical number of counts in bin i (the theoretical height)
 
 Here, we assume that the error on the size of each bin is the square root of the theoretical value, $T_i$.  This makes sense in the case where the theoretical bin hight is given by drawing poisson counts with some overall expected rate.  However, if one has other external knowledge of the errors, one can leverage these here.
 
-This test statistic is follows a chi-squared distribution with degrees of freedom, $d$, given by:
+This test statistic follows a chi-squared distribution with degrees of freedom $d$, where $d$ is the number of non-empty bins. This is evident because, if $\sqrt{T_i}$ is the uncertainty on the bin height (or if we use an otherwise-known uncertainty) each term above, $(h_i - T_i)^2 / T_i$, is gaussian distributed.  Thus, $\chi^2$ above is the sum of the square of gaussian distributed variables and is therefore follows a chi-square distribution.
+
+If the theoretical distribution was obtained by fitting a parameterized distribution, then the number of degrees of freedom is given by:
 
 $$
 d = (number of non-empty bins) - (number of parameters fitted in obtaining the theoretical distribution)
 $$
 
-(If you are simply handed the theoretical distribution, then $d$ is equal to the number of non-empty bins).
 
 For further discussion of chi-squared tests, see <a href="#chi-squared">here</a>.
 
@@ -190,13 +237,13 @@ References:
 ___
 
 
-## I have two samples of 1-d data.  Do they come from the same distribution?
+### Determining if two measured datasets came from the same distribution.
 
 
 If we first assume that the two distributions are both normal (gaussian) distributions, then there are a variety of tests we can employ, depending on further assumptions
 
 
-#### If we assume they are Guassian random variables and that their underlying distributions have the same variance (but possibly different means)
+*** I have two datasets of continuous data, and I assume that they are both drawn from gaussian distributions and those distributions have the same mean, which is unknown to me.  I want to determine if the two gaussian distributions have the same mean.***
 
 This can be solved by performing a t-test.
 
@@ -245,37 +292,33 @@ https://onlinecourses.science.psu.edu/stat414/node/201
 This is an exact test, applicable for all values of n and m.  Further, if the sample sizes n and m are the same, this test will be robust against deviations from the normal distribution assumption.
 
 
-#### If we assume they are Guassian random variables but with different means and variances
+*** I have two 1-d datasets drawn from gaussian distributions, but I don't assume anything about the means and variance of those distributions.  I want to know if both distributions are the same.***
 
 This problem is known as the Behrens-Fisher Problem.  A number of approximate solutions exist.
 
 The most famous approximate solution is "Welch's t-test", which creates a test statistic that is approximately t-distributed (under certain conditions).
 
 https://en.wikipedia.org/wiki/Behrens%E2%80%93Fisher_problem
+http://www.sciencedirect.com/science/article/pii/S0378375806002382
+http://www.sciencedirect.com/science/article/pii/S0378375806002382
 
 
-
-#### If we are simply wondering if they come from the same distribution, regardless of what that distribution is
+***I have two datasets of continuous data.  I have no assumptions about the underlying distribution that generated them.  I want to test if they came from the same continuous probability distribution***
 
 Perform a two-sample Kolmogorov-Smirnov test.
 
 
-## I have two sets of binary data.  Do they have the same intrinsic rate?
+***I have two sets of binary data (weighted coin flips, or counts of successes and failures).  Do they have the same intrinsic rate?***
 
 To solve this, we have to make certain assumptions.  The main assumption that we're going to make here is that each dataset comes from a binomial distribution with a fixed rate.  The question then becomes: for both of these distributions, is the rate the same?
 
-To answer that, we have a few choices:
+To answer that, we have a few choices
 
-#### Assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian
+If we assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian.  The problem then becomes the same as asking if two gaussian distributions are equal.  One should use a standard Z-Test in this instance.
 
-The problem then becomes the same as asking if two gaussian distributions are equal.  One should use a standard Z-Test in this instance.
+TODO: Clean this up
 
-#### Assume that the samples are sufficiently large (but we don't want to make the gaussian approximation)
-
-Use the Chi-Squared Test
-
-
-#### If we want an exact solution (and are willing to assume that the total number of each type and the total number of each category are both fixed)
+*If we want an exact solution (and are willing to assume that the total number of each type and the total number of each category are both fixed)*
 
 Use Fischer's exact test.  This test uses a frequentists p-value to reject the hypothesis that:
 - All both groups have the same rate over categories
@@ -287,8 +330,7 @@ Given those assumptions, the probability of observing n events in group N and ca
 
 To determine what tables are "more extreme", one must choose a test statistic, which determines an ordering of extremeness.  One popular example is the "Wald" statistic
 
-
-### If we want an exact solution but want to relax the above requirement
+*If we want an exact solution but want to relax the above requirement*
 
 Use Bernard's test, which allows the number of observations for each class to fluctuate.  In essence, this is a version of Fischer's test that includes the nuisance parameter of the "true" distribution over classes (instead of assuming fixed class numbers).  
 
@@ -298,7 +340,6 @@ Using the binomial distribution directly, one can create an expression for the p
 http://www.nbi.dk/~petersen/Teaching/Stat2009/Barnard_ExactTest_TwoBinomials.pdf
 
 
-
 References:
 
 http://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm
@@ -306,13 +347,10 @@ http://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm
 https://en.wikipedia.org/wiki/Fisher%27s_exact_test
 
 
+### Miscellaneous Problems
 
 
-
-## Misc
-
-
-#### I fit a regression. How statistically significant is the slope?
+***I fit a regression. How statistically significant is the slope?***
 
 If we fit:
 
@@ -324,57 +362,12 @@ If we agree with the assumptions of the linear regression fit (that the data is 
 
 
 
-## Specific Tests
-
-
-#### What is a Gaussian Z test?
-
-Any frequentist p-value based test where the distribution of the test statistic under the null hypothesis is gaussian.
-
-
-Typically, this involves determining of a distribution of observations is drawn fro a gaussian distribution with known mean and standard deviation.  
-
-
-Another common set of examples is when examining the maximum likelihood estimate of a statistical fit.  Maximum likelihood estimates are approximately gaussian (and the variance from gaussianity can be determined using the Fisher information).  If $\hat{\theta}}# is the maximum likelihood estimate of the experiment and $\theta_0$ is the estimate under the null hypothesis, then the following is normally distributed:
-
-$$({\hat{\theta }}-\theta _{0})/{{\rm {SE}}}({\hat  {\theta }})$$
-
-
-<a name="students-t"></a>
-#### What is a Student's t test?
-
-
-
-<a name="chi-squared"></a>
-#### What is a chi-squared test?
-
-
-A Chi-Squared test refers to many statistical tests that have one thing in common: the distribution of the test statistic under the null hypothesis follows the chi-squared distribution (with n degrees of freedom, where n can be defined based on the problem at hand).
-
-The chi-squared distribution is the distribution of the sum of the squares of N independent random variables (which turns out to be common, making the chi-squared test useful).
-
-Chi-Squared tests are frequentist and are all based on rejecting a null hypothesis using the p-value.
-
-Chi-Squared tests are approximations that assume sufficient statistics.  There are a few rules of thumbs here:
-- At least 5 counts in each observation
-- At least 5 counts in at least 80% of observations
-
-It also assumes that all observations are independent.
-
-A subset of all Chi-Squared tests fall into the category of Pearson's chi-squared test, which involves comparing an observed rate of an observation falling into one of several categories to an expected rate (which is either theoretical or derived from a larger dataset).  These tests generally take the following form:
-
-- Calculate the square of the difference between observed rate and expected rate, all divided by the expected rate
-- Sum this for every category to form the test statistic
-- Determine the degrees of freedom by the number of categories - the number of any "free parameters".
-
-
 #### Test whether the variance of a sample, assumed to be gaussian distributed, has a variance of some fixed value V.
 
 The test statistic is the sample variance divided by the test variance, and the chi-squared distribution has n-1 degrees of freedom (where n is the sample size).
 
 
 #### Test for independence of 2 groups with 2 categories.  
-
 
 
 #### Test for "goodness of fit"
@@ -415,3 +408,43 @@ Reference: https://en.wikipedia.org/wiki/Chi-squared_test
 
 
 
+## Specific Tests
+
+
+#### What is a Gaussian Z test?
+
+Any frequentist p-value based test where the distribution of the test statistic under the null hypothesis is gaussian.
+
+
+Typically, this involves determining of a distribution of observations is drawn fro a gaussian distribution with known mean and standard deviation.  
+
+
+Another common set of examples is when examining the maximum likelihood estimate of a statistical fit.  Maximum likelihood estimates are approximately gaussian (and the variance from gaussianity can be determined using the Fisher information).  If $\hat{\theta}}$ is the maximum likelihood estimate of the experiment and $\theta_0$ is the estimate under the null hypothesis, then the following is normally distributed:
+
+$$({\hat{\theta }}-\theta _{0})/{{\rm {SE}}}({\hat  {\theta }})$$
+
+
+<a name="students-t"></a>
+#### What is a Student's t test?
+
+<a name="chi-squared"></a>
+#### What is a chi-squared test?
+
+
+A Chi-Squared test refers to many statistical tests that have one thing in common: the distribution of the test statistic under the null hypothesis follows the chi-squared distribution (with n degrees of freedom, where n can be defined based on the problem at hand).
+
+The chi-squared distribution is the distribution of the sum of the squares of N independent random variables (which turns out to be common, making the chi-squared test useful).
+
+Chi-Squared tests are frequentist and are all based on rejecting a null hypothesis using the p-value.
+
+Chi-Squared tests are approximations that assume sufficient statistics.  There are a few rules of thumbs here:
+- At least 5 counts in each observation
+- At least 5 counts in at least 80% of observations
+
+It also assumes that all observations are independent.
+
+A subset of all Chi-Squared tests fall into the category of Pearson's chi-squared test, which involves comparing an observed rate of an observation falling into one of several categories to an expected rate (which is either theoretical or derived from a larger dataset).  These tests generally take the following form:
+
+- Calculate the square of the difference between observed rate and expected rate, all divided by the expected rate
+- Sum this for every category to form the test statistic
+- Determine the degrees of freedom by the number of categories - the number of any "free parameters".
