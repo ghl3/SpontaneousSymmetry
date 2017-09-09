@@ -367,7 +367,7 @@ There are a few ways to address this question.
 
 If we assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian.  The problem then becomes the same as asking if two gaussian distributions are equal.  We can then use the technique above to form an exact test, and then algebraically invert that test to determine the bounds of the binomial proportion.
 
-An exact solution to this problem uses Bernard's test.  The challenge of the test is taking into account the nuisance parameter of the true binomial rate (remember, we are only testing that they're the same binomial, we don't care what their common rate is).  This test addresses the issue in a brute-force way.  It calculates the p-value for each possible value of the parameter and then takes the maximum of all p-values (the most conservative choice).  For each possible value of the true rate, it calculates the p-value by considering all possible observable counts.  This is conceptually simple but can be computationally expensive.
+An exact solution to this problem uses Bernard's test.  The challenge of the test is taking into account the nuisance parameter of the true binomial rate (remember, we are only testing that they're the same binomial, we don't care what their common rate is).  This test addresses the issue in a brute-force way.  It calculates the p-value for each possible value of the parameter $p$ and then takes the maximum of all p-values (the most conservative choice).  For each possible value of the true rate, it calculates the p-value by considering all possible observable counts.  This is conceptually simple but can be computationally expensive.  Since there is only 1 nuisance parameter $p$, one can have a computer grid-search through a range of values relatively quickly.
 
 ***I have a contingency table, which is a collection of data drawn from N multinomials.  What is the p-value for all of the multinomials being the same?***
  
@@ -413,36 +413,77 @@ $$
 
 This would follow a chi-squared distribution of degree (num classes) * (num outcomes) EXCEPT for the fact that the observed counts $$n_y^b$ are not statistically independent.  Instead, they are constrained based on the setup of our experiment.  Specifically, we specified that the count of each class is fixed in advance, so for every class $j$ there is a linear constraint that specifies that their sum is $N_j$.  In addition, all the values $n_i^j - p_i n_j$ are constrained because we defined $p_i$ in terms of $n_i^j$.  For each possible outcome $i$, we add a constraint such that the total probability of that outcome is given by $p_i$.  These constraints are not all linearly independent.  It turns out that the number of linearly independent constraints is given by (num classes - 1) + (num outcomes - 1) + 1.  Therefore, we are taking as our test statistic the sum of (num classes)*(num outcomes) gaussian variables that have (num classes - 1) + (num outcomes - 1) + 1 linear constraints on them.  Based on an earlier discussion, the sum of the squares of these variables follows a chi-squared distribution with degrees of freedom $\nu$ given by the number of gaussian variables minus the number of linearly independent linear constraints on them, which is:
 
+http://www.stat.wisc.edu/~st571-1/06-tables-2.pdf
+
 $$
 \nu = (num classes)*(num outcomes) - ((num classes - 1) + (num outcomes - 1) + 1) = (num classes - 1) * (num outcomes - 1)$$
 
 One can therefore use the distribution of $\chi^2_\nu$ to calculate the p-value of the observed data given the hypothesis that all classes have the same distribution over the possible outcomes.
 
-A better approximation, known as the G-Test, is derived from the log likelihood ratio and constructs a similar test statistic that is also chi-square distributed.
+The chi-squared test described above started with the normal approximation to the Binomial/Multinomial.  We can instead generate another approximation by starting with the full log likelihood distribution and approximating it's distribution.  This is known as the G-Test.
+
+To develop this, we start by writing down the likelihood ratio for a multinomial.  In this example, we have I different outcomes, each with true probability $p_i$ and we measure counts of each outcome as $n_i$ (with N total counts).  The likelihood of this data is given by:
+
+$$
+L(n_i | p_i) = \Product_{i} p_i^{n_{i}}
+$$
+
+The maximum likelihood estimators of the $p_i$ are given by:
+
+$$
+\hat{p_i} = \frac{n_{i}}{N}
+$$
+
+and the log likelihood ratio is give by:
+
+$$
+ -2*LLR = -2*Log[L(n_i} | p_{i}) / L(n_i | \hat{p_i})]
+      = -2*(Log [\prod p_i^{n_i}] - Log [\prod \hat{p}_i^{n_i}])
+      
+      = -2*\sum_i n^i(Log[p_i] - Log[\hat{p}^i])
+      = -2 * sum_i n^i Log[\frac{p_i}  {\hat{p}_i}]
+$$
+
+Substituting in the maximum likelihood estimate gives 
+
+$$                  
+      = -Log[L(n_11, ..., n_{ij}] - Log[p_{ij}) / L(n_11, ..., n_{ij} | \hat{p_{ij}})]
+      = -2 \sum_{i} n_{i}log(\frac{n_ij}{N_j})
+$$
+
+And defining $n_obs$ = $n_i$ and $n_exp$ = $p_i*N$ we get
+
+$$
+-2*LLR = 2 \sum_i n_obs Log[\frac{n_obs}{n_exp}]
+$$
+
+We know from previous results that this is distributed by a chi-squared with $I$ degrees of freedom.  However, in the original formulation of our problem, we knew that we have fewer degrees of freedom, since we are constraining the total count per class to be the observed count and we are using the observed rates per outcome to infer the true value.  One can show that the -2*LLR defined above follows a chi-squared with degrees of freedom given by (num classes - 1) * (num observations - 1), which is the same as the Chi-Squared example above.
+
+$$
+2 \sum_i n_obs Log[\frac{n_obs}{n_exp}] \sim \chi^2_{(num classes - 1)*(num observations - 1)}
+$$
+
+
+https://nlp.stanford.edu/manning/courses/ling289/contingency-table-stats.pdf
+
+https://www.unc.edu/courses/2006spring/ecol/145/001/docs/lectures/lecture14.htm
 
 https://en.wikipedia.org/wiki/G-test
 
-http://www.stat.wisc.edu/~st571-1/06-tables-2.pdf
 
 https://en.wikipedia.org/wiki/Multinomial_test
 
 
-One may use the generalization of Bernard's test, but it becomes more computationally expensive as the data grows larger.
+For an exact solution, one may calculate the p-value exactly using monte-carlo methods.  This would be a generalization of Bernard's test, but it becomes more computationally expensive as the number of outcomes grows larger, as each new outcomes introduces a new nuisance parameter $p_i$ which much be scanned over.  One can grid search through all values of $p1, ..., p_i$, calculate the p-value of the data for those values, say by using the likelihood ratio as an ordering rule.  One would then take the maximum p-value as the suprema p-value used to perform the hypothesis test.  This is relatively computationally simple, but doesn't scale well.  One may consider using the above approximations in that case.
 
-A famous exact solution is known as Fischer's exact test.  Fisher solved the problem exactly by adding a restriction, which allowed him to arrive at an elegant solution.  Fischer restricted the state space of the problem when considering a p-value to be instances where the total count of a given class is equal to the observed count of that class.  This restriction simplifies the problem, but is somewhat awkward and artificial in my opinion.
+If one insists on an exact solution but doesn't want to computationally use monte carlo to calculate p-values, one can use a famous exact solution is known as Fischer's exact test.  Fisher solved the problem exactly by adding a restriction, which allowed him to arrive at an elegant solution.  In addition to fixing the total count per class to be the observed count, he also fixes the total count per outcome to be the observed count per outcome.  This restriction is somewhat artificial, but it allowed him to reach an exact solution.  
 
-Use Fischer's exact test.  This test uses a frequentists p-value to reject the hypothesis that:
-- All groups have the same rate over categories
-- That rate over categories is given by the total observed rate of categories (ignoring any groups)
-
-This can be generalized past the binary case for N groups and M categories.
-
-Given those assumptions, the probability of observing n events in group N and category M is given by the hypergeometric distribution.  The "trick" of this assumption is that the distribution ends up no longer depending on the overall rate for each category.  The result essentially reduces to combinatorics: since we are fixing the total number of observations and the total number in each class (as we are only testing against the observed rate), we can get this with combinatorics.  One must then sum these distributions over all possible values in the table to obtain the p-value.
-
-To determine what tables are "more extreme", one must choose a test statistic, which determines an ordering of extremeness.  One popular example is the "Wald" statistic.
+Given those assumptions, the probability of observing n events in group N and category M is given by the hypergeometric distribution.  The "trick" of this assumption is that the distribution ends up no longer depending on the overall rate for each category.  The result essentially reduces to combinatorics: since we are fixing the total number of observations and the total number in each class (as we are only testing against the observed rate), we can calculate the probability of all possible tables.  To calculate the p-value, one then sums the probability of all such tables that are less likely than the observed table.
 
 
 References:
+
+https://www.unc.edu/courses/2006spring/ecol/145/001/docs/lectures/lecture11.htm#randomization
 
 https://ncss-wpengine.netdna-ssl.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Contingency_Tables-Crosstabs-Chi-Square_Test.pdf
 
