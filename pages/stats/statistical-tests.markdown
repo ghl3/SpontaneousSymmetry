@@ -53,7 +53,7 @@ References:
 __
 
 
-***I have a dataset consisting of a number of 1-d observations.  I don't know what the true variance is, but I don't need to infer it.  Does my data come from a Guassian distribution with a known mean?*** 
+***I have a dataset consisting of a number of 1-d observations.  I assume the data comes from a Gaussian distribution with an unknown variance.  I want to perform inference on the mean*** 
 
 <!--If I assume that my data comes from some Gaussian distribution with unknown mean and unknown variance, does it come from a gaussian with a given mean (regardless of the unknown variance)?-->
 
@@ -78,7 +78,7 @@ References:
 __
 
 
-***I have a dataset consisting of a number of 1-d observations.  Does my data comes from a Gaussian distribution with a specific mean and variance?***
+***I have a dataset consisting of a number of 1-d observations.  I assume the data comes from a gaussian distribution.  I want to perform inference on both the mean and the variance parameters.***
 
 Unlike previous examples, we're here looking to perform simultaneous inference on two parameters.  Instead of making a confidence interval for a single parameter, we instead will attempt to make a confidence region, consisting of a 2-d region in ($\mu$, $\sigma$) space.
 
@@ -138,9 +138,9 @@ ___
 
 ### Comparing measured data to a various distributions
 
-***I have measured $N_succ$ successes out of a total of N trials.  I assume that my data comes from a binomial distribution and I want to perform inference on the true success rate p***
+***I have a dataset of binary data consisting of measured $N_s$ successes out of a total of N trials.  I assume that my data comes from a binomial distribution and I want to perform inference on the true success rate p***
 
-If N is large, one can take into account the fact that a binomial distribution approaches a normal distribution.  The mean of the gaussian approximation is given by:
+If N is large, one can use the fact that a binomial distribution approaches a normal distribution.  The mean of the gaussian approximation is given by:
 
 $$
 \mu = p*N
@@ -152,23 +152,75 @@ $$
 \sigma = \sqrt{\frac{1}{n}p(1-p)}
 $$
 
-Following the normal logic of calculating gaussian confidence intervals, 
+Using this, we can define a test statistic, $z$, that is gaussian distributed:
 
-TODO:
-- Wilson Approximate Interval
-- Clopper–Pearson exact interval
+$$
+z = \frac{N_s - p*N}{ \sqrt{\frac{1}{n}\hat{p}(1-\hat{p})} }
+$$
 
+With this in hand, we can create a confidence interval of size alpha on $z$, which we call $z_\alpha$.  We can then invert the above equation, solving for $N_s$, to give us confidence intervals on $N_s$.  The solution to this equation is known as the "Wilson Interval" or Wilson approximation to the binomial confidence interval.  The formula is not repeated here but can be readily looked up.
+
+Note that many references make an additional approximation to simplify the math: plug in $p -> \hat{p} = N_s/N$ in the formula for Z.  This makes the algebra easier but makes the interval less accurate for lower N.
+
+However, we can forego an approximation all together to obtain the true binomial confidence intervals, which should be valid for all values of N.  These are known as the Clopper-Pearson exact intervals.  The formula is not repeated here but can be readily looked up.
+
+The issue with the Clopper-Pearson exact intervals is that their coverage is not perfect.  This is not because an approximation is used in their derivation, but instead because the distribution is discrete, so, for most values of $\alpha$, intervals of size exactly $\alpha$ can not be found.  The interval is conservative, meaning that it's wider than it needs to be.  If one wants to be really cute, one can leverage randomization on the boundary to achieve exact coverage (it's not obvious to me that this is useful, but formally it will work).
+
+It turns out that, because of this conservatism, the Wilson intervals usually end up having better coverage than the Clopper-Pearson intervals, even for small values of N.  For N as low as 5, a good rule of thumb is just to use the Wilson intervals.
+
+http://www.stat.ufl.edu/~aa/articles/agresti_coull_1998.pdf
 
 https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+
+http://www.ucl.ac.uk/english-usage/staff/sean/resources/binomialpoisson.pdf
 
 
 ***I have measured $N$ counts.  I assume that my data comes from a poisson distribution and I want to perform inference on the true rate $\lambda$***
 
-TODO: Gaussian Approximation
-TODO: Garwood exact interval
+Similar to how we treat the binomial distribution, we can start by using the gaussian approximation to the poisson.  To do this we associate:
+
+$$
+\mu = \lambda
+$$
+
+and 
+
+$$
+\sigma = \sqrt{\lambda}
+$$
+
+We can then construct the quantity:
+
+$$
+z = \frac{N - \lambda}{\sqrt{\lambda}}
+$$
+
+For a desired confidence interval size $\alpha$, we can define the critical value of z $z_alpha$ and use it to find the critical values of $\lambda$.
+
+One can also calculate exact intervals.  Doing so requires complicated calculations involving the poisson distribution.  However, one can take into account the following result:
+
+$$
+\sum_{k=0}^x pois(k | \mu) = P((\chi^2_{2(1+x)} > 2\mu)
+$$
+
+where the right half of the equation represents the probability of a chi-square distributed variable with $2(1+x)$ degrees of freedom having a value > $2\mu$.  Using this, one can express the exact intervals in terms of quantiles of an appropriate chi-squared distribution:
+
+$$
+\frac{1}{2}Quantile_{\alpha/2}(\X^2_{2N}) < \lambda <  \frac{1}{2}Quantile_{1 - \alpha/2}(\X^2_{2N + 2})
+$$
+
+
+This formulation of a 2-sided exact confidence interval is attributed to Garwood.  Similar to the binomial case, the exact intervals tend to over-cover (due to the discrete nature of the data a poisson distribution describes).  There are a number of other interval versions that are designed to have better coverage properties.
+
+
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.900.3700&rep=rep1&type=pdf
+
+http://ms.mcmaster.ca/peter/s743/poissonalpha.html
 
 https://arxiv.org/pdf/1412.0442.pdf
+
 https://www.immagic.com/eLibrary/ARCHIVES/GENERAL/WIKIPEDI/W121109P.pdf
+
 https://www.ine.pt/revstat/pdf/rs120203.pdf
 
 
@@ -243,7 +295,7 @@ ___
 If we first assume that the two distributions are both normal (gaussian) distributions, then there are a variety of tests we can employ, depending on further assumptions
 
 
-*** I have two datasets of continuous data, and I assume that they are both drawn from gaussian distributions and those distributions have the same mean, which is unknown to me.  I want to determine if the two gaussian distributions have the same mean.***
+*** I have two datasets of continuous data, and I assume that they are both drawn from gaussian distributions and those distributions have the same variance, which is unknown to me.  I want to determine if the two gaussian distributions have the same mean.***
 
 This can be solved by performing a t-test.
 
@@ -307,44 +359,105 @@ http://www.sciencedirect.com/science/article/pii/S0378375806002382
 
 Perform a two-sample Kolmogorov-Smirnov test.
 
-
 ***I have two sets of binary data (weighted coin flips, or counts of successes and failures).  Do they have the same intrinsic rate?***
 
 To solve this, we have to make certain assumptions.  The main assumption that we're going to make here is that each dataset comes from a binomial distribution with a fixed rate.  The question then becomes: for both of these distributions, is the rate the same?
 
-To answer that, we have a few choices
+There are a few ways to address this question.
 
-If we assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian.  The problem then becomes the same as asking if two gaussian distributions are equal.  One should use a standard Z-Test in this instance.
+If we assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian.  The problem then becomes the same as asking if two gaussian distributions are equal.  We can then use the technique above to form an exact test, and then algebraically invert that test to determine the bounds of the binomial proportion.
 
-TODO: Clean this up
+An exact solution to this problem uses Bernard's test.  The challenge of the test is taking into account the nuisance parameter of the true binomial rate (remember, we are only testing that they're the same binomial, we don't care what their common rate is).  This test addresses the issue in a brute-force way.  It calculates the p-value for each possible value of the parameter and then takes the maximum of all p-values (the most conservative choice).  For each possible value of the true rate, it calculates the p-value by considering all possible observable counts.  This is conceptually simple but can be computationally expensive.
 
-*If we want an exact solution (and are willing to assume that the total number of each type and the total number of each category are both fixed)*
+***I have a contingency table, which is a collection of data drawn from N multinomials.  What is the p-value for all of the multinomials being the same?***
+ 
+This is the generalization of the binomial example discussed above and is a common situation in statistics.  A contingency table can be visualized as the following:
+
+| groups   | a       | b       | c       |
+|----------|---------|---------|---------|
+| outcomes |         |         |         |
+| x        | $n_x^a$ | $n_x^b$ | $n_x^c$ |
+| y        | $n_y^a$ | $n_y^b$ | $n_y^c$ |
+| z        | $n_z^a$ | $n_z^b$ | $n_z^c$ |
+
+Here, we have 3 groups, a, b, and c.  In each group, we measure the count of outcomes, x, y, and z.  One can imagine that each group is a dice and each outcome is the count of a dice (1-6).  The question then boils down to: "do each of these dice have the same distribution over the outcomes (1-6)?"
+
+To clarify the problem, when randomizing the experiment, we're going to assume that we throw a total of $N_a$, $N_b$, and $N_c$ random variables in classes a, b, and c, respectively, and from those draws, we count the occurrence of x, y, and z in each class.  
+
+The common approximate solution of this is the Chi-Squared test of independence (for contingency tables).  This tests is performed by taking the following procedure:
+- Calculate the expected value of each class under the hypothesis that all datasets come from the same distribution (this typically entails calculating the total rate for each class across all datasets)
+- Assuming that the count for each class and in each dataset is gaussian distributed about that expected amount, with variance given by the square root of the count
+- Calculate $\chi^2$ as the sum of the square differences between expected and observed counts across all classes and datasets
+
+To calculate the expected rate per outcome, define:
+
+$$
+p_x = \frac{\sum_i n_x^i}{N}
+$$
+
+where N is the total number of draws (across all classes) and $n_x^i$ is the count of draws with outcome x in class i.  In other words, $p_x$ is the measured rate of $x$ (regardless of classes).
+
+Given that, the expected count in each bin is given by:
+
+$$
+\hat{n_x^a} = p_x * N_a
+$$
+
+and the standard deviation on that (using the gaussian assumption) is $\sqrt{p_x * N_a}$.
+
+We can therefore define a sum of squares of gaussian random variables:
+
+$$
+\chi^2_\nu = \sum_{i,j} \frac {n_i^j - p_i n_j} {p_i N_j}
+$$
+
+This would follow a chi-squared distribution of degree (num classes) * (num outcomes) EXCEPT for the fact that the observed counts $$n_y^b$ are not statistically independent.  Instead, they are constrained based on the setup of our experiment.  Specifically, we specified that the count of each class is fixed in advance, so for every class $j$ there is a linear constraint that specifies that their sum is $N_j$.  In addition, all the values $n_i^j - p_i n_j$ are constrained because we defined $p_i$ in terms of $n_i^j$.  For each possible outcome $i$, we add a constraint such that the total probability of that outcome is given by $p_i$.  These constraints are not all linearly independent.  It turns out that the number of linearly independent constraints is given by (num classes - 1) + (num outcomes - 1) + 1.  Therefore, we are taking as our test statistic the sum of (num classes)*(num outcomes) gaussian variables that have (num classes - 1) + (num outcomes - 1) + 1 linear constraints on them.  Based on an earlier discussion, the sum of the squares of these variables follows a chi-squared distribution with degrees of freedom $\nu$ given by the number of gaussian variables minus the number of linearly independent linear constraints on them, which is:
+
+$$
+\nu = (num classes)*(num outcomes) - ((num classes - 1) + (num outcomes - 1) + 1) = (num classes - 1) * (num outcomes - 1)$$
+
+One can therefore use the distribution of $\chi^2_\nu$ to calculate the p-value of the observed data given the hypothesis that all classes have the same distribution over the possible outcomes.
+
+A better approximation, known as the G-Test, is derived from the log likelihood ratio and constructs a similar test statistic that is also chi-square distributed.
+
+https://en.wikipedia.org/wiki/G-test
+
+http://www.stat.wisc.edu/~st571-1/06-tables-2.pdf
+
+https://en.wikipedia.org/wiki/Multinomial_test
+
+
+One may use the generalization of Bernard's test, but it becomes more computationally expensive as the data grows larger.
+
+A famous exact solution is known as Fischer's exact test.  Fisher solved the problem exactly by adding a restriction, which allowed him to arrive at an elegant solution.  Fischer restricted the state space of the problem when considering a p-value to be instances where the total count of a given class is equal to the observed count of that class.  This restriction simplifies the problem, but is somewhat awkward and artificial in my opinion.
 
 Use Fischer's exact test.  This test uses a frequentists p-value to reject the hypothesis that:
-- All both groups have the same rate over categories
+- All groups have the same rate over categories
 - That rate over categories is given by the total observed rate of categories (ignoring any groups)
 
 This can be generalized past the binary case for N groups and M categories.
 
 Given those assumptions, the probability of observing n events in group N and category M is given by the hypergeometric distribution.  The "trick" of this assumption is that the distribution ends up no longer depending on the overall rate for each category.  The result essentially reduces to combinatorics: since we are fixing the total number of observations and the total number in each class (as we are only testing against the observed rate), we can get this with combinatorics.  One must then sum these distributions over all possible values in the table to obtain the p-value.
 
-To determine what tables are "more extreme", one must choose a test statistic, which determines an ordering of extremeness.  One popular example is the "Wald" statistic
-
-*If we want an exact solution but want to relax the above requirement*
-
-Use Bernard's test, which allows the number of observations for each class to fluctuate.  In essence, this is a version of Fischer's test that includes the nuisance parameter of the "true" distribution over classes (instead of assuming fixed class numbers).  
-
-Using the binomial distribution directly, one can create an expression for the p-value, but it turns out to depend on the probability distribution over the classes.  One can avoid this "nuisance" parameter by finding the probability distribution that maximizes the p-value (eg makes the result the least extreme).
-
-
-http://www.nbi.dk/~petersen/Teaching/Stat2009/Barnard_ExactTest_TwoBinomials.pdf
+To determine what tables are "more extreme", one must choose a test statistic, which determines an ordering of extremeness.  One popular example is the "Wald" statistic.
 
 
 References:
 
+https://ncss-wpengine.netdna-ssl.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Contingency_Tables-Crosstabs-Chi-Square_Test.pdf
+
+https://ocw.mit.edu/courses/mathematics/18-443-statistics-for-applications-fall-2006/lecture-notes/lecture11.pdf
+
+http://sites.stat.psu.edu/~drh20/asymp/lectures/p175to184.pdf
+
+https://math.stackexchange.com/questions/304732/chi-square-degrees-of-freedom-proof
+
 http://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm
 
 https://en.wikipedia.org/wiki/Fisher%27s_exact_test
+
+
+https://stats.stackexchange.com/a/16931/16736
 
 
 ### Miscellaneous Problems

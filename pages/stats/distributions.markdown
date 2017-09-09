@@ -162,6 +162,18 @@ Note that the Chi-Squared distribution with 1 degree of freedom is simply the di
 
 In order to calculate the test statistic $Z^2_N$, one must know BOTH the true mean, $\mu$, and the true standard deviation, $\sigma$.  We will later show how one can use the Chi-Squared distribution to perform inference on these parameters.  However, often one only wants to perform inference on one of these parameters, usually the true mean $\mu$.  In these cases, one must either know the true standard deviation, must assume it, or must use another test statistic (with another distribution). 
 
+Important in the definition of the Chi-Squared distribution is the requirement that the gaussians being squared and added all be independent.  However, a common situation that on often encounters in statistics is the sum of squares of gaussian variables that are not all independent, but instead are correlated due to the presence of linear constraints.  A linear constraint is a fixed linear relationship between the values of these gaussian random variables, which typically takes the form of the sum of 2-or-more of the variables equaling some fixed value (or permutations on this theme).
+
+If I have n gaussian variables, $g_1, ..., g_n$, and I have m linear constraints on the values of these variables of a certain type, then the sum of the squares of these variables is distributed as:
+
+$$
+\sum_i g_i^2 \sim \chi^2_{n-m}
+$$
+
+In the typical language, the degrees of freedom of the chi-squared is given by the number of independent variables minus the number of constraints applied.  The typical proof of this describes the linear constraint as a projection operator that maps the space of constrained-and-correlated gaussian variables to a sub-space in which the gaussian are uncorrelated.  It can be shown that this projection preserves the sum of the squares in the original space (essentially because the trace of a matrix is invariant under orthogonal transformations).
+
+http://sites.stat.psu.edu/~drh20/asymp/lectures/p175to184.pdf
+
 ## Gaussian Distribution, continued
 
 With the Chi-Squared distribution in hand, we can state another property of the gaussian distribution.  Imagine that we draw n samples from a gaussian distribution with mean $\mu$ and standard deviation $\sigma$.  We then calculate the quantity:
