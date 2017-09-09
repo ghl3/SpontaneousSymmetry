@@ -365,7 +365,60 @@ To solve this, we have to make certain assumptions.  The main assumption that we
 
 There are a few ways to address this question.
 
-If we assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian.  The problem then becomes the same as asking if two gaussian distributions are equal.  We can then use the technique above to form an exact test, and then algebraically invert that test to determine the bounds of the binomial proportion.
+If we assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian.  Here, we're assuming that we may have different counts for each class.  Therefore, in the null hypothesis that the proportions from both classes are equal ($p_1 = p_2 = p$), we'll have draws from two gaussians with the same mean but different standard deviations (due to the different sample sizes).
+
+Let $N_1$ and $N_2$ be the counts in groups 1 and 2, respectively, and let $\hat{p_1}$ and $\hat{p_2}$ be the observed proportions in each group.
+
+Recall that the gaussian approximation to a binomial with true rate $p$ involves setting:
+
+$$
+\mu -> Np
+\sigma -> Np(1-p)
+$$
+and therefore the quantity
+
+$$
+Z = \frac{\hat{p} - Np}{\sqrt{Np(1-p)}}
+$$
+
+is gaussian distributed.  Further, recall that the difference in gaussian distributed variables $\hat{p_1} - \hat{p_2}$ is itself gaussian distributed with
+
+$$
+\mu = p1−p2
+\sigma^2 = \frac{p_1(1-p_1}{N_1} + \frac{p_2(1-p_2)}{N_2}
+$$
+
+which means that the quantity
+
+$$
+Z = \frac {(\hat{p_1) - \hat{p_2}) - (p_1 - p_2} {\sqrt{\frac{p_1(1-p_1}{N_1} + \frac{p_2(1-p_2)}{N_2}}}
+$$
+
+setting $p_1=p_2$, this reduces to
+
+$$
+Z = \frac{\hat{p}_1 - \hat{p}_2} {\sqrt{p(1-p)(\frac{1}{N_1} + \frac{1}{N_2})}}
+$$
+
+Here, $p$ is still a nuisance parameter.  We can perform inference on it if we assume that the rates in the two groups are equal.  But, if we want to test whether they're equal, we have to eliminate it somehow.  A common approach is to replace it with it's maximum likelihood estimator: 
+
+$$
+\hat{p} = \frac{\hat{p}_1N_1 + \hat{p}_2N_2 }{N_1 + N_2}
+$$
+
+and using that method the following test statistic approximately normally distributed:
+
+
+$$
+Z = \frac{\hat{p}_1 - \hat{p}_2} {\sqrt{\hat{p}(1-\hat{p})(\frac{1}{N_1} + \frac{1}{N_2})}}
+$$
+
+This can be used to calculate a z-score and use the standard z-distribution to calculate either a 1-sided or 2-sided p-value.
+
+
+https://onlinecourses.science.psu.edu/stat414/node/268
+
+
 
 An exact solution to this problem uses Bernard's test.  The challenge of the test is taking into account the nuisance parameter of the true binomial rate (remember, we are only testing that they're the same binomial, we don't care what their common rate is).  This test addresses the issue in a brute-force way.  It calculates the p-value for each possible value of the parameter $p$ and then takes the maximum of all p-values (the most conservative choice).  For each possible value of the true rate, it calculates the p-value by considering all possible observable counts.  This is conceptually simple but can be computationally expensive.  Since there is only 1 nuisance parameter $p$, one can have a computer grid-search through a range of values relatively quickly.
 
