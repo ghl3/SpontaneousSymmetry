@@ -46,6 +46,11 @@ def links():
 def code():
     return render_template('code.html')
 
+@app.route('/page/<page>')
+def page(page):
+    meta, body = blog.load_and_render_page('{}/pages/{}.markdown'.format(blog.BASE_PATH, page))
+    return render_template('page.html', content=body, title=page)
+
 @app.route('/stats/<page>')
 def stats(page):
     meta, body = blog.load_and_render_page('{}/pages/stats/{}.markdown'.format(blog.BASE_PATH, page))

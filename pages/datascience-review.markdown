@@ -31,9 +31,6 @@ $$
 
 It is always non-negative.  However, it is also not symmetric and doesn't obey the triangle inequality, so it cannot be interpreted as a distance metric.
 
-### Classification Evaluation Metrics
-
-
 
 ## Supervised Learning
 
@@ -108,6 +105,30 @@ Cross Entropy = - \frac{1}{N} \sum_i (I_i log(f_i) + (1-I_i)log(1-f_i))
 $$
 
 
+### Regression
+
+
+
+- $R^2$, or "Coeficient of determination", or "Multiple $R^2$ if there is more than 1 feature in the model, describes the fraction of the uncertainty in the data is explained by a linear model.  If we have true values $y_i$ and predicted values $f_i$, $R^2$ is defined as:
+
+$$
+R^2 = 1 - \frac{ \sum (y_i-f_i)^2 }{ \sum (y_i - \overbar{y})^2 }
+$$
+
+with $\overbar{y}$ as the mean of y.  It is interpreted (one minus) as the fraction of the average squared error of the regression out of the variance.  It varies between 0 and 1.  If it is 1, it means that all of the variance in the data can be captured in a regression (eg there are no errors outside of the regression), and if it's 0, then the regression captures none of the error (even after regressing, the variance is just as large).
+
+- Adjusted $R^2$ is a version of $R^2$ that is penalized for the number of features
+
+$$
+Adjusted R^2 = R^2 - (1-R^2)\frac{p}{n-p-1}
+$$
+
+where n is the number of rows and p is the number of variables.
+
+- F-Score or the F-test, is a statistic that can one can calculate when fitting a regression model to determine if a more complex model fits the data better.  An F-Test compares two models, one of which "contains" the other (uses all the features as the other plus additional features).  If it is significant, it means that the bigger model fits the data better (but it doesn't tell you precisely which feature in the bigger model is better).  Typically, after a regression, one records the F-Statistic compared to a constant model (intercept only).
+
+- Residual standard error is a term mostly used in R.  In a regression, it is the estimate of the $\sigma$ parameter from an OLS fit.
+
 ### Feature Selection
 
 #### Forward Stepwise
@@ -129,7 +150,6 @@ where $L(\vec{\hat{\theta}})$ is the maximum likelihood function (with MLEs $\ve
 
 Lower values of AIC are better.  One can interpret it as the difference in information between the true model and the estimated model (and when this is small, it means our estimated model is faithful to the true model).
 
-- F-Score
 
 ### Logistic Regression
 ### Decision Trees

@@ -162,6 +162,14 @@ Note that the Chi-Squared distribution with 1 degree of freedom is simply the di
 
 In order to calculate the test statistic $Z^2_N$, one must know BOTH the true mean, $\mu$, and the true standard deviation, $\sigma$.  We will later show how one can use the Chi-Squared distribution to perform inference on these parameters.  However, often one only wants to perform inference on one of these parameters, usually the true mean $\mu$.  In these cases, one must either know the true standard deviation, must assume it, or must use another test statistic (with another distribution). 
 
+For example, if one has a gaussian variable $x$ with true mean $\mu$ and true variance $\sigma^2$ and draws n samples from it, one can show that the quantity
+
+$$
+\chi^2 = \sum_i \frac{(x - \overbar{x})}{\sigma^2}
+$$
+
+follows a chi-squared distribution with n-1 degrees of freedom.  This is an exact relationship and can be proven using Cochran's theorem.
+
 Important in the definition of the Chi-Squared distribution is the requirement that the gaussians being squared and added all be independent.  However, a common situation that on often encounters in statistics is the sum of squares of gaussian variables that are not all independent, but instead are correlated due to the presence of linear constraints.  A linear constraint is a fixed linear relationship between the values of these gaussian random variables, which typically takes the form of the sum of 2-or-more of the variables equaling some fixed value (or permutations on this theme).
 
 If I have n gaussian variables, $g_1, ..., g_n$, and I have m linear constraints on the values of these variables of a certain type, then the sum of the squares of these variables is distributed as:
@@ -172,7 +180,11 @@ $$
 
 In the typical language, the degrees of freedom of the chi-squared is given by the number of independent variables minus the number of constraints applied.  The typical proof of this describes the linear constraint as a projection operator that maps the space of constrained-and-correlated gaussian variables to a sub-space in which the gaussian are uncorrelated.  It can be shown that this projection preserves the sum of the squares in the original space (essentially because the trace of a matrix is invariant under orthogonal transformations).
 
+
 http://sites.stat.psu.edu/~drh20/asymp/lectures/p175to184.pdf
+
+http://courses.education.illinois.edu/EdPsy580/lectures/7ChiSq_Fdist_05_online.pdf
+
 
 ## Gaussian Distribution, continued
 
@@ -285,9 +297,7 @@ It is shaped like a gaussian, but has larger tails (because the fact that we are
 ## F-Distribution
 
 
-The F-Statistic is a random variable that can be generated from two Chi-Squared distributed variables.  Imagine one has a variable $U_1$ which follows a Chi-Squared distribution with $d_1$ degrees of freedom and $U_2$ with $d_2$ degrees of freedom.  We further assume that $U_1$ and $U_2$ are independent.
-
-We define the F-Distribution (with degrees $d_1$ and $d_2$) as the distribution of the random variable defined as:
+The F-Statistic is a random variable that can be generated from two independent Chi-Squared distributed variables.  Given $U_1$ which follows a Chi-Squared distribution with $d_1$ degrees of freedom and $U_2$ with $d_2$ degrees of freedom (with the two distributions independent), we define the F-Distribution (with degrees $d_1$ and $d_2$) as the distribution of the random variable $F$ defined as:
 
 $$
 F = \frac{U_1/d_1}{U_2/d_2}
@@ -313,5 +323,55 @@ $$
 var(F_{d_1, d_2}) = \frac{ 2 * d_2^2 * ( d_1 + d_1 - 2 ) }  { d_1 * ( d_2 - 2 )^2 * ( d_2 - 4 ) }
 $$
 
+A common application of the F-statistic is known as the "Analysis of Variance", or ANOVA.  Consider a situation when one has a multiple measurement of a continuous variable that is separated into several groups.  The goal of an anova analysis is to determine if the distribution of the variable is different in the various groups (in other words, does the group have any effect on the variable).  To measure this, imagine we have N measurements of a variable $y$ with $y_{ij}$ being the ith measurement of the jth group.  We have K groups total, and the size of the ith group is $n_i$.
+
+First, define the means:
+
+$$
+\overbar{Y_i} = \text{mean of group i}
+$$
+
+$$
+\overbar{Y} = \text{The total mean of the data (across all data points)}
+$$ 
+
+Next, we define a quantity called the "between-group variability".  If we assume that the distribution of $y$ is independent of the group label, and that we have many samples in each group, then the mean of the ith group $Y_i$ is a gaussian distributed variable about the true mean $\mu$ (which we assume to be the same across all groups) with variance given by $\sigma^2\n_i$.  With that in hand, we can define the following quantity:
+
+$$
+\text{between-group variability} = \frac{ (\overbar{Y_i} - \overbar{Y}})^2}{ \sigma^2 / n_i}
+$$
+
+which follows a chi-squared distribution with K-1 degrees of freedom, as it is the sample mean of K (approximately) gaussian distributed variables (each variable being the group mean).  We call this quantity the "between-group variability".
+
+We then define a quantity called the "within-group variability".  For each group j, we can define the sample variance:
+
+$$
+var_j = \sum_i \frac{(y_{ij} - \overbar{Y_j})^2}{\sigma^2}
+$$
+
+and we know that this follows a chi-square distribution with $n_i - 1$ degrees of freedom (again, we know that under the null distribution, the true mean of each group is $\sigma$).  We can sum them all up to get the quantity:
+
+$$
+\text{within-group variability} = \sum_j \sum_i \frac{(y_{ij} - \overbar{Y_j})^2}{\sigma^2}
+$$
+
+And since each term follows a chi-squared with $n_i-1$ degrees of freedom, the total sum follows a chi-squared with $\sum_i (n_i - 1)$ degrees of freedom, which is also equal to $N-K$.
+
+With these two in hand, we can define the following term:
+
+$$
+F = \frac{\text{between-group variability} / (K-1)} {\text{within-group variability}/(N-K)}
+$$
+
+As shown above, the numerator follows a chi-squared with $(K-1)$ degrees of freedom divided by $(K-1)$, and the denominator follows a chi-squared with $(N-K)$ degrees of freedom divided by $(N-K)$.  Therefore, F follows a F-distribution with degrees $(K-1)$ and $(N-K)$ (under the null hypothesis).  This is where the null hypothesis comes in: If, as we supposed, the true variance is the same across groups, then when we divide the numerator by the denominator, the $\sigma^2$ terms cancel out.  Thus, we can calculate F directly from the data without knowing or supposing $\sigma$.
+
+https://en.wikipedia.org/wiki/F-test
+
+http://courses.education.illinois.edu/EdPsy580/lectures/7ChiSq_Fdist_05_online.pdf
+
 http://stattrek.com/probability-distributions/f-distribution.aspx
+
+https://www.youtube.com/watch?v=ITf4vHhyGpc
+
+
 
