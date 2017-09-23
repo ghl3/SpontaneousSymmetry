@@ -1,6 +1,6 @@
 
 <div>
-  <h2><a href="{{url_for('blog.archive_list')}}">Archive:</a></h1>
+  <h2>Recent Posts: <!--<a href="{{url_for('blog.archive_list')}}">Recent Posts:</a>--></h2>
   <ul>
     {% for title, post_list in archive.iteritems() %}
       <li> <a href="{{ url_for('blog.archive', year=title.year,
@@ -10,6 +10,6 @@
       {% endfor %}
     {% endfor %}
 
-    <li> <h2><b><a href="{{url_for('blog.archive_list')}}">Older Posts</a></b></h2> </li>
+    <li> <h2><b><a href="{{url_for('blog.archive_list')}}">All Posts</a></b></h2> </li>
   </ul>
 </div>

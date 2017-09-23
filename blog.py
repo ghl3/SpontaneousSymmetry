@@ -27,8 +27,6 @@ POST_DIRECTORY = BASE_PATH + '/posts'
 CACHE_POSTS_IN_DEBUG = False
 
 
-
-
 class Post(object):
     """
     A representation of a blog post.
@@ -269,12 +267,12 @@ def blog_post(post):
         post = load_post(post)
     except KeyError:
         abort(404)
-    archive_dict = get_archive(20)
+    archive_dict = get_archive(5)
     return render_template('post.html', post=post, archive=archive_dict)
 
 
 @Blog.route('/')
 def blog():
     post = get_latest_posts(1)[0]
-    archive_dict = get_archive(20)
+    archive_dict = get_archive(5)
     return render_template('post.html', post=post, archive=archive_dict)
