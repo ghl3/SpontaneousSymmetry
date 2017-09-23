@@ -10,15 +10,12 @@ id: 446
 
 The debate between statically typed vs dynamically typed programming languages is nearly as old as programming itself, but more modern techniques and technologies have dramatically shifted the underpinnings of these discussions.  New languages and tools have blurred the once-solid lines between these two camps.  While it's not clear that his has made the debate less fierce, it has certainly benefited the programmer, who now has many sophisticated ways to help ensure program correctness.
 
-
 Traditionally, a language being statically typed implies:
 
 - The language is compiled in a step that happens before execution, which converts all available source code into a runnable form (either machine code or byte code)
 - The language's source code contains type information on every variable and function declaration
 - This type information is used to ensure that functions and operators are only called with types that they are designed to receive
 - The compiler ensures this type correctness by doing static analysis on the source code (and leveraging the type declarations)
-
-While these properties define 
 
 While the quintessential statically typed language satisfies all of these properties, the can each be implemented a la carte, allowing a new language to pick and choose how strongly it will enforce type safety or what tradeoffs it will make in that effort.  Let's look at some examples of this:
 

@@ -19,7 +19,7 @@ There are different calculations that frequentists and bayesians are allowed to 
 
 So, how does this apply to the problem at hand.  The problem is better illuminated by fully describing the generative process that sets up the problem.  One first draws from a flat probability distribution between 0 and 1 to get the value of p.  Then, one draws 11 bernoulli variables (or boolean variables with values “left” or “right”) with probability p for “left” and 1-p for “right”.  With that, the problem is fully defined.  The concept of “winning” is a latent variable of the 11 bernoulli draws and is deterministically defined as whether there are more “left” values or “right” values.
 
-The experiment is a single draw from this likelihood that consists of the 12 variables (p, d1…d11).  The data that we observe are the first 9 rolls: d1 -> d8.  The nuisance parameters are therefore the variables p, d9, d10, and d11.
+The experiment is a single draw from this likelihood that consists of the 12 variables $(p, d_1…d_{11})$.  The data that we observe are the first 9 rolls: d1 -> d8.  The nuisance parameters are therefore the variables p, d9, d10, and d11.
 
 The likelihood is therefore:
 
