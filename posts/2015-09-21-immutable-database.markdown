@@ -40,6 +40,7 @@ Note that we automatically add a timestamp for when any row in this table is cre
 
 
 What are the facts around a user?  Facts are data that are supplied externally and are attached to the user's base.  Let's assume that we'd like to model the following facts:
+
 - User created an account with credentials
 - User added (or updated) their personal data (name, etc)
 - User was deleted
@@ -93,6 +94,7 @@ This pattern also allows for implementing optimistic locking on fact tables if o
 ## ORM
 
 One big advantage of this type of setup, and my primary motivation for thinking about it,is that it eliminates the need for an ORM.  Without having to mutate objects, one doesn't need data entities to come with a ".save()" method.  One simply needs to be able to do two things:
+
 - Add new rows to fact tables
 - Read from views
 
@@ -164,3 +166,11 @@ immutable_database=> EXPLAIN ANALYZE SELECT * FROM users WHERE id=177526;
 </pre>
 
 So, there's clearly overhead in pulling al the additional data, looking for the most recent values, etc.  But at a runtime of < 1 ms, this pattern should be sufficiently performant for most apps without further optimizations.  (On the other hand, doing a COUNT(*) is much slower on the user table, but this isn't a common operation for production apps, and is more likely to be used in offline analytics where it can be specifically optimized).
+
+
+## Conclusion
+
+The patterns outlined here are more a proof-of-concept than specific advice for your project or company.  But, more-and-more I'm becoming convinced that this style of immutable append-only data capture, even in a relational database, should be the first choice, and mutable tables should be seen as a (potentially premature) optimization.  I think the biggest source of friction is the fact that so many tools, such as ORMs, have been built around the assumption of mutable rows in tables, and therefore one may need to reinvent many tools when taking an immutable-first approach.  I'd love to see more work across languages to build this tooling and to discover the best patterns for saving and loading immutable data, building fast materialized views for specific subsets of the data, and for integrating this with the rest of your application.  Doing so may seem challenging at first, but I think it'll make you and your company faster, more accurate, and easier to reason about in the long run.
+
+
+
