@@ -35,7 +35,7 @@ A Bayesian would describe this model as a probability distribution function for 
 
 But a frequentist is free to construct and consider this model as well.  To him, the term $e^{-(\alpha - 1.0)^2}$ is not a statement about the prior belief on the parameter $\alpha$, but instead is typically referred to as a "constraint term" and can be thought of as describing some previous measurement on the parameter $\alpha$ whose result is included in the current model.  The functional form of this probability distribution is the same for both philosophies.
 
-In practice, he main difference between how a Frequentist and Bayesian uses this distribution function is that a Bayesian is free to integrate over the parameter $\alpha$ to get a probability that depends only on $x$.  A frequentist cannot perform this integral.
+In practice, the main difference between how a Frequentist and Bayesian uses this distribution function is that a Bayesian is free to integrate over the parameter $\alpha$ to get a probability that depends only on $x$.  A frequentist cannot perform this integral.
 
 One is fully free to build deep, hierarchical models in a frequentist settings, they simply cannot eliminate model parameters by integrating them away (using a prior probability).  A frequentist must instead handle these parameters in a different way (which we will discuss later).
 
@@ -53,69 +53,93 @@ $$
 p(x, y) = p(x)p(y)
 $$ 
 
-A probability distribution, $p(x)$ is a function.  If may be parameterized by some parameter, $a$, in which case we write it as $p(x | a)$.  Here, $a$ is simply a number that appears in the definition of the function, and $p(x| a_1)$ and $p(x|a_2)$ are different probability distribution functions for the random variable $x$.  We often think of $a$ as a parameter whose value we want to know or a "parameter of interest".  We will discuss how to perform this inference in later sections.
-
-
-### Marginalization and bayesian inference
-
-There are two probabilistic operations that superficially look similar but represent different concepts all together.  
-
-The first is the marginalization of a probability density functions.  Imagine on has a pdf that describes the probability of two random variables x and y:
+A probability distribution may be "conditioned" on another random variable or some state of the universe.  We write this as:
 
 $$
-p(x, y) = ...
+p(x | A)
 $$
 
+which reads as, "The probability of $x$ given that $A$ is true" or "The probability of $x$ given that $A$ occurred" or something similar.
 
-If one doesn't care about values of y and only wants the distribution of x, one can "marginalize" y by integrating it away:
+A probability distribution, $p(x)$ is a function.  Like any function, it may be parameterized by some parameter, $a$, in which case we write it as $p(x | A=a)$.  This is the same notation that we use to write a conditional distribution.  The meaning is essentially the same; we are here describing "The probability of $x$ given that the value of parameter $A$ is some fixed value $a$".  We typically use sloppy notation and simply write $p(x | a)$. One often jumps back and forth between the interpretation of $a$ as a parameter of a function and as a state of the universe that is conditioned on.  The distributions $p(x| a_1)$ and $p(x|a_2)$ are different probability distribution functions for the random variable $x$.
+
+We often think of $a$ as a parameter whose value we want to know or a "parameter of interest".  One of the most common things to do is to "infer" the true value of a parameter $a$ given some measured data $x$.  We will discuss the details of how to perform this inference in later sections.
+
+
+## Operations and Transformations
+
+One of the most important transformations that one can do on a probability is marginalization.  For a probability distribution function of two variables, $p(x, y)$, one may perform an operation called marginalization to turn it into a probability distribution function of only one variable:
 
 $$
 p(x) = \int p(x, y) dy
 $$
 
-Our original pdf, $p(x, y)$, described two random variables, x and y, and one generates them in pairs using this joint distribution.  The new pdf, $p(x)$, represents the distribution of x if we draw many join values of $(x, y)$ and discard y values to get a list of x values.  An important thing to note is that one can only "marginalize" the data that a pdf describes; one cannot marginalize away any parameters of a pdf.
-
-One should not confuse this with a similar Bayesian operation.  Consider the situation where we have a pdf of a single variable x given the parameter $a$:
+The act of marginalization is to simply ignore one of the dimensions of the probability distribution.  Our original pdf, $p(x, y)$, described two random variables, x and y, and one generates them in pairs using this joint distribution.  The new pdf, $p(x)$, represents the distribution of x if we draw many join values of $(x, y)$ and discard y values to get a list of x values.  An important thing to note is that one can only "marginalize" the data that a pdf describes; one cannot marginalize away any parameters of a pdf, so one cannot try to do:
 
 $$
-p(x | a) = ...
+p(x) = \int p(x | a) da \quad \text{WRONG!}
 $$
 
-One may be tempted to remove the dependence on the parameter $a$ by "marginalizing" it away, like so:
+In other words, marginalization gets rid of one of the variables to the left of the $|$ bar in the probability distribution function.
+
+A similar transformation is factorization.  Probability factorization says that one can write a joint distribution as the product of two univariate distributions, one of which is conditional:
 
 $$
-p(x) = \int p(x | a) da
+p(A, B) = p(A) p(B | A)
 $$
 
-However, this is an invalid transformation.  Here, $a$ is not a random variable, it's a parameter, so one cannot integrate over it.  In order to remove the functional dependence on $a$, one must factorize the distribution by doing:
+The interpretation of this is that we draw joint values of $A$ and $B$ by first drawing a value of $A$ and then drawing a value of $B$ given that value of $A$.  The notation makes this operation seem somewhat subtle: we're simply moving the $A$ across the $|$ bar in our probability distribution functions.  But this transformation is not vacuous, as each of $p(A, B)$, $p(A)$, and $p(B | A)$ are different mathematical functions.
+
+Finally, we can perform a transformation better known as Bayes Theorem.  Unlike marginalization, Bayes' theorem allows one to turn a parameter of a probability distribution into a random variable, and visa versa.  Specifically, it says that:
 
 $$
-p(x, a) = p(x|a)*p(a)
+p(A | B) = \frac {p(B | A) p(A)} {p(B)}
 $$
 
-NOW, we can perform a marginalization:
+or, it is often equivalently written as:
 
 $$
-p(x) = \int p(x, a) da = \int p(x|a)*p(a) da
+p(A | B) = \frac {p(B | A) p(A)} {\int p(B | A) p(A) dA}
 $$
 
-In other words, in order to use a parameterized distribution function $p(x|a)$ to obtain $p(x)$, one must have the prior distribution $p(a)$ handy.  This may be problematic for two reasons:
+Bayes theorem allows us to swap a parameter to the right of the $|$ bar with a random variable to the left of the $|$ bar.  It is really just a re-arrangement of the rules of factorization above.
+
+One should not confuse a transformation using Bayes theorem with marginalization.  The key difference is that Bayes theorem requires knowing the probability distributions $p(A)$ and $p(B)$.  These are known as "prior" distributions in the context of Bayes Theorem (they're merely unconditional distributions).  The term on the left, after being transformed, is known as the "posterior".  The interpretation of Bayes theorem is that we start with our prior information about the parameter $A$.  We then make a measurement of the random variable $B$ and we use that measurement via $p(B | A)$ to obtain an updated "posterior" of distribution of $p(A | B)$.
+
+The denominator term in Bayes theorem, $p(B)$ or $\int p(B | A) p(A) dA$, is not a function of the random variable $A$ and instead can be thought of as an overall normalization factor that turns $p(B | A) p(A)$ into a function that integrates to total probability of 1.
+
+One should not confuse Bayes theorem with the Bayesian interpretation of probability.  Bayes theorem is a mathematical statement that any frequentist would fully believe in.  The only thing a frequentist would argue with is when one is allowed to use Bayes Theorem.  Because a frequentist does not interpret parameters as random variables, then the expression $p(a)$ with $a$ being a parameter of a distribution $p(x | a)$ makes no sense to them.  Hence, a frequentist is unable to leverage Bayes theorem to obtain $p(a | x)$ from $p(x | a)$, as they ascribe no meaning to $p(a)$.
+
+Bayes theorem, therefore, should not be used when:
 
 - One may not have a reasonable model for $p(a)$
 - One may be a frequentist and may think of $a$ merely as a parameter and may believe that the probability of a parameter is a meaningless notion.
 
+## Conjugate priors
 
-### Functions of random variables
+As seen above, applying Bayes Theorem involves transforming a probability distribution function using priors to obtain a posterior.  It turns out that there exist certain families of prior distributions and primary distributions such that their posterior is in the same family as the prior.  If we have a variable $A$ whose prior distribution is in the family $f(A | \theta)$ with $\theta$ a parameter and we have the variable $B$ whose distribution depends on $A$ and is in the family $g(B | A)$, then we say that the family of functions $f$ is the "conjugate prior" to the family of functions $g$ if:
+
+$$
+p(A | B) = \frac {f(A | \theta) g(B | A)} {\int g(B | a) f(a| \theta) da} = f(A| \theta')
+$$
+
+Conceptually, this means that we start with a prior distribution for variable $A$ of $f(A | \theta)$.  By measuring $B$ (and assuming it's distribution follows $g$), we get an updated distribution of $A$ which is also in the family $f$ but with a different parameter (or parameters) $\theta$.  Verbally, we say that "$f$ is the conjugate prior to $g$".
+
+This may seem like a mathematical gimmick, but finding such pairs is extremely valuable, as it means that if one can obtain a simple relationship between $\theta$ and $\theta'$, then one can perform the Bayesian update step without using Bayes' theorem directly, but instead just by calculating $\theta'$.  Many examples and techniques will utilize conjugate prior pairs to make the math simpler (even if their true prior doesn't exactly match the conjugate prior).
+
+We will see specific examples of conjugate prior pairs when we discuss probability distributions in later sections.
+
+## Functions of random variables
 
 A common source of confusion when dealing with probabilities is understanding the distribution of functions of probabilistically distributed variables.  Let's say that I have two variables, x and y, which each follow a probability distribution: $p(x)$ and $p(y)$.  Let's then say that I create a quantity z which is the sum of these two variables: $z = x + y$.  What is the probability distribution of z, $p(z)$?
 
-Before we answer that, let's make sure that we understand what it means to add two probabilistically distributed variables.  One should hold on one's head the following procedure.  First, obtain a value for x by drawing from the probability distribution p(x).  For example, if x is a variable representing the roll of a die, then roll that die to obtain an instance of x, which is one of the numbers in 1 through 6.  Then, obtain a value for y by drawing from p(y).  Finally, add those two numbers up to get an instance of the probabilistically distributed variable z.
+Before we answer that, let's make sure that we understand what it means to add two probabilistically distributed variables.  One should hold on one's head the following procedure.  First, obtain a value for $x$ by drawing from the probability distribution $p(x)$.  For example, if $x$ is a variable representing the roll of a die, then roll that die to obtain an instance of $x$, which is one of the numbers in 1 through 6.  Then, obtain a value for $y$ by drawing from $p(y)$.  Finally, add those two numbers up to get an instance of the probabilistically distributed variable $z$.
 
 Naively, one may think that the probability p(z) is given by:
 
 $$ p(z) = p(x) + p(y)$$
 
-But this is not the case.  It's clear that this is wrong because, as defined above, p(z) would not add up to 1.  Moreover, it has invalid units (note that p(x) has units of 1/[x] and p(y) has units of 1/[y], and these cannot be added together.
+But this is not the case.  It's clear that this is wrong because, as defined above, $p(z)$ would not add up to 1.  Moreover, it has invalid units (note that $p(x)$ has units of $1/[x]$ and $p(y)$ has units of $1/[y]$, and these cannot be added together.
 
 So how, then, do we come up with $p(z)$?  Essentially, we are asking, "If we draw from x at random and draw from y at random and add them together, what is the probability that their sum is equal to some value z?"  We can write this as:
 
@@ -129,23 +153,25 @@ $$
 p(z) = \int \int p(x, y) \delta(z = x+y) dx dy
 $$
 
+Depending on the functional form of $p(x, y)$ and the formula for $z$, this may be a challenging integral to perform.
+
 
 ## Likelihood
 
-The likelihood function for a given model (with some parameters) and a given dataset is the probability distribution function of that model evaluated on the data and interpreted as a function of the model's parameters.
+The likelihood function is on of the most important concepts in probability, statistics, and inference.  The likelihood function is a function of a probability distribution function AND a specific realization, or dataset, of all random variables described by that probability distribution function.  Specifically, it is the probability distribution function evaluated on the observed data and interpreted as a function of the parameters (and not a function of the random variables, as a probability distribution function is usually seen).
 
-Imagine we have a model for a single probabilistic variable $x$ that is described by a single parameter $\mu$:
-
-$$
-model = p(x) = p(x | \mu)
-$$
-
-$p$ is a function of the data (given $\mu$) that returns the probability of the data.  The likelihood function for $p$, $x$, and $\mu$ is given by:
+For a concrete example, imagine we have a model for a single probabilistic variable $x$ that is described by a single parameter $\mu$:
 
 $$
-likelihood = L(\mu) = p(x | \mu)
+model(x) = p(x | \mu)
 $$
 
-It looks the same as the model, but it is interpreted as a function of the parameter $\mu$.  In a likelihood, the data is fixed, and we instead vary the possible models that could have produced that data.
+$p$ is a probability distribution function that, for fixed $\mu$, gives the probability that the random variable process $x$ yields a specific value of $x$.  Imagine that we draw from the random variable $x$ and obtain the observed value $x_0$.  The likelihood function is given by:
 
+$$
+likelihood(\mu) = p(x_0 | \mu)
+$$
 
+It is a function of $\mu$ and is obtained by plugging in the specific measured data $x_0$ into the probability distribution function $p$.  Note that it is not a probability distribution function, and specifically it does not integrate to 1.  With a probability distribution function, we fix the model and vary the data (say, by calculating the probability of various hypothetical datasets).  With a likelihood, we fix the data and vary the possible models that could have produced that data (by which I mean we vary the parameters of the model).
+
+The likelihood function is a construct that is commonly used during statistical inference.  We will later see in great deal how it is used and why it's such a useful concept.

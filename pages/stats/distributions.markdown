@@ -65,6 +65,78 @@ $$
 Binom(n | N, p) = \frac{N!}{n!(N-n)!}p^n(1-p)^{(N-n)}
 $$
 
+
+## Beta Distribution
+
+The Beta Distribution is closely related to the Binomial distribution.  The Binomial Distribution essentially describes the probability of flipping $n$ heads out of a total of $N$ using a weighted coin with probability of heads $p$:
+
+$$
+p(n | N, p) = Binom(n, N, p)
+$$
+
+Imagine we have such a coin but don't know the value of it's weight factor $p$.  We could try to infer it by flipping the coin $N$ times and calculating the $n$ heads we get.  We can invert this to obtain the probability of $p$ in terms of $n$ and $N$.  Recall that Bayes theorem tells us that we can invert the probability according to the following:
+
+$$
+p(A | B) = \frac{P(A) P(B | A)}{P(B)}
+$$
+
+which we often re-write to be:
+
+$$
+p(A | B) = \frac{P(A) P(B | A)}{\int P(B | A) P(A) dA}
+$$
+
+Applying this to our binomial distribution of coin flips and assuming a flat prior on $p$ such that $P(p) = 1$, we get:
+
+$$
+P(p | n, N) = \frac {P(p) P(n | p, N)} {\int P(n | p, N) P(p) dp}
+$$
+
+which, when we plug in the definition of the binomial distribution for $P(n | p, N)$ gives us:
+
+$$
+P(p | n, N) = \frac {p^n(1-p)^{N-n}} {\int x^n(1-x)^{N-n} dx}
+$$
+
+where we have canceled out factors of $\frac{N!}{n!(N-n)!}$.  We then make the following definitions:
+
+$$
+\begin{eqnarray}
+\alpha &=& n + 1 \\
+\beta &=& N - n + 1 \\
+B(x, \alpha, \beta) &=& \int x^{\alpha-1} (1-x)^{\beta-1} dx \\
+\end{eqnarray}
+$$
+
+which gives us
+
+$$
+Beta(p | \alpha, \beta) = \frac {p^{\alpha-1} (1-p)^{\beta-1}} {B(p, \alpha, \beta)}
+$$
+
+This is the definition of the Beta distribution.  The interpretation is that we can use it to infer the distribution of the parameter $p$ of a binomial distribution given the counts of heads and tails.
+
+The Beta distribution turns out to be the "conjugate prior" to the binomial distribution.  Mathematically, this means that:
+
+$$
+\begin{eqnarray}
+P(p | \alpha, \beta, n, N) &=& \frac{Binom(n | N, p)*Beta(p | \alpha \beta)} {\int Binom(n |x, N) Beta(x | \alpha, \beta) dx} \\
+ &=& Beta(p | \alpha', \beta')
+\end{eqnarray}
+$$
+
+In other words, if we have a prior belief on $p$ that is represented by $\alpha$ and $\beta$, and we measure $n$ heads of a total of $N$ from a binomial distribution, then our posterior belief in the distribution of $p$ is also a beta distribution with new parameters $\alpha'$ and $\beta'$, where
+
+$$
+\begin{eqnarray}
+\alpha' = \alpha + n
+\beta' = \beta + (N-n)
+\end{eqnarray}
+$$
+
+This means that that if we have a prior believe of $p$ represented by $\alpha$ and $\beta$ and we observe $h$ heads and $t$ tails, then our posterior is represented by $\alpha+h$ and $\beta+$.  This makes the process of updating extremely easy, which is why it is so often used when performing inference on binomial distributed data.
+
+
 ## Poisson Distribution
 
 The Poisson distribution can be thought of as a generalization of the Bernoulli distribution.  The Bernoulli distribution represents an event which can take on values of 0 or 1 and has an intrinsic rate of occurrence $p$.  The Poisson distribution, in contrasts, represents an event that can happen any integer number of times (0, 1, 2, 3...).  The only requirement is that occurrences are independent: the occurrence or non-occurrence of an event cannot make repeat occurrence more or less likely.
