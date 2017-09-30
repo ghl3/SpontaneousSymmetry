@@ -413,46 +413,7 @@ $$
 var(F_{d_1, d_2}) = \frac{ 2 d_2^2 ( d_1 + d_1 - 2 ) }  { d_1 ( d_2 - 2 )^2 ( d_2 - 4 ) }
 $$
 
-A common application of the F-statistic is known as the "Analysis of Variance", or ANOVA.  Consider a situation when one has a multiple measurement of a continuous variable that is separated into several groups.  The goal of an anova analysis is to determine if the distribution of the variable is different in the various groups (in other words, does the group have any effect on the variable).  To measure this, imagine we have N measurements of a variable $y$ with $y_{ij}$ being the $i^{th}$ measurement of the $j^{th}$ group.  We have K groups total, and the size of the $i^{th}$ group is $n_i$.
-
-First, define the means:
-
-$$
-\begin{eqnarray}
-\overline{Y_i} &=& \text{mean of group i} \\
-\overline{Y} &=& \text{The total mean of the data (across all data points)} \\
-\end{eqnarray}
-$$ 
-
-Next, we define a quantity called the "between-group variability".  If we assume that the distribution of $y$ is independent of the group label, and that we have many samples in each group, then the mean of the $i^{th}$ group $Y_i$ is a gaussian distributed variable about the true mean $\mu$ (which we assume to be the same across all groups) with variance given by $\sigma^2/n_i$.  With that in hand, we can define the following quantity:
-
-$$
-\text{between-group variability} = \frac{ ( \overline{Y_i} - \overline{Y})^2}{\sigma^2 / n_i}
-$$
-
-which follows a chi-squared distribution with K-1 degrees of freedom, as it is the sample mean of K (approximately) gaussian distributed variables (each variable being the group mean).  We call this quantity the "between-group variability".
-
-We then define a quantity called the "within-group variability".  For each group j, we can define the sample variance:
-
-$$
-s^2_j = \sum_i \frac{(y_{ij} - \overline{Y_j})^2}{\sigma^2}
-$$
-
-and we know that this follows a chi-square distribution with $n_i - 1$ degrees of freedom (again, we know that under the null distribution, the true mean of each group is $\sigma$).  We can sum them all up to get the quantity:
-
-$$
-\text{within-group variability} = \sum_j \sum_i \frac{(y_{ij} - \overline{Y_j})^2}{\sigma^2}
-$$
-
-And since each term follows a chi-squared with $n_i-1$ degrees of freedom, the total sum follows a chi-squared with $\sum_i (n_i - 1)$ degrees of freedom, which is also equal to $N-K$.
-
-With these two in hand, we can define the following term:
-
-$$
-F = \frac{\text{between-group variability} / (K-1)} {\text{within-group variability}/(N-K)}
-$$
-
-As shown above, the numerator follows a chi-squared with $(K-1)$ degrees of freedom divided by $(K-1)$, and the denominator follows a chi-squared with $(N-K)$ degrees of freedom divided by $(N-K)$.  Therefore, F follows a F-distribution with degrees $(K-1)$ and $(N-K)$ (under the null hypothesis).  This is where the null hypothesis comes in: If, as we supposed, the true variance is the same across groups, then when we divide the numerator by the denominator, the $\sigma^2$ terms cancel out.  Thus, we can calculate F directly from the data without knowing or supposing $\sigma$.
+The most common applications of the F-distribution are determining if adding variables to a regression improves it with statistical significance or determining if data divided into many groups comes from a single distribution across groups (the problem ANOVA is attempting to solve).  We will discuss these in a later section.
 
 
 <!--
