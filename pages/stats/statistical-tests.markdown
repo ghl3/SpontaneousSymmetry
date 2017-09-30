@@ -345,6 +345,7 @@ https://onlinecourses.science.psu.edu/stat414/node/201
 
 This is an exact test, applicable for all values of n and m.  Further, if the sample sizes n and m are the same, this test will be robust against deviations from the normal distribution assumption.
 
+_____
 
 *** I have two 1-d datasets drawn from gaussian distributions, but I don't assume anything about the means and variance of those distributions.  I want to know if both distributions are the same.***
 
@@ -358,9 +359,13 @@ http://www.sciencedirect.com/science/article/pii/S0378375806002382
 http://www.sciencedirect.com/science/article/pii/S0378375806002382
 -->
 
+_____
+
 ***I have two datasets of continuous data.  I have no assumptions about the underlying distribution that generated them.  I want to test if they came from the same continuous probability distribution***
 
 Perform a two-sample Kolmogorov-Smirnov test.
+
+_____
 
 ***I have two sets of binary data (weighted coin flips, or counts of successes and failures).  Do they have the same intrinsic rate?***
 
@@ -576,27 +581,28 @@ https://en.wikipedia.org/wiki/Fisher%27s_exact_test
 https://stats.stackexchange.com/a/16931/16736
 -->
 
+_______
 
-***I have a datasets broken into groups, and within each group, I have measurements of a continuous variable.  What is the p-value that the distribution of that variable is equal across all groups?***
+***I have a datasets broken into groups, and within each group, I have measurements of a continuous variable.  Assuming the distribution of the variable is gaussian in each group (with unknown mean and variable), what is the p-value that the true means and variances of the distributions across all groups are equal?***
 
 This problem is addressed with a technique known as the "Analysis of Variance", or ANOVA.  Consider a situation when one has a multiple measurement of a continuous variable that is separated into several groups.  The goal of an anova analysis is to determine if the distribution of the variable is different in the various groups (in other words, does the group have any effect on the variable).  To measure this, imagine we have N measurements of a variable $y$ with $y_{ij}$ being the $i^{th}$ measurement of the $j^{th}$ group.  We have K groups total, and the size of the $i^{th}$ group is $n_i$.
 
-First, define the means:
+First, define the means as:
 
 $$
-\begin{eqnarray}
-\overline{Y_i} &=& \text{mean of group i} \\
-\overline{Y} &=& \text{The total mean of the data (across all data points)} \\
-\end{eqnarray}
-$$ 
+\overline{Y_i} = \text{mean of group i}
+$$
+$$
+\overline{Y} = \text{The total mean of the data (across all data points)}
+$$
 
-Next, we define a quantity called the "between-group variability".  If we assume that the distribution of $y$ is independent of the group label, and that we have many samples in each group, then the mean of the $i^{th}$ group $Y_i$ is a gaussian distributed variable about the true mean $\mu$ (which we assume to be the same across all groups) with variance given by $\sigma^2/n_i$.  With that in hand, we can define the following quantity:
+Next, we define a quantity called the "between-group variability".  If we assume that the distribution of $y$ is independent of the group label, and that we have many samples in each group, then the mean of the $i^{th}$ group $Y_i$ is a gaussian distributed variable about the true mean $\mu$ (which, under the null hypothesis, is the same across all groups) with variance given by $\sigma^2/n_i$.  With that in hand, we can define a quantity known as the "between-group variability":
 
 $$
 \text{between-group variability} = \frac{ ( \overline{Y_i} - \overline{Y})^2}{\sigma^2 / n_i}
 $$
 
-which follows a chi-squared distribution with K-1 degrees of freedom, as it is the sample mean of K (approximately) gaussian distributed variables (each variable being the group mean).  We call this quantity the "between-group variability".
+This quantity, under the null hypothesis, is the sample mean of K gaussian distributed variables (each variable being the group mean) and therefore follows a chi-squared distribution with K-1 degrees of freedom.
 
 We then define a quantity called the "within-group variability".  For each group j, we can define the sample variance:
 
@@ -604,7 +610,7 @@ $$
 s^2_j = \sum_i \frac{(y_{ij} - \overline{Y_j})^2}{\sigma^2}
 $$
 
-and we know that this follows a chi-square distribution with $n_i - 1$ degrees of freedom (again, we know that under the null distribution, the true mean of each group is $\sigma$).  We can sum them all up to get the quantity:
+and we know that, under the null hypothesis, this follows a chi-square distribution with $n_i - 1$ degrees of freedom.  We can sum them all up to get the quantity:
 
 $$
 \text{within-group variability} = \sum_j \sum_i \frac{(y_{ij} - \overline{Y_j})^2}{\sigma^2}
@@ -618,9 +624,22 @@ $$
 F = \frac{\text{between-group variability} / (K-1)} {\text{within-group variability}/(N-K)}
 $$
 
-As shown above, the numerator follows a chi-squared with $(K-1)$ degrees of freedom divided by $(K-1)$, and the denominator follows a chi-squared with $(N-K)$ degrees of freedom divided by $(N-K)$.  Therefore, F follows a F-distribution with degrees $(K-1)$ and $(N-K)$ (under the null hypothesis).  This is where the null hypothesis comes in: If, as we supposed, the true variance is the same across groups, then when we divide the numerator by the denominator, the $\sigma^2$ terms cancel out.  Thus, we can calculate F directly from the data without knowing or supposing $\sigma$.
+As shown above, the numerator follows a chi-squared with $(K-1)$ degrees of freedom divided by $(K-1)$, and the denominator follows a chi-squared with $(N-K)$ degrees of freedom divided by $(N-K)$.  Therefore, F follows a F-distribution with degrees $(K-1)$ and $(N-K)$ (under the null hypothesis).
 
+The logic of the test is the following: If, as we supposed, the true variance is the same across groups, then when we divide the numerator by the denominator, the $\sigma^2$ terms in the "between-group variability" and in the "within-group variability" cancel out.  Thus, we can calculate F directly from the data without knowing or supposing $\sigma$.  After canceling out $\sigma$, the test statistic for F becomes:
 
+$$
+F = \frac {\sum_i n_i ( \overline{Y_i} - \overline{Y})^2 / (K-1)} {\sum_j \sum_i (y_{ij} - \overline{Y_j})^2 / (N-K)}
+$$
+
+If the null hypothesis is false, if the true means vary across groups, then, intuitively, the between-group variability would tend to be larger than the within-group variability (as there is a true difference in means across different groups).   Therefore, we conduct a 1-sided test of the F distribution and reject the null if the f statistic is too high.
+
+<!--
+https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&uact=8&ved=0ahUKEwibuq6xvc3WAhUD9WMKHdP9BVQQFggwMAI&url=http%3A%2F%2Fwww.springer.com%2Fcda%2Fcontent%2Fdocument%2Fcda_downloaddocument%2F9781848829688-c2.pdf%3FSGWID%3D0-0-45-1121038-p173940731&usg=AOvVaw25VisbaXWE07pmwhrmXw9k
+-->
+
+______
+______
 
 ### Miscellaneous Problems
 
