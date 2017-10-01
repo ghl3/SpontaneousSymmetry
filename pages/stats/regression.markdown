@@ -228,3 +228,85 @@ http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/06/lecture-06.pdf
 
 
 ## Logistic Regression
+
+
+Logistic regression is a variation on normal regression, designed to be used for classification instead of the prediction of a continuous value.  We will here apply logistic regression to the problem of binary classification, where the two classes are represented by the values 0 and 1 of the target variable.
+
+One may be tempted to solve this problem by encoding the target into 0 and 1 values and then performing normal regression.  However, this will create a regression function whose range can be all real numbers, where as the real range of our target variable is only the discrete values 0 and 1.  One may attempt to fix this by associating values from the regression that are closer to 1 with the class 1 and values that are closer to 0 with the class 0.  And this may work reasonably well!  Logistic regression is essentially a more principled version of this approach, and the extra formalism endows it with some nice additional properties.
+
+It's clear that a regression by itself can't be used to model a discrete variable; regressions model continuous variables.  So, in order to be able to use a regression in the context of a classification problem, we have to find a continuous variable that occurs within the classification model and we need to find a way to use regression to model that variable.
+
+A common model for binary classification problems is assuming that each data point randomly picks between the two output classes with some probability, and that probability depends on the value of the input features:
+
+$$\begin{align}
+p(y=1 | x) &=& f(x) \\
+p(y=0 | x) &=& 1 - f(x) \\
+\end{align}
+$$
+
+where $f(x)$ is has a range between 0 and 1 (since it represents a probability).  The probability $p(y|x)$ for a single data row represents a Bernouilli variable, or a weighted coin-flip.  We're getting closer: we've taken a discrete problem and identified a continuous variable $p$ that we can try to model with a regression.  However, our model for $p$ must take values between 0 and 1, so using a regression out-of-the-box won't work here.  But we're conceptually close; we just need to come up with a variable that, when high (approaching infinity), can be associated with probabilities approaching 1 and, when low (approaching negative infinity) can be associated with probabilities approaching 0.
+
+Toward that end, we define a concept known as the  "odds ratio".  Imagine an event occurs $n$ times out of a total of $N$ tries.  The probability can be estimated as $n/N$.  We define the odds ratio to be: $n / (N-n)$.  It is the ratio of the amount of times it occurred to the amount of times it did not occur.  If the event occurred every time ($n=N$), then the odds ratio is infinity.  If the event never occurred, then the odds ratio is 0.  This concept, therefore, fits our need.
+
+One can determine the probability from the odds, and visa versa, using the following:
+
+$$\begin{align}
+prob &=& \frac{odds}{1 + odds} \\
+odds &=& \frac{prob}{1-prob} \\
+\end{align}
+$$
+
+Introducing the odds has gotten us closer to what we want.  We see that, when the odds ratio is very high (approaching infinity), the probability approaches 1.  This is half of our need.  However, the odds (by construction) can never be negative.  Therefore, we can't model the odds directly using a regression (since the output of a regression can approach negative infinity).  The output of the regression goes from $(-\inf, \inf)$ but the input to the odds only goes from $[0, \inf)$.  If we want to use a regression to model the odds, we have to do one last transformation to make these line up.  The exponential is a function that fits our need here.  The exponential takes values from negative to positive infinity and maps them to values between 0 and positive infinity.
+
+So, let's summarize our chain of logic here:
+
+- Use a regression to model a value in $(-\inf, \inf)$ as a function of the features
+- Apply the exponential function to turn it into a value whose range is $(0, \inf)$
+- Interpret that value as the "odds"
+- Apply the transformation $prob = odds/(1 + odds)$ to convert the odds to a probability
+- Create a likelihood function using the measured classes and their probabilities, as predicted above
+
+One can combine the middle steps of taking the exponential and then converting odds to probabilities as a single step using the logistic function:
+
+$$
+\text{logistic}(x) = \frac{e^x}{1 + e^{x}}
+$$
+
+We can interpret this framework as using a regression to model the logarithm of the odds, or the "log odds" (since we use the exponential to turn our log-odds into the odds).  It gets the name "logistic regression" since we use the logistic function to transform the output of our regression into the probability of the classes that we're modeling.
+
+One can also interpret this framework in the reverse direction.  Instead of starting with the regression output and converting it to a probability, one can start with the data and transform it until it matches something that we can regress on.  The essentially amounts to applying the inverse of the transformations we did above on the data.  Confusingly, the inverse of the logistic function is named the "logit" function:
+
+$$\begin{align}
+\text{logit}(x) &=& -log(\frac{1}{x} -1) \\
+\text{logistic}(x) &=& \text{logit}^{-1}(x) \\
+\end{align}$$
+
+However, I find it conceptually simpler to think of the probabilities as being modeled by the logistic of the output of our regression.
+
+Part of our logic involved identifying the odds as an intermediate quantity to take us from our regression's output to the class probabilities.  But, really, all we needed was a function that took a number whose range is between negative and positive infinity (the regression output) and turns it into a number whose value is between 0 and 1 (the probabilities).  The logistic function does this, and has an odds-based motivation.  But really, any function with that property would work.  An example of another such function that is commonly used when applying regression to classification is the probit function, which is the cumulative distribution of a gaussian (whose value therefore varies between 0 and 1).  Using this function gives us "Probit Regression", and it is a generalization of the logic we used to derive "Logistic regression".  We will talk about other variations on regression later when we discuss generalized additive models.
+
+We can now readily write down the likelihood for the logistic regression model.  Since the model directly calculates the probabilities of each class for each row, we can use these probabilities to determine the total probability of the data we observed given the model:
+
+$$\begin{align}
+p(y_i=1 | x_i) &=& logistic(\sum_j w_j x_i^j) \\
+L(x, y | w) &=& \prod_{i: y_i = 1} p(y=1 | x_i)  \prod_{i: y_i = 0} (1 - p(y_i=1 | x_i)) \\
+\end{align}$$
+
+Plugging in $p(y_i=1 | x_i)$, we can obtain the log likelihood as:
+
+$$\begin{align}
+log[L] &= \sum_{i: y_i = 1} log[p(y=1 | x_i)] + \sum_{i: y_i = 0} log[(1 - p(y_i=1 | x_i))] \\
+&= \sum_{i} y_i log[p(y=1 | x_i)] + (1-y_i) log[(1 - p(y_i=1 | x_i))] \\
+& = \sum_i y_i (\sum_jw_j x_i^j) - log[1 + e^{\sum_j w_j x_i^j}] \\
+\end{align}$$
+
+Note that there isn't an additional $\sigma$ parameter that we had to introduce here, as we did with ordinary regression.  The weights $w_j$ are obtained as the maximum likelihood estimators of this likelihood function.  Unlike in the case of ordinary regression, one cannot readily find a closed form solution for the weights.  Instead, packages typically use numerical optimization routines to solve for $w_j$, typically utilizing a form of Newton's Method.  This can be readily done since we have an exact mathematical form for the likelihood.
+
+<!--
+http://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch12.pdf
+
+http://www.win-vector.com/blog/2011/09/the-simpler-derivation-of-logistic-regression/
+-->
+
+### Distributions of fitted parameters
+
