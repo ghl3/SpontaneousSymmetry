@@ -165,6 +165,93 @@ The estimators $\hat{\vec{w}}$ are exactly unbiased (we see this since they are 
 
 On the other hand, the estimator for $\sigma$ is biased.  One can create an unbiased version by dividing by $N-I$ in the definition of $\hat{\sigma}^2$ (instead of simply $N$), but such a quantity would then differ from the maximum likelihood estimator.
 
+
+### Prediction Errors
+
+When actually using a regression to make a prediction on new data, one often wants to know what the uncertainty on that prediction is.  To make this more concrete, let's think through where this error comes from using a generative perspective.  Say that assume that the true distribution of $p(y|x)$ = $gauss(w_{true} \cdot x | \sigma)$.  We then generate a dataset of size N and estimate $\hat{w}$ and $\hat{\sigma}$ from that dataset, and then apply the predictions to a test point $x_0$ to obtain $\hat{y(x_0)}$.  In parallel, we take our true distribution and make a draw from it to obtain $y_{true}(x_0)$.  The questions is: What is the mean squared error between $y_{true}(x_0)$ and $\hat{y(x_0)}$.
+
+The sources of error here are the following:
+
+- If we knew $w_{true}$ exactly, we'd still be off due to the random draw from the true distribution from a gaussian with mean $\sigma$
+- Our estimation of $\hat{w}$ differs from $w_{true}$ due to the finite statistics we used to estimate $\hat{w}$ in our dataset
+
+Fortunately, these errors are uncorrelated (the draw from the true distribution doesn't care what our generated training dataset was, and therefore is uncorrelated from the parameters fitted on that dataset).  So, the absolute error is the difference of two uncorrelated, gaussian distributed random variables and is given by:
+
+$$
+\begin{eqnarray}
+\text{err}(x_0) & = & \hat{w_i} \cdot x_0^i - y(x_0) \\
+& \sim & gauss(w_i, \sigma \sqrt{S_{kk}}) \cdot x_0^i - gauss(w_i \cdot x_0^i , \sigma) \\
+& \sim & \sum_i gauss(w_i x^i, x_0^i \sigma \sqrt{S_{kk}}) - gauss(w_i \cdot x_0^i , \sigma) \\
+& \sim & gauss(0 | \sqrt{\sigma^2 + x_0 \cdot x_0 \sigma^2 S_{kk}}) \\
+& \sim & gauss(0 | \sigma \sqrt{1 + x_0 \cdot x_0 S_{kk}}) \\
+\end{eqnarray}
+$$
+
+Thus, the distribution of the absolute error is a gaussian with zero mean (i.e. the predictions are unbiased) and with the variance proportional to $\sigma$, as shown above.  Unfortunately, we don't know the true value of $\sigma$.  However, we can do our usual trick, which is to divide by the estimator of the standard deviation to produce a quantity that is t-distributed.  Noting that:
+
+$$
+\frac{err(x_0)}{ \sigma \sqrt{1 + x_0 \cdot x_0 S_{kk}}} \sim gauss(0, 1)
+$$
+
+and recalling that:
+
+$$
+\frac{(N-I)s^2}{\sigma^2} \sim \chi_{N-I}
+$$
+
+allows us to show that:
+
+$$
+\begin{eqnarray}
+t_{N-I} & \sim & \frac{gauss}{\sqrt{\chi^2_N / N}} \\
+ & \sim & \frac{\frac{err(x_0)}{ \sigma \sqrt{1 + x_0 \cdot x_0 S_{kk}}}} {\sqrt{\frac{(N-I)s^2}{\sigma^2} / (N-I)}} \\
+& \sim & \frac{err(x_0)}{s\sqrt{1 + x_0 \cdot x_0 S_{kk}}} \\
+\end{eqnarray}
+$$
+
+This allows us to show that the distribution of the absolute error on the prediction is given by:
+
+$$
+err(x_0) \sim s \sqrt{1 + x_0 \cdot x_0 S_{kk}} t_{N-I}
+$$
+
+and we can use our knowledge of the Student's t distribution to create confidence intervals.
+
+<!--
+
+  We have an estimator of it, $\hat{\sigma}$, which we can plug in.  However, as we saw previously, that estimator is biased (it tends to under-estimate the true error), so our prediction errors would also be under-estimated (which we don't want).  So, we can instead use the unbiased estimate of $\sigma$.  This means that our estimate of the MSE on our prediction will be wrong (because we don't know the true $\sigma$), but at least it'll be wrong in an unbiased way (unfortunately, it'll be wrong in the same way for ALL future predictions using the same fitted model.  So, for a given fitted model, the prediction errors may be either under-estimated or over-estimate for all possible predictions).
+
+We've already shown that the maximum likelihood estimator of the true standard deviation $\sigma$ is given by:
+
+$$
+\hat{\sigma}^2 = \frac{1}{N} \sum_n (y_n - x_n^i \cdot w_i)^2
+$$
+
+And, as we previous mentioned, this is a biased estimator of $\sigma$.  We can create an unbiased estimator of $\sigma$ as:
+
+$$
+\hat{\sigma}_{ub}^2 = \frac{1}{N-2} \sum_n (y_n - x_n^i \cdot w_i)^2 
+$$
+
+This is one of the two sources of error that we identified above.  To calculate the other source of error, we have to find the error on the estimated mean at the prediction point $x_0$.  
+
+
+  There are three sources of error when considering a regression prediction:
+
+- The true error $\sigma$ for the real model around the true mean $y = w_{true} \dot x$
+- The uncertainty in the predicted mean $y = \hat{w} \dot x$ which comes from the uncertainty in the coefficients $\hat{w}$
+- The uncertainty in the predicted standard deviation $\hat{\sigma}$
+-->
+
+
+<!--
+http://www.stat.wisc.edu/courses/st572-larget/Spring2007/handouts03-1.pdf
+
+http://people.stern.nyu.edu/wgreene/MathStat/GreeneChapter4.pdf
+
+-->
+
+
 ### Analysis of features
 
 One of the most common applications of the t-distribution that we derived above is to determine which features have weights that are significantly different from 0. This can be tested directly using a p-value test on the t-distributed test statistic.  Note that this is a 2-sided test: we consider possible parameter values in both the positive and negative direction.  To do this, set $w_i=0$ in the equation above, calculate the t test-statistic, and compare it to the 2-sided tails defined above of total size $\alpha$.  The interpretation is that a parameter whose p-value is very small "rejects" the null hypothesis of the parameter's true value being 0.  Thus, that parameter is likely "significant", or is an important component of the model.
@@ -308,5 +395,31 @@ http://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch12.pdf
 http://www.win-vector.com/blog/2011/09/the-simpler-derivation-of-logistic-regression/
 -->
 
-### Distributions of fitted parameters
+### Confidence Inervals of fitted parameters
 
+
+In the case of linear regression, we were able to show that the distribution of a fitted parameter $w_$ follows a Student's t distribution.  It would be nice to be able to come up with an exact, closed-form distribution for the fitted parameters of a logistic regression model.  However, no closed-form solution exists.  Instead, most inference done on the fitted parameters of a logistic model use an approximation that becomes asymptotically more accurate as the size of the data increases.
+
+A common approach for determining confidence intervals on fitted parameters uses an approximation to the distribution of maximum likelihood estimators (known as the Wald approach or Wald test).  Recall that a maximum likelihood estimator is asymptotically distributed as a gaussian around the true value with a standard deviation that can be derived from the Fischer Information of the true distribution.  
+- Estimate the Fischer Information
+
+Likelihood ratio Test
+- For multiple parameters, use profile likelihood ratio (R does this)
+
+
+
+<!--
+https://stats.stackexchange.com/questions/144603/why-do-my-p-values-differ-between-logistic-regression-output-chi-squared-test
+
+https://courses.washington.edu/b515/l13.pdf
+
+https://support.sas.com/documentation/cdl/en/statug/63962/HTML/default/viewer.htm#statug_logistic_sect040.htm
+
+https://stats.stackexchange.com/questions/112241/testing-logistic-regression-coefficients-using-t-and-residual-deviance-degrees
+
+https://stats.stackexchange.com/questions/60074/wald-test-for-logistic-regression
+
+https://stats.stackexchange.com/questions/237073/how-does-r-calculate-the-p-value-for-this-binomial-regression
+
+http://www.stata-press.com/journals/stbcontents/stb14.pdf
+-->
