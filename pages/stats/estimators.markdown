@@ -100,12 +100,12 @@ In other words, with high enough n, the probability that the estimator is arbitr
 As mentioned above, it may be a desirable property for an estimator to be unbiased.  A common concept is the "Minimum Variance Unbiased Estimator", which is exactly what the name suggestions.  An important theorem is that there is a minimum bound for the variance of any unbiased estimator.  This is known as the Cramer-Rao bound and states that the variance for any unbiased estimator must obey:
 
 $$
-var > \frac{1}{FI}
+var(\hat{\theta} | \theta) > \frac{1}{FI_\theta}
 $$
 
 where $FI$ is the Fisher information of the distribution, which is defined as:
 $$
-FI(x | \theta) = -\frac{(d^2L(x | \theta)}{d\theta^2}
+FI_\theta = FI(x | \theta) = -\frac{d^2L(x | \theta')}{d\theta'^2} |_{\theta'=\theta}
 $$
 
 We will not concern ourselves with the details of this calculation here, but instead will note that the existence of such a bound means that it's possible in some cases to obtain the "best" unbiased estimator as the one whose variance is falls right on the boundary.  The efficiency of an estimator is the ratio of it's variance to the Cramer-Rao variance bound, where an efficiency of 1 is the best an estimator can do.

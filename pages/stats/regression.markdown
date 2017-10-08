@@ -296,6 +296,8 @@ However, multicollinearity often does not effect the overall performance of the 
 
 The variances of the fitted parameters are higher
 
+
+<!--
 http://data.princeton.edu/wws509/notes/c2s2.html
 
 https://stats.stackexchange.com/questions/117406/proof-that-the-coefficients-in-an-ols-model-follow-a-t-distribution-with-n-k-d
@@ -308,7 +310,7 @@ http://www.le.ac.uk/users/dsgp1/COURSES/MATHSTAT/13mlreg.pdf
 
 http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/05/lecture-05.pdf
 http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/06/lecture-06.pdf
-
+-->
 
 ### Regularization
 
@@ -398,17 +400,45 @@ http://www.win-vector.com/blog/2011/09/the-simpler-derivation-of-logistic-regres
 ### Confidence Inervals of fitted parameters
 
 
-In the case of linear regression, we were able to show that the distribution of a fitted parameter $w_$ follows a Student's t distribution.  It would be nice to be able to come up with an exact, closed-form distribution for the fitted parameters of a logistic regression model.  However, no closed-form solution exists.  Instead, most inference done on the fitted parameters of a logistic model use an approximation that becomes asymptotically more accurate as the size of the data increases.
+In the case of linear regression, we were able to show that the distribution of a fitted parameter $w_i$ follows a Student's t distribution.  It would be nice to be able to come up with an exact, closed-form distribution for the fitted parameters of a logistic regression model.  However, just as there is no closed form for the MLEs of the parameters, there is no closed form for their distribution either.  Instead, most inference done on the fitted parameters of a logistic model use an approximation that becomes asymptotically more accurate as the size of the data increases.
 
-A common approach for determining confidence intervals on fitted parameters uses an approximation to the distribution of maximum likelihood estimators (known as the Wald approach or Wald test).  Recall that a maximum likelihood estimator is asymptotically distributed as a gaussian around the true value with a standard deviation that can be derived from the Fischer Information of the true distribution.  
-- Estimate the Fischer Information
+A common approach for determining confidence intervals on fitted parameters uses a Wald test, which is based on the asymptotic distribution of a maximum likelihood estimator.  The test is typically performed by the following steps:
 
-Likelihood ratio Test
-- For multiple parameters, use profile likelihood ratio (R does this)
+- Using the likelihood function, calculate the Fisher information matrix as a function of the true values of the parameters
+- Fit the model using maximum likelihood estimation to produce estimates of the parameters
+- Plug these estimates into the Fisher information matrix to estimate the variance of the maximum likelihood estimators
+- Assuming the gaussian asymptotic distribution, divide the fitted parameter value by it's variance, square it, and compare it to a chi-squared distribution with 1 degree of freedom.
+
+Note here that we are making two approximations.  We're first assuming that the asymptotic form for the distribution for the MLEs holds.  And we're second assuming that the Fisher information matrix evaluated with the MLEs is close to the fisher information matrix evaluated with the true parameters.  The fact that we're using two assumptions here can make this test inaccurate, but it is still commonly used.  Most likely, the statistical package that you're using to fit a logistic regression will return to you the results of this test.
+
+A second, somewhat less common approximation, is based on the profile likelihood distribution.  Recall that the profile likelihood, defined as:
+
+$$
+\lambda(\theta) = \frac{L(x | \theta, \hat{\hat{\nu}})} {L(x | \hat{\theta}, \hat{\nu})}
+$$
+
+is asymptotically related to a Chi-Squared distribution:
+
+$$
+-2 log(\lambda(\theta)) \sim \chi^2_{1}
+$$
+
+For a logistic regression, we can write down the likelihood and take the parameter of interest $\theta$ to be the ith fitted parameter $w_i$.  To use the profile likelihood to calculate confidence intervals, one can perform the following procedure:
+
+- Find the global MLEs using the normal fit of the logistic regression likelihood
+- Pick a range of points along the parameter of interest $w_i$ as test points
+- For each test point, fix $w_i=w_{test}$ and minimize the likelihood over the other coefficients $w_{j !+ i}$
+- Calculate the Profile Likelihood ratio at that point as the ratio of the local fit to the global fit
+- Use the Chi-Squared distribution to determine if that point is in the confidence interval
+- Repeat over all points to find the full confidence interval
+
+As noted previously, this will produce potentially asymmetric confidence intervals on the fitted parameters $w_i$.
 
 
 
 <!--
+http://people.upei.ca/hstryhn/stryhn208.pdf
+
 https://stats.stackexchange.com/questions/144603/why-do-my-p-values-differ-between-logistic-regression-output-chi-squared-test
 
 https://courses.washington.edu/b515/l13.pdf
