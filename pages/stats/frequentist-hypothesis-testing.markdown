@@ -5,15 +5,15 @@ title: Frequentist Hypothesis Tests and Inference
 
 # Hypothesis testing
 
-One of the most important things that one can attempt to infer about the world is whether a given model (possibly defined in terms of continuous parameters) is accurate.  Or, similarly, one may seek to know which of two models is most consistent with measured data and therefore more likely to be the true model (loosely speaking).  The process of answering these questions is known as hypothesis testing.  It consists of thinking of one or more hypothesis (which are just models and assumptions for any free parameters of those models) and determining how well those models match observed data.
+One of the most important parts of statistics is being able to determine if a model is accurate and having rigorous ways of describing its accuracy. This can take the form of assessing how well a model matches data or which of several candidate models best match data<!-- things that one can attempt to infer about the world is whether a given model (possibly defined in terms of continuous parameters) is accurate.  Or, similarly, one may seek to know which of two models is most consistent with measured data and therefore more likely to be the true model (loosely speaking).-->  The process of answering these questions is known as hypothesis testing. <!--  It consists of thinking of one or more hypothesis (which are just models and assumptions for any free parameters of those models) and determining how well those models match observed data.-->
 
 
-## Scenario 1: Is my model consistent with data?
+## Determining if a model is consistent with data
 
 
 We will discuss the seemingly straightforward scenario of having a model and a dataset and asking whether the data is "consistent" with the model.  Depending on one's philosophy, there are a number of ways to think about what "consistent" means in concrete mathematical terms.
 
-The classical frequentist way of answering this question was pioneered by Fischer and is based on a calculated quantity known as the "p-value".  Given a model and a dataset, the p-value is defined as the probability of that model generating that dataset OR generating a dataset "more extreme" than the measured dataset.  The logical underpinning of this calculation is answer the question, "Is my data so rare given my model that I should reject my model?".  If the model is very likely to generate the given dataset, or i it is likely to generate data that is even more "extreme", then one intuitively should not reject the model based on the measured data.  If I flip a coin and get 2 heads in a row, but I know that the odds of getting even 3 heads in a row given a fair coin aren't SO low, then I shouldn't conclude that my coin isn't fair.  If I roll a dice and get 2 1's in a row, but I know that the total probability of getting the any number twice in a row isn't so low, then I shouldn't conclude that my dice is somehow faulty.
+The classical frequentist way of answering this question was pioneered by Fischer and is based on a calculated quantity known as the "p-value".  Given a model and a dataset, the p-value is defined as the probability of that model generating that dataset OR generating a dataset "more extreme" than the measured dataset.  The logical underpinning of this calculation is answer the question, "Is my data so rare given my model that I should reject my model?".  If the model is very likely to generate the given dataset, or if it is likely to generate data that is even more "extreme", then one intuitively should not reject the model based on the measured data.  If I flip a coin and get 2 heads in a row, but I know that the odds of getting even 3 heads in a row given a fair coin aren't SO low, then I shouldn't conclude that my coin isn't fair.  If I roll a dice and get 2 1s in a row, but I know that the total probability of getting the any number twice in a row isn't so low, then I shouldn't conclude that my dice is somehow faulty.
 
 It is clear how to calculate the probability of the measured dataset given the model, but it remains to be defined what hypothetical datasets should be included in the set of "more extreme" data.  This definition may vary depending on the problem.  These definitions of "extreme" may include:
 
@@ -44,7 +44,7 @@ Seemingly, one difference between this test and the likelihood-ratio test descri
 -->
 
 
-## Scenario 2: Which of these models better fits the data?
+## Determining which of multiple models best fits data
 
 
 The case when there are only two possible models describing a phenomenon, where only one of which is true, is known as a "Simple Hypothesis".  Typically, these models are thought of asymmetrically: one model, known as the "Null Hypothesis" and here referred to as $H_0$, is thought of as the current understanding of the world and the other model, known as the "Alternate Hypothesis" and here referred to as $H_1$, is the challenger theory which, depending on the data, may unseat the null hypothesis.
@@ -80,12 +80,14 @@ $$
 
 In other words, one should consider contours defined by the likelihood ratio of the null hypothesis and the alternate hypothesis.  Given those contours, the size of the test then fully determines the partitioning of the space: just pick the $H_0$ region such that the total probability of the region (given the null hypothesis) corresponds to the size of the test.
 
-As far as things go in statistics, this is thus a solved problem.  If you are really in the case where you have only two possible models that could describe your problem, you should then delight.  However, that is rarely, if ever, the case.  Most problems have many possible models and each model has many parameters that are initially unknown, and this makes the problem of hypothesis testing much more challenging.
+As far as things go in statistics, this is thus a solved problem.  If you are really in the case where you have only two possible models that could describe your problem, you should then delight.  However, that is rarely, if ever, the case.  Most problems have many possible models and each model has many parameters that are initially unknown, and this makes the problem of hypothesis testing much more challenging.  Moreover, one rarely knows the exact distribution of a function, and therefore cannot readily calculate the Likelihood and use it in the Neyman-Pearson Lemma.
 
 
+<!--
 *"Null-hypothesis significance testing"*
 
 http://www.stat.ualberta.ca/~wiens/stat665/TAS%20-%20testing.pdf
 
 http://stats.stackexchange.com/questions/23142/when-to-use-fisher-and-neyman-pearson-framework
+-->
 
