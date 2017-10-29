@@ -9,7 +9,7 @@ title: Distributions
 
 # Distributions
 
-This section serves as a short reference guide, or cheat sheet, for common probability distributions and how they may be applied.
+Although the space of possible probability distribution functions is infinite, there are a handful of common distributions that can be used to approximately model a wide range of problems.  We will describe these distributions here with an emphasis on motivating where they came from and describing their most useful properties and applications.
 
 
 ## Bernoulli Distribution
@@ -23,7 +23,7 @@ ber(0 | p) &=& 1-p
 \end{align}
 $$
 
-The simplest example is a weighted coin flip where heads is valued at 1 and tails at 0: With probability p, the coin lands on heads and with probability 1-p, the coin lands on tails.
+The simplest example is a weighted coin flip where heads is valued at 1 and tails at 0: with probability p, the coin lands on heads and with probability 1-p, the coin lands on tails.
 
 A Bernoulli random variable can represent anything that has a binary outcome, such as the outcome of a sports game, the winning of the lottery, or whether or not an event will occur over a fixed period of time.  Because it is so versatile, it forms the basis for many of the distributions that will follow.
 
@@ -69,7 +69,7 @@ $$
 
 ## Beta Distribution
 
-The Beta Distribution is closely related to the Binomial distribution.  As described above, the binomial distribution describes the probability of flipping $n$ heads out of a total of $N$ using a weighted coin with probability of heads $p$:
+The Beta Distribution is closely related to the Binomial distribution.  As described above, the binomial distribution represents the probability of flipping $n$ heads out of a total of $N$ using a weighted coin with probability of heads $p$:
 
 $$
 p(n | N, p) = Binom(n, N, p)
@@ -81,7 +81,7 @@ $$
 p(A | B) = \frac{P(A) P(B | A)}{\int P(B | A) P(A) dA}
 $$
 
-Applying this to our binomial distribution of coin flips and assuming a flat prior on $p$ such that $P(p) = 1$, we get:
+Applying this to our binomial distribution of coin flips and assuming a flat prior on $p$ such that $P(p) \sim 1$, we get:
 
 $$
 P(p | n, N) = \frac {P(p) P(n | p, N)} {\int P(n | p, N) P(p) dp}
@@ -138,12 +138,12 @@ The Poisson distribution can be thought of as a generalization of the Bernoulli 
 
 Examples are the number of raindrops hitting your roof in a short period of time, or the number of popcorn kernels that pop in your microwave in a small interval, or the number of people who arrive at a bank between 3:00 and 3:15.
 
-The Poisson distribution is a 1-parameter model, and the single parameter, $\lambda$, represents the expected number of event occurrences (usually in some unit time interval).  The typical setup is to have some ground truth for how many events are expected to occur on average.  For example, one could have measured over the past year the average number of people who walk into a bank in a 15 minute interval.  Based on that average, and assuming that people's schedules are independent, one can assume that the number of people arriving at the bank in a SINGLE day is described by the Poisson distribution.
+The Poisson distribution is a 1-parameter model, and the single parameter, $\lambda$, represents the expected number of event occurrences (usually in some unit time interval).  The typical setup is to have some ground truth for how many events are expected to occur on average.  For example, one could have measured over the past year the average number of people who walk into a bank in a 15 minute interval.  Based on that average, and assuming that people's schedules are independent, one can assume that the number of people arriving at the bank in a given time interval is described by the Poisson distribution.
 
-One way to derive the poisson distribution is to think of a period of time T, during which we expect on average $\lambda$ events to occur, as consisting of many infinitesimal periods of time, $\delta t$.  We assume that that the $\delta t$s are small enough such that only one event can occur in each time window.  The question we are asking is, "How many total events occurred in time $T$" which, with these assumptions, becomes, "How many of the $\delta t$ events resulted in success?".  
+One way to derive the poisson distribution is to think of a period of time T, during which we expect on average $\lambda$ events to occur, as consisting of many infinitesimal periods of time, $\delta t$.  We assume that that the $\delta t$s are small enough such that the probability of more than 1 event occurring in each window is vanishingly small.  We can therefore model each window as a Bernouilli random variable with probability $\lambda \delta t / T$.  The question we are asking is, "How many total events occurred in time $T$" which, with these assumptions, becomes, "How many of these individual bernouilli events resulted in success?".  
 
 
-This is the equivalent of a binomial distribution where we have MANY individual coin flips, each with a very small probability of being heads.  We overall expect $\lambda$ events in this period T, so the rate of occurrence of an event is $\lambda / T$.  In each small period of time, the probability of an event occurring is $rate * \delta t = (\lambda / T) * (T/N) = \lambda / N$
+This is the equivalent of a binomial distribution where we have MANY individual coin flips, each with a very small probability of being heads.  In each small period of time, the probability of an event occurring is $\lambda \delta t / T = \lambda (T/N) / T = \lambda / N$
 
 We therefore take the binomial equation  $binom(n | N, p)$ and make the replacements:
 
@@ -161,11 +161,11 @@ which describes the probability of n events occurring in a time period during wh
 
 ## Gaussian Distribution
 
-Unlike the previous distributions, we will not motivate the Gaussian distribution from a specific scenario (flipping coins, etc), but instead will motivate it from a more general fact, known as the Central Limit Theorem.  The Central Limit Theorem states that the distribution of the sum of MANY independent random variables (each having an arbitrary distribution with loose conditions) will tend to a Gaussian distribution.  For example, if I add together many Bernoulli variables, their sum will tend toward a gaussian distribution (we know that their sum is exactly a Binomial distribution, which also implies that a Binomial distribution tends toward a Gaussian distribution as $N \rightarrow \infty$) .  
+Unlike the previous distributions, we will not motivate the Gaussian distribution from a specific scenario (such as flipping coins), but instead will motivate it from a more general fact known as the Central Limit Theorem.  The Central Limit Theorem states that the distribution of the sum of MANY independent random variables, each having an arbitrary distribution (with some loose conditions on those distributions) will tend to a Gaussian distribution.  For example, if I add together many Bernoulli variables, their sum will tend toward a gaussian distribution (we know that their sum is exactly a Binomial distribution, which also implies that a Binomial distribution tends toward a Gaussian distribution as $N \rightarrow \infty$) .  
 
-This is a complicated theorem to prove, so we will here only assert it.  However, it is very powerful and implies that Gaussian distributions will arise naturally in many situations.  For example, consider a process that has many small errors.  Even if we don't know the distribution of individual errors, if there are sufficiently many independent errors, their sum, the total error, will follow a Gaussian distribution.  Therefore, it is common to model the errors of situations when the exact error is unknown as a Gaussian distribution (with unknown parameters).
+This is a complicated theorem to prove, so we will here only assert it.  However, it is very powerful and implies that Gaussian distributions will arise naturally in many situations.  For example, consider a process that has many small errors.  Even if we don't know the distribution of individual errors, if there are sufficiently many independent errors, their sum, the total error, will follow a Gaussian distribution.  Therefore, it is common to model the errors whose true distribution is unknown as a Gaussian (since the total error will often be the sum of many individual errors).
 
-The Gaussian distribution describes a 1-dimensional continuous variable, $x$, as a function of two parameters: $\mu$ and$\sigma$. The distribution is given by:
+The Gaussian distribution describes a 1-dimensional continuous variable, $x$, as a function of two parameters: $\mu$ and $\sigma$. The distribution is given by:
 
 $$
 gauss(x | \mu, \sigma) = \frac{1}{\sqrt{2\sigma^2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
@@ -173,7 +173,7 @@ $$
 
 Using the formula above, one can show that the mean of the distribution if $\mu$ and the standard deviation is given by $\sigma$.  In fact, the parameters $\mu$ and $\sigma$ are often referred to as the "mean" and "standard deviation".
 
-Because the gaussian distribution is so ubiquitous, it is worthwhile to spend some time to understand it's properties.  Imagine w draw $n$ points from a gaussian describing the random variable $x$ and take the mean of those measured points.  We define that "sample mean" of $x$ to be $\bar{x}$, nothing that this refers to the mean of a specific realized sample.  The quantity $\bar{x}$ is itself a random variable (as it is just a function of the data) and therefore it has a distribution that depends on the model and it's parameters.  On can mathematically show that the distribution of $\mu_s$ is itself a gaussian and is given by 
+Because the gaussian distribution is so ubiquitous, it is worthwhile to spend some time to understand it's properties.  Imagine w draw $n$ points from a gaussian describing the random variable $x$ and take the mean of those measured points.  We define that "sample mean" of $x$ to be $\bar{x}$, nothing that this refers to the mean of a specific realized sample.  The quantity $\bar{x}$ is itself a random variable (as it is just a function of the data) and therefore it has a distribution that depends on the model and its parameters.  On can mathematically show that the distribution of $\mu_s$ is itself a gaussian and is given by 
 
 $$ p(\bar{x} | \mu, \sigma, n) = Gauss(\mu, \frac{\sigma}{\sqrt{n}}) $$
 
@@ -181,7 +181,7 @@ $$ p(\bar{x} | \mu, \sigma, n) = Gauss(\mu, \frac{\sigma}{\sqrt{n}}) $$
 
 It is a remarkable mathematical coincidence that the sample mean follows the same distribution family as the gaussian itself; this is not a property that other distribution functions will have.
 
-The $\frac{1}{\sqrt{n}}$ part of that formula is important: it means that the standard deviation of the sample mean drops by $1/\sqrt{n}$ as you draw more and more points.  If you are trying to measure the value of $\mu$ of a gaussian distribution, you can do so by observing many points drawn from it and calculating the sample mean of those points, $\bar{x}$.  If you observe many points, that distribution of $\bar{x}$ will be tightly centered around the expected sample mean, $\frac{\mu}{\sqrt{n}}$, and you can use that to infer the true value of $\mu$.
+The $\frac{1}{\sqrt{n}}$ part of that formula is important: it means that the standard deviation of the sample mean drops by $1/\sqrt{n}$ as you draw more and more points.  If you are trying to measure the value of $\mu$ of a gaussian distribution, you can do so by observing many points drawn from it and calculating the sample mean of those points, $\bar{x}$.  If you observe many points, that distribution of $\bar{x}$ will be tightly centered around the expected sample mean, $\frac{\mu}{\sqrt{n}}$, and you can use that to infer the true value of $\mu$ (we describe this in a loose sense here and will go into more precise detail in later sections).
 
 
 ## Chi-Squared Distribution
@@ -241,7 +241,7 @@ follows a chi-squared distribution with n-1 degrees of freedom.  This is an exac
 
 -->
 
-Important in the definition of the Chi-Squared distribution is the requirement that the gaussians being squared and added all be independent.  However, it is common to encounter statistical situations involving the sum of squares of gaussians htat are not all independent, but instead are correlated due to the presence of one or more linear constraints on their values.  A linear constraint is a fixed linear relationship between the values of these gaussian random variables, which typically takes the form of the sum of 2-or-more of the variables equaling some fixed value.
+Important in the definition of the Chi-Squared distribution is the requirement that the gaussians are all be independent.  However, it is common to encounter statistical situations involving the sum of squares of gaussians that are not all independent, but instead depend on each other through the presence of one or more linear constraints on their values.  A linear constraint is a fixed linear relationship between the values of these gaussian random variables, which typically takes the form of the sum of 2-or-more of the variables equaling some fixed value.
 
 If I have n gaussian variables, $g_1, ..., g_n$, and I have m linear constraints on the values of these variables, then one can show that the sum of the squares of these variables is distributed as:
 
@@ -291,7 +291,7 @@ More useful, however, is an expression for the distribution of the sample varian
  -->
 
 $$
-var(x) = \frac{\sum (x_i - \bar{x})^2}{n-1}
+s^2(x) = \frac{\sum (x_i - \bar{x})^2}{n-1}
 $$
 
 To obtain this distribution, we start with the quantities
@@ -308,17 +308,17 @@ $$
 
 This final quantity is the sum of quadratic terms in $x_i$, where the $x_i$ are independent.  By Cochran's theorem, described above, we can show the following important fact:
 
-- $\sum (\frac{x_i - \bar{x}}{\sigma})^2$ is distributed as a Chi-Squared with n-1 degrees of freedom
-- $ N\frac{(\bar{x} - \mu)^2}{\sigma^2}$ is distributed as a Chi-Squared with 1 degree of freedom
+- $\sum(x_i - \bar{x})^2 /\sigma^2$ is distributed as a Chi-Squared with n-1 degrees of freedom
+- $ N (\bar{x} - \mu)^2 / \sigma^2$ is distributed as a Chi-Squared with 1 degree of freedom
 - These two quantities are independent of each other
 
-The first of these terms can be related to the sample variance and the second can be related to the sample mean (given fixed true values of $\mu$ and $\sigma$).  This allows us to show that the distribution of the sample variance is given by:
+Using the first bullet point above and the definition of $s^2$, we can see that 
 
 $$
-var(x) \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1}
+s^2 \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1}
 $$
 
-and, importantly, that it is independent of the distribution of the sample mean.  The fact that the sample mean and sample standard deviation are independent is unique to the gaussian distribution and, in fact, fully specifies the gaussian, a property known as Basu's theorem. These facts will be important when performing inference on the gaussian distribution (trying to infer $\sigma$ and $\mu$ given a sample of gaussian-distributed data).  This will be discussed in a later section.
+And since the term in the second bullet point is a function of the sample mean and is independent of the term in the first bullet point, we learn that $s^2$ is independent of the distribution of the sample mean.  The fact that the sample mean and sample standard deviation are independent is unique to the gaussian distribution and, in fact, fully specifies the gaussian, a property known as Basu's theorem. These facts will be important when performing inference on the gaussian distribution (trying to infer $\sigma$ and $\mu$ given a sample of gaussian-distributed data).  This will be discussed in a later section.
 
 <!--
 
@@ -331,14 +331,16 @@ https://en.wikipedia.org/wiki/Basu%27s_theorem
 Reference: http://courses.education.illinois.edu/EdPsy580/lectures/6ChiSq_Fdist_ha.pdf
 -->
 
-To summarize, if we draw n points from a gaussian distribution:
+To summarize, if we draw n points from a gaussian distribution, the distributions for the sample mean $\bar{x}$ and the sample variance $s^2$ are given by:
 
 $$
 \begin{eqnarray}
 \bar{x} \sim gaus(\mu, \frac{\sigma}{\sqrt{n}}) \\
-var(x) \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1} \\
+s^2 \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1} \\
 \end{eqnarray}
 $$
+
+and these are independent of each other.
 
 ## Student's t-distribution
 
@@ -349,21 +351,18 @@ t = \frac{Z}{\sqrt{V/N}}
 $$
 
 
-The canonical example motivating this distribution is similar to the example motivating the Chi-Squared distribution.  Imagine that we have a single gaussian distribution with true mean $\mu$ and true standard deviation $\sigma$.  We draw n points from that distribution, $x_1$, $x_2$, ..., $x_n$.
-
-From the above section we know:
+The canonical example motivating this distribution is similar to the example motivating the Chi-Squared distribution.  Imagine that we have a single gaussian distribution with true mean $\mu$ and true standard deviation $\sigma$ and we draw n points from that distribution, $x_1$, $x_2$, ..., $x_n$.  From the above section, we know that:
 
 - The quantity $N\frac{\bar{x} - \mu}{\sigma}$ is gaussian distributed
 - The quantity $\sum{\frac{(x_i - \bar{x})^2}{\sigma^2}}$ is Chi-Square distributed with N-1 degrees-of-freedom
 - The distribution of these two quantities is independent
 
-Therefore, by the definition of the student's t distribution, we know that the following quantity is follows the student's t distribution:
-
+Therefore, by the definition of the student's t distribution, we know that the quantity: 
 $$
 t = \frac{\frac{\bar{x} - \mu}{\sigma/\sqrt{N}}}{\sqrt{\sum{\frac{(x_i - \bar{x})^2}{\sigma^2}}/(N-1)}}
 $$
 
-We can then define the sample variance as 
+follows the student's t distribution.  We can then define the sample variance as 
 
 $$
 s^2 = \frac{1}{n-1} \sum (x_i - \bar{x})^2
@@ -387,13 +386,13 @@ The probability distribution for the student's t distribution can be calculated 
 ## F-Distribution
 
 
-The F-Statistic is a random variable that can be generated from two independent Chi-Squared distributed variables.  Given $U_1$ which follows a Chi-Squared distribution with $d_1$ degrees of freedom and $U_2$ with $d_2$ degrees of freedom (with the two distributions independent), we define the F-Distribution (with degrees $d_1$ and $d_2$) as the distribution of the random variable $F$ defined as:
+The F-Statistic is a random variable that can be generated from two independent Chi-Squared distributed variables.  Given $U_1$ which follows a Chi-Squared distribution with $d_1$ degrees of freedom and $U_2$ with $d_2$ degrees of freedom (with the two distributions independent), we define the F-Distribution (with degrees $d_1$ and $d_2$) as the distribution of the random variable $F$ given by:
 
 $$
 F = \frac{U_1/d_1}{U_2/d_2}
 $$
 
-Equivalently, one can define an F-statistic from Gaussian distributions.  Imagine we have a gaussian distributed variable $g_1$ with parameter $\sigma_1$ and another independent variable $g_2$ with parameter $\sigma_2$, and we draw $n_1$ values from $g_1$ and $n_2$ values from $g_2$.  Letting $s_1$ be the sample variance of the draws from $g_1$ and $s_2$ be the sample variance from the draws from $g_2$, then the following quantity follows the F-Distribution (with $n_1-1$ and $n_2-1$ degrees of freedom):
+Equivalently, one can define an F-statistic from Gaussian distributions.  Imagine we have a gaussian distributed variable $g_1$ with parameter $\sigma_1$ and another independent variable $g_2$ with parameter $\sigma_2$, and we draw $n_1$ values from $g_1$ and $n_2$ values from $g_2$.  Letting $s_1^2$ be the sample variance of the draws from $g_1$ and $s_2^2$ be the sample variance from the draws from $g_2$, then the following quantity follows the F-Distribution (with $n_1-1$ and $n_2-1$ degrees of freedom):
 
 $$
 F = \frac{s_1^2/\sigma_1^2}{s_2^2/\sigma_2^2}
