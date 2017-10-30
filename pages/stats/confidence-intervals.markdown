@@ -110,8 +110,9 @@ The typical frequentist method for addressing this problem is by calculating wha
 
 Before doing so, I'll note that a confidence interval is only an example of one thing that a person *could* do when faced with this scenario; it is not be-all-and-end-all thing that **can** be done.  It is a procedure, motivate by statistical intuition, that can be a useful took when thinking about a problem or making a decision.  But how one chooses to use data or what one wants to calculate all depend on one's purposes, the level of rigor necessary, and one's philosophy.  For now, let's assume that calculating a confidence interval is what we'd like to do here.
 -->
-
+<!--
 https://indico.cern.ch/event/117033/contributions/1327622/attachments/55727/80175/Cranmer_L3.pdf
+-->
 
 ## Calculating Intervals
 
@@ -120,9 +121,9 @@ The above procedure required on being able to do the following:
 - Determine the distribution $p(t | \theta)$ for all values of $\theta$
 - Integrate that distribution and find values $[a, b]$ such that the integral of that distribution sums to $\alpha$
 
-If $\theta$ is a continuous parameter, this may seem to be a daunting task, if not impossible.  One can achieve the above in a "brute-force" way by picking discrete values of $\theta$ and, for each value in this grid, generating values of x using the model $p(x | \theta)$ and then building up a distribution for $p(t | \theta)$.  One can then use computational techniques to integrate this distribution and obtain windows $[a, b]$ for each value of $\theta$, which one would then invert to form confidence intervals.
+If $\theta$ is a continuous parameter, this may seem to be a daunting task.  One could calculate this in a "brute-force" way by picking discrete values of $\theta$ and, for each value in this grid, generating values of x using the model $p(x | \theta)$ and then building up a distribution for $p(t | \theta)$.  One could then use computational techniques to integrate this distribution and obtain windows $[a, b]$ for each value of $\theta$, which would then be inverted to form confidence intervals.
 
-Thankfully, there are a number of examples that have properties which allows one to calculate a confidence interval without resorting to a brute force procedure.  For example, if can choose a test statistic $t(x, \theta)$ such that the distribution $p(t(x, \theta) | \theta)$ is independent of $\theta$, then one does not need to pick discrete points in $\theta$ and generate intervals $[a, b]$ separately for each point.  One can do this once, as the distribution $p(t(x, \theta) | \theta)$ and therefore the intervals $[a, b]$ are independent of $\theta$.  Further, if one can analytically integrate $p(t(x, \theta) | \theta)$ (or at least leverage well-studied lookup tables), then one doesn't need to perform manual integrals oneself.  Examples that satisfy this criteria are therefore much simpler to use.  In fact, MOST examples of confidence intervals that appear in textbooks have this property, which is nice, but I find that it hides the more general procedure that one needs to take to calculate confidence intervals for arbitrary models.
+Thankfully, there are a number of examples that have properties which allows one to calculate a confidence interval without resorting to a brute force procedure.  For example, if can choose a test statistic $t(x, \theta)$ such that the distribution $p(t(x, \theta) | \theta)$ is independent of $\theta$, then one does not need to pick discrete points in $\theta$ and generate intervals $[a, b]$ separately for each point.  One can do this once since the distribution $p(t(x, \theta) | \theta)$ and therefore the intervals $[a, b]$ are independent of $\theta$.  Further, if one can analytically integrate $p(t(x, \theta) | \theta)$ (or at least leverage well-studied lookup tables), then one doesn't need to perform manual integrals oneself.  Examples that satisfy this criteria are therefore much simpler to use.  In fact, MOST examples of confidence intervals that appear in textbooks have this property, which is nice, but I find that it hides the more general procedure that one needs to take to calculate confidence intervals for arbitrary models.
 
 <!--
 In the above procedure, iterated over small steps in our parameter to create the confidence band in a "brute force" fashion.  However, for a small subset of problems, the confidence band can be calculated exactly because the probability distribution can be handled analytically.
@@ -200,7 +201,7 @@ $$
 Our confidence interval is therefore:
 
 $$
-[x - \sqrt{2}erf^{-1}(\alpha)\sigma, x + \sqrt{2}erf^{-1}(\alpha)\sigma]
+[x - \sqrt{2}{erf}^{-1}(\alpha)\sigma, x + \sqrt{2}{erf}^{-1}(\alpha)\sigma]
 $$
 
 The key to being able to calculate this analytically was that the dependence of $\mu$ dropped out after a well-chosen change of variables.  In fact, we could have saved ourselves a lot of trouble had we defined our test statistic from the beginning as being:
@@ -211,11 +212,13 @@ $$
 
 since we already know that the distribution of this variable is independent of both $\mu$ and $\sigma$.  This emphasizes an important point: choosing the right test statistic can make a confidence interval calculation much easier.
 
+
+<!--
 http://mathworld.wolfram.com/ConfidenceInterval.html
 
 [7] J. Neyman. Outline of a theory of statistical estimation based on the classical theory of probability.
 Phil. Trans. Royal Soc. London, Series A, 236, 1937.
-
+-->
 
 <!--
 Our confidence interval is then defined as: ${\mu: 
@@ -400,22 +403,22 @@ But it's easy to show that this procedure does indeed generate confidence interv
 Thus, we can generalize our approach by considering test statistics that may depend on the parameter we are interested in.  This is valuable in part because we may be able to generate distributions of these test statistics easier than we can generate distributions of the draw data.  In addition, by varying them as a function of our parameter of interest, can can make confidence intervals that are more powerful (since the test statistic can be chosen for it's power for each value of $\theta_0$ separately).
 
 As before, we can interpret this as performing a p-value at each point in the parameter space of $\theta$, and creating a confidence interval as the set of all points that are not rejected by that p-value test.  By using a test statistic, we can consider the distribution of a different value at each point in parameter space to perform this $p-value$ test.
-
 -->
 
+As seen above, an important step in the building of confidence intervals is the choice of the test statistic.  A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.  The definition of a test statistic may be defined in terms of assumed values of parameters.  <!--Some places define a statistic as a function of the data only which cannot depend on the parameter of interest. But, a--> As we've seen above in the Gaussian example, defining a function in terms of the parameter of interest can lead to it having useful properties, specifically that it's distribution is independent of the parameter of interest.  While some references may present the definition of a test statistic as being defined only in terms of data, doing so seems to contradict the clearly useful technique of including assumed values of parameters of interest, so we will here not attempt to present the definition so strictly. 
 
-As seen above, an important step in the building of confidence intervals is the choice of the test statistic.  A test statistic is a value can be calculated as a function of a given dataset and a given model (or model parameters) associated with that dataset.
-
-(Some places define a statistic as a function of the data only which cannot depend on the parameter of interest. But, as we've seen above, defining a function in terms of the parameter of interest can lead to it having useful properties, specifically that it's distribution is independent of the parameter of interest.  Some references distinguish this as a "quantity" and not a statistic.  We will here adopt a looser language: A test statistic is just a of the data and possibly model parameters that is useful in performing inference).
+<!--
+  Some references call this  While  Some references distinguish this as a "quantity" and not a statistic.  We will here adopt a looser language: A test statistic is just a of the data and possibly model parameters that is useful in performing inference).
+-->
 
 <!--A test statistic is used as the starting point of a statistical test.  One typically performs a test by considering a model, defining a test statistic for that model, measuring data, calculating the test statistic for that model (or model parameters) and the measured data, and comparing that value to the known distribution of the test statistic (given the assumed model).-->
 
-Requirements for a useful test statistic are:
+A test statistic is useful for inferring the value of a parameter of interest if:
 
 - It can be easily calculated
 - Its distribution (given a fixed model or model parameters) is known
 - It or its distribution must depend on the parameter of interest
-- It and it's distribution does not depend on any unknown (nuisance) parameters
+- Its distribution does not depend on any unknown (nuisance) parameters
 
 <!--
 Note that a test statistic may or may not be defined in terms of the parameter of interest.  For example, we found above that a good test statistic to infer the value of $\mu$ from a gaussian distribution was:
@@ -433,9 +436,9 @@ As described above, we want the distribution of the test statistic to depend on 
 
 For a given model, there are many possible test statistics.  So, how should one go about picking the "best" test statistic, or what does it even mean for a test statistic to be good?  <!--When using a test statistic for inference a requirement is that the test statistic be a function of the parameter of interest (after all, if the distribution of the test statistic didn't depend on the parameter of interest, than measuring the test statistic wouldn't tell us anything about that parameter).-->  Intuitively, a test statistic is good if it's distribution under different values of the parameter(s) of interest varies dramatically.  This allows one to use the test statistic to determine which model is most likely the "true" model (again, this loose language will be made more formal later).
 
-There are a number of important qualities that a statistic may have.
+There are a number of types of tests statistics which have useful properties for inference.
 
-A pivotal quantity is a function of the data, and possibly parameters of the model, whose distribution does not depend on the parameter of interest.  As noted above, the most common example is for a gaussian distribution, where the distribution of the quantity:
+A "pivotal quantity" is a test statistic whose distribution does not depend on the parameter of interest.  As noted above, the most common example is for a gaussian distribution, where the distribution of the quantity:
 
 $$
 q(x, \mu) = \frac{\bar{x} - \mu}{\sigma}
@@ -444,15 +447,15 @@ $$
 is $gauss(q, 0, 1)$ and does not depend on $\mu$.  As exemplified above, if one can define a pivotal quantity in terms of a parameter of interest (such that the pivotal quantity is defined  in terms of the parameter of interest but whose distribution is independent of the parameter of interest), then calculating confidence intervals is easy.
 
 
-As a somewhat related definition, a "sufficient statistic" is a function of the data that, for the purpose of inferring a given parameter, contains as much information as the raw data.  Specifically, a statistic $t$ is sufficient if, given fixed values of $t$ and the parameter of interest $\mu$, the distribution of the data $x$ does not depend on $\mu$.  A statistic is sufficient if and only if the likelihood can be written as:
+A "sufficient statistic" is a test statistic that, for the purpose of inferring a given parameter, contains as much information as the raw data.  Specifically, a statistic $t$ is sufficient if, given fixed values of $t$ and the parameter of interest $\mu$, the distribution of the data $x$ does not depend on $\mu$.  A statistic is sufficient if and only if the likelihood can be written as:
 
 $$
 L(x | \mu) = h(x)g(t(x), \mu) 
 $$
 
-where x is the data, $\mu$ is the parameter of interest, and $t(x)$ is our test statistic.  Specifically, this means that the part of the likelihood that depends on the parameter of interest $\mu$ only depends on x via $t(x)$.  Intuitively, the $h(x)$ term gives us no information about $\mu$, so we can ignore it.  In other words, for the purpose of performing inference on the $\mu$, one does not lose any information by summarizing the data with the value of the test statistic $t$.
+where x is the data, $\mu$ is the parameter of interest, and $t(x)$ is our test statistic.  This means that the part of the likelihood that depends on the parameter of interest $\mu$ only depends on x via $t(x)$.  Intuitively, the $h(x)$ term gives us no information about $\mu$, so we can ignore it.  In other words, for the purpose of performing inference on the $\mu$, one does not lose any information by summarizing the data with the value of the test statistic $t$.
 
-As an example, consider the gaussian distribution for a set of measurements $x_1...x_i$.  We can write the likelihood as:
+As an example, consider the gaussian distribution for a set of iid measurements $x_1...x_i$.  We can write the likelihood as:
 
 $$
 L(x_1...x_i | \mu, \sigma) = \prod gauss(x_i | \mu, \sigma)
@@ -474,10 +477,13 @@ $$
 
 then the set ${t_1...t_i}$ are sufficient statistics for inferring $\mu_1...\mu_i$.
 
-In contrast, an ancillary statistic when considering a parameter $\mu$ is a function of the data whose distribution does not depend on the parameter $\mu$.  In other words, measuring the value of an ancillary statistic doesn't give you any power to constrain the true value of the parameter $\mu$.
+In contrast, an "ancillary statistic" when considering a parameter $\mu$ is a function of the data whose distribution does not depend on the parameter $\mu$.  In other words, measuring the value of an ancillary statistic doesn't give you any power to constrain the true value of the parameter $\mu$.
+
+<!--
 
 There is another property of statistics called "completeness".  We will not discuss this further except to mention a fact called Basu's theorem that states that a sufficient AND complete statistic for a parameter $\mu$ is independent of any ancillary statistic for $\mu$.
-
+-->
+<!--
 
 http://math.arizona.edu/~tgk/466/sufficient.pdf
 
@@ -486,6 +492,7 @@ https://onlinecourses.science.psu.edu/stat414/node/285
 http://www.stat.umn.edu/geyer/old03/5102/notes/ci.pdf
 
 https://stats.stackexchange.com/questions/203520/can-a-statistic-depend-on-a-parameter
+-->
 
 
 ## Approximate Confidence Intervals
