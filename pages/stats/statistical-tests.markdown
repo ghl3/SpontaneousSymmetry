@@ -10,11 +10,13 @@ id: 446
 
 Having spent some time building up a framework for statistical reasoning, let's apply it to a number of examples.  Many of these were touched upon in previous sections, but are here repeated to make this a complete reference for common statistical tests and problems.
 
+Each will be presented as a scenario, a question that you are attempting to answer, and our proposed solution.  They are organized into broad categories based on the type of statistical situation.
+
 _____
 
-### Comparing measured data to a Gaussian Distribution
+### Gaussian Distributed Data
 
-***I have a dataset consisting of a number of 1-d observations which I assume come from a gaussian distribution.  I know the true variance of my sample, but the mean is unknown to me.  I would like to perform inference on the mean $\mu$.***
+***You have a dataset consisting of a number of 1-d observations which you assume come from a gaussian distribution.  You know the true variance of the sample, but the mean is unknown.  You would like to perform inference on the mean $\mu$.***
 
 Apply a Gaussian Z-test.  A Z-test allows us to perform two types of inference:
 
@@ -54,11 +56,11 @@ Note that sample mean is a sufficient test statistic for estimating the mean of 
 _____
 
 
-***I have a dataset consisting of a number of 1-d observations which I assume come from a gaussian distribution.  Assuming I know neither the true mean nor the true variance, I want to perform inference on the mean*** 
+***You have a dataset consisting of a number of 1-d observations which you assume come from a gaussian distribution.  You know neither the true mean nor the true variance and would like to perform inference on the mean (but you don't care to learn about the uncertainty)***
 
 <!--If I assume that my data comes from some Gaussian distribution with unknown mean and unknown variance, does it come from a gaussian with a given mean (regardless of the unknown variance)?-->
 
-In this instance, we are going to perform a p-value test to compare our data to a gaussian model with a known mean.  However, we are allowing any possible variance for the gaussian, which introduces a nuisance parameter.  In order to perform the test, we must think of a way to handle the nuisance parameter.  When calculating a p-value, we can always scan over the full space of nuisance parameters and take the extrema among all calculated p-values.  But, in general, this procedure tends to be less powerful than other alternatives.
+In this instance, we are going to perform a p-value test to compare our data to a gaussian model with a known mean.  However, we are allowing any possible value for the variance of the gaussian, which introduces a nuisance parameter.  In order to perform the test, we must think of a way to handle the nuisance parameter.  When calculating a p-value, we can always scan over the full space of nuisance parameters and take the extrema among all calculated p-values.  But, in general, this procedure tends to be less powerful than other alternatives.
 
 Thankfully, in this case, we can apply a t-test.  As discussed in the <a href="#students-t">section</a> on the t-distribution, the following test statistic follows a t-distribution:
 
@@ -69,7 +71,7 @@ $$
 
 where,  $\bar{x}$ is the sample mean, $s$ is the sample variance, and n is the sample size.
 
-We can use the t-distribution to create a confidence interval in the parameter $\mu$ with size $\alpha$ by finding all points in the space of $\mu$ that have a probability of data (p-value) greater than $\alpha$.
+We can use the t-distribution to create a confidence interval in the parameter $\mu$ with size $\alpha$ by finding all points in the space of $\mu$ that have a probability of data (p-value) greater than $\alpha$.  The distribution of $t$ is independent of the unknown variance $\sigma$, so we don't need to know it, but we don't learn anything about it during this test.
 
 <!--
 References:
