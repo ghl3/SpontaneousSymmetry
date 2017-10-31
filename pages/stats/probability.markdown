@@ -188,3 +188,11 @@ $$
 It is a function of $\mu$ and is obtained by plugging in the specific measured data $x_0$ into the probability distribution function $p$.
 
 The likelihood function is a construct that is commonly used during statistical inference.  We will later see in great deal how it is used and why it's such a useful concept.
+
+A common situation is for a likelihood function to describe independent, identically-distributed data, which is commonly known as iid data.  In such an example, the data consists of N draws from a single probability distribution function, $p(x)$.  The dataset then is given by $\vec{x} = \{x_1, x_2, ..., x_n\}$ and the likelihood function is:
+
+$$
+L(\vec{x}) = \prod_i^N p(x_i | \theta)
+$$
+
+We will counter a number of examples of models of this form in the sections to come.

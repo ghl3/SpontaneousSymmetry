@@ -498,7 +498,7 @@ https://stats.stackexchange.com/questions/203520/can-a-statistic-depend-on-a-par
 ## Approximate Confidence Intervals
 
 
-As demonstrated above, confidence intervals for some models can be calculated exactly, as the model's pdf can be inverted analytically (or, at least the inversion can be arbitrarily approximated by a computer or a table).  However, this is not the case for many real-world problems.  Fortunately, there is a useful approximation that allows one to calculate approximate confidence intervals for a wide range of problems.
+As demonstrated above, confidence intervals for some models can be calculated exactly, as the model's pdf can be inverted analytically (or, at least the inversion can be arbitrarily approximated by a computer or a table).  However, this is not the case for many real-world problems.  Fortunately, there is a useful approximations that allows one to calculate approximate confidence intervals for a wide range of problems.
 
 
 ### Approximate Confidence Intervals of Maximum Likelihood Estimators (Wald Tests)
@@ -517,18 +517,21 @@ $$
 \sigma_\theta = \sqrt{\frac{1}{FI(\theta)}}
 $$
 
-If we knew $FI(\theta)$, then we could use our knowledge of the gaussian distribution to create asymptotically accurate confidence intervals.
+If we knew $FI(\theta)$, then we could use our knowledge of the gaussian distribution to create asymptotically accurate confidence intervals.  However, in most cases, one doesn't know the true distribution, and therefore one cannot exactly calculate $FI(\theta)$.  One can instead estimate the Fisher Information by calculating it using estimates of unknown parameters obtained from the measured data: $FI(\hat{\theta})$.  This process of estimating unknown parameters of a distribution from an observed dataset and using that distribution to perform inference is known as performing a "Wald Test".
 
-In most cases, one doesn't know the true distribution, and therefore one cannot exactly calculate $FI(\theta)$.  One can instead calculate the Fisher information of the estimated distribution, which is the one calculated using the estimated parameters: $FI(\hat{\theta})$.
+In this case, one can use the measured Fisher Information to calculate the approximate shape of the distribution of the $\hat{\theta} - \theta$, which we know will follow a gaussian distribution asymptotically.  One can then use the known properties of the gaussian distribution to perform inference.
 
-This can then be compared to a gaussian distribution to obtain confidence intervals.  Often, instead considers the squared quantity: $(\hat{\theta} - \theta)^2$.  Since  $\hat{\theta} - \theta$ approximately follows a gaussian, $(\hat{\theta} - \theta)^2$ will follow a Chi-Squared distribution with 1 degree of freedom.  Often, one uses this Chi-Squared distribution to perform a Wald test and obtain confidence intervals.
+One often performs a Wald Test by considering the squared quantity: $(\hat{\theta} - \theta)^2$.  Since  $\hat{\theta} - \theta$ approximately follows a gaussian, $(\hat{\theta} - \theta)^2$ will follow a Chi-Squared distribution with 1 degree of freedom.  One can use the known properties of the Chi-Squared distribution to perform inference.
+
 
 In general, the Wald test uses a rough approximation and often yields inaccurate results.  In particular, if one uses an approximation to the variance of the MLE estimator, the rate of convergence of the approximation will decrease, yielding a less accurate result.  However, the simplicity of the test, and the fact that it can be quickly calculated, makes it commonly used.
+
+An important point to note is that these intervals will be symmetric around the MLE, as they assume that the distribution of the MLE is a gaussian, which is a symmetric distribution.
 
 
 ### Approximation via Wilks Theorem
 
-Another approximation that is commonly used to obtain confidence intervals a result known as Wilks Theorem to obtain an asymptotic distribution for a quantity known as the likelihood ratio.  Statistical tests using this result are often referred to as Likelihood Ratio tests.
+Another approximation that is commonly used to obtain confidence intervals a result known as Wilks Theorem, which can be used to obtain an asymptotic distribution for a quantity known as the likelihood ratio.  Statistical tests using this result are often referred to as Likelihood Ratio tests.
 
 <!--
 We showed above that one can approximate the distribution of a MLE using the Fisher information from the likelihood
@@ -538,13 +541,15 @@ Often, however, one may not have an analytic formula for the likelihood function
 However, one can make use of another theorem which enables the calculation of approximate confidence intervals in the "asymptotic" case of a compound likelihood where n grows large.
 -->
 
-Consider the likelihood of data of a single parameter, $L(x | \theta)$ (the data $x$ may be multi dimensional or arbitrarily complex).  As above, we define $\hat{\theta}$ as the value of $\theta$ that maximizes the likelihood function.  We now define the likelihood ratio as the following function:
+Consider the likelihood of a single parameter model, $L(x | \theta)$ (the data $x$ may be multi dimensional or arbitrarily complex).  As above, we define $\hat{\theta}$ as the value of $\theta$ that maximizes the likelihood function.  We now define the likelihood ratio as the following function:
 
 $$
-LR(\theta) = \frac {L(x | \theta)} {L(x | \hat{\theta})}
+lr(\theta) = \frac {L(x | \theta)} {L(x | \hat{\theta})}
 $$
 
-It can be thought of as the ratio between the likelihood's maximum value and it's value at any point $\theta$.  We will also defined the negative log likelihood ratio as:
+It is a function of the parameter $\theta$ and can be thought of as the ratio between the likelihood's maximum value and it's value at any point $\theta$.  It is important to note that likelihood ratio $lr(\theta)$ is itself a random variable: For a fixed model and a fixed choice of $\theta$, the value of the likelihood ratio will vary across different datasets $x$ (as will the best fit $\hat{\theta}$ in $L(x | \hat{\theta})$).
+
+We will also define the negative log likelihood ratio as:
 
 $$
 nllr(\theta) = -log(\frac {L(x | \theta)} {L(x | \hat{\theta})})
@@ -556,12 +561,12 @@ $$
 p(nllr(\theta_{\text{true}})) \sim \chi^2_m(2*nllr(\theta _{\text{true}}))
 $$
 
-where $m$, the number of free parameters, here is equal to 1 because $\theta$ is the only unknown parameter.  In other words, if you assume that some value of $\theta_{true}$, use your model to generate data with the distribution $p(x | \theta_{true})$, and calculate $nllr(x | \theta_{true})$ on each of those datasets, the values ${nllr(x_1 | \theta_{true}), nllr(x_2 | \theta_{true})...}$ will be distributed as $\chi^2_1$.  Note that this Chi-Squared distribution does NOT depend on the value of $\theta_{true}$ that we chose (this remarkable result is why Wilks theorem is useful).
+where $m$, the number of free parameters, here is equal to 1 because $\theta$ is the only unknown parameter.  In other words, assuming $\theta_{true}$ is the true value of $\theta$, and if you generate datasets with using the distribution $p(x | \theta_{true})$ and calculate $nllr(x | \theta_{true})$ on each of those datasets, the values ${nllr(x_1 | \theta_{true}), nllr(x_2 | \theta_{true})...}$ will be distributed as $\chi^2_1$.  Note that this Chi-Squared distribution does NOT depend on the value of $\theta_{true}$ that we chose (this remarkable result is why Wilks theorem is useful).
 
 Thus, we can use the function $t = 2*nllr(x, \theta)$ as a test statistic to generate confidence intervals on $\theta$.  The fact that the distribution of the test statistic $nllr(x, \theta=\theta_{true})$ under the assumption that $\theta=\theta_{true}$ doesn't depend on the value of $\theta_{true}$ makes $nllr(x, \theta)$ a pivotal quantity (asymptotically).  Therefore, we can use the $\chi^2$ distribution directly to lookup confidence intervals using the following procedure:
 
 - Pick a size $\alpha$
-- Using the $\chi^2$ distribution, find the values $[0, nllr_{\text{critical}}$ such that$\int_0^{nllr_{\text{critical}}}p(nllr)d(nllr) = \alpha$
+- Using the $\chi^2$ distribution, find the values $[0, nllr_{\text{critical}}]$ such that$\int_0^{nllr_{\text{critical}}}p(nllr)d(nllr) = \alpha$
 - Invert $nllr(\theta) <  nllr_{\text{critical}}$ to get all values of $\theta$ for which the probability of $nllr(\theta) > \alpha$
 
 <!--
@@ -581,9 +586,7 @@ $$
 t = 2*nllr = 2 \frac{log(x | \theta_{\text{critical}})}{log(x | \hat{\theta})} = 1.0
 $$
 
-Using the above, we can directly see that the critical value of $\theta$ for a 68.3% confidence interval is the one such that: $\frac{log(x | \theta_{\text{critical}})}{log(x | \hat{\theta})} = \frac{1}{2}$.  Thus, to find a 68.3% confidence interval for the parameter $\theta$, simply find the value of $\theta$ that maximizes $nllr$ (the center of the confidence interval), note $nllr_{max}$ at that point, and scan along values of $\theta$ until the value drops to half of the max.  That value is the boundary of the confidence interval.
-
-An important point to note is that these intervals will be symmetric around the MLE, as they assume that the distribution of the MLE is a gaussian, which is a symmetric distribution.
+Using the above, we can directly see that the critical value of $\theta$ for a 68.3% confidence interval is the one such that: $\frac{log(x | \theta_{\text{critical}})}{log(x | \hat{\theta})} = \frac{1}{2}$.  Thus, to find a 68.3% confidence interval for the parameter $\theta$, simply find the value of $\theta$ that maximizes $nllr$ (the center of the confidence interval), note $nllr_{max}$ at that point, and scan along values of $\theta$ until the value drops to half of that maximum value.  That value is the boundary of the confidence interval.
 
 <!--
 https://arxiv.org/pdf/1007.1727v2.pdf
@@ -618,7 +621,7 @@ http://sites.stat.psu.edu/~sesa/stat504/Lecture/lec3_4up.pdf
 
 ### Approximations using the Profile Likelihood Ratio
 
-Above, we used the Wilk's Theorem to generate confidence intervals using an asymptotic distribution of the likelihood ratio.  We did so in the case of a single parameter of interest $\theta$.  Often, however, one has a model of many parameters, all of which are unknown, but one may only be interested in obtaining confidence intervals of one of those parameters.  We refer to the single parameter that we'd like to perform inference on as the Parameter of Interest, and all other unknown parameters are called Nuisance Parameters.  We can write our likelihood in terms of these:
+Above, we used Wilk's Theorem to generate confidence intervals using an asymptotic distribution of the likelihood ratio.  We did so in the case of a single parameter of interest $\theta$.  Often, however, one has a model of many parameters, all of which are unknown, but one may only be interested in obtaining confidence intervals of one of those parameters.  We refer to the single parameter that we'd like to perform inference on as the Parameter of Interest, and all other unknown parameters are called Nuisance Parameters.  We can write our likelihood in terms of these:
 
 $$
 L = L(x | \theta, \vec{\nu})
@@ -626,7 +629,7 @@ $$
 
 where $x$ is our data, $\theta$ is our parameter of interest, and $\vec{\nu}$ represents our nuisance parameters.  We cannot directly use Wilks theorem above to obtain confidence intervals on $\theta$ if we don't know or assume the values of the nuisance parameters $\vec{\nu}$.  
 
-The maximum likelihood estimators for this likelihood are denoted as $\hat{\theta}$ and $\hat{\vec{\nu}}$.  These represent the values of $\theta$ and $\vec{\nu}$ that simultaneously and unconditionally maximize $L$.  Imagine, instead, that we were to fix a value of $\theta$ to be $\theta_0$ but to then maximize the likelihood conditional on $\theta=\theta_0$.  The values of the nuisance parameter that maximize that form of the likelihood may be different from the values that maximize the unconditional likelihood.  We denote these as $\hat{\hat{\nu}}$.
+The maximum likelihood estimators for this likelihood are denoted as $\hat{\theta}$ and $\hat{\vec{\nu}}$.  These represent the values of $\theta$ and $\vec{\nu}$ that simultaneously and unconditionally maximize $L$.  Imagine, instead, that we were to fix a value of $\theta$ to be $\theta_0$ but to then maximize the likelihood across $\vec{\nu}$ conditional on $\theta=\theta_0$.  The values of the nuisance parameter that maximize that form of the likelihood may be different from the values that maximize the unconditional likelihood.  We denote these as $\hat{\hat{\nu}}$.
 
 Given that definition, we define a quantity known as the profile likelihood ratio as the following:
 
@@ -637,13 +640,13 @@ $$
 In other words, we do the following:
 
 - Find the global maximum of the likelihood across all parameters
-- Fix $\theta$ to be some test value and find the values that maximize $\n$ given that test point
+- Fix $\theta$ to be some test value and find the values that maximize $\nu$ given that test point
 - Calculate the likelihood for the test $\theta$ and $\hat{\hat{\nu}}$, the values that maximize the likelihood over the nuisance parameters at the test point $\theta$
 - Take the ratio of these two quantities.
 
 When there are no nuisance parameters $\nu$, this simply reduces to the standard likelihood ratio.
 
-An extension of Wilks' theorem states that the distribution of $-2$ times the log of the profile likelihood ratio, given that $\theta$ is the true value that generated the data in question, asymptotically converges to a Chi-Squared distribution:
+An extension of Wilks' theorem states that the distribution of $-2 log(\lambda(\theta))$, given that $\theta$ is the true value that generated the data in question, asymptotically converges to a Chi-Squared distribution:
 
 $$
 p(-2 log(\lambda(\theta)) | \theta_{\text{true}, \nu} = \theta)  \sim \chi^2_{s}
@@ -655,7 +658,7 @@ $$
 -2 log(\lambda(\theta)) \sim \chi^2_{s}
 $$
 
-where $s$ is the number of parameters of interest, here only 1, corresponding to $\theta$.  The important point is that the distribution of $\lambda$ is independent of the true values of the nuisance parameters.  Thus, the profile likelihood ratio is a pivotal quantity whose distribution we know (asymptotically).  Therefore, we can invert it to create confidence intervals on the parameter of interest.
+where $s$ is the number of parameters of interest, here only 1 (corresponding to $\theta$).  The important point is that the distribution of $\lambda$ is independent of the true values of the nuisance parameters.  Thus, the profile likelihood ratio is a pivotal quantity whose distribution we know (asymptotically).  Therefore, we can invert it to create confidence intervals on the parameter of interest.
 
 This is a pretty remarkable result.  The likelihood in question could be arbitrarily complicated and contain many nuisance parameters, and yet (given enough data) we can find a distribution that depends only on the parameter of interest and that has a simple, well-studied analytic form.
 
