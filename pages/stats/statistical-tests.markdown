@@ -56,6 +56,24 @@ Note that sample mean is a sufficient test statistic for estimating the mean of 
 _____
 
 
+***You have a set of Gaussian distributed data that you know has zero mean.  You'd like to perform inference on the variance of the unknown gaussian distribution***
+
+From our earlier work on the gaussian, we know that the distribution of the sample variance of the gaussian is given by:
+
+$$
+s^2 ~ \frac{\sigma^2}{n-1} \chi^2_{n-1}
+$$
+
+Therefore, the test statistic:
+
+$$
+t = \frac{s^2(n-1)}{\sigma^2}
+$$
+
+is a pivotal quantity that follows a Chi-Squared distribution.  We can use its known cumulative distribution to create intervals of a chose size $\alpha$ in the space of the test statistic and then invert the definition of the test statistic to obtain intervals in $\sigma$.
+
+______
+
 ***You have a dataset consisting of a number of 1-d observations which you assume come from a gaussian distribution.  You know neither the true mean nor the true variance and would like to perform inference on the mean (but you don't care to learn about the uncertainty)***
 
 <!--If I assume that my data comes from some Gaussian distribution with unknown mean and unknown variance, does it come from a gaussian with a given mean (regardless of the unknown variance)?-->
@@ -83,7 +101,7 @@ References:
 _____
 
 
-***I have a dataset consisting of a number of 1-d observations, which I assume come from a gaussian distribution.  I want to perform inference on both the mean and the variance parameters.***
+***You have a dataset consisting of a number of 1-d observations, which you assume come from a gaussian distribution.  You want to perform inference on both the mean and the variance parameters.***
 
 Unlike previous examples, we're here looking to perform simultaneous inference on two parameters.  Instead of making a confidence interval for a single parameter, we instead will attempt to make a confidence region, consisting of a 2-d region in ($\mu$, $\sigma$) space.
 
@@ -116,7 +134,7 @@ then, we can leverage the following properties:
 Knowing this, one can consider the somewhat simple test statistic $(t, s^2)$.  These two variables are independent, and therefore we can write down the distribution:
 
 $$
-p(t, s^2) = t_{n-1}\chi^2_{n-1}
+p(t, s^2) = t_{n-1}(t)\chi^2_{n-1}(s^2)
 $$
 
 Importantly, as we discussed above, this is the distribution for all values of $\mu$ and $\sigma$ (and this is possible because $\mu$ and $\sigma$ are used in the definitions of $t$ and $s^2$ to cancel out their influence on the distribution).
@@ -127,7 +145,7 @@ Even with this distribution in hand, however, we are not done.  There is a lot o
 - Symmetry of the region
 - Minimizing the overall area of the region
 
-(In this example, one has freedom to, in a sense, divvy the $alpha$ between the distributions of $t$ or $s^2$, making the region very wide in $t$ and narrow in $\sigma$, or visa versa, as long as it's total area integrates to $\alpha$).
+(In this example, one has freedom to, in a sense, divvy the $\alpha$ between the distributions of $t$ or $s^2$, making the region very wide in $t$ and narrow in $\sigma$, or visa versa, as long as it's total area integrates to $\alpha$).
 
 One reasonable choice is to define a region defined by $(-|a| < t < |a|)$ and $(b < s^2 < c)$ with $a = \alpha_1/2$ 
 
@@ -149,7 +167,7 @@ _____
 
 ### Comparing measured data to a various distributions
 
-***I have a dataset of binary data consisting of measured $N_s$ successes out of a total of $N$ trials.  I assume that my data comes from a binomial distribution and I want to perform inference on the true success rate $p$ ***
+***You have a dataset of binary data consisting of measured $N_s$ successes out of a total of $N$ trials.  You assume that my data comes from a binomial distribution and you want to perform inference on the true success rate $p$ ***
 
 If N is large, one can use the fact that a binomial distribution approaches a normal distribution.  The mean of the gaussian approximation is given by:
 
@@ -187,7 +205,7 @@ http://www.ucl.ac.uk/english-usage/staff/sean/resources/binomialpoisson.pdf
 
 _____
 
-***I have measured $N$ counts.  I assume that my data comes from a poisson distribution and I want to perform inference on the true rate $\lambda$***
+***You have observed a random process that can occur multiple times and have measured $N$ counts.  You assume that the data comes from a poisson distribution and you want to perform inference on the true rate $\lambda$***
 
 Similar to how we treat the binomial distribution, we can start by using the gaussian approximation to the poisson.  To do this we associate:
 
@@ -234,21 +252,26 @@ https://www.ine.pt/revstat/pdf/rs120203.pdf
 
 _____
 
-***Does my data come from some known (but arbitrary) continuous probability distribution?***
+***You have a set of continuous data and you want to determine whether it came from a known (but arbitrary) probability distribution?***
 
-Perform a one-sample Kolmogorov-Smirnov test.
+One can perform a one-sample Kolmogorov-Smirnov test to determine arbitrary continuous data likely came from some known distribution.
 
 A K-S test is an exact test comparing the distribution of a sample to a known theoretical distribution.  The K-S test is valid regardless of the underlying distribution the data is being compared to.  The exactness, however, only applies if the theoretical distribution being compared against is fully specified: one cannot fit parameters from the data and then perform a K-S test.
 
-The test statistic for a K-S test is is the the maximum deviation between the theoretical CDF and the empirical CDF of the measured data.
+The test statistic for a K-S test is is the the maximum deviation between the theoretical CDF and the empirical CDF of the measured data, where the empirical CDF is given by:
 
 $$
-Dn=sup_x[|Fn(x)−F_0(x)|]
+CDF_{em}(x) = \frac{1}{N} (\text{# of data points < x})
 $$
 
-where the $sup_x$ is the suprema (maximum), $Fn(x)$ is the nth value of the empirical cumulative distribution, and $F_0(x)$ is the value of the true distribution at point $x$.
+The test statistic is then:
+$$
+D=sup_x(|F(x) - CDF_{em}(x)|)
+$$
 
-The distribution of this test statistic, under the hypothesis that the data is drawn from the true distribution $F$, is independent of the true distribution $F$.  Therefore, one can use it as a pivotal quantity and compare the value of the test statistic to the known distribution of a K-S test statistic.  The distribution of this test statistic is typically used via a lookup table.
+where the $sup_x$ is the suprema (maximum) and $F(x)$ value of the true cumulative distribution at point $x$.
+
+The distribution of $\sqrt{n}D$, under the hypothesis that the data is drawn from the true distribution $f$, follows what is known as the Kolmogorov distribution.  Because the distribution of the test statistic is independent of the details of the true pdf, the test statistic is a pivotal quantity that can be used to calculate confidence intervals using the the test statistic's known distribution.  Typically, the distribution of this test statistic is used via a lookup table.
 
 <!--
 References:
@@ -258,7 +281,7 @@ References:
 ____
 
 
-***Does my binned data come from a known distribution (describing binned data)?***
+***You have a collection of counts in various bins.  You want to know if that binned data comes from a known distribution (describing binned data)?***
 
 If one has a binned dataset consisting of measured bin counts and a theoretical distribution that predicts the expected bin count, one can use a Chi-Squared test (goodness-of-fit test) to calculate the p-value that the data was generated by the theoretical distribution.
 
@@ -297,9 +320,9 @@ ____
 ### Determining if two measured datasets came from the same distribution.
 
 
-*** I have two datasets of continuous data, and I assume that they are both drawn from gaussian distributions and those distributions have the same variance, which is unknown to me.  I want to determine if the two gaussian distributions have the same mean.***
+*** You have two datasets of continuous data, and you assume that they are both drawn from gaussian distributions with the same variance, which is unknown to me.  You want to determine if the two gaussian distributions have the same mean.***
 
-This can be solved by performing a t-test.
+This can be solved by performing a statistical test by creating a test statistic that follows the t-distribution.
 
 Assume that we have:
 
@@ -349,7 +372,7 @@ This is an exact test, applicable for all values of n and m.  Further, if the sa
 
 _____
 
-*** I have two 1-d datasets drawn from gaussian distributions, but I don't assume anything about the means and variance of those distributions.  I want to know if both distributions are the same.***
+*** You have two 1-d datasets drawn from gaussian distributions, but you don't assume anything about the means and variance of those distributions.  You want to know if both distributions are the same.***
 
 This problem is known as the Behrens-Fisher Problem.  A number of approximate solutions exist.
 
@@ -363,31 +386,44 @@ http://www.sciencedirect.com/science/article/pii/S0378375806002382
 
 _____
 
-***I have two datasets of continuous data.  I have no assumptions about the underlying distribution that generated them.  I want to test if they came from the same continuous probability distribution***
+***You have two datasets of continuous data.  You have no assumptions about the underlying distribution that generated them.  You want to test if they came from the same continuous probability distribution***
 
-Perform a two-sample Kolmogorov-Smirnov test.
+To determine if two datasets of continuous, 1-d data came from the same distribution (without specifying what that distribution is), one can perform what is called a two-sample Kolmogorov-Smirnov test (2 sample KS test).
+
+Similar one-sample KS test described above, this test uses the empirical cumulative distributions of the two datasets to create a test statistic.  Specifically, defining the empirical cumulative distribution as:
+
+$$
+CDF_{em}(x) = \frac{1}{N} (\text{# of data points < x})
+$$
+
+then the test statistic of our problem becomes:
+
+$$
+D=sup_x(|CDF_{em}^A(x) - CDF_{em}^B(x)|)
+$$
+
+where $CDF_{em}^A$ and $CDF_{em}^B$ are the empirical cumulative distributions of the two datasets $A$ and $B$. 
+
+The distribution of $\sqrt{\frac{nm}{n+m}}D$ follows the same Kolmogorov Distribution as in the one-sample test.  One can lookup the properties of the cumulative distribution function of the Kolmogorov distribution to calculate the p-value that these datasets come from the same distribution.
 
 _____
 
-***I have two sets of binary data (weighted coin flips, or counts of successes and failures).  Do they have the same intrinsic rate?***
+***You have two sets of binary data (weighted coin flips, or counts of successes and failures) with potentially differing counts N_1 and N_2.  You want to infer if they have the same intrinsic rate?***
 
 To solve this, we have to make certain assumptions.  The main assumption that we're going to make here is that each dataset comes from a binomial distribution with a fixed rate.  The question then becomes: for both of these distributions, is the rate the same?
 
 There are a few ways to address this question.
 
-If we assume the samples are sufficiently large and that we can approximate the binomial distribution by a gaussian.  Here, we're assuming that we may have different counts for each class.  Therefore, in the null hypothesis that the proportions from both classes are equal ($p_1 = p_2 = p$), we'll have draws from two gaussians with the same mean but different standard deviations (due to the different sample sizes).
-
-Let $N_1$ and $N_2$ be the counts in groups 1 and 2, respectively, and let $\hat{p_1}$ and $\hat{p_2}$ be the observed proportions in each group.
+If we assume the samples are sufficiently large, we can approximate the binomial distribution by a gaussian.  Because the counts of each dataset vary, the variance of the approximate gaussians will be different.  The null hypothesis that we're trying to test is whether the means of these two approximate gaussians are equal ($p_1 = p_2 = p$).
 
 Recall that the gaussian approximation to a binomial with true rate $p$ involves setting:
 
 $$
-\begin{eqnarray}
-\mu &\rightarrow& Np \\
-\sigma &\rightarrow& Np(1-p) \\
-\end{eqnarray}
+\mu \rightarrow Np
 $$
-
+$$
+\sigma \rightarrow Np(1-p)
+$$
 
 and therefore the quantity
 
@@ -398,10 +434,10 @@ $$
 is gaussian distributed.  Further, recall that the difference in gaussian distributed variables $\hat{p_1} - \hat{p_2}$ is itself gaussian distributed with
 
 $$
-\begin{eqnarray}
-\mu &=& p_1−p_2 \\
-\sigma^2 &=& \frac{p_1(1-p_1}{N_1} + \frac{p_2(1-p_2)}{N_2} \\
-\end{eqnarray}
+\mu = p_1−p_2 
+$$
+$$
+\sigma^2 = \frac{p_1(1-p_1}{N_1} + \frac{p_2(1-p_2)}{N_2}
 $$
 
 which means that the quantity
@@ -437,7 +473,7 @@ https://onlinecourses.science.psu.edu/stat414/node/268
 -->
 
 
-An exact solution to this problem uses Bernard's test.  The challenge of the test is taking into account the nuisance parameter of the true binomial rate (remember, we are only testing that they're the same binomial, we don't care what their common rate is).  This test addresses the issue in a brute-force way:  It calculates the p-value for each possible value of the parameter $p$ and then takes the maximum of all p-values (the most conservative choice).  For each possible value of the true rate, it calculates the p-value by considering all possible observable counts.  This is conceptually simple but can be computationally expensive.  Since there is only 1 nuisance parameter $p$, one can have a computer grid-search through a range of values relatively quickly.
+An exact solution to this problem uses Bernard's test.  The aspect of this problem that makes an exact solution challenging is the fact that the true binomial rate is a nuisance parameter (remember, we are only testing that they're the same binomial, we don't care what their common rate is).  Bernard's test addresses the issue in a brute-force way:  It calculates the p-value for each possible value of the parameter $p$ and then takes the maximum of all p-values (the most conservative choice).  For each possible value of the true rate, it calculates the p-value by considering all possible observable counts.  This is conceptually simple but can be computationally expensive.  Since there is only 1 nuisance parameter $p$, one can have a computer grid-search through a range of values relatively quickly.
 
 _____
 _____
@@ -642,105 +678,3 @@ https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&uact=8&v
 
 ______
 ______
-
-### Miscellaneous Problems
-
-
-***I fit a regression. How statistically significant is the slope?***
-
-If we fit:
-
-Y = a + bx
-
-we are testing the p-value of whether b is equal to 0.  
-
-If we agree with the assumptions of the linear regression fit (that the data is a line with gaussian errors having 0 bias), then it turns out that this follows a t-distribution with n-2 degrees of freedom (where n is the number of points fitted).
-
-
-
-#### Test whether the variance of a sample, assumed to be gaussian distributed, has a variance of some fixed value V.
-
-The test statistic is the sample variance divided by the test variance, and the chi-squared distribution has n-1 degrees of freedom (where n is the sample size).
-
-
-#### Test for independence of 2 groups with 2 categories.  
-
-
-#### Test for "goodness of fit"
-
-
-#### Test that N categorical observations match expected distribution (the loaded dice test) 
-
-
-#### Test for independence of M groups with N categories.
-
-Assume that we have M separate groups, and in each group, individual observations can fall into one of N categories.  We are going to test whether all groups have the same probability distribution over the N categories. 
-
-
-This is best represented by a table:
-
-|       | category: | X   | Y   | Z   |
-|-------|-----------|-----|-----|-----|
-| group |           |     |     |     |
-| A     |           | nAX | nAY | nAZ |
-| B     |           | nBX | nBY | nBZ |
-| C     |           | nCX | nCY | nCZ |
-
-In this example, we have 3 sample groups (A, B, and C) and 3 categories that any individual data point can fall into (X, Y, and Z).  We do a sample/experiment/survey and find the group counts, per category, as defined by the `n` values in the table.
-
-To do the test, we take the following procedure:
-- For each category, calculate the OVERALL rate of that category (ignoring groups)
-- For each group, given the group size and using the OVERALL rate, calculate the expected number of observations of each category
-- For each cell, calculate:
-
-    $$\frac{(observed-expected)^2}{expected}$$
-    
-
-- Sum these values over all cells to calculate the test statistic
-- Compare the test statistic to a chi-square distribution with degrees of freedom equal to (number of rows - 1)*(number of columns - 1)
-
-Reference: https://en.wikipedia.org/wiki/Chi-squared_test
-
-
-
-
-## Specific Tests
-
-
-#### What is a Gaussian Z test?
-
-Any frequentist p-value based test where the distribution of the test statistic under the null hypothesis is gaussian.
-
-
-Typically, this involves determining of a distribution of observations is drawn fro a gaussian distribution with known mean and standard deviation.  
-
-
-Another common set of examples is when examining the maximum likelihood estimate of a statistical fit.  Maximum likelihood estimates are approximately gaussian (and the variance from gaussianity can be determined using the Fisher information).  If $\hat{\theta}}$ is the maximum likelihood estimate of the experiment and $\theta_0$ is the estimate under the null hypothesis, then the following is normally distributed:
-
-$$({\hat{\theta }}-\theta _{0})/{{\rm {SE}}}({\hat  {\theta }})$$
-
-
-<a name="students-t"></a>
-#### What is a Student's t test?
-
-<a name="chi-squared"></a>
-#### What is a chi-squared test?
-
-
-A Chi-Squared test refers to many statistical tests that have one thing in common: the distribution of the test statistic under the null hypothesis follows the chi-squared distribution (with n degrees of freedom, where n can be defined based on the problem at hand).
-
-The chi-squared distribution is the distribution of the sum of the squares of N independent random variables (which turns out to be common, making the chi-squared test useful).
-
-Chi-Squared tests are frequentist and are all based on rejecting a null hypothesis using the p-value.
-
-Chi-Squared tests are approximations that assume sufficient statistics.  There are a few rules of thumbs here:
-- At least 5 counts in each observation
-- At least 5 counts in at least 80% of observations
-
-It also assumes that all observations are independent.
-
-A subset of all Chi-Squared tests fall into the category of Pearson's chi-squared test, which involves comparing an observed rate of an observation falling into one of several categories to an expected rate (which is either theoretical or derived from a larger dataset).  These tests generally take the following form:
-
-- Calculate the square of the difference between observed rate and expected rate, all divided by the expected rate
-- Sum this for every category to form the test statistic
-- Determine the degrees of freedom by the number of categories - the number of any "free parameters".
