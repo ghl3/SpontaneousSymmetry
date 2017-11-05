@@ -14,11 +14,13 @@ Regression is one of the most useful tools for a statistical modeler.  It is an 
 
 ## Linear Regression
 
-Linear regression is a statistical model that describes the distribution of a variable $y$ (known as the "target") as a function of a number of "feature" variables $x_1, ..., x_n$.  The model is typically applied to instances where we have multiple independent draws from the x and y vectors. The model consists of the following assumptions:
+Linear regression is a statistical model that describes the distribution of a variable $y$ (known as the "target") as a function of a number of "feature" variables $\vec{x} = x_1, ..., x_n$.  The model is typically applied to situations where we have multiple iid draws from the join distribution of $\vec{x}$ and $y$. The model consists of the following assumptions:
 
-- The distribution of $y$ is a Gaussian that is centered around a mean $\hat{y}$.
-- The variance of the gaussian is an unknown variable $\sigma$
-- The value of $\hat{y}$ is a linear function of the feature variables:
+- The distribution of $y$ is a Gaussian that is centered around a mean $\hat{y}$ with variance $\sigma$
+- The mean of the gaussian, $\hat{y}$, is a linear function of the feature variables
+- The variance of the gaussian, $\sigma$, is unknown and fixed
+
+The mean of the target $\hat{y}$ is given by:
 
 $$
 \hat{y} = w_1x_1 + w_2x_2 + ... + w_ix_i + C
@@ -31,7 +33,7 @@ where $C$ is a constant known as the "intercept".  We will use a simplified nota
 The likelihood function for this model can be written as:
 
 $$
-L({y_n, x_n^i} | w_0...w_i, \sigma) = \prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma)L(x_n^0, ..., x_n^i)
+L({y_n, x_n^i} | w_0,...,w_i, \sigma) = \prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma)L(x_n^0, ..., x_n^i)
 $$
 
 The likelihood consists of two parts: The likelihood for the values of $x^i$ and the likelihood for the value of $y$ conditional on those values of $x^i$.  For the rest of this discussion, we will ignore the second part of the likelihood $L(\vec{x})$, as when performing regression we are typically interested in obtaining the set of weights $w_i$, which do not appear in the term $L(\vec{x})$.  This is equivalent to assuming that the $x^i$ are fixed in all of the statistical tests that will follow, and only the targets $y_n$ vary.
@@ -168,7 +170,7 @@ On the other hand, the estimator for $\sigma$ is biased.  One can create an unbi
 
 ### Prediction Errors
 
-When actually using a regression to make a prediction on new data, one often wants to know what the uncertainty on that prediction is.  To make this more concrete, let's think through where this error comes from using a generative perspective.  Say that assume that the true distribution of $p(y|x)$ = $gauss(w_{true} \cdot x | \sigma)$.  We then generate a dataset of size N and estimate $\hat{w}$ and $\hat{\sigma}$ from that dataset, and then apply the predictions to a test point $x_0$ to obtain $\hat{y(x_0)}$.  In parallel, we take our true distribution and make a draw from it to obtain $y_{true}(x_0)$.  The questions is: What is the mean squared error between $y_{true}(x_0)$ and $\hat{y(x_0)}$.
+When actually using a regression to make a prediction on new data, one often wants to know what the uncertainty on that prediction is.  To make this more concrete, let's think through where this error comes from using a generative perspective.  Say that assume that the true distribution of $p(y|x)$ = $gauss(w_{true} \cdot x | \sigma)$.  We then generate a dataset of size N and estimate $\hat{w}$ and $\hat{\sigma}$ from that dataset, and then apply the predictions to a test point $x_0$ to obtain $\hat{y}(x_0)$.  In parallel, we take our true distribution and make a draw from it to obtain $y_{true}(x_0)$.  The questions is: What is the mean squared error between $y_{true}(x_0)$ and $\hat{y}(x_0)$.
 
 The sources of error here are the following:
 
@@ -267,8 +269,7 @@ http://reliawiki.org/index.php/Simple_Linear_Regression_Analysis
 
 One may be tempted to perform this test on every parameter individually and find those that are not significant.  However, with many parameters, the probability of finding ANY parameter that is not significant becomes high.  If you do enough p-value tests, you're bound to find a "significant" result by chance alone.
 
-As an alternative to performing a series of t-tests, one can perform a single test to compare two models that differ by using a different number of features.  Typically, this test compares the nominal model against the most minimal model possible: one in which the only variable is the intercept.  In other words, one performs a test to see if the nominal model is significantly better than a model with no features at all.  A model with more coefficients will always produce a better overall fit than a model with fewer or no free coefficients (since it is more flexible).  The question is whether this fit is significantly better than the 0-parameter model.
-
+As an alternative to performing a series of t-tests, one can perform a single test to compare two models that differ by using a different number of features.  Typically, this test compares the nominal model against the most minimal model possible: one in which the only variable is the intercept.  In other words, one performs a test to see if the nominal model is significantly better than a model with no features at all.  A model with more coefficients will always produce a better overall fit than a model with fewer or no free coefficients (since it is more flexible).  The question is whether this fit is significantly better than the 0-parameter model.  This procedure is usually performed by conducting an F-Test, which compares the fit of the model with all parameters to the fit of a model with only an intercept.  It attempts to answer the question, "Is my model fitting to anything real other than just noise".
 
 
 
@@ -285,16 +286,15 @@ https://onlinecourses.science.psu.edu/stat501/node/295
 
 <!-- Issues -->
 
-### Issues and Pitfalls
+### Improving the Fit
 
-Correlated Inputs
-Contrary to a common mis-understanding, a regression model doesn't assume that input features are statistically uncorrelated.  The only assumption is that the mean of the dependent variable, $y$, is determined by the weighted sum of the inputs.  Two features being statistically correlated with each other (one tends to be high when the other is high and visa versa, in some population) doesn't break this assumption.  However, it may lead to misleading interpretations when fitting the data.  Specifically, the presence of correlated features will cause the variance on the fitted value of the features to be larger than the variance of any individual feature would be.  Intuitively, if you copy a feature exactly, the model has full freedom to adjust the coefficients for those features as long as their sum remains the same.  This can be thought of as high variance on the fitted parameters (since they cannot be fitted unquely).  This can hurt the interpretability of a model: you may want to draw a conclusion based on the value of one of the fitted parameters, but since it is so volitile, your conclusion will have little statistical significance.
+Regularization
 
-The extent to which the variance of fitted predictors is increased is known as the Variance Inflation Factor (VIF).
 
-However, multicollinearity often does not effect the overall performance of the model.  
+Contrary to a common mis-understanding, a regression model doesn't assume that input features are statistically uncorrelated.  The only assumption is that the mean of the dependent variable, $y$, is determined by the weighted sum of the inputs.  Having features that are correlated with each other (for example, when one tends to be high while the other is high and visa versa) doesn't break this assumption.  However, it may lead to misleading interpretations when fitting the data.  Specifically, the presence of correlated features will cause the variance on the fitted value of the features to be larger than the variance of any individual feature would be.  Intuitively, if you copy a feature exactly, the model has full freedom to adjust the coefficients for those features as long as their sum remains the same.  This leads to a high variance on the fitted values of the parameters (since they cannot be fitted unquely).  This can hurt the interpretability of a model: you may want to draw a conclusion based on the value of one of the fitted parameters, but since it is so volatile, your conclusion will have little statistical significance.
 
-The variances of the fitted parameters are higher
+The extent to which the variance of fitted predictors is increased is known as the Variance Inflation Factor (VIF).  However, multicollinearity tends to not effect the overall performance of the model.
+
 
 
 <!--
@@ -312,18 +312,17 @@ http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/05/lecture-05.pdf
 http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/06/lecture-06.pdf
 -->
 
-### Regularization
 
 
 
 ## Logistic Regression
 
 
-Logistic regression is a variation on normal regression, designed to be used for classification instead of the prediction of a continuous value.  We will here apply logistic regression to the problem of binary classification, where the two classes are represented by the values 0 and 1 of the target variable.
+Logistic regression is a variation on normal regression that is designed to be used for classification instead of the prediction of a continuous value.  We will here apply logistic regression to the problem of binary classification, where the two classes are represented by the target variable values of 0 and 1.
 
-One may be tempted to solve this problem by encoding the target into 0 and 1 values and then performing normal regression.  However, this will create a regression function whose range can be all real numbers, where as the real range of our target variable is only the discrete values 0 and 1.  One may attempt to fix this by associating values from the regression that are closer to 1 with the class 1 and values that are closer to 0 with the class 0.  And this may work reasonably well!  Logistic regression is essentially a more principled version of this approach, and the extra formalism endows it with some nice additional properties.
+One may be tempted to solve this problem by encoding the target into 0 and 1 values and then performing normal regression.  However, this will create a regression function whose range can be all real numbers, where as the real range of our target variable is only the discrete values 0 and 1.  One may attempt to fix this by picking a threshold in the space of the regression output and labeling points with value greater that this threshold as being class 1 and points less than the threshold as being class 0.  And this may work reasonably well!  Logistic regression is essentially a more principled version of this approach, and the extra formalism endows it with some nice additional properties.
 
-It's clear that a regression by itself can't be used to model a discrete variable; regressions model continuous variables.  So, in order to be able to use a regression in the context of a classification problem, we have to find a continuous variable that occurs within the classification model and we need to find a way to use regression to model that variable.
+It's clear that a regression by itself can't be used to model a discrete variable, as regressions model only continuous variables.  So, in order to be able to use a regression in the context of a classification problem, we have to find a continuous variable that occurs within the classification model and we need to find a way to use regression to model that variable.
 
 A common model for binary classification problems is assuming that each data point randomly picks between the two output classes with some probability, and that probability depends on the value of the input features:
 
@@ -333,9 +332,9 @@ p(y=0 | x) &=& 1 - f(x) \\
 \end{align}
 $$
 
-where $f(x)$ is has a range between 0 and 1 (since it represents a probability).  The probability $p(y|x)$ for a single data row represents a Bernouilli variable, or a weighted coin-flip.  We're getting closer: we've taken a discrete problem and identified a continuous variable $p$ that we can try to model with a regression.  However, our model for $p$ must take values between 0 and 1, so using a regression out-of-the-box won't work here.  But we're conceptually close; we just need to come up with a variable that, when high (approaching infinity), can be associated with probabilities approaching 1 and, when low (approaching negative infinity) can be associated with probabilities approaching 0.
+where $f(x)$ is has a range between 0 and 1 (since it represents a probability).  The probability $p(y|x)$ for a single data row represents a Bernouilli variable, or a weighted coin-flip.  We're getting closer: we've taken a discrete problem and identified a continuous variable $p$ that we can try to model with a regression.  However, our model for $p$ must produce values between 0 and 1, so using a regression out-of-the-box won't work here.  But we're conceptually close.  We just need to come up with a variable that, when high (approaching infinity), can be associated with probabilities approaching 1 and, when low (approaching negative infinity) can be associated with probabilities approaching 0.
 
-Toward that end, we define a concept known as the  "odds ratio".  Imagine an event occurs $n$ times out of a total of $N$ tries.  The probability can be estimated as $n/N$.  We define the odds ratio to be: $n / (N-n)$.  It is the ratio of the amount of times it occurred to the amount of times it did not occur.  If the event occurred every time ($n=N$), then the odds ratio is infinity.  If the event never occurred, then the odds ratio is 0.  This concept, therefore, fits our need.
+Toward that end, we define a concept known as the  "odds ratio".  Imagine an event occurs $n$ times out of a total of $N$ tries.  The probability can be estimated as $n/N$.  We define the odds ratio to be: $n / (N-n)$.  It is the ratio of the amount of times it occurred to the amount of times it did not occur.  If the event occurred every time, then the odds ratio is infinity.  If the event never occurred, then the odds ratio is 0.  This concept, therefore, fits our need.
 
 One can determine the probability from the odds, and visa versa, using the following:
 
@@ -372,13 +371,13 @@ $$\begin{align}
 
 However, I find it conceptually simpler to think of the probabilities as being modeled by the logistic of the output of our regression.
 
-Part of our logic involved identifying the odds as an intermediate quantity to take us from our regression's output to the class probabilities.  But, really, all we needed was a function that took a number whose range is between negative and positive infinity (the regression output) and turns it into a number whose value is between 0 and 1 (the probabilities).  The logistic function does this, and has an odds-based motivation.  But really, any function with that property would work.  An example of another such function that is commonly used when applying regression to classification is the probit function, which is the cumulative distribution of a gaussian (whose value therefore varies between 0 and 1).  Using this function gives us "Probit Regression", and it is a generalization of the logic we used to derive "Logistic regression".  We will talk about other variations on regression later when we discuss generalized additive models.
+Part of our logic involved identifying the odds as an intermediate quantity to take us from our regression's output to the class probabilities.  But, really, all we needed was a function that took a number whose range is between negative and positive infinity (the regression output) and turns it into a number whose value is between 0 and 1 (the probabilities).  The logistic function does this, and has an odds-based motivation.  But really, any function with that property would work.  An example of another such function that is commonly used when applying regression to classification is the probit function, which is the cumulative distribution of a gaussian (whose value therefore varies between 0 and 1).  Using this function gives us "Probit Regression", and it is a generalization of the logic we used to derive "Logistic regression".  <!--We will talk about other variations on regression later when we discuss generalized additive models.-->
 
 We can now readily write down the likelihood for the logistic regression model.  Since the model directly calculates the probabilities of each class for each row, we can use these probabilities to determine the total probability of the data we observed given the model:
 
 $$\begin{align}
-p(y_i=1 | x_i) &=& logistic(\sum_j w_j x_i^j) \\
-L(x, y | w) &=& \prod_{i: y_i = 1} p(y=1 | x_i)  \prod_{i: y_i = 0} (1 - p(y_i=1 | x_i)) \\
+p(y_i=1 | x_i) &= logistic(\sum_j w_j x_i^j) \\
+L(x, y | w) &= \prod_{i: y_i = 1} p(y=1 | x_i)  \prod_{i: y_i = 0} (1 - p(y_i=1 | x_i)) \\
 \end{align}$$
 
 Plugging in $p(y_i=1 | x_i)$, we can obtain the log likelihood as:
