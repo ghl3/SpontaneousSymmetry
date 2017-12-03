@@ -3,7 +3,7 @@ author:
 date: 2017-11-05 13:06:42.968148
 layout: post
 slug: alpha-four
-title: Alpha Four
+title: AlphaFour
 
 id: 446
 ---
@@ -64,4 +64,4 @@ And of course, having built the AI, I played against it.  I'm not the most skill
 But the most impressive part was how conceptually easy it was to train this AI.  I did nothing especially novel nor did we have to program in features or strategies related to the game itself.  And I didn't have to have any specific knowledge of ConnectFour strategies.  All we needed to do was program the rules and train (many) games, and the model was able to build off of that.
 
 
-
+The code and scripts used to build and test these models can be found <a href="https://github.com/ghl3/AlphaFour">here</a>
