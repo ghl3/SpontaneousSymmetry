@@ -14,7 +14,7 @@ Regression is one of the most useful tools for a statistical modeler.  It is an 
 
 ## Linear Regression
 
-Linear regression is a statistical model that describes the distribution of a variable $y$ (known as the "target") as a function of a number of "feature" variables $\vec{x} = x_1, ..., x_n$.  The model is typically applied to situations where we have multiple iid draws from the join distribution of $\vec{x}$ and $y$. The model consists of the following assumptions:
+Linear regression is a statistical model that relates the distribution of a continuous variable $y$ (known as the "target") to a function of a number of "feature" variables $\vec{x} = (x_1, ..., x_n)$.  The model is typically applied to situations where we have multiple iid draws from the join distribution of $\vec{x}$ and $y$. The model consists of the following assumptions:
 
 - The distribution of $y$ is a Gaussian that is centered around a mean $\hat{y}$ with variance $\sigma$
 - The mean of the gaussian, $\hat{y}$, is a linear function of the feature variables
@@ -36,7 +36,7 @@ $$
 L({y_n, x_n^i} | w_0,...,w_i, \sigma) = \prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma)L(x_n^0, ..., x_n^i)
 $$
 
-The likelihood consists of two parts: The likelihood for the values of $x^i$ and the likelihood for the value of $y$ conditional on those values of $x^i$.  For the rest of this discussion, we will ignore the second part of the likelihood $L(\vec{x})$, as when performing regression we are typically interested in obtaining the set of weights $w_i$, which do not appear in the term $L(\vec{x})$.  This is equivalent to assuming that the $x^i$ are fixed in all of the statistical tests that will follow, and only the targets $y_n$ vary.
+The likelihood consists of two parts: The likelihood for the features $x^i$ and the likelihood for the value of $y$ conditional on the feature values.  For the rest of this discussion, we will ignore the second part of the likelihood $L(\vec{x})$, as when performing regression we are typically interested in obtaining the set of weights $w_i$, which do not appear in the term $L(\vec{x})$.  This is equivalent to assuming that the $x^i$ are fixed in all of the statistical tests that will follow, and only the targets $y_n$ vary.
 
 This likelihood has $i+2$ parameters, where $i$ is the number of non-intercept features chosen for the model (different choices of features would result in different models with different likelihood functions).  An important assumption of the model is the fact that $\sigma$ is a constant: It doesn't depend on the values of $x_n^i$.  This means that the gaussian "noise" is independent of the features (errors that are independent of the features like this are said to be "heteroscedastic").
 
@@ -52,15 +52,15 @@ It is important to note that including more points $(y_n, x_n^i)$ doesn't add mo
 
 ### Fitting the Model
 
-To "fit" a logistic regression model is to obtain the values of the weights.  The most common technique used to determine the weights is to find their maximum likelihood estimators.  It turns out that one can obtain the maximum likelihood estimators for these parameters exactly (which is one of the most important properties of linear regression).  Before presenting this result, we will re-write the likelihood function as the log-likelhood (to better match how it is most commonly encountered in statistical textbooks):
+To "fit" a logistic regression model is to obtain the values of the weights.  The most common technique used to determine the weights is to find their maximum likelihood estimators.  It turns out that one can obtain the maximum likelihood estimators for these parameters exactly (which is one of the most important properties of linear regression).  Before presenting this result, we will re-write the likelihood function as the negative-log-likelhood (to better match how it is most commonly encountered in statistical textbooks):
 
 $$\begin{align}
-log(y_n, x_n^i | {w_i}, \sigma)   & = &  \sum_n log(Gauss(y_n | x_n^i \cdot w_i, \sigma)) \\
+-log(y_n, x_n^i | {w_i}, \sigma)   & = &  \sum_n -log(Gauss(y_n | x_n^i \cdot w_i, \sigma)) \\
    & = & \sum_n  \frac{(y_n - (x_n^i \cdot w_i))^2}{\sigma^2} + \frac{N}{2} log(\sigma^2) \\
 \end{align}
 $$
 
-Since maximizing the likelihood is equivalent to minimizing the log-likelihood, one can obtain the maximum likelihood estimators by minimizing the above equation for the log-likelihood.  Often, performing inference on a regression model is viewed from an optimization perspective, in which case the log likelihood ratio is interpreted as a "cost" function that one must minimize.
+Since maximizing the likelihood is equivalent to minimizing the negative-log-likelihood, one can obtain the maximum likelihood estimators by minimizing the above equation for the negative-log-likelihood.  Often, performing inference on a regression model is viewed from an optimization perspective, in which case the log likelihood ratio is interpreted as a "cost" function that one must minimize.
 
 In particular, one can see from the above that the optimal coefficients for $\vec{w}$ can be found by minimizing the term:
 
@@ -117,13 +117,19 @@ $$
 Specifically, one can show that the distribution of $w_i$ is given by:
 
 $$
-p(\hat{w_i}) = gauss(\hat{w_i} | w_i, \sigma \sqrt{S_{kk}})
+p(\hat{w_i}) = gauss(\hat{w_i} | w_i, \sigma \sqrt{S_{ii}})
 $$
 
-where 
+where $S_{ii}$ is the ith diagonal element of the matrix:
 
 $$
-S_{kk} = (X^TX)^{-1}_{kk}
+S = (X^TX)^{-1}
+$$
+
+In addition, the distribution of the various $w_i$s are correlated to each other.  The full covariance matrix for the fitted weights is given by:
+
+$$
+Cov(\hat{w_i}, \hat{w_j}) = \sigma^2 (X^TX)^{-1}_{ij}
 $$
 
 
@@ -181,18 +187,24 @@ Fortunately, these errors are uncorrelated (the draw from the true distribution 
 
 $$
 \begin{eqnarray}
-\text{err}(x_0) & = & \hat{w_i} \cdot x_0^i - y(x_0) \\
-& \sim & gauss(w_i, \sigma \sqrt{S_{kk}}) \cdot x_0^i - gauss(w_i \cdot x_0^i , \sigma) \\
-& \sim & \sum_i gauss(w_i x^i, x_0^i \sigma \sqrt{S_{kk}}) - gauss(w_i \cdot x_0^i , \sigma) \\
-& \sim & gauss(0 | \sqrt{\sigma^2 + x_0 \cdot x_0 \sigma^2 S_{kk}}) \\
-& \sim & gauss(0 | \sigma \sqrt{1 + x_0 \cdot x_0 S_{kk}}) \\
+\text{err}(x_0) & = & \hat{y}(x_0) - y_0 \\
+& = &  (\hat{w_i} \cdot x_0^i) - (w_i  \cdot x_0^i + \epsilon_0) \\
+& = &  (\hat{w_i} - w_i) \cdot x_0 - \epsilon_0 \\
 \end{eqnarray}
+$$
+
+Where $\epsilon_0$ is the true stochastic error.  In the above equation, each $(\hat{w_i} - w_i)$ is gaussian distributed with mean 0 and $\epsilon_0$ is gaussian distributed with mean zero.  The full sum of these terms will therefore be gaussian distributed with mean zero.  And while $\epsilon_0$ is uncorrelated to all $(\hat{w_i} - w_i)$ terms, the individual $(\hat{w_i} - w_i)$ have nonzero covariance with each other.  Therefore, to find the disribution of the sum of these gaussians, we need to use the non-zero elements of the covariance matrix $Cov(\hat{w_i}, \hat{w_j})$.
+
+Using this, one can show that the distribution of the prediction errors is given by:
+
+$$
+p( \hat{y}(x_0) - y_0) ~ gauss(0, \sigma \sqrt{1 + x_0^T (X^TX)^{-1}x_0})
 $$
 
 Thus, the distribution of the absolute error is a gaussian with zero mean (i.e. the predictions are unbiased) and with the variance proportional to $\sigma$, as shown above.  Unfortunately, we don't know the true value of $\sigma$.  However, we can do our usual trick, which is to divide by the estimator of the standard deviation to produce a quantity that is t-distributed.  Noting that:
 
 $$
-\frac{err(x_0)}{ \sigma \sqrt{1 + x_0 \cdot x_0 S_{kk}}} \sim gauss(0, 1)
+\frac{err(x_0)}{ \sigma \sqrt{1 + x_0^T (X^TX)^{-1}x_0}} \sim gauss(0, 1)
 $$
 
 and recalling that:
@@ -206,20 +218,24 @@ allows us to show that:
 $$
 \begin{eqnarray}
 t_{N-I} & \sim & \frac{gauss}{\sqrt{\chi^2_N / N}} \\
- & \sim & \frac{\frac{err(x_0)}{ \sigma \sqrt{1 + x_0 \cdot x_0 S_{kk}}}} {\sqrt{\frac{(N-I)s^2}{\sigma^2} / (N-I)}} \\
-& \sim & \frac{err(x_0)}{s\sqrt{1 + x_0 \cdot x_0 S_{kk}}} \\
+ & \sim & \frac{\frac{err(x_0)}{ \sigma \sqrt{1 + x_0^T (X^TX)^{-1}x_0}}} {\sqrt{\frac{(N-I)s^2}{\sigma^2} / (N-I)}} \\
+& \sim & \frac{err(x_0)}{s\sqrt{1 +x_0^T (X^TX)^{-1}x_0}} \\
 \end{eqnarray}
 $$
 
 This allows us to show that the distribution of the absolute error on the prediction is given by:
 
 $$
-err(x_0) \sim s \sqrt{1 + x_0 \cdot x_0 S_{kk}} t_{N-I}
+err(x_0) \sim s \sqrt{1 + x_0^T (X^TX)^{-1}x_0} t_{N-I}
 $$
 
 and we can use our knowledge of the Student's t distribution to create confidence intervals.
 
 <!--
+
+http://www.uio.no/studier/emner/sv/oekonomi/ECON4150/v04/seminar/Var_f.pdf
+
+http://www.stats.uwo.ca/faculty/braun/ss3859/notes/Chapter4/ch4.pdf
 
   We have an estimator of it, $\hat{\sigma}$, which we can plug in.  However, as we saw previously, that estimator is biased (it tends to under-estimate the true error), so our prediction errors would also be under-estimated (which we don't want).  So, we can instead use the unbiased estimate of $\sigma$.  This means that our estimate of the MSE on our prediction will be wrong (because we don't know the true $\sigma$), but at least it'll be wrong in an unbiased way (unfortunately, it'll be wrong in the same way for ALL future predictions using the same fitted model.  So, for a given fitted model, the prediction errors may be either under-estimated or over-estimate for all possible predictions).
 
@@ -256,7 +272,9 @@ http://people.stern.nyu.edu/wgreene/MathStat/GreeneChapter4.pdf
 
 ### Analysis of features
 
-One of the most common applications of the t-distribution that we derived above is to determine which features have weights that are significantly different from 0. This can be tested directly using a p-value test on the t-distributed test statistic.  Note that this is a 2-sided test: we consider possible parameter values in both the positive and negative direction.  To do this, set $w_i=0$ in the equation above, calculate the t test-statistic, and compare it to the 2-sided tails defined above of total size $\alpha$.  The interpretation is that a parameter whose p-value is very small "rejects" the null hypothesis of the parameter's true value being 0.  Thus, that parameter is likely "significant", or is an important component of the model.
+When building a regression model, one has to assert in advance which features contribute to the mean of the target.  The features weights are determined by the data, but which features enter the model must be known in advance.  However, in most realistic problems, one does not know which features may contribute to the mean of the target.  Often, one attempts to determine the model of the target variable by considering a superset of all possible features and using the properties of the regression to determine which subset of those features best approximates the true, unknown model.
+
+One can use the distribution of the fitted weights that we derived above to determine whether a feature has a true weight that is significantly different from 0. We showed that the fitted weights are t-distributed, and therefore we can construct a p-value significance test.  This will be a 2-sided test, as we consider possible parameter values in both the positive and negative direction.  To do this, set $w_i=0$ in the equation above, calculate the t test-statistic, and compare it to the 2-sided tails defined above of total size $\alpha$.  The interpretation is that a parameter whose p-value is very small "rejects" the null hypothesis of the parameter's true value being 0.  Thus, that parameter is likely "significant", or is an important component of the model.
 
 This is an exact test, assuming the assumptions built into the regression model.  In practice, very few real life situations perfectly meet the assumptions of a regression.  Therefore, this procedure should mostly be thought of as a heuristic for determining which features in a model may be considered for dropping and which ones are likely to be important to the model's overall performance.
 
@@ -286,10 +304,34 @@ https://onlinecourses.science.psu.edu/stat501/node/295
 
 <!-- Issues -->
 
-### Improving the Fit
+### Regularization
 
-Regularization
+When fitting a regression, one rarely (if ever) knows the true set of features that contribute to the target variable's distribution.  In principle, one should be able to include many variable in a regression, and those that don't contribute will have fitted weight values that are very close to 0.  However, with finite data, and in particular if many features are considered, statistical chance will make it likely that features whose true weights are 0 will be fit with significantly nonzero weights.
 
+If one believes that the number of features with nonzero true weights is less than the number of features presented to the model, or if one believes that a small subset of the features presented is sufficient to model the target, one may use regularization to minimize or avoid the numbers of features whose weights are incorrectly found to be significantly nonzero.
+
+Regularization is a general term that describes adjustments to a model which work to enforce certain desired properties of fitted parameters, usually that their fitted values are close to zero.
+
+In regression, regularization can be introduced by adding a term to the likelihood function:
+
+$$
+L({y_n, x_n^i} | w_0,...,w_i, \sigma) = \prod_i Gauss(w_i^{k/2}| 0, \sqrt{C}) \prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma)L(x_n^0, ..., x_n^i)
+$$
+
+We are here adding a new term to the likelihood that constraints the power of all the weights to be close to 0 (with variance C).  When the model is fit, the weights will balance between the constraining power of the first term (which depends on the data) and this new regularization term in the likelihood (which is independent of the data).  If the data very strongly constraints the weights, the regularization term will not have much of an effect.  For weights that aren't highly constrained by the data, the regularization will dominate their fit and they will be pulled toward 0.
+
+From a Bayesian perspective, one can interpret this regularization as a prior on the value of the weights.  From a frequentist perspective, one can interpret this generatively.  One first generates the true weights from a gaussian distribution, and then one generates the values of $\vec{x}$, and then (given the weights and the values of $\vec{x}$, on generates the values of $y$.  Both of these interpretations are somewhat artificial: It is unlikely that any real problem came about in the generative way described above.  However, in practice, it results in models that are simpler and that generalize better.
+
+This likelihood can be translated into a cost function by calculating the negative-log-likelihood and dropping terms which don't depend on the weights, which results in:
+
+$$
+Cost = \sum_i w^k/C + \sum_n  (y_n - (x_n^i \cdot w_i))^2
+$$
+
+Here, the interpretation is that regularization acts as an additional cost which contributes to the total cost function.  The most common choices for the power $k$ are 1 (known as L1 regularization) and 2 (known as L2 regularization).
+
+
+### Correlations
 
 Contrary to a common mis-understanding, a regression model doesn't assume that input features are statistically uncorrelated.  The only assumption is that the mean of the dependent variable, $y$, is determined by the weighted sum of the inputs.  Having features that are correlated with each other (for example, when one tends to be high while the other is high and visa versa) doesn't break this assumption.  However, it may lead to misleading interpretations when fitting the data.  Specifically, the presence of correlated features will cause the variance on the fitted value of the features to be larger than the variance of any individual feature would be.  Intuitively, if you copy a feature exactly, the model has full freedom to adjust the coefficients for those features as long as their sum remains the same.  This leads to a high variance on the fitted values of the parameters (since they cannot be fitted unquely).  This can hurt the interpretability of a model: you may want to draw a conclusion based on the value of one of the fitted parameters, but since it is so volatile, your conclusion will have little statistical significance.
 
