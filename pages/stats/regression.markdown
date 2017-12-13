@@ -315,20 +315,38 @@ Regularization is a general term that describes adjustments to a model which wor
 In regression, regularization can be introduced by adding a term to the likelihood function:
 
 $$
-L({y_n, x_n^i} | w_0,...,w_i, \sigma) = \prod_i Gauss(w_i^{k/2}| 0, \sqrt{C}) \prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma)L(x_n^0, ..., x_n^i)
+\begin{eqnarray}
+L({y_n, x_n^i} | w_0,...,w_i, \sigma) &=& \prod_i Gauss(|w_i|^{k/2}| 0, \sqrt{C}) \\
+                                      &*&\prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma) \\
+                                      &*& L(x_n^0, ..., x_n^i) \\
+\end{eqnarray}
 $$
 
 We are here adding a new term to the likelihood that constraints the power of all the weights to be close to 0 (with variance C).  When the model is fit, the weights will balance between the constraining power of the first term (which depends on the data) and this new regularization term in the likelihood (which is independent of the data).  If the data very strongly constraints the weights, the regularization term will not have much of an effect.  For weights that aren't highly constrained by the data, the regularization will dominate their fit and they will be pulled toward 0.
 
-From a Bayesian perspective, one can interpret this regularization as a prior on the value of the weights.  From a frequentist perspective, one can interpret this generatively.  One first generates the true weights from a gaussian distribution, and then one generates the values of $\vec{x}$, and then (given the weights and the values of $\vec{x}$, on generates the values of $y$.  Both of these interpretations are somewhat artificial: It is unlikely that any real problem came about in the generative way described above.  However, in practice, it results in models that are simpler and that generalize better.
+From a Bayesian perspective, one can interpret this regularization as a prior on the value of the weights.  From a frequentist perspective, one can interpret this generatively.  One first generates the true weights from a gaussian distribution, and then one generates the values of $\vec{x}$, and then (given the weights and the values of $\vec{x}$) one generates the values of $y$.  Both of these interpretations are somewhat artificial: It is unlikely that any real problem came about in the generative way described above.  However, in practice, it results in models that are simpler and that tend to generalize better.
 
 This likelihood can be translated into a cost function by calculating the negative-log-likelihood and dropping terms which don't depend on the weights, which results in:
 
 $$
-Cost = \sum_i w^k/C + \sum_n  (y_n - (x_n^i \cdot w_i))^2
+Cost = \sum_i |w|^k/C + \sum_n  (y_n - (x_n^i \cdot w_i))^2
 $$
 
-Here, the interpretation is that regularization acts as an additional cost which contributes to the total cost function.  The most common choices for the power $k$ are 1 (known as L1 regularization) and 2 (known as L2 regularization).
+Here, the interpretation is that regularization acts as an additional cost which contributes to the total cost function.  The most common choices for the power $k$ are 1 (known as L1 regularization or "Lasso") and 2 (known as L2 regularization or "Ridge").  One can create new types of regularization by adding arbitrary functions of the weights to the cost function, assuming that they roughly scale with the total magnitude of the weights.
+
+Adding a regularization term of course changes the fitted values of the weights.  Recall that the unregulairzed MLEs of the weights are given by:
+
+$$
+\hat{\vec{w}} = (X^TX)^{-1}X^T\vec{y} \\\\
+$$
+
+For L2 regularization, one can show that the fitted weights become:
+
+$$
+\hat{\vec{w}} = (X^TX + I/C)^{-1}X^T\vec{y} \\\\
+$$
+
+where $I$ is the identity matrix and $C$ is the regularization constant defined above.  Similar results for different regularizations can be derived.  The distributions of the fitted weights will still be gaussian and can be derived from the likelihood as we did above for the non-regularized case.
 
 
 ### Correlations
