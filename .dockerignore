@@ -1,0 +1,13 @@
+*
+!requirements.txt
+!app.py
+!blog.py
+!mdx_mathjax.py
+!static
+!templates
+!posts
+!pages
+!blog_templates
+!*.conf
+!*.ini
+!*.service
