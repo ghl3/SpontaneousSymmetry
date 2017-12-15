@@ -7,7 +7,7 @@ Description=uWSGI Emperor
 After=syslog.target
 
 [Service]
-ExecStart=/usr/local/bin/uwsgi --ini /etc/uwsgi/emperor.ini
+ExecStart=/var/www/spontaneoussymmetry/venv/bin/uwsgi --die-on-term --ini /etc/uwsgi/emperor.ini
 # Requires systemd version 211 or newer
 RuntimeDirectory=uwsgi
 Restart=always
