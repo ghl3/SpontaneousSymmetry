@@ -34,7 +34,7 @@ def info():
 def projects():
     return render_template('work.html')
 
-@app.route('/work/atlas')
+@app.route('/atlas')
 def work():
     return render_template('atlas.html')
 
@@ -42,17 +42,18 @@ def work():
 def links():
     return render_template('links.html')
 
-@app.route('/code')
-def code():
-    return render_template('code.html')
+@app.route('/apps')
+def apps():
+    return render_template('apps.html')
 
 @app.route('/page/<page>')
 def page(page):
     meta, body = blog.load_and_render_page('{}/pages/{}.markdown'.format(blog.BASE_PATH, page))
     return render_template('page.html', content=body, title=page)
 
+@app.route('/stats')
 @app.route('/stats/<page>')
-def stats(page):
+def stats(page='introduction'):
     meta, body = blog.load_and_render_page('{}/pages/stats/{}.markdown'.format(blog.BASE_PATH, page))
     return render_template('page.html', content=body, title=page)
 

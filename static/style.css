@@ -87,28 +87,17 @@ div.documentwrapper {
 /* LINKS */
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 a:hover, a:visited, a:link, a:active {
   color: black;
-  text-decoration: none;
 }
 
 a:hover {
   color: #7FD600;
-  text-decoration: none;
 }
 
-p a:link, p a:hover, p a:active, p a:visited {
-  color: #124600;
-  text-decoration: underline;
-}
-
-p a:hover {
-  color: #7FD600;
-  text-decoration: underline;
-}
 
 /* SIDEBAR */
 
@@ -152,6 +141,7 @@ div.sidebarwrapper {
 
 .sidebar_image {
   width: 200px;
+  max-width: 100%;
 }
 
 /* OTHER STUFF */
