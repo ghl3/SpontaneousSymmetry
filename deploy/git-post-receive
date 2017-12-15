@@ -2,6 +2,8 @@
 
 echo "Pushing to production server"
 
+whoami
+
 while read oldrev newrev ref
 do
     branch=`echo $ref | cut -d/ -f3`
