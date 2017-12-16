@@ -6,9 +6,7 @@
 !mdx_mathjax.py
 !static
 !templates
+!blog_templates
 !posts
 !pages
-!blog_templates
-!*.conf
-!*.ini
-!*.service
+!config/*
