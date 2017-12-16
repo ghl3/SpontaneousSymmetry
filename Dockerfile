@@ -36,4 +36,6 @@ WORKDIR /var/www/spontaneoussymmetry
 
 RUN virtualenv venv && . venv/bin/activate && pip install -c constraints.txt -r requirements.txt && deactivate
 
+RUN chown -R uwsgi /var/www/spontaneoussymmetry
+
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
