@@ -1,5 +1,6 @@
 *
 !requirements.txt
+!constraints.txt
 !app.py
 !blog.py
 !mdx_mathjax.py
