@@ -14,6 +14,18 @@ RUN apk add --update \
     && mkdir -p /etc/ssl/private \
     && mkdir -p /etc/ssl/certs
 
+# Setup the app directory
+RUN mkdir /var/www/spontaneoussymmetry
+WORKDIR /var/www/spontaneoussymmetry
+
+# Setup python dependencies
+COPY requirements.txt /var/www/spontaneoussymmetry
+COPY constraints.txt /var/www/spontaneoussymmetry
+
+RUN virtualenv venv && . venv/bin/activate && pip install -c constraints.txt -r requirements.txt && deactivate
+
+# Setup the web app and flask
+COPY . /var/www/spontaneoussymmetry
 
 # Setup the docker and uwsgi configs
 
@@ -23,19 +35,17 @@ COPY config/emperor.ini /etc/uwsgi/emperor.ini
 COPY config/spontaneoussymmetry_uwsgi.ini /etc/uwsgi/vassals/spontaneoussymmetry_uwsgi.ini
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log \
-    && rm /etc/nginx/conf.d/default.conf
-
-EXPOSE 80 443
-
-RUN mkdir /var/www/spontaneoussymmetry
-COPY . /var/www/spontaneoussymmetry
-WORKDIR /var/www/spontaneoussymmetry
-
-RUN virtualenv venv && . venv/bin/activate && pip install -c constraints.txt -r requirements.txt && deactivate
+    && rm /etc/nginx/conf.d/default.conf \
+    && mkdir -p /data/nginx/cache \
+    && chown -R nginx /data/nginx/cache
 
 RUN chown -R uwsgi /var/www/spontaneoussymmetry
+
+
+# Launch the servers as daemons
+
+EXPOSE 80 443
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
