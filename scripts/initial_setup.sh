@@ -1,5 +1,2 @@
 
-
-sudo apt-get install -u docker
-
-mkdir images
+yes | sudo apt install -u docker.io

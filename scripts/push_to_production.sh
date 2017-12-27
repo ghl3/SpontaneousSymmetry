@@ -4,10 +4,7 @@ echo "Pushing new code to production server"
 git push production
 
 echo "Running post-push script"
-ssh ss 'bash -s' < scripts/docker_production_build_run.sh
-
-
-
+ssh ss 'sudo bash -s' < scripts/docker_production_build_run.sh
 
 
 
