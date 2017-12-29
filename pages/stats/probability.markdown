@@ -97,6 +97,12 @@ $$
 
 The interpretation of this is that we draw joint values of $A$ and $B$ by first drawing a value of $A$ and then drawing a value of $B$ given that value of $A$.  The notation makes this operation seem somewhat subtle: we're simply moving the $A$ across the $|$ bar in our probability distribution functions.  But this transformation is not vacuous, as each of $p(A, B)$, $p(A)$, and $p(B | A)$ are different mathematical functions.
 
+We can combine this equation with marginalization (above) to obtain:
+
+$$
+p(x) = \int p(y) p(x | y) dy
+$$
+
 Finally, we can perform a transformation better known as Bayes Theorem.  Unlike marginalization, Bayes' theorem allows one to turn a parameter of a probability distribution into a random variable, and visa versa.  Specifically, it says that:
 
 $$
@@ -152,19 +158,32 @@ $$ p(z) = p(x) + p(y)$$
 
 But this is not the case.  It's clear that this is wrong because, as defined above, $p(z)$ would not add up to 1.  Moreover, it has invalid units (note that $p(x)$ has units of $1/[x]$ and $p(y)$ has units of $1/[y]$, and these cannot be added together.
 
-So how, then, do we come up with $p(z)$?  Essentially, we are asking, "If we draw from x at random and draw from y at random and add them together, what is the probability that their sum is equal to some value z?"  We can write this as:
+So how, then, do we come up with $p(z)$?  Essentially, we are asking, "If we draw from x at random and draw from y at random and add them together, what is the probability that their sum is equal to some value z?"  We can create the PDF for Z by taking the PDF of x and applying a change of variables followed by a marginalization.
+
+If we make the following definitions:
 
 $$
-p(z) = \int \int p(x, y) \delta(z = x+y) dx dy
+z = x + y
+$$
+$$
+w = y
 $$
 
-If x and y are independent, then we can write write this expression as:
+we can write our expression as:
 
 $$
-p(z) = \int \int p(x) p(y) \delta(z = x+y) dx dy
+p(z, w) = p(z-w, w) Jac(x, y \rightarrow z, w)
 $$
 
-Depending on the functional form of $p(x, y)$ and the formula for $z$, this may be a challenging integral to perform.  If is often easier to simulate the value of $z$ by drawing values of $x$ and $y$ and to create an empirical distribution of z using those values than to mathematically calculate this integral, especially when the relationship between $z$ and the random variables $x$ and $y$ becomes more complicated than a simple sum.
+where $Jac(x, y \rightarrow z, w)$ is the magnitude of the determinant of the jacobian of the transformation.  Here, the transformation is simple, so the jacobian factor is just the constant $1$.  We can then marginalize out $w$ to obtain:
+
+$$
+p(z) = \int p(z-w, w) dw
+$$
+
+A variable transformation of this type, where a new variable is just a sum of other random variables, is known as a convolution.
+
+For more complicated transformations, the jacobian will not be $1$ in general and the integral may be challenging integral to perform.  If is often easier to simulate the value of $z$ by drawing values of $x$ and $y$ and to create an empirical distribution of z using those values than to mathematically calculate this integral, especially when the relationship between $z$ and the random variables $x$ and $y$ becomes more complicated than a simple sum.
 
 
 ## Likelihood
