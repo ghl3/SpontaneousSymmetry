@@ -26,10 +26,6 @@ blog.warm_cache()
 def index():
     return render_template('index.html'),
 
-@app.route('/info')
-def info():
-    return render_template('info.html')
-
 @app.route('/work')
 def projects():
     return render_template('work.html')
@@ -37,14 +33,6 @@ def projects():
 @app.route('/atlas')
 def work():
     return render_template('atlas.html')
-
-@app.route('/links')
-def links():
-    return render_template('links.html')
-
-@app.route('/apps')
-def apps():
-    return render_template('apps.html')
 
 @app.route('/page/<page>')
 def page(page):
@@ -63,6 +51,10 @@ APP_MAP = {
     'bouncingballs' : 'bouncingballs.html'
 }
 
+@app.route('/apps')
+def apps():
+    return render_template('apps.html')
+
 @app.route('/app/<app>')
 def rockspaper(app):
     app = app.lower()
@@ -72,7 +64,7 @@ def rockspaper(app):
 
 @app.errorhandler(404)
 def page_not_found(e):
-        return render_template('errorpage.html'), 404
+    return render_template('errorpage.html'), 404
 
 
 if __name__ == '__main__':
