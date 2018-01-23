@@ -6,8 +6,11 @@ cd $SITE_DIRECTORY
 echo "Stopping any running containers"
 docker stop $(docker ps -a -q)
 
-echo "Removing existing containers"
-docker rm sym_cont || true
+echo "Pruning Docker"
+yes | docker system prune
+
+#echo "Removing existing containers"
+#docker rm sym_cont || true
 
 echo "Build new container"
 docker build -t sym_img .
