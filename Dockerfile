@@ -43,7 +43,6 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 RUN chown -R uwsgi /var/www/spontaneoussymmetry
 
-
 # Launch the servers as daemons
 
 EXPOSE 80 443
