@@ -138,11 +138,11 @@ $$
 with
 
 $$
-\text{mean} = \tilde{\Sigma} (\Sigma + \tilde{\Sigma})^{-1} x + \Sigma  (\Sigma + \tilde{\Sigma})^{-1} \tilde{x}
+\text{mean} =  (\Sigma^{-1} + \tilde{\Sigma}^{-1})^{-1} ( \Sigma^{-1}x  + \tilde{\Sigma}^{-1} \tilde{x})
 $$
 
 $$
-\text{covariance} = \Sigma (\Sigma + \tilde{\Sigma})^{-1} \tilde{\Sigma}
+\text{covariance} = (\Sigma^{-1} + \tilde{\Sigma}^{-1})^{-1}
 $$
 
 <!--
@@ -161,8 +161,8 @@ $$
 \begin{array}{ccl}
 \mu_{i+1}' & \leftarrow& T \mu_{i} \\
 \Sigma'_{i+1} & \leftarrow & T \Sigma_{i} T^T \\
-\mu_{i+1} & \leftarrow & \tilde{\Sigma'}_{i+1} (\Sigma'_{i+1} + \tilde{\Sigma'}_{i+1})^{-1} \mu_{i+1}' + \Sigma'_{i+1} (\Sigma'_{i+1} + \tilde{\Sigma'}_{i+1})^{-1} \tilde{x}_{i+1} \\
-\Sigma_{i+1} & \leftarrow & \Sigma'_{i+1} (\Sigma'_{i+1} + \tilde{\Sigma'}_{i+1})^{-1}\tilde{\Sigma'}_{i+1}\\
+\mu_{i+1} & \leftarrow &   ({\Sigma'}_{i+1}^{-1} + \tilde{\Sigma'}_{i+1}^{-1})^{-1} ({\Sigma'}_{i+1}^{-1} x_{i+1} + \tilde{\Sigma'}_{i+1}^{-1}  \tilde{x}_{i+1})\\
+\Sigma_{i+1} & \leftarrow & ({\Sigma'}_{i+1}^{-1} + \tilde{\Sigma'}_{i+1}^{-1})^{-1} \\
 \end{array}
 $$
 
