@@ -180,9 +180,7 @@ The whole update process can be written in terms of matrix arithmetic.
 
 ## More Complicated Example
 
-In the previous example, demonstrated a simple example of a Kalman Filter by building a gaussian model of a state vector, updating it with fixed dynamics between time steps, and incorporating measurements with gaussian errors.
-
-We shall now walk through a more complicated version of this model where we increase the complexity by allowing the dynamics of the system to vary at each time step and to be non-determinisic.
+In the previous example, demonstrated a simple example of a Kalman Filter by building a gaussian model of a state vector, updating it with fixed dynamics between time steps, and incorporating measurements with gaussian errors.  We shall now walk through a model that is made more complicated by making the dynamics non-deterministic and by allowing the dynamics to vary between each time step.
 
 Thus, instead of just writing:
 
@@ -195,7 +193,7 @@ we will include:
 - A term that represents some time-varying influence on the system outside of the constant dynamics
 - Noise associated with the system's dynamics
 
-To include time-varying influence on the system, we will add a term that can vary at each time step, known as the "influence" term.  We will denote it as $\overleftrightarrow{B}\vec{u_i}$ (in principal, we could just include this as a single vector at each time $t_i$ and not include the $B$ matrix, but we add it here to adhere to conventions and also to convey that the source of the influence is different than its effect on the state vector).
+To include time-varying influence on the system, we will add a term that can vary at each time step, known as the "influence" term.  We will denote it as $\overleftrightarrow{B}\vec{u_i}$, where $\vec{u_i}$ is a vector representing some external influence and $\overleftrightarrow{B}$ is a matrix that transforms the influence into its effect on the state of the system. (In principal, we could just include this as a single vector at each time $t_i$ and not include the $B$ matrix, but we add it here to adhere to conventions and also to convey that the source of the influence is different than its effect on the state vector.)
 
 So, our dynamics now beecomes 
 
@@ -203,7 +201,7 @@ $$
 \vec{x_{i+1}} = \overleftrightarrow{T}\vec{x_{i}} + \overleftrightarrow{B}\vec{u_i}
 $$
 
-with $\overleftrightarrow{T}$ and $\overleftrightarrow{B}$ constant but allowing $\vec{u_i}$ to vary per time step.  If $B$ and each $\vec{u_i}$ are known, then this doesn't actually add much complexity to our model, it is merely a known translation of our state vector at each time step, and we can write easily include it into the update step of our distribution (or, specifically, the gaussian parameters describing our distribution):
+with $\overleftrightarrow{T}$ and $\overleftrightarrow{B}$ constant but allowing $\vec{u_i}$ to vary per time step.  If $B$ and each $\vec{u_i}$ are known, then this doesn't actually add much complexity to our model, it is merely a known translation of our state vector at each time step, and we can easily include it into the update step of our distribution (or, specifically, the gaussian parameters describing our distribution):
 
 
 $$
@@ -214,9 +212,11 @@ $$
 \overleftrightarrow{\Sigma}_{i+1} \leftarrow \overleftrightarrow{T} \overleftrightarrow{\Sigma}_{i} \overleftrightarrow{T}^T
 $$
 
-Adding noise to the dynamics makes this update step more complicated.  For a known state vector, one can think of the noise in the following way: First, make a deterministic dynamic update to the state vector, as above.  Then, randomly draw from a distribution agiveround that newly updated vector using a gaussian distribution, which then becomes our updated state vector.
+Note that adding this additional vector doesn't change the covariance of the state, it only shifts its mean.
 
-If, instead of a fixed vector, our state at time $t_i$ is described by a distribution of vectors $p_i(\vec{x_i})$, we must determine how to update this distribution by adding noise.  This can be done by performing a convolution between the initial state distribution the noise distribution.  From the laws of probability, we know:
+By contrast, adding noise to the dynamics will change the covariance matrix of thet state's distribution.  For a fixed state vector, one can think of the noise in the following way: First, make a deterministic dynamic update to the state vector, as above.  Then, randomly draw from a gaussian noise distribution centered around that newly updated vector, which then becomes our updated state vector.
+
+For a distribution of state vectors, $p_i(\vec{x_i})$, one includes the noise by performing a convolution between the initial state distribution the noise distribution.  From the laws of probability, we know:
 
 $$
 p(y) = \int  p(y | x) * p(x) dx
@@ -225,10 +225,10 @@ $$
 This allows us to write:
 
 $$
-p(\vec{x}_{noise}) = \int p(\vec{x}_{noise} | \vec{x}) * p(\vec{x}) d\vec{x}
+p(\vec{x}_{\text{with noise}}) = \int p(\vec{x}_{\text{with noise}} | \vec{x}) * p(\vec{x}) d\vec{x}
 $$
 
-Where the first term in the integral, $p(\vec{x}_{noise} | \vec{x})$, is the noise distribution and the second term, $p(\vec{x})$, is the distribution of the state before adding noise (but after doing the deterministic part of the dynamic update).  We will assume that this added noise is a gaussian with mean of 0 and a known covariance matrix  $\overleftrightarrow{Q}$ (it is assumed that we know this in advance).   The state vector distribution and the noise are therefore both gaussians, and because the convolution of two gaussians is itself a gaussian, we can write the update step due to noise as:
+Where the first term in the integral, $p(\vec{x}_{noise} | \vec{x})$, is the noise distribution and the second term, $p(\vec{x})$, is the distribution of the state before adding noise (but after doing the deterministic part of the dynamic update).  We will assume that this added noise is a gaussian with mean of 0 and a known covariance matrix  $\overleftrightarrow{Q}$.   The state vector distribution and the noise are therefore both gaussians, and because the convolution of two gaussians is itself a gaussian, we can write the update step due to zero-mean noise as:
 
 $$
 \vec{\mu_{i}} \leftarrow \vec{\mu_{i}}
@@ -244,4 +244,17 @@ Thus, we can write down the update rule for our more complicated version of the 
 - Update the state vector mean and covariance matrix deterministically using $ \overleftrightarrow{T}$ and $\overleftrightarrow{B}\vec{u_i}$
 - Add the noise covariance matrix $\overleftrightarrow{Q}$ to the state vector covariance matrix
 - Make a measurement and update the mean and covariance matrices using a Bayesian update
+
+Adding this to our previous rules, we get the full Kalman update procedure as
+
+$$
+\begin{array}{ccl}
+\mu_{i+1}' & \leftarrow& T \mu_{i} +  \overleftrightarrow{B}\vec{u_i} \\
+\Sigma'_{i+1} & \leftarrow & T \Sigma_{i} T^T + \overleftrightarrow{Q}_i \\
+\mu_{i+1} & \leftarrow &   ({\Sigma'}_{i+1}^{-1} + \tilde{\Sigma'}_{i+1}^{-1})^{-1} ({\Sigma'}_{i+1}^{-1} x_{i+1} + \tilde{\Sigma'}_{i+1}^{-1}  \tilde{x}_{i+1})\\
+\Sigma_{i+1} & \leftarrow & ({\Sigma'}_{i+1}^{-1} + \tilde{\Sigma'}_{i+1}^{-1})^{-1} \\
+\end{array}
+$$
+
+
 
