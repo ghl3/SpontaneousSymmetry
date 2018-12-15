@@ -10,7 +10,7 @@ RUN apk add --update \
     nginx \
     uwsgi \
     && pip install --upgrade pip \
-    && pip install uwsgi==2.0.17.1 \
+    && pip install uwsgi==2.0.15 \
     && mkdir -p /var/log/nginx \
     && mkdir -p /etc/ssl/private \
     && mkdir -p /etc/ssl/certs
