@@ -2,7 +2,7 @@
 author: george
 date: 2018-05-02 13:59:38.841306
 layout: post
-slug: kalman-filter
+slug: filter
 title: Kalman Filter
 id: 446
 ---
