@@ -9,7 +9,8 @@ RUN apk add --update \
     py-virtualenv \
     nginx \
     uwsgi \
-    && pip install uwsgi==2.0.15 \
+    && pip install --upgrade pip \
+    && pip install uwsgi==2.0.17.1 \
     && mkdir -p /var/log/nginx \
     && mkdir -p /etc/ssl/private \
     && mkdir -p /etc/ssl/certs

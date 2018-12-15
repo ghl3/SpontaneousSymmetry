@@ -19,7 +19,6 @@ from flask import Markup
 from flask import Blueprint
 from flask import current_app
 
-
 Blog = Blueprint('blog', __name__, template_folder='blog_templates')
 
 BASE_PATH = os.path.dirname(sys.modules[__name__].__file__)
@@ -51,10 +50,10 @@ class Post(object):
 
         # Sanity checks
         if 'slug' in self.meta and self.meta['slug'] != self._path_name:
-            raise Post.InvalidPost()
+            raise Post.InvalidPost(path)
 
         if 'date' in self.meta and self.meta['date'].date() != convert_date(path_date):
-            raise Post.InvalidPost()
+            raise Post.InvalidPost(path)
 
 
     def path(self):
@@ -88,8 +87,10 @@ class Post(object):
             return self.meta['wordpress_id']
 
     class InvalidPost(Exception):
-        pass
-
+        def __init__(self, path):
+            message = "Invalid Post at path: {}".format(path)
+            super(Post.InvalidPost, self).__init__(message)
+            self.path = path
 
 def convert_date(date_str):
     try:
@@ -116,7 +117,7 @@ def separate_yaml(raw):
     yaml_data = yaml.load(tokens[1])
     markdown_raw = "".join(tokens[2:])
     markdown_raw = unicode(markdown_raw, errors='ignore')
-    extensions = ['tables', 'codehilite', 'sane_lists', 'mathjax', 'fenced_code']
+    extensions = ['tables', 'codehilite', 'sane_lists', 'mdx_math', 'fenced_code']
     return (yaml_data,
             Markup(markdown.markdown(markdown_raw, extensions=extensions)))
 

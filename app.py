@@ -24,7 +24,7 @@ blog.warm_cache()
 
 @app.route('/')
 def index():
-    return render_template('index.html'),
+    return render_template('index.html')
 
 @app.route('/work')
 def projects():
@@ -60,6 +60,8 @@ def rockspaper(app):
     app = app.lower()
     if app in APP_MAP:
         return render_template('apps/' + APP_MAP[app], title=app)
+    else:
+        raise Exception("BAD APP")
 
 
 @app.errorhandler(404)
