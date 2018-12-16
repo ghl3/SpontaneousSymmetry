@@ -7,16 +7,16 @@ title: Kalman Filter
 id: 446
 ---
 
-A Kalman Filter is a valuable tool for many real world problems, including modeling timeseries data and predicting the movement of physical objects or agents moving in an environment.  The goal of this post is to derive the logic and mathematics behind the Kalman Filter from first principles, using only elementary statistics and linear algebra.
+A Kalman Filter is a valuable tool for many real world problems, including modeling timeseries data and predicting the movement of physical objects or agents in an environment.  The goal of this post is to derive the logic and mathematics behind the Kalman Filter from first principles, using only elementary statistics and linear algebra.
 
-At it's heart, like many data tools, a Kalman Filter is nothing more than a statistical model that relates observed data to unknown parameters that are to be estimated.  It can therefore be understood by presenting the model and showing how to update the parameters when new data is encountered.  However, unlike simpler models that are built around a single data measurement, a Kalman Filter is designed to be updated multple times using a stream of data measurements, each obtained at a different time.
+At it's heart, like many data tools, a Kalman Filter is nothing more than a statistical model that relates observed data to unknown parameters that are to be estimated.  However, unlike simpler models that are built around a single data measurement, a Kalman Filter is designed to be run multple times using a stream of data measurements, each obtained at a different time.
 
 
 ## Simple Example
 
-To understand the logic of a Kalman filter, we will will start by deriving a simple version using a basic example.  Imagine we have a car that is confined to a one-dimensional track (it may be on rails, for example).  The car moves frictionlessly with a constant (but initially unknown) velocity alone the rails.  At specific time intervals, we'd like to know the position of the car.  To allow us to do so, the car has a radar system which we can query.  The radar system at time $t_i$ returns an estimate of the car's position at tim $t_i$, but that position estimate has a (known) uncertainty associated with it.
+To understand the logic of a Kalman filter, we will will start by deriving a simple version from a basic premise.  Imagine we have a car that is confined to a one-dimensional track (it may be on rails, for example).  The car moves frictionlessly with a constant (but initially unknown) velocity alone the rails.  At specific time intervals, we'd like to know the position of the car.  To allow us to do so, the car has a radar system which we can query.  The radar system at time $t_i$ returns an estimate of the car's position at that time, but that position estimate has a uncertainty associated with it (which is fixed and known).
 
-We would like to be able to predict the car's position and velocity at any given time.  To do so, we're going to take multiple measurements of the car at different times.  As we do so, we're going to build up an understanding of where the car is, where it was, and where it is going.  Naively, we would only need two measurements to know the car's position and velocity.  However, since each measurement has uncertainty associated with it, we can't learn the car's true position or velocity from only two measurements (or from any number of measurements).  Instead, however, by gathering more measurments, we can get a better and better estimates of it's true position and velocity.
+We would like to be able to predict the car's position and velocity at any given time using measurements we've obtained up through that time.  As new measurements come in, we build up a better understanding of where the car is, where it was, and where it is going.  Naively, we would only need two measurements to know the car's position and velocity.  A measurement gives us data on the car's position and velocity, but since each measurement has uncertainty, we can't learn the car's true position or velocity from a single measurement (or from any number of measurements).  Instead, however, by gathering more measurments, we can get a better and better estimates of it's true position and velocity through time.
 
 They key point, the one that allows us to improve our estimates over time with subsequence measurements, is the fact that that we know the dynamics of the car.  We know that the car moves with constant velocity, and knowing this allows us to relate previous measurements (at earlier positions) to measurements of our current position.  This means that we can use all of our past measurements to understand the current position of the car, which means our understanding of the position will become more accurate over time (as we acrue more and more measurements).  If we didn't have a model for how the car moves, previous measurements and the estimates produced from them wouldn't be useful for estimating the position at future times.
 
@@ -28,11 +28,12 @@ $$
 
 (Note that we use "x" to represent the full state, not just the position).
 
-All the measurements that we're going to make are "noisy", which means we'll never be able to say with certainty what the exact state of the car is.  Instead, the best we can do is to build up a distribution of the car's state (and hope that the distribution becomes more accurate, more narrow, as we make further measurements).  Thus, our procedure boils down to:
+All the measurements that we're going to make are "noisy", which means we'll never be able to say with certainty what the exact state of the car is.  Instead, the best we can do is to build up a distribution of the car's state (and hope that the distribution becomes more accurate as we make further measurements).  Thus, our procedure boils down to:
 
 - Start with some initial distribution representing our knowledge the state of the car
 - Make a measurement
 - Update our distribution for the car's current state
+- Infer how that state evolves over the time before the next measurement
 - Repeat iteratively at each time step
 
 Let us denote our understanding of the state of the car with a probability distribution $p_i(\vec{x_i})$.  In other words, at any time $t_i$, we have some probability distribution function $p_i$ that describes what we think the distribution of the car's state, $x_i$, at that time may be.  Note that this is a 2-d distribution that describes both the position and velocity of the car.
@@ -104,7 +105,7 @@ $$
 or
 
 $$
-p(\text{state} | \text{measurement}) \sim p(\text{measurement} | \text{state}) * p(state)
+p(\text{state} | \text{measurement}) \sim p(\text{measurement} | \text{state}) * p(\text{state})
 $$
 
 Applied to our specific problem, Bayes' theorem says that we update the state of the system as:
@@ -182,7 +183,7 @@ The whole update process can be written in terms of matrix arithmetic.
 
 In the previous example, demonstrated a simple example of a Kalman Filter by building a gaussian model of a state vector, updating it with fixed dynamics between time steps, and incorporating measurements with gaussian errors.  We shall now walk through a model that is made more complicated by making the dynamics non-deterministic and by allowing the dynamics to vary between each time step.
 
-Thus, instead of just writing:
+To make things more complicated, instead of just writing:
 
 $$
 \vec{x_{i+1}} = \overleftrightarrow{T}\vec{x_{i}}
@@ -257,4 +258,8 @@ $$
 $$
 
 
+## Conclusion
 
+We have shown that a Kalman Filter is nothing more than a series of Bayesian updates that result from a timeseries of data measurements.  With a model as defined above, these updates can be written in a matrix form and performed using linear algebra.
+
+Knowing this general structure, one could apply it to many dynamical systems (not just the ones described above).  And while the math may be more difficult for different model assumptions, the overall logic of the technique remains valid.
