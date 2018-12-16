@@ -7,7 +7,7 @@ Written in python using Flask
 
 Hosted on EC2 using Docker, uwsgi, and nginx
 
-Available at: <a href=www.spontaneoussymmetry.com>www.spontaneoussymmetry.com</a>
+Available at: <a href=https://spontaneoussymmetry.com>spontaneoussymmetry.com</a>
 
 
 
