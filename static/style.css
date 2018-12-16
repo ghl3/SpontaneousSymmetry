@@ -38,7 +38,7 @@ img {
     overflow: hidden;
     padding-left: 20px;
     padding-right: 20px;
-    width: 65%;
+    width: 70%;
     display: inline-block;
 }
 
@@ -176,6 +176,6 @@ div.break {
     display: block;
     width: 15%;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
-    margin: 30px auto;
+    margin: 10% auto;
     padding: 0;
 }
