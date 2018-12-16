@@ -5,7 +5,7 @@ My Personal Website
 
 Written in python using Flask
 
-Hosted on EC2 using uwsgi and nginx
+Hosted on EC2 using Docker, uwsgi, and nginx
 
 Available at: <a href=www.spontaneoussymmetry.com>www.spontaneoussymmetry.com</a>
 
@@ -13,40 +13,9 @@ Available at: <a href=www.spontaneoussymmetry.com>www.spontaneoussymmetry.com</a
 
 # Setting up and maintaining the site
 
+This site is designed to run in a Docker container.  The container is created using a <a href="https://github.com/ghl3/SpontaneousSymmetry/blob/master/Dockerfile">Dockerfile</a>.  Once built, the container exposes port 80 and 443.  To deploy this page, simply bind a server's port's 80 and 443 to the container's ports.  Additionally, one may copy SSL certifiates into thie container before running to enable TLS access (see the <a href="https://github.com/ghl3/SpontaneousSymmetry/blob/master/scripts/docker_production_build_run.sh#L16">build script</a> for details).
 
-To get the site to work on a new machine, one must do the following:
+Internally, the Dockerfile runs nginx to handle incoming requests.  Static pages and assets are served directly by nginx, and dynamic pages are served using uwsgi and flask.
 
-- Install nginx
-- Install uwsgi
-- Install python 2.7
+The blog is powered by a custom blog framework written for this site.  Posts are written in Markdown and rendered using Jinja.
 
-Copy contents of the app to:
-/var/www/spontaneoussymmetry
-
-(creating, for example, /var/www/spontaneoussymmetry/app.py)
-
-Setup a local python environment
-
-cd /var/www/spontaneoussymmetry
-virtualenv venv
-. venv/bin/activate
-pip install -r requirements.txt
-deactivate
-
-Then copy the local files to the following place:
-
-uwsgi.service -> /etc/systemd/system/uwsgi.service
-nginx_override.conf -> /etc/systemd/system/nginx.service.d/override.conf
-
-nginx.conf -> /etc/nginx/nginx.conf
-spontaneoussymmetry_nginx.conf -> /etc/nginx/conf.d/spontaneoussymmetry_nginx.conf
-
-emperor.ini -> /etc/uwsgi/emperor.ini
-spontaneoussymmetry_uwsgi.ini -> /etc/uwsgi/vassals/spontaneoussymmetry_uwsgi.ini
-
-
-Then run:
-
-sudo systemctl daemon-reload
-sudo systemctl start nginx.service
-sudo systemctl start uwsgi.service
