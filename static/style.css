@@ -138,8 +138,7 @@ div.sidebarwrapper {
 }
 
 .sidebar_image {
-    width: 15%;
-    /*max-width: 100%;*/
+    max-width: 100%;
 }
 
 /* OTHER STUFF */
@@ -154,8 +153,8 @@ pre {
     margin: 15px -30px;
     line-height: 1.3em;
     font-size: 15px;
-    font-family: "Consolas, Menlo, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;"
-		     font-size: 0.9em;
+    font-family: "Consolas, Menlo, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;";
+    font-size: 0.9em;
     overflow: scroll;
     margin: 20px;
 }
