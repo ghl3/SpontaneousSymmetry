@@ -34,6 +34,10 @@ def projects():
 def work():
     return render_template('atlas.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/page/<page>')
 def page(page):
     meta, body = blog.load_and_render_page('{}/pages/{}.markdown'.format(blog.BASE_PATH, page))
