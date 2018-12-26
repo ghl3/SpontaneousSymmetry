@@ -1,47 +1,45 @@
 #!/usr/bin/env python
 
 import os
-import subprocess
-import json
-
-from werkzeug.wsgi import DispatcherMiddleware
-from werkzeug.serving import run_simple
 
 from flask import Flask
-from flask import url_for
 from flask import render_template
-from flask import request
-from flask import jsonify
+
 
 import blog
 from blog import Blog
-
 
 app = Flask(__name__)
 
 app.register_blueprint(Blog, url_prefix='/blog')
 blog.warm_cache()
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/work')
 def projects():
     return render_template('work.html')
 
+
 @app.route('/atlas')
 def work():
     return render_template('atlas.html')
+
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
+
 @app.route('/page/<page>')
 def page(page):
     meta, body = blog.load_and_render_page('{}/pages/{}.markdown'.format(blog.BASE_PATH, page))
     return render_template('page.html', content=body, title=page)
+
 
 @app.route('/stats')
 @app.route('/stats/<page>')
@@ -51,13 +49,15 @@ def stats(page='introduction'):
 
 
 APP_MAP = {
-    'rockspaper' : 'rockspaper.html',
-    'bouncingballs' : 'bouncingballs.html'
+    'rockspaper': 'rockspaper.html',
+    'bouncingballs': 'bouncingballs.html'
 }
+
 
 @app.route('/apps')
 def apps():
     return render_template('apps.html')
+
 
 @app.route('/app/<app>')
 def rockspaper(app):
