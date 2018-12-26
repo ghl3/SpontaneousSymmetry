@@ -1,4 +1,3 @@
-
 import os
 import os.path
 import re
@@ -48,13 +47,17 @@ class Post(object):
         self._raw_content = open(path).read()
         self.meta, self.content = separate_yaml(self._raw_content)
 
+        try:
+            self.enable = parse_enable(self.meta, default=True)
+        except Exception as e:
+            raise Post.InvalidPost(path)
+
         # Sanity checks
         if 'slug' in self.meta and self.meta['slug'] != self._path_name:
             raise Post.InvalidPost(path)
 
         if 'date' in self.meta and self.meta['date'].date() != convert_date(path_date):
             raise Post.InvalidPost(path)
-
 
     def path(self):
         return self._path
@@ -92,11 +95,23 @@ class Post(object):
             super(Post.InvalidPost, self).__init__(message)
             self.path = path
 
+
 def convert_date(date_str):
     try:
         return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
     except ValueError:
         return datetime.datetime.strptime(date_str.split()[0], '%Y-%m-%d').date()
+
+
+def parse_enable(meta, default=True):
+    if 'enable' in meta:
+        if meta['enable'].upper() == 'TRUE':
+            return True
+        elif meta['enable'].upper() == 'FALSE':
+            return False
+        else:
+            raise Exception()
+    return default
 
 
 def separate_yaml(raw):
@@ -158,8 +173,9 @@ def get_posts_in_directory(post_folder):
         match = re.match(regex, file)
         if match:
             date_str, name = match.group(1), match.group(2)
-            post = Post(post_folder+'/'+file, name, date_str)
-            posts[post.url()] = post
+            post = Post(post_folder + '/' + file, name, date_str)
+            if post.enable:
+                posts[post.url()] = post
     return posts
 
 
@@ -172,6 +188,7 @@ def get_posts(dir=None):
 def get_posts_by_index(dir=None):
     posts = get_posts(dir=dir).values()
     return {str(post.post_id()): post for post in posts}
+
 
 @memo
 def get_ordered_posts(dir=None):
@@ -192,6 +209,7 @@ def load_and_render_page(path):
         meta, content = separate_yaml(raw)
         html = Markup(markdown.markdown(content))
         return meta, html
+
 
 def load_post(post):
     """
