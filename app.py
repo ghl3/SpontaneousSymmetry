@@ -50,7 +50,8 @@ def stats(page='introduction'):
 
 APP_MAP = {
     'rockspaper': 'rockspaper.html',
-    'bouncingballs': 'bouncingballs.html'
+    'bouncingballs': 'bouncingballs.html',
+    'alpha-four': 'alpha-four.html'
 }
 
 

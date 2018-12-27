@@ -1,0 +1,34 @@
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+  grid-template-rowss: 100px 100px 100px 100px 100px 100px 100px 100px;
+
+  grid-column-gap: 50px;
+  grid-gap: 10px;
+  background-color: #fff;
+  color: #444;
+
+  /*
+  grid-columns: auto 100px 1fr 2fr;
+  grid-rows: 50px 5em auto;
+   display: grid;
+*/
+
+
+}
+
+
+.space {
+
+}
+
+
+.red-space {
+    color: red;
+}
+
+.blue-space {
+    color: blue;
+}
