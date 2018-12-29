@@ -13,16 +13,37 @@ var BOARD_COLUMNS = []
 for (let j=0; j < NUM_COLUMNS; ++j) {
     BOARD_COLUMNS.push([]);
 }
-/*
-var BOARD = [];
-for (let i=0; i < NUM_ROWS; ++i) {
-    var row = [];
-    BOARD.push(row);
+
+
+function checkIsWinner() {
+    ;
 }
 
-console.log(BOARD);
-*/
+function getAIMove(color) {
+    const Url = '/alphafour/next-move';
 
+    const Data = {'board': BOARD_COLUMNS};
+    const Params = {
+	headers: {"content-type": "application/json; charset=UTF=8"
+		 },
+	body: Data,
+	method: "POST"
+    };
+
+    fetch(Url, Params)
+	.then(response => {
+  if(response.ok) {
+      return response.json();
+  } else {
+      throw new Error('Network response was not ok.');
+  }
+	})
+	.then(data => {return data.json();})
+        .then(res => {processAIMove(res);})
+	.catch(error=>console.log(error))
+    ;
+    
+}
 
 function createPiece(color) {
 
@@ -101,7 +122,13 @@ function createGrid(gridId) {
 	    var elem = document.createElement("div");
 	    elem.className = "grid-item" + " " + "space" + " " + "row-" + i + " " + "col-" + j; ////<div class="grid-item">
 	    //elem.textContent = "" + i + " " + j;
-	    elem.onclick = function() { console.log("Clicked on " + i + " " + j); placePieceInColumn("red", j); }; 
+	    elem.onclick = function() {
+		console.log("Clicked on " + i + " " + j);
+		placePieceInColumn("red", j);
+		checkIsWinner();
+		getAIMove("blue");
+		checkIsWinner();
+	    }; 
 	    grid.appendChild(elem);
 	}
     }
