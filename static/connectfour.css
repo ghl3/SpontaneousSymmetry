@@ -39,3 +39,9 @@
 .computer-space {
     color: blue;
 }
+
+
+#gameState {
+ font-weight: bold;
+ min-height: 50px;
+}

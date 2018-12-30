@@ -17,22 +17,25 @@
 {% block content %}
 
 <br>
-<center><b>Alpha Four</b></center>
-<br>
+<center><b>Connect Four</b></center>
 
 
+
+<center>
+Play against an AI-based opponent.
+
+    <br>
+
+    <div id="gameState"></div>
+
+    <br>
 <div class="grid-container" id="board">
 </div>
 
 
-<center>
-
-A simple javascript program to demonstrate some <br>
-animation and some (very simple) physics.
-
 <br>
 
-<button type="button" id="stopButton" OnClick="toggle_loop()"> Start/Stop </button> <br> 
+<button type="button" id="resetButton" OnClick="resetBoard()"> Reset Game </button> <br>
 <br>
 
 </center>

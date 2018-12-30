@@ -8,10 +8,7 @@ var HUMAN = 'human';
 var COMPUTER= 'computer';
 
 // Add elements to the grid on load
-var BOARD_COLUMNS = []
-for (let j=0; j < NUM_COLUMNS; ++j) {
-    BOARD_COLUMNS.push([]);
-}
+BOARD = null;
 
 
 function createGrid(gridId) {
@@ -26,17 +23,46 @@ function createGrid(gridId) {
 	    elem.className = "grid-item" + " " + "space" + " " + "row-" + i + " " + "col-" + j;
 	    elem.onclick = function() {
 		  console.log("Clicked on " + i + " " + j);
-		  placePieceInColumn(HUMAN, j);
-		  processBoard(BOARD_COLUMNS, HUMAN, COMPUTER);
+		  placePieceInColumn(BOARD, HUMAN, j);
+		  processBoard(BOARD, HUMAN, COMPUTER);
 	    };
 	    grid.appendChild(elem);
 	}
     }
 }
 
+function clearGrid(gridId) {
+
+ var grid = document.getElementById(gridId);
+ while (grid.firstChild) {
+    grid.removeChild(grid.firstChild);
+}
+
+}
 
 
-function placePieceInColumn(player, col) {
+function createBoard() {
+
+  var BOARD_COLUMNS = []
+  for (let j=0; j < NUM_COLUMNS; ++j) {
+    BOARD_COLUMNS.push([]);
+  }
+
+  return BOARD_COLUMNS;
+
+}
+
+function resetBoard() {
+  clearGrid("board");
+  createGrid("board");
+  BOARD = createBoard();
+  document.getElementById("gameState").innerHTML = "";
+  GAME_IS_OVER = false;
+}
+
+
+
+function placePieceInColumn(board, player, col) {
 
     var row = null;
 
@@ -46,11 +72,11 @@ function placePieceInColumn(player, col) {
 
     }
 
-    if (BOARD_COLUMNS[col].length >= NUM_ROWS) {
+    if (board[col].length >= NUM_ROWS) {
 	  console.log("CANNOT ADD TO COLUMN, TOO MANY PIECES ALREADY");
 	  return;
     } else {
-	  row = NUM_ROWS - BOARD_COLUMNS[col].length - 1;
+	  row = NUM_ROWS - board[col].length - 1;
     }
 
     console.log("Adding piece to col " + col);
@@ -72,7 +98,7 @@ function placePieceInColumn(player, col) {
     elem.appendChild(createPiece(color));
     elem.className += " " + playerClass;
 
-    BOARD_COLUMNS[col].push(player);
+    BOARD[col].push(player);
 }
 
 
@@ -137,16 +163,19 @@ function processMoveResult(move) {
   }
 
   if (move['col_to_play'] != null) {
-    placePieceInColumn(COMPUTER, move['col_to_play'])
+    placePieceInColumn(BOARD, COMPUTER, move['col_to_play'])
   }
 
   if (move['outcome_after_move'] != null) {
     if (move['outcome_after_move'] == 'CURRENT_PLAYER_WINNER') {
       console.log("COMPUER WON");
+      document.getElementById("gameState").innerHTML = "COMPUTER WON";
     } else if (move['outcome_after_move'] == 'PREVIOUS_PLAYER_WINNER') {
       console.log("HUMAN WON");
+      document.getElementById("gameState").innerHTML = "HUMAN WON";
     } else {
       console.log("ERROR, UNKNOWN WINNER: " + move['outcome_after_move']);
+      document.getElementById("gameState").innerHTML = "GAME ERROR";
     }
     GAME_IS_OVER = true;
   }
@@ -154,4 +183,7 @@ function processMoveResult(move) {
 
 
 
-$(document).ready(function(){createGrid("board")});
+$(document).ready(function(){
+  createGrid("board");
+ BOARD = createBoard();
+ });
