@@ -4,7 +4,8 @@ SITE_DIRECTORY=/var/www/spontaneoussymmetry
 cd $SITE_DIRECTORY
 
 echo "Pruning Docker"
-yes | docker system prune
+#yes | docker system prune
+yes | docker image prune -a --filter "until=720h"
 
 echo "Build new container"
 docker build -t sym_img .
