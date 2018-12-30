@@ -10,6 +10,4 @@ python-markdown-math==0.6
 PyYAML==3.13
 uWSGI==2.0.17.1
 Werkzeug==0.14.1
--e git+https://github.com/ghl3/AlphaFour.git@7c635a37336b95d20f837be5d644239ff509a638#egg=AlphaFour
-
-
+-e git+https://github.com/ghl3/AlphaFour.git@85e182a0fdc7d4ad5fb4e8a974581e02cb35705e#egg=AlphaFour
