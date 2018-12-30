@@ -4,10 +4,19 @@ from flask import Blueprint
 
 from alphafour import ai
 from alphafour import ConnectFour as cf
+import os
+import inspect
 
 ConnectFour = Blueprint('connectfour', __name__, template_folder='templates')
 
-AI = ai.load_model('/Users/George/Projects/ConnectFour/models/gen2-cov2d_beta_2017_11_05_114919', greedy=True)
+def get_model_path(name):
+
+    path = os.path.dirname(inspect.stack()[0][1])
+
+    return "{}/models/{}".format(path, name)
+
+
+AI = ai.load_model(get_model_path('gen2-cov2d_beta_2017_11_05_114919')) #/Users/George/Projects/ConnectFour/models/gen2-cov2d_beta_2017_11_05_114919', greedy=True)
 
 
 class NextMove(object):
