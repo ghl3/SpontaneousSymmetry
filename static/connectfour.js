@@ -141,11 +141,15 @@ function processMoveResult(move) {
   }
 
   if (move['outcome_after_move'] != null) {
-    console.log("GAME DONE: " + move['outcome_after_move'])
+    if (move['outcome_after_move'] == 'CURRENT_PLAYER_WINNER') {
+      console.log("COMPUER WON");
+    } else if (move['outcome_after_move'] == 'PREVIOUS_PLAYER_WINNER') {
+      console.log("HUMAN WON");
+    } else {
+      console.log("ERROR, UNKNOWN WINNER: " + move['outcome_after_move']);
+    }
     GAME_IS_OVER = true;
   }
-
-
 }
 
 

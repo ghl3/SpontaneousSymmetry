@@ -50,7 +50,7 @@ def get_next_move(board, current_player, previous_player):
     elif cf.is_winner(board, current_player):
         return NextMove(None, 'CURRENT_PLAYER_WINNER', 'GAME_IS_COMPLETE')
     elif cf.is_winner(board, previous_player):
-        return NextMove(None, 'OTHER_PLAYER_WINNER', 'GAME_IS_COMPLETE')
+        return NextMove(None, 'PREVIOUS_PLAYER_WINNER', 'GAME_IS_COMPLETE')
 
     col_to_place = AI.get_move(board, current_player)
     board = cf.play(board, col_to_place, current_player)
@@ -60,7 +60,7 @@ def get_next_move(board, current_player, previous_player):
     elif cf.is_winner(board, current_player):
         return NextMove(col_to_place, 'CURRENT_PLAYER_WINNER')
     elif cf.is_winner(board, previous_player):
-        return NextMove(col_to_place, 'OTHER_PLAYER_WINNER')
+        return NextMove(col_to_place, 'PREVIOUS_PLAYER_WINNER')
     else:
         return NextMove(col_to_place)
 
