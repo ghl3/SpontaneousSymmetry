@@ -1,62 +1,87 @@
 
-
-// FOO
-
-
-// Add elements to the grid on load
+var GAME_IS_OVER = false;
 
 var NUM_ROWS = 6;
 var NUM_COLUMNS= 7;
 
+var HUMAN = 'human';
+var COMPUTER= 'computer';
 
+// Add elements to the grid on load
 var BOARD_COLUMNS = []
 for (let j=0; j < NUM_COLUMNS; ++j) {
     BOARD_COLUMNS.push([]);
 }
 
 
-function checkIsWinner() {
-    ;
+function createGrid(gridId) {
+
+    // Get the Grid
+    var grid = document.getElementById(gridId);
+
+    for (let i=0; i < NUM_ROWS; ++i) {
+	for (let j=0; j < NUM_COLUMNS; ++j) {
+
+	    var elem = document.createElement("div");
+	    elem.className = "grid-item" + " " + "space" + " " + "row-" + i + " " + "col-" + j;
+	    elem.onclick = function() {
+		  console.log("Clicked on " + i + " " + j);
+		  placePieceInColumn(HUMAN, j);
+		  processBoard(BOARD_COLUMNS, HUMAN, COMPUTER);
+	    };
+	    grid.appendChild(elem);
+	}
+    }
 }
 
-function getAIMove(color) {
-    const Url = '/alphafour/next-move';
 
-    const Data = {'board': BOARD_COLUMNS};
-    const Params = {
-	headers: {"content-type": "application/json; charset=UTF=8"
-		 },
-	body: Data,
-	method: "POST"
-    };
 
-    fetch(Url, Params)
-	.then(response => {
-  if(response.ok) {
-      return response.json();
-  } else {
-      throw new Error('Network response was not ok.');
-  }
-	})
-	.then(data => {return data.json();})
-        .then(res => {processAIMove(res);})
-	.catch(error=>console.log(error))
-    ;
-    
+function placePieceInColumn(player, col) {
+
+    var row = null;
+
+    if (GAME_IS_OVER) {
+    	  console.log("CANNOT PLACE PIECE, GAME IS OVER");
+    	  return;
+
+    }
+
+    if (BOARD_COLUMNS[col].length >= NUM_ROWS) {
+	  console.log("CANNOT ADD TO COLUMN, TOO MANY PIECES ALREADY");
+	  return;
+    } else {
+	  row = NUM_ROWS - BOARD_COLUMNS[col].length - 1;
+    }
+
+    console.log("Adding piece to col " + col);
+    console.log("Updating Row " + row + " " + " col: " + col);
+
+    var colorClass;
+    if (player == HUMAN) {
+	  playerClass = "human-space";
+    } else if (player == COMPUTER) {
+      playerClass = "computer-space";
+    } else {
+	  console.log("ERROR: Bad player " + player);
+	  return;
+    }
+
+    // Color the piece
+    var color = (player==HUMAN) ? 'blue' : 'red';
+    var elem = document.querySelector(".grid-item.row-" + row + ".col-" + col);
+    elem.appendChild(createPiece(color));
+    elem.className += " " + playerClass;
+
+    BOARD_COLUMNS[col].push(player);
 }
+
+
 
 function createPiece(color) {
 
-    /*
-      <svg height="100" width="100">
-      <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
-      </svg>
-    */
-
     var svgns = "http://www.w3.org/2000/svg";
-    
+
     var svg = document.createElementNS(svgns, "svg");
-    //svg.setAttribute('style', 'border: 1px solid black');
     svg.setAttribute('width', '80');
     svg.setAttribute('height', '80');
     svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
@@ -68,70 +93,61 @@ function createPiece(color) {
     circle.setAttributeNS(null, "fill", color);
     circle.setAttributeNS(null, "stroke", "black");
     circle.setAttributeNS(null, "stroke-width", "3");
-    //circle.setAttributeNS(null, 'style', 'fill: none; stroke: blue; stroke-width: 1px;' );
     svg.appendChild(circle);
-    //    svg.appendChild
     return svg;
 }
 
 
-function placePieceInColumn(color, col) {
 
-    var row = null;
-    
-    if (BOARD_COLUMNS[col].length >= NUM_ROWS) {
-	console.log("CANNOT ADD TO COLUMN, TOO MANY PIECES ALREADY");
-	return;
-    } else {
-	row = NUM_ROWS - BOARD_COLUMNS[col].length - 1;
-    }
 
-    console.log("Adding piece to col " + col);
-    console.log("Updating Row " + row + " " + " col: " + col);
-    
-    var colorClass;
-    if (color == "red") {
-	colorClass = "red-space";
-    } else if (color == "blue") {
-        colorClass = "blue-space";
-    } else {
-	console.log("ERROR: Bad color " + color);
-	return;
-    }
-    
-    // Color the piece
-    var elem = document.querySelector(".grid-item.row-" + row + ".col-" + col);
-    elem.appendChild(createPiece(color));
-    console.log(elem);
-    elem.className += " " + colorClass;
+function processBoard(board, previous_player, current_player) {
+    const Url = '/connectfour/next-move';
 
-    BOARD_COLUMNS[col].push(color);
-				      
-    // Then, we determine the next move
+    const Data = {
+      'board': board,
+      'current_player': current_player,
+      'previous_player': previous_player,
+    };
+    const Params = {
+	  headers: {"content-type": "application/json; charset=UTF=8"},
+	  body: JSON.stringify(Data),
+	  method: "POST"
+    };
+
+    fetch(Url, Params).then(response => {
+  if(response.ok) {
+      return response.json();
+  } else {
+      throw new Error('Network response was not ok.');
+  }
+	})
+	.then(data => {console.log(data); return data;})
+    .then(res => {processMoveResult(res);})
+	.catch(error=>console.log(error))
+    ;
+    
+}
+
+
+function processMoveResult(move) {
+
+  if (move['error'] != null) {
+    console.log("ERROR: " + move['error'])
+    return;
+  }
+
+  if (move['col_to_play'] != null) {
+    placePieceInColumn(COMPUTER, move['col_to_play'])
+  }
+
+  if (move['outcome_after_move'] != null) {
+    console.log("GAME DONE: " + move['outcome_after_move'])
+    GAME_IS_OVER = true;
+  }
+
 
 }
 
-function createGrid(gridId) {
 
-    // Get the Grid
-    var grid = document.getElementById(gridId); //$(gridId);
-
-    for (let i=0; i < NUM_ROWS; ++i) {
-	for (let j=0; j < NUM_COLUMNS; ++j) {
-
-	    var elem = document.createElement("div");
-	    elem.className = "grid-item" + " " + "space" + " " + "row-" + i + " " + "col-" + j; ////<div class="grid-item">
-	    //elem.textContent = "" + i + " " + j;
-	    elem.onclick = function() {
-		console.log("Clicked on " + i + " " + j);
-		placePieceInColumn("red", j);
-		checkIsWinner();
-		getAIMove("blue");
-		checkIsWinner();
-	    }; 
-	    grid.appendChild(elem);
-	}
-    }
-}
 
 $(document).ready(function(){createGrid("board")});

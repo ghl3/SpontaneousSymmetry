@@ -9,9 +9,11 @@ from flask import render_template
 import blog
 from blog import Blog
 
-app = Flask(__name__)
+from apps.connectfour.connectfour import ConnectFour
 
+app = Flask(__name__)
 app.register_blueprint(Blog, url_prefix='/blog')
+app.register_blueprint(ConnectFour, url_prefix='/connectfour')
 blog.warm_cache()
 
 
@@ -51,7 +53,7 @@ def stats(page='introduction'):
 APP_MAP = {
     'rockspaper': 'rockspaper.html',
     'bouncingballs': 'bouncingballs.html',
-    'alpha-four': 'alpha-four.html'
+    'connectfour': 'connectfour.html'
 }
 
 
