@@ -2,6 +2,7 @@
 !requirements.txt
 !constraints.txt
 !app.py
+!apps
 !blog.py
 !mdx_mathjax.py
 !static
