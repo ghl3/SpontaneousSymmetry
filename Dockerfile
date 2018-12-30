@@ -9,6 +9,8 @@ RUN apk add --update \
     py-virtualenv \
     nginx \
     uwsgi \
+    freetype-dev \
+    libpng-dev \
     && pip install --upgrade pip \
     && pip install uwsgi==2.0.15 \
     && mkdir -p /var/log/nginx \
