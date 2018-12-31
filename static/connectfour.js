@@ -1,10 +1,11 @@
-var GAME_IS_OVER = false;
-
 var NUM_ROWS = 6;
 var NUM_COLUMNS = 7;
 
 var HUMAN = "human";
 var COMPUTER = "computer";
+
+var TURN = HUMAN;
+var GAME_IS_OVER = false;
 
 // Add elements to the grid on load
 BOARD = null;
@@ -21,7 +22,9 @@ function createGrid(gridId) {
       elem.onclick = function() {
         console.log("Clicked on " + i + " " + j);
         placePieceInColumn(BOARD, HUMAN, j);
+        TURN = COMPUTER;
         processBoard(BOARD, HUMAN, COMPUTER);
+        TURN = HUMAN;
       };
       grid.appendChild(elem);
     }
@@ -58,6 +61,10 @@ function placePieceInColumn(board, player, col) {
   if (GAME_IS_OVER) {
     console.log("CANNOT PLACE PIECE, GAME IS OVER");
     return;
+  }
+
+  if (TURN != player) {
+    console.log("CANNOT PLACE PIECE, NOT PLAYER'S TURN");
   }
 
   if (board[col].length >= NUM_ROWS) {
@@ -145,6 +152,14 @@ function processBoard(board, previous_player, current_player) {
 }
 
 function processMoveResult(move) {
+  if (GAME_IS_OVER) {
+    return;
+  }
+
+  if (TURN != COMPUTER) {
+    return;
+  }
+
   if (move["error"] != null) {
     console.log("ERROR: " + move["error"]);
     return;
