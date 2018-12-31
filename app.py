@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.register_blueprint(Blog, url_prefix='/blog')
 app.register_blueprint(ConnectFour, url_prefix='/connectfour')
 
-blog.warm_cache()
+app.before_first_request(blog.warm_cache)
 app.before_first_request(connectfour.get_ai)
 
 

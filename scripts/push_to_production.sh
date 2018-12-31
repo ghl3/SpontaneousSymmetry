@@ -1,4 +1,4 @@
-
+set -e
 
 echo "Pushing new code to production server"
 git push production
