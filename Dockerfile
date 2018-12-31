@@ -39,19 +39,10 @@ RUN virtualenv venv \
 #  && pip install --upgrade  https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.12.0-py2-none-any.whl \
    && pip install -c constraints.txt -r requirements.txt && deactivate
 
-# Setup the web app and flask
-COPY . /var/www/spontaneoussymmetry
-
-# Setup the docker and uwsgi configs
+# Set up permissions
 
 RUN useradd -s /bin/false nginx
 RUN useradd -s /bin/false uwsgi
-
-COPY config/nginx.conf /etc/nginx/nginx.conf
-COPY config/spontaneoussymmetry_nginx.conf /etc/nginx/conf.d/spontaneoussymmetry_nginx.conf
-COPY config/emperor.ini /etc/uwsgi/emperor.ini
-COPY config/spontaneoussymmetry_uwsgi.ini /etc/uwsgi/vassals/spontaneoussymmetry_uwsgi.ini
-COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log \
@@ -61,6 +52,16 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 RUN chown -R uwsgi /var/www/spontaneoussymmetry \
  && chown -R uwsgi /var/log/uwsgi
+
+# Copy the web app to Docker
+COPY . /var/www/spontaneoussymmetry
+
+# Move the configs to the right places
+COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY config/spontaneoussymmetry_nginx.conf /etc/nginx/conf.d/spontaneoussymmetry_nginx.conf
+COPY config/emperor.ini /etc/uwsgi/emperor.ini
+COPY config/spontaneoussymmetry_uwsgi.ini /etc/uwsgi/vassals/spontaneoussymmetry_uwsgi.ini
+COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Launch the servers as daemons
 

@@ -1,4 +1,3 @@
-
 from flask import request, jsonify
 from flask import Blueprint
 
@@ -9,14 +8,23 @@ import inspect
 
 ConnectFour = Blueprint('connectfour', __name__, template_folder='templates')
 
+
 def get_model_path(name):
-
     path = os.path.dirname(inspect.stack()[0][1])
-
     return "{}/models/{}".format(path, name)
 
 
-AI = ai.load_model(get_model_path('gen2-cov2d_beta_2017_11_05_114919')) #/Users/George/Projects/ConnectFour/models/gen2-cov2d_beta_2017_11_05_114919', greedy=True)
+AI = None
+
+
+def get_ai():
+    global AI
+    if AI is None:
+        AI = ai.load_model(model_name=get_model_path('gen2-cov2d_beta_2017_11_05_114919'))
+    return AI
+
+
+# /Users/George/Projects/ConnectFour/models/gen2-cov2d_beta_2017_11_05_114919', greedy=True)
 
 
 class NextMove(object):
@@ -61,7 +69,9 @@ def get_next_move(board, current_player, previous_player):
     elif cf.is_winner(board, previous_player):
         return NextMove(None, 'PREVIOUS_PLAYER_WINNER', 'GAME_IS_COMPLETE')
 
-    col_to_place = AI.get_move(board, current_player)
+    print "GETTING MOVE"
+    col_to_place = get_ai().get_move(board, current_player)
+    print "GOT MOVE"
     board = cf.play(board, col_to_place, current_player)
 
     if cf.is_tie(board):
