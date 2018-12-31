@@ -23,7 +23,6 @@ def get_ai():
         AI = ai.load_model(model_name=get_model_path('gen2-cov2d_beta_2017_11_05_114919'))
     return AI
 
-
 # /Users/George/Projects/ConnectFour/models/gen2-cov2d_beta_2017_11_05_114919', greedy=True)
 
 
