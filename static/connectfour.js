@@ -22,9 +22,7 @@ function createGrid(gridId) {
       elem.onclick = function() {
         console.log("Clicked on " + i + " " + j);
         placePieceInColumn(BOARD, HUMAN, j);
-        TURN = COMPUTER;
         processBoard(BOARD, HUMAN, COMPUTER);
-        TURN = HUMAN;
       };
       grid.appendChild(elem);
     }
@@ -94,6 +92,9 @@ function placePieceInColumn(board, player, col) {
   elem.className += " " + playerClass;
 
   BOARD[col].push(player);
+
+  // Swap the player
+  TURN = player == HUMAN ? COMPUTER : HUMAN;
 }
 
 function createPiece(color) {
@@ -157,6 +158,7 @@ function processMoveResult(move) {
   }
 
   if (TURN != COMPUTER) {
+    console.log("TURN IS: " + TURN);
     return;
   }
 
