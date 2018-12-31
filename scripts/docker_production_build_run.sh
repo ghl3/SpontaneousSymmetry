@@ -11,6 +11,7 @@ echo "Build new container"
 docker build -t sym_img .
 
 echo "Building the new container"
+docker rm sym_cont_old
 docker rename sym_cont sym_cont_old
 docker create --name sym_cont -p 80:80 -p 443:443 sym_img:latest
 
