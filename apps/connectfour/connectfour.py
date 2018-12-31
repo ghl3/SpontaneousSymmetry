@@ -68,9 +68,7 @@ def get_next_move(board, current_player, previous_player):
     elif cf.is_winner(board, previous_player):
         return NextMove(None, 'PREVIOUS_PLAYER_WINNER', 'GAME_IS_COMPLETE')
 
-    print "GETTING MOVE"
     col_to_place = get_ai().get_move(board, current_player)
-    print "GOT MOVE"
     board = cf.play(board, col_to_place, current_player)
 
     if cf.is_tie(board):
