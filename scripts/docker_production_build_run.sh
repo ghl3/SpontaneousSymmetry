@@ -1,11 +1,11 @@
-#set -e
+set -e
 
 SITE_DIRECTORY=/var/www/spontaneoussymmetry
 cd $SITE_DIRECTORY
 
 echo "Pruning Docker"
-#yes | docker system prune
-yes | docker image prune -a --filter "until=720h"
+yes | docker image prune
+yes | docker container prune
 
 echo "Build new container"
 docker build -t sym_img .
