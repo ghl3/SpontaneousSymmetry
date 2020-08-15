@@ -7,7 +7,7 @@ Markdown==3.0.1
 MarkupSafe==1.1.0
 Pygments==2.3.1
 python-markdown-math==0.6
-PyYAML==3.13
+PyYAML==5.1
 uWSGI==2.0.17.1
 Werkzeug==0.14.1
 -e git+https://github.com/ghl3/AlphaFour.git@93b61611c53e00b1d134b053ea128db4eb3fbffb#egg=AlphaFour
