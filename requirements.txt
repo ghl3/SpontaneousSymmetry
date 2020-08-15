@@ -2,13 +2,13 @@ Click==7.0
 Flask==1.0.2
 gunicorn==19.9.0
 itsdangerous==1.1.0
-Jinja2==2.10
+Jinja2>=2.10.1
 Markdown==3.0.1
 MarkupSafe==1.1.0
 Pygments==2.3.1
 python-markdown-math==0.6
-PyYAML==3.13
+pyyaml>=4.2b1
 uWSGI==2.0.17.1
-Werkzeug==0.14.1
+Werkzeug>=0.15.3
 -e git+https://github.com/ghl3/AlphaFour.git@93b61611c53e00b1d134b053ea128db4eb3fbffb#egg=AlphaFour
 
