@@ -14,4 +14,4 @@ docker cp certs/nginx-selfsigned.key sym_cont:/etc/ssl/private/nginx.key
 # Start the container
 # (Run = Create + Start)
 docker start -i sym_cont
-#docker run -P -t ss_app
+
