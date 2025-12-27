@@ -15,9 +15,12 @@ interface GameState {
   turn: Player;
   gameOver: boolean;
   winner: Player | 'tie' | null;
-  isLoading: boolean;
+  isThinking: boolean;
+  modelLoading: boolean;
   aiReady: boolean;
   aiLoadError: string | null;
+  hoveredColumn: number | null;
+  lastMove: { col: number; row: number } | null;
 }
 
 // Create empty board (column-oriented for compatibility with original logic)
@@ -129,15 +132,120 @@ function softmax(probs: number[], theta: number = 25): number[] {
   return expProbs.map(p => p / sumExp);
 }
 
+// Model Loading Overlay Component
+function ModelLoadingOverlay(): JSX.Element {
+  return (
+    <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 to-blue-900/95 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center z-10">
+      {/* Neural Network Animation */}
+      <div className="relative mb-6">
+        {/* Outer ring */}
+        <div className="w-24 h-24 rounded-full border-4 border-amber-400/30 animate-pulse" />
+        
+        {/* Middle ring - rotating */}
+        <div className="absolute inset-2 rounded-full border-2 border-dashed border-amber-400/50 animate-spin" style={{ animationDuration: '3s' }} />
+        
+        {/* Inner brain icon */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <svg className="w-10 h-10 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            <circle cx="12" cy="12" r="3" className="animate-ping" style={{ animationDuration: '1.5s' }} />
+          </svg>
+        </div>
+        
+        {/* Orbiting dots */}
+        <div className="absolute inset-0 animate-spin" style={{ animationDuration: '2s' }}>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400 rounded-full" />
+        </div>
+        <div className="absolute inset-0 animate-spin" style={{ animationDuration: '2.5s', animationDirection: 'reverse' }}>
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-blue-400 rounded-full" />
+        </div>
+      </div>
+      
+      {/* Text */}
+      <div className="text-center">
+        <h3 className="text-lg font-semibold text-white mb-2">Initializing Neural Network</h3>
+        <p className="text-sm text-slate-300">Loading AI model weights...</p>
+        
+        {/* Progress bar */}
+        <div className="mt-4 w-48 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full animate-pulse"
+            style={{ 
+              width: '100%',
+              animation: 'loading-progress 2s ease-in-out infinite'
+            }}
+          />
+        </div>
+      </div>
+      
+      <style jsx>{`
+        @keyframes loading-progress {
+          0%, 100% { transform: translateX(-100%); }
+          50% { transform: translateX(0%); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// AI Thinking Overlay Component - subtle pulsing border
+function ThinkingOverlay(): JSX.Element {
+  return (
+    <div className="absolute inset-0 pointer-events-none z-10 rounded-lg ring-2 ring-rose-400/50 animate-pulse" />
+  );
+}
+
+// Game Outcome Component
+function GameOutcome({ winner, onReset }: { winner: Player | 'tie'; onReset: () => void }): JSX.Element {
+  const isHumanWin = winner === 'human';
+  const isTie = winner === 'tie';
+  
+  return (
+    <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center z-20">
+      <div className="text-center">
+        {/* Icon */}
+        <div className={`text-6xl mb-4 ${isHumanWin ? 'animate-bounce' : ''}`}>
+          {isHumanWin ? '🎉' : isTie ? '🤝' : '🤖'}
+        </div>
+        
+        {/* Message */}
+        <h2 className={`text-2xl font-bold mb-2 ${
+          isHumanWin ? 'text-amber-400' : isTie ? 'text-slate-300' : 'text-rose-400'
+        }`}>
+          {isHumanWin ? 'Victory!' : isTie ? "It's a Draw" : 'AI Wins'}
+        </h2>
+        <p className="text-slate-400 mb-6">
+          {isHumanWin 
+            ? 'You outsmarted the neural network!' 
+            : isTie 
+              ? 'A battle of equals' 
+              : 'The machine prevails'}
+        </p>
+        
+        {/* Play Again Button */}
+        <button
+          onClick={onReset}
+          className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-900 font-semibold rounded-full transition-all duration-200 transform hover:scale-105 shadow-lg shadow-amber-500/25"
+        >
+          Play Again
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function ConnectFourGame(): JSX.Element {
   const [gameState, setGameState] = useState<GameState>({
     board: createBoard(),
     turn: 'human',
     gameOver: false,
     winner: null,
-    isLoading: false,
+    isThinking: false,
+    modelLoading: true,
     aiReady: false,
     aiLoadError: null,
+    hoveredColumn: null,
+    lastMove: null,
   });
   
   const modelRef = useRef<tf.GraphModel | null>(null);
@@ -150,12 +258,13 @@ export default function ConnectFourGame(): JSX.Element {
         const model = await tf.loadGraphModel('/models/connectfour/model.json');
         modelRef.current = model;
         console.log('Model loaded successfully!');
-        setGameState(prev => ({ ...prev, aiReady: true }));
+        setGameState(prev => ({ ...prev, aiReady: true, modelLoading: false }));
       } catch (error) {
         console.error('Failed to load AI model:', error);
         setGameState(prev => ({ 
           ...prev, 
           aiReady: false,
+          modelLoading: false,
           aiLoadError: 'Failed to load AI model. Using fallback AI.',
         }));
       }
@@ -222,7 +331,7 @@ export default function ConnectFourGame(): JSX.Element {
   }, []);
 
   const handleColumnClick = useCallback((col: number) => {
-    if (gameState.gameOver || gameState.turn !== 'human' || gameState.isLoading) {
+    if (gameState.gameOver || gameState.turn !== 'human' || gameState.isThinking || gameState.modelLoading) {
       return;
     }
 
@@ -233,6 +342,7 @@ export default function ConnectFourGame(): JSX.Element {
     // Make human move
     const newBoard = gameState.board.map(c => [...c]);
     newBoard[col].push('human');
+    const newRow = newBoard[col].length - 1;
 
     // Check for human win
     if (checkWinner(newBoard, 'human')) {
@@ -241,6 +351,7 @@ export default function ConnectFourGame(): JSX.Element {
         board: newBoard,
         gameOver: true,
         winner: 'human',
+        lastMove: { col, row: newRow },
       });
       return;
     }
@@ -252,6 +363,7 @@ export default function ConnectFourGame(): JSX.Element {
         board: newBoard,
         gameOver: true,
         winner: 'tie',
+        lastMove: { col, row: newRow },
       });
       return;
     }
@@ -261,13 +373,21 @@ export default function ConnectFourGame(): JSX.Element {
       ...gameState,
       board: newBoard,
       turn: 'computer',
-      isLoading: true,
+      isThinking: true,
+      lastMove: { col, row: newRow },
     });
   }, [gameState]);
 
+  const handleColumnHover = useCallback((col: number | null) => {
+    if (gameState.gameOver || gameState.turn !== 'human' || gameState.isThinking) {
+      return;
+    }
+    setGameState(prev => ({ ...prev, hoveredColumn: col }));
+  }, [gameState.gameOver, gameState.turn, gameState.isThinking]);
+
   // Computer move effect
   useEffect(() => {
-    if (gameState.turn !== 'computer' || gameState.gameOver || !gameState.isLoading) {
+    if (gameState.turn !== 'computer' || gameState.gameOver || !gameState.isThinking) {
       return;
     }
 
@@ -278,6 +398,7 @@ export default function ConnectFourGame(): JSX.Element {
       const computerCol = await getAIMove(gameState.board);
       const newBoard = gameState.board.map(c => [...c]);
       newBoard[computerCol].push('computer');
+      const newRow = newBoard[computerCol].length - 1;
 
       // Check for computer win
       if (checkWinner(newBoard, 'computer')) {
@@ -287,7 +408,8 @@ export default function ConnectFourGame(): JSX.Element {
           turn: 'human',
           gameOver: true,
           winner: 'computer',
-          isLoading: false,
+          isThinking: false,
+          lastMove: { col: computerCol, row: newRow },
         });
         return;
       }
@@ -300,7 +422,8 @@ export default function ConnectFourGame(): JSX.Element {
           turn: 'human',
           gameOver: true,
           winner: 'tie',
-          isLoading: false,
+          isThinking: false,
+          lastMove: { col: computerCol, row: newRow },
         });
         return;
       }
@@ -310,7 +433,8 @@ export default function ConnectFourGame(): JSX.Element {
         ...gameState,
         board: newBoard,
         turn: 'human',
-        isLoading: false,
+        isThinking: false,
+        lastMove: { col: computerCol, row: newRow },
       });
     };
     
@@ -324,8 +448,57 @@ export default function ConnectFourGame(): JSX.Element {
       turn: 'human',
       gameOver: false,
       winner: null,
-      isLoading: false,
+      isThinking: false,
+      hoveredColumn: null,
+      lastMove: null,
     });
+  };
+
+  // Render a single cell
+  const renderCell = (row: number, col: number): JSX.Element => {
+    const pieceIndex = NUM_ROWS - 1 - row;
+    const piece = gameState.board[col][pieceIndex] || null;
+    const isLastMove = gameState.lastMove?.col === col && gameState.lastMove?.row === pieceIndex;
+    const showGhost = !piece && 
+                      gameState.hoveredColumn === col && 
+                      pieceIndex === gameState.board[col].length &&
+                      gameState.turn === 'human' &&
+                      !gameState.gameOver &&
+                      !gameState.isThinking;
+    
+    return (
+      <div
+        key={`${row}-${col}`}
+        className={`
+          w-12 h-12 sm:w-14 sm:h-14 
+          bg-blue-700 border border-blue-800 
+          flex items-center justify-center 
+          cursor-pointer 
+          transition-all duration-150
+          ${gameState.hoveredColumn === col && !gameState.gameOver && !gameState.isThinking && gameState.turn === 'human'
+            ? 'bg-blue-600' 
+            : 'hover:bg-blue-650'}
+        `}
+        onClick={() => handleColumnClick(col)}
+        onMouseEnter={() => handleColumnHover(col)}
+        onMouseLeave={() => handleColumnHover(null)}
+      >
+        {piece && (
+          <div
+            className={`
+              w-9 h-9 sm:w-11 sm:h-11 rounded-full shadow-inner
+              ${piece === 'human' 
+                ? 'bg-gradient-to-br from-amber-300 to-amber-500 border-2 border-amber-600' 
+                : 'bg-gradient-to-br from-rose-400 to-rose-600 border-2 border-rose-700'}
+              ${isLastMove ? 'animate-drop ring-2 ring-white/50 ring-offset-2 ring-offset-blue-700' : ''}
+            `}
+          />
+        )}
+        {showGhost && (
+          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-amber-400/30 border-2 border-amber-400/50 border-dashed" />
+        )}
+      </div>
+    );
   };
 
   // Render the board
@@ -334,90 +507,118 @@ export default function ConnectFourGame(): JSX.Element {
     
     for (let row = 0; row < NUM_ROWS; row++) {
       for (let col = 0; col < NUM_COLUMNS; col++) {
-        const pieceIndex = NUM_ROWS - 1 - row;
-        const piece = gameState.board[col][pieceIndex] || null;
-        
-        cells.push(
-          <div
-            key={`${row}-${col}`}
-            className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-700 border border-blue-800 flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors duration-150"
-            onClick={() => handleColumnClick(col)}
-          >
-            {piece && (
-              <div
-                className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full shadow-inner ${
-                  piece === 'human' 
-                    ? 'bg-amber-400 border-2 border-amber-500' 
-                    : 'bg-rose-500 border-2 border-rose-600'
-                }`}
-              />
-            )}
-          </div>
-        );
+        cells.push(renderCell(row, col));
       }
     }
     
     return cells;
   };
 
-  const getStatusMessage = (): string => {
-    if (!gameState.aiReady && !gameState.aiLoadError) {
-      return 'Loading AI...';
+  const getStatusMessage = (): JSX.Element => {
+    if (gameState.modelLoading) {
+      return <span className="text-slate-400">Preparing game...</span>;
     }
-    if (gameState.winner === 'human') return '🎉 You Won!';
-    if (gameState.winner === 'computer') return 'Computer Won!';
-    if (gameState.winner === 'tie') return "It's a Tie!";
-    if (gameState.isLoading) return 'Computer is thinking...';
-    return 'Your turn — Click a column to play';
+    if (gameState.gameOver) {
+      return <span className="text-slate-400">Game Over</span>;
+    }
+    if (gameState.isThinking) {
+      return (
+        <span className="flex items-center gap-2">
+          <span className="text-rose-400">AI is thinking</span>
+          <span className="flex gap-1">
+            <span className="w-1.5 h-1.5 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <span className="w-1.5 h-1.5 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <span className="w-1.5 h-1.5 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          </span>
+        </span>
+      );
+    }
+    return <span className="text-amber-600">Your turn — Click a column</span>;
   };
 
   return (
     <div className="flex flex-col items-center">
       {/* Status */}
-      <div className="mb-4 text-lg font-medium text-text-primary">
+      <div className="mb-4 text-lg font-medium h-7 flex items-center">
         {getStatusMessage()}
       </div>
       
-      {/* AI Status */}
-      {gameState.aiLoadError && (
-        <div className="mb-4 text-sm text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full">
-          {gameState.aiLoadError}
-        </div>
-      )}
-      
-      {gameState.aiReady && (
-        <div className="mb-4 text-sm text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
-          🧠 Neural Network AI Active
+      {/* AI Status Badge */}
+      {!gameState.modelLoading && (
+        <div className={`mb-4 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 ${
+          gameState.aiReady 
+            ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' 
+            : 'text-amber-700 bg-amber-50 border border-amber-200'
+        }`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${gameState.aiReady ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+          {gameState.aiReady ? 'Neural Network Active' : 'Fallback AI'}
         </div>
       )}
 
-      {/* Game Board */}
-      <div 
-        className="grid gap-0 bg-blue-800 p-2 rounded-lg shadow-lg"
-        style={{ gridTemplateColumns: `repeat(${NUM_COLUMNS}, 1fr)` }}
-      >
-        {renderBoard()}
+      {/* Game Board Container */}
+      <div className="relative">
+        {/* Game Board */}
+        <div 
+          className="grid gap-0 bg-gradient-to-br from-blue-800 to-blue-900 p-2 rounded-lg shadow-xl"
+          style={{ gridTemplateColumns: `repeat(${NUM_COLUMNS}, 1fr)` }}
+        >
+          {renderBoard()}
+        </div>
+
+        {/* Model Loading Overlay */}
+        {gameState.modelLoading && <ModelLoadingOverlay />}
+        
+        {/* Thinking Overlay */}
+        {gameState.isThinking && !gameState.gameOver && <ThinkingOverlay />}
+        
+        {/* Game Outcome Overlay */}
+        {gameState.gameOver && gameState.winner && (
+          <GameOutcome winner={gameState.winner} onReset={resetGame} />
+        )}
       </div>
 
-      {/* Reset Button */}
-      <button
-        onClick={resetGame}
-        className="mt-6 px-5 py-2 bg-text-primary text-surface-white rounded-full font-medium hover:bg-accent transition-colors duration-150"
-      >
-        Reset Game
-      </button>
+      {/* Reset Button (only when not game over) */}
+      {!gameState.gameOver && !gameState.modelLoading && (
+        <button
+          onClick={resetGame}
+          className="mt-6 px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full font-medium transition-colors duration-150 border border-slate-200"
+        >
+          Reset Game
+        </button>
+      )}
 
       {/* Legend */}
-      <div className="mt-4 flex items-center gap-4 text-sm text-text-secondary">
+      <div className="mt-5 flex items-center gap-6 text-sm text-text-secondary">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-amber-400 border border-amber-500" />
+          <div className="w-4 h-4 rounded-full bg-gradient-to-br from-amber-300 to-amber-500 border border-amber-600 shadow-sm" />
           <span>You</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-rose-500 border border-rose-600" />
-          <span>Computer</span>
+          <div className="w-4 h-4 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 border border-rose-700 shadow-sm" />
+          <span>AI</span>
         </div>
       </div>
+      
+      {/* Custom Animations */}
+      <style jsx>{`
+        @keyframes drop {
+          0% {
+            transform: translateY(-100%);
+            opacity: 0.5;
+          }
+          70% {
+            transform: translateY(5%);
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        
+        :global(.animate-drop) {
+          animation: drop 0.2s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
