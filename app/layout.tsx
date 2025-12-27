@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'George Lewis - Programmer, Data Scientist, Physicist',
   keywords: 'spontaneous symmetry, spontaneoussymmetry, george lewis, Higgs, ATLAS, CERN, Statistics, physics, quark',
   icons: {
-    icon: '/assets/images/favicon.ico',
+    icon: '/assets/images/logo.svg',
   },
 };
 

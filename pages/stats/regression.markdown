@@ -73,8 +73,10 @@ In other words, the likelihood only depends on $\vec{w}$ via the above term.  Th
 The analytic solution to this is the following (using matrix notation to simplify):
 
 $$
-\hat{\vec{w}} = (X^TX)^{-1}X^T\vec{y} \\\\
-\hat{\sigma}^2 = \frac{1}{N} \sum_n (y_n - x_n^i \cdot w_i)^2 \\\\
+\begin{aligned}
+\hat{\vec{w}} &= (X^TX)^{-1}X^T\vec{y} \\
+\hat{\sigma}^2 &= \frac{1}{N} \sum_n (y_n - x_n^i \cdot w_i)^2
+\end{aligned}
 $$
 
 where $X^T$ stands for the transpose of the full matrix of observables (all n observations and all i variables per observation).
@@ -91,11 +93,13 @@ However, it turns out that (under the assumptions of the linear regression model
 
 As a more exact solution, let's see if we can come up with the distribution of $\hat{w_i} - w_{true}$.  Assuming our model is true, we know that $y_n = w_i \cdot x_n^i + \epsilon_n$, where $\epsilon _n \sim Gauss(0, \sigma)$.  Plugging this into the MLE values $\hat{\vec{w}} = (X^TX)^{-1}X^T\vec{y}$ gives:
 
-\begin{align}
-\hat{\vec{w}} &=& (X^TX)^{-1}X^T(XW +\epsilon) \\\\
-\hat{\vec{w}} &=& (X^TX)^{-1}X^TXW + (X^TX)^{-1}X^T\epsilon \\\\
-\hat{\vec{w}} &=& W + (X^TX)^{-1}X^T\epsilon \\\\
-\end{align}
+$$
+\begin{aligned}
+\hat{\vec{w}} &= (X^TX)^{-1}X^T(XW +\epsilon) \\
+\hat{\vec{w}} &= (X^TX)^{-1}X^TXW + (X^TX)^{-1}X^T\epsilon \\
+\hat{\vec{w}} &= W + (X^TX)^{-1}X^T\epsilon
+\end{aligned}
+$$
 
 which implies
 
@@ -337,13 +341,13 @@ Here, the interpretation is that regularization acts as an additional cost which
 Adding a regularization term of course changes the fitted values of the weights.  Recall that the unregulairzed MLEs of the weights are given by:
 
 $$
-\hat{\vec{w}} = (X^TX)^{-1}X^T\vec{y} \\\\
+\hat{\vec{w}} = (X^TX)^{-1}X^T\vec{y}
 $$
 
 For L2 regularization, one can show that the fitted weights become:
 
 $$
-\hat{\vec{w}} = (X^TX + I/C)^{-1}X^T\vec{y} \\\\
+\hat{\vec{w}} = (X^TX + I/C)^{-1}X^T\vec{y}
 $$
 
 where $I$ is the identity matrix and $C$ is the regularization constant defined above.  Similar results for different regularizations can be derived.  The distributions of the fitted weights will still be gaussian and can be derived from the likelihood as we did above for the non-regularized case.
