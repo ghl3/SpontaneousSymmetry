@@ -34,7 +34,7 @@ This led me to a site that linked me to something in the right direction:
 
 This site contained a link to a press release from the Violence Policy Center that contained the data used in the graphic:
 
-[![](/static/uploads/2011/01/GunTable1.jpg)](/static/uploads/2011/01/GunTable1.jpg)
+[![](/assets/uploads/2011/01/GunTable1.jpg)](/assets/uploads/2011/01/GunTable1.jpg)
 
 [http://www.vpc.org/press/1006gundeath.htm](http://www.vpc.org/press/1006gundeath.htm)
 
@@ -59,6 +59,6 @@ This actually contained a link with the raw data about gun ownership rate:
 
 So, using this and the state gun violence rates that I found before, I could go about reproducing the information contained in the graphic and could attempt to go further.
 
-[![](/static/uploads/2011/01/All.png)](/static/uploads/2011/01/All.png)
+[![](/assets/uploads/2011/01/All.png)](/assets/uploads/2011/01/All.png)
 
 Thinking only from the perspective of data-presentation, these quickly-thrown-together plots are much more effective at making the desired point.  When comparing gun-violence rates to the percentage of people in a state who own any gun, one can infer an approximately linear relation (with a decent amount of noise).  However, when one requires that the guns be loaded or loaded AND unlocked, the trend becomes more discernible.  In nearly the same area, one can include much more information, and more relevant information.  The underlying argument depends on the existence of a trend, and only by displaying the entirety of the data in a simple yet proper way does that trend become clear.

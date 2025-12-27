@@ -47,7 +47,7 @@ export default function Home() {
 
       <div className="text-center my-8">
         <img 
-          src="/static/images/symmetry_e8.jpg" 
+          src="/assets/images/symmetry_e8.jpg" 
           alt="E8 Symmetry" 
           className="w-48 mx-auto"
         />

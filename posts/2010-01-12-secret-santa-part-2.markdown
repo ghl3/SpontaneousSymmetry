@@ -14,7 +14,7 @@ An easy way to solve this problem is to use a computer simulation.  We can get o
 
 I wrote the code in C++ (my weapon of choice).  The code can viewed here:
 
-[SecretSanta](/static/uploads/2010/01/secretsanta5.pdf)
+[SecretSanta](/assets/uploads/2010/01/secretsanta5.pdf)
 
 The fraction of the time that the last person is forced to pick himself, as a function of the number of people playing the game, goes as follows:
 
