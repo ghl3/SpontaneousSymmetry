@@ -1,21 +1,90 @@
-SpontaneousSymmetry
-===================
+# SpontaneousSymmetry
 
 My Personal Website
 
-Written in python using Flask
+Built with Next.js 14 and React, deployed on Vercel.
 
-Hosted on EC2 using Docker, uwsgi, and nginx
+Available at: [spontaneoussymmetry.com](https://spontaneoussymmetry.com)
 
-Available at: <a href=https://spontaneoussymmetry.com>spontaneoussymmetry.com</a>
+## Quick Start
 
+```bash
+# Install dependencies
+npm install
 
+# Run development server
+npm run dev
+```
 
-# Setting up and maintaining the site
+Visit `http://localhost:3000` to view the site.
 
-This site is designed to run in a Docker container.  The container is created using a <a href="https://github.com/ghl3/SpontaneousSymmetry/blob/master/Dockerfile">Dockerfile</a>.  Once built, the container exposes port 80 and 443.  To deploy this page, simply bind a server's port's 80 and 443 to the container's ports.  Additionally, one may copy SSL certifiates into thie container before running to enable TLS access (see the <a href="https://github.com/ghl3/SpontaneousSymmetry/blob/master/scripts/docker_production_build_run.sh#L16">build script</a> for details).
+## Project Structure
 
-Internally, the Dockerfile runs nginx to handle incoming requests.  Static pages and assets are served directly by nginx, and dynamic pages are served using uwsgi and flask.
+```
+├── app/                    # Next.js App Router
+│   ├── layout.tsx          # Root layout with header/footer
+│   ├── page.tsx            # Home page
+│   ├── about/              # About page
+│   ├── work/               # Work page
+│   ├── atlas/              # Atlas page
+│   ├── blog/               # Blog routes
+│   ├── stats/              # Stats section
+│   ├── apps/               # Apps listing
+│   └── app/                # Individual apps (games)
+├── components/             # React components
+├── lib/                    # Utilities for content loading
+├── posts/                  # Blog posts (Markdown)
+├── pages/                  # Content pages (Markdown)
+├── public/                 # Static assets
+├── scripts/                # Utility scripts
+└── next.config.js          # Next.js configuration
+```
 
-The blog is powered by a custom blog framework written for this site.  Posts are written in Markdown and rendered using Jinja.
+## Key Features
 
+### Blog
+- Markdown posts in `posts/` directory
+- YAML frontmatter for metadata
+- Math rendering with KaTeX (`$...$` syntax)
+- Code highlighting with rehype-highlight
+- Archive and WordPress ID redirects preserved
+
+### Stats Guide
+- Educational statistics content in `pages/stats/`
+- Navigation between sections
+
+### Apps
+- **ConnectFour**: Neural network AI using TensorFlow.js
+- **Rock Paper Scissors**: Pattern detection AI
+- **Bouncing Balls**: Physics simulation
+
+## Building for Production
+
+```bash
+# Build static site
+npm run build
+
+# Output will be in the `out/` directory
+```
+
+## Deployment
+
+Push to GitHub and Vercel will auto-detect Next.js and deploy.
+
+## Creating New Blog Posts
+
+```bash
+python3 scripts/new_post.py my-post-slug --title "My Post Title" --author "Your Name"
+```
+
+This creates a new markdown file in `posts/` with the proper frontmatter.
+
+## Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Markdown**: unified/remark/rehype ecosystem
+- **Math**: KaTeX
+- **AI Models**: TensorFlow.js (client-side)
+- **Export**: Static site generation
