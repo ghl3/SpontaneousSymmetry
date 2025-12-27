@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- Horizontal slash clip paths -->
+    <clipPath id="clip-top">
+      <path d="M0,0 L512,0 L512,240 L0,272 Z" />
+    </clipPath>
+    
+    <clipPath id="clip-bottom">
+      <path d="M0,272 L512,240 L512,512 L0,512 Z" />
+    </clipPath>
+
+    <style>
+      .sym-text {
+        font-family: 'Georgia', 'Times New Roman', serif;
+        font-weight: bold;
+        font-size: 220px;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .text-top {
+        fill: #1A1A1A;
+      }
+      .text-bottom {
+        fill: #C9A66B;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" fill="#FAFAFA"/>
+
+  <!-- Top half - black, pulled up -->
+  <g clip-path="url(#clip-top)" transform="translate(0, -16)">
+    <text x="256" y="270" class="sym-text text-top">Sym</text>
+  </g>
+
+  <!-- Bottom half - amber, pulled down -->
+  <g clip-path="url(#clip-bottom)" transform="translate(0, 16)">
+    <text x="256" y="270" class="sym-text text-bottom">Sym</text>
+  </g>
+</svg>
