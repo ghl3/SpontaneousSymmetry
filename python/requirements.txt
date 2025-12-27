@@ -1,0 +1,12 @@
+# Core utilities
+matplotlib>=3.5.0
+
+# For TensorFlow model conversion (optional)
+# tensorflow>=2.10.0
+# tensorflowjs>=4.0.0
+
+# For Jupyter notebooks
+jupyter>=1.0.0
+scipy>=1.9.0
+numpy>=1.23.0
+

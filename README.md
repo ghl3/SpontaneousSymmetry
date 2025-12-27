@@ -36,7 +36,9 @@ Visit `http://localhost:3000` to view the site.
 ├── posts/                  # Blog posts (Markdown)
 ├── pages/                  # Content pages (Markdown)
 ├── public/                 # Static assets
-├── scripts/                # Utility scripts
+├── python/                 # Python scripts
+│   ├── scripts/            # Utility scripts
+│   └── output/             # Generated files (gitignored)
 └── next.config.js          # Next.js configuration
 ```
 
@@ -74,10 +76,28 @@ Push to GitHub and Vercel will auto-detect Next.js and deploy.
 ## Creating New Blog Posts
 
 ```bash
-python3 scripts/new_post.py my-post-slug --title "My Post Title" --author "Your Name"
+python3 python/scripts/new_post.py my-post-slug --title "My Post Title" --author "George Lewis"
 ```
 
 This creates a new markdown file in `posts/` with the proper frontmatter.
+
+## Python Scripts
+
+Python utilities are in the `python/` directory. See [python/README.md](python/README.md) for details.
+
+```bash
+# Setup Python environment
+cd python
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Available scripts:
+- `new_post.py` - Create new blog posts
+- `kalman_filter.py` - Kalman filter demo for filter blog post
+- `meritocracy_plot.py` - Generate plot for meritocracy blog post
+- `convert_tf_model.py` - Convert TensorFlow models to TensorFlow.js
 
 ## Tech Stack
 
