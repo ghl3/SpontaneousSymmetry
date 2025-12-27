@@ -1,14 +1,31 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHero from '@/components/PageHero';
+import { PersonSchema } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'Spontaneous Symmetry',
+  title: 'George Lewis - Programmer, Data Scientist, Physicist',
+  description: 'George Lewis is a Machine Learning Engineer at Google Maps with a PhD in Physics from NYU/CERN. Explore articles on programming, data science, statistics, and particle physics.',
+  openGraph: {
+    title: 'George Lewis - Programmer, Data Scientist, Physicist',
+    description: 'Machine Learning Engineer at Google Maps with a PhD in Physics from NYU/CERN.',
+  },
 };
 
 export default function Home(): JSX.Element {
   return (
     <div className="max-w-2xl mx-auto">
+      <PersonSchema
+        name="George Lewis"
+        jobTitle="Machine Learning Engineer"
+        worksFor="Google"
+        url="https://spontaneoussymmetry.com"
+        email="ghl227@gmail.com"
+        sameAs={[
+          'https://github.com/ghl3',
+          'https://twitter.com/ghl3',
+        ]}
+      />
       <PageHero 
         title="George Lewis" 
         subtitle="Programmer · Data Scientist · Physicist" 

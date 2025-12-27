@@ -4,7 +4,12 @@ import PostContent from '@/components/PostContent';
 import BlogSidebar from '@/components/BlogSidebar';
 
 export const metadata: Metadata = {
-  title: 'Spontaneous Symmetry: Blog',
+  title: 'Blog',
+  description: 'Articles on programming, data science, machine learning, statistics, and physics. Technical deep-dives and explorations from a physicist turned ML engineer.',
+  openGraph: {
+    title: 'Blog - Programming, Data Science & Physics',
+    description: 'Technical articles on programming, data science, machine learning, and physics.',
+  },
 };
 
 export default async function BlogPage(): Promise<JSX.Element> {

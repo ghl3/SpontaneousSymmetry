@@ -5,7 +5,12 @@ import PageHero from '@/components/PageHero';
 import SectionTitle from '@/components/SectionTitle';
 
 export const metadata: Metadata = {
-  title: 'Spontaneous Symmetry: Research',
+  title: 'Research',
+  description: 'High energy particle physics research at the ATLAS experiment on the Large Hadron Collider at CERN. Top quark physics, statistical analysis, and trigger development.',
+  openGraph: {
+    title: 'Particle Physics Research - ATLAS/CERN',
+    description: 'Research on the ATLAS experiment at the Large Hadron Collider. Top quark physics and statistical analysis.',
+  },
 };
 
 interface ResearchLink {

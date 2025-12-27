@@ -4,7 +4,12 @@ import PageHero from '@/components/PageHero';
 import SectionTitle from '@/components/SectionTitle';
 
 export const metadata: Metadata = {
-  title: 'Spontaneous Symmetry: Work',
+  title: 'Work',
+  description: 'Professional experience and portfolio of George Lewis. Currently at Google Maps, previously at LendUp and CERN/ATLAS. Projects in machine learning, data science, and physics.',
+  openGraph: {
+    title: 'Work & Portfolio - George Lewis',
+    description: 'Professional experience at Google, LendUp, and CERN. Portfolio of data science and machine learning projects.',
+  },
 };
 
 interface WorkExperience {

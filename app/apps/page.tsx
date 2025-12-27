@@ -3,7 +3,12 @@ import Link from 'next/link';
 import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
-  title: 'Spontaneous Symmetry: Apps',
+  title: 'Apps',
+  description: 'Interactive web applications including AI-powered games. Play Connect Four against a neural network trained with TensorFlow, Rock-Paper-Scissors with adaptive AI, and physics simulations.',
+  openGraph: {
+    title: 'Interactive Apps - Games & Simulations',
+    description: 'AI-powered games and physics simulations built with TensorFlow and JavaScript.',
+  },
 };
 
 interface AppItem {

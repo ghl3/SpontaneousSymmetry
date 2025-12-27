@@ -3,7 +3,12 @@ import Link from 'next/link';
 import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
-  title: 'Spontaneous Symmetry: About',
+  title: 'About',
+  description: 'Spontaneous Symmetry is a site dedicated to programming, science, math, and technology. Featuring articles on statistics, machine learning, physics, and more.',
+  openGraph: {
+    title: 'About Spontaneous Symmetry',
+    description: 'A site dedicated to programming, science, math, and technology.',
+  },
 };
 
 export default function AboutPage(): JSX.Element {

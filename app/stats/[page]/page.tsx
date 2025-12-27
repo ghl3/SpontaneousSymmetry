@@ -13,12 +13,30 @@ export async function generateStaticParams(): Promise<{ page: string }[]> {
   return slugs.map((page) => ({ page }));
 }
 
+// Descriptions for each stats page
+const STATS_DESCRIPTIONS: Record<string, string> = {
+  'introduction': 'An introduction to statistics and statistical inference. Learn the fundamentals of data analysis and probabilistic thinking.',
+  'probability': 'Understanding probability theory, random variables, and the mathematical foundations of statistical inference.',
+  'distributions': 'Common probability distributions including normal, binomial, Poisson, and their applications in data science.',
+  'estimators': 'Statistical estimators, bias, variance, and the properties of good estimators for inference.',
+  'frequentist-hypothesis-testing': 'Frequentist hypothesis testing, p-values, significance levels, and Type I/II errors explained.',
+  'confidence-intervals': 'Confidence intervals, their interpretation, construction, and relationship to hypothesis testing.',
+  'statistical-tests': 'Common statistical tests including t-tests, chi-squared tests, and ANOVA with practical examples.',
+  'regression': 'Linear and logistic regression, model fitting, and predictive modeling techniques.',
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pageData = STATS_PAGES.find((p) => p.slug === params.page);
   const title = pageData?.title || params.page;
+  const description = STATS_DESCRIPTIONS[params.page] || `Statistics guide: ${title}`;
 
   return {
-    title: `Spontaneous Symmetry: Statistics - ${title}`,
+    title: `Statistics: ${title}`,
+    description,
+    openGraph: {
+      title: `${title} - Statistics Guide`,
+      description,
+    },
   };
 }
 
