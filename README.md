@@ -73,31 +73,31 @@ npm run build
 
 Push to GitHub and Vercel will auto-detect Next.js and deploy.
 
-## Creating New Blog Posts
-
-```bash
-python3 python/scripts/new_post.py my-post-slug --title "My Post Title" --author "George Lewis"
-```
-
-This creates a new markdown file in `posts/` with the proper frontmatter.
-
 ## Python Scripts
 
-Python utilities are in the `python/` directory. See [python/README.md](python/README.md) for details.
+Python utilities are in the `python/` directory. See [python/README.md](python/README.md) for full details.
 
 ```bash
-# Setup Python environment
+# Setup (one-time)
 cd python
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Available scripts:
-- `new_post.py` - Create new blog posts
-- `kalman_filter.py` - Kalman filter demo for filter blog post
-- `meritocracy_plot.py` - Generate plot for meritocracy blog post
-- `convert_tf_model.py` - Convert TensorFlow models to TensorFlow.js
+### Creating New Blog Posts
+
+```bash
+python/venv/bin/python python/scripts/new_post.py my-post-slug --title "My Post Title"
+# Creates: posts/YYYY-MM-DD-my-post-slug.markdown
+```
+
+### Other Scripts
+
+```bash
+python/venv/bin/python python/scripts/kalman_filter.py      # Kalman filter demo
+python/venv/bin/python python/scripts/meritocracy_plot.py   # Income comparison plot
+```
 
 ## Tech Stack
 
