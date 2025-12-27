@@ -1,19 +1,19 @@
 import type { Metadata } from 'next';
 import { getLatestPosts, getPostByUrl } from '@/lib/posts';
-import BlogSidebar from '@/components/BlogSidebar';
 import PostContent from '@/components/PostContent';
+import BlogSidebar from '@/components/BlogSidebar';
 
 export const metadata: Metadata = {
   title: 'Spontaneous Symmetry: Blog',
 };
 
-export default async function BlogPage() {
+export default async function BlogPage(): Promise<JSX.Element> {
   const latestPosts = getLatestPosts(1);
   
   if (latestPosts.length === 0) {
     return (
-      <div className="content mx-auto max-w-3xl">
-        <p>No posts found.</p>
+      <div className="max-w-2xl mx-auto text-center py-12">
+        <p className="text-text-secondary">No posts found.</p>
       </div>
     );
   }
@@ -22,27 +22,33 @@ export default async function BlogPage() {
   
   if (!latestPost) {
     return (
-      <div className="content mx-auto max-w-3xl">
-        <p>Post not found.</p>
+      <div className="max-w-2xl mx-auto text-center py-12">
+        <p className="text-text-secondary">Post not found.</p>
       </div>
     );
   }
 
+  // Prepare sidebar data (server-side)
+  const recentPosts = getLatestPosts(7)
+    .filter(post => post.url !== latestPost.url)
+    .slice(0, 6)
+    .map(post => ({
+      url: post.url,
+      title: post.title,
+      dateStr: post.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    }));
+
   return (
-    <div className="flex flex-col lg:flex-row gap-8">
-      <aside className="sidebar w-full lg:w-48 flex-shrink-0 order-2 lg:order-1">
-        <BlogSidebar />
-      </aside>
-      
-      <main className="content flex-1 max-w-3xl order-1 lg:order-2">
+    <div className="max-w-2xl mx-auto relative">
+      {/* Main Content - centered like other pages */}
+      <main>
         <PostContent post={latestPost} contentHtml={latestPost.contentHtml} />
       </main>
 
-      <div className="hidden lg:block w-48 flex-shrink-0 order-3">
-        {/* Right sidebar placeholder for layout balance */}
+      {/* Collapsible Sidebar - positioned to the right, outside the centered content */}
+      <div className="hidden lg:block absolute left-full top-0 ml-8">
+        <BlogSidebar recentPosts={recentPosts} />
       </div>
     </div>
   );
 }
-
-

@@ -69,7 +69,7 @@ function getComputerMove(playerMoves: Move[], strategy: Strategy): Move {
   return move;
 }
 
-export default function RocksPaperGame() {
+export default function RocksPaperGame(): JSX.Element {
   const [strategy, setStrategy] = useState<Strategy>('Random');
   const [playerMoves, setPlayerMoves] = useState<Move[]>([]);
   const [lastPlayerMove, setLastPlayerMove] = useState<Move | null>(null);
@@ -99,105 +99,112 @@ export default function RocksPaperGame() {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-2xl font-semibold mb-4">Rock Paper Scissors</h1>
-      
-      <p className="text-center mb-6">
-        Play Rock Paper Scissors against a computer opponent.
-      </p>
-
-      <div className="mb-6">
-        <label className="mr-2">Strategy:</label>
+      {/* Strategy Selector */}
+      <div className="mb-6 flex items-center gap-3">
+        <label className="text-text-secondary text-sm font-medium">Strategy:</label>
         <select
           value={strategy}
           onChange={(e) => setStrategy(e.target.value as Strategy)}
-          className="border rounded px-3 py-1"
+          className="border border-border rounded-md px-3 py-1.5 text-sm bg-surface-white text-text-primary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-150"
         >
           <option value="Random">Random</option>
-          <option value="Smart">Smart</option>
+          <option value="Smart">Smart (Pattern Matching)</option>
         </select>
       </div>
 
       {/* Scoreboard */}
-      <table className="border mb-6 text-center">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="px-4 py-2 border">Games</th>
-            <th className="px-4 py-2 border">Player</th>
-            <th className="px-4 py-2 border">Computer</th>
-            <th className="px-4 py-2 border">Ties</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="px-4 py-2 border">{gamesPlayed}</td>
-            <td className="px-4 py-2 border font-bold text-green-600">{scores.player}</td>
-            <td className="px-4 py-2 border font-bold text-red-600">{scores.computer}</td>
-            <td className="px-4 py-2 border">{scores.ties}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="w-full max-w-md mb-6 overflow-hidden rounded-lg border border-border">
+        <table className="w-full text-center">
+          <thead>
+            <tr className="bg-surface">
+              <th className="px-4 py-2.5 text-sm font-medium text-text-secondary border-b border-border">Games</th>
+              <th className="px-4 py-2.5 text-sm font-medium text-text-secondary border-b border-border">You</th>
+              <th className="px-4 py-2.5 text-sm font-medium text-text-secondary border-b border-border">Computer</th>
+              <th className="px-4 py-2.5 text-sm font-medium text-text-secondary border-b border-border">Ties</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-surface-white">
+              <td className="px-4 py-3 text-text-primary">{gamesPlayed}</td>
+              <td className="px-4 py-3 font-semibold text-emerald-600">{scores.player}</td>
+              <td className="px-4 py-3 font-semibold text-rose-600">{scores.computer}</td>
+              <td className="px-4 py-3 text-text-secondary">{scores.ties}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      {/* Last moves */}
+      {/* Last Moves */}
       {lastPlayerMove && lastComputerMove && (
-        <div className="mb-6 text-center">
-          <p>Player played: <strong>{lastPlayerMove}</strong></p>
-          <p>Computer played: <strong>{lastComputerMove}</strong></p>
+        <div className="mb-6 text-center p-4 bg-surface rounded-lg border border-border">
+          <div className="flex justify-center gap-8">
+            <div>
+              <span className="text-sm text-text-secondary block mb-1">You played</span>
+              <span className="text-lg font-semibold text-text-primary">{lastPlayerMove}</span>
+            </div>
+            <div className="w-px bg-border" />
+            <div>
+              <span className="text-sm text-text-secondary block mb-1">Computer played</span>
+              <span className="text-lg font-semibold text-text-primary">{lastComputerMove}</span>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Move buttons */}
+      {/* Move Buttons */}
       <div className="mb-6">
-        <p className="text-center mb-2">Your Move:</p>
-        <div className="flex gap-4">
+        <p className="text-center text-sm text-text-secondary mb-3">Choose your move:</p>
+        <div className="flex gap-3">
           <button
             onClick={() => play('Rock')}
-            className="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold text-lg transition-colors"
+            className="px-5 py-3 bg-surface-white border border-border rounded-lg font-medium text-text-primary hover:border-accent hover:shadow-sm transition-all duration-150"
           >
             🪨 Rock
           </button>
           <button
             onClick={() => play('Paper')}
-            className="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold text-lg transition-colors"
+            className="px-5 py-3 bg-surface-white border border-border rounded-lg font-medium text-text-primary hover:border-accent hover:shadow-sm transition-all duration-150"
           >
             📄 Paper
           </button>
           <button
             onClick={() => play('Scissors')}
-            className="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold text-lg transition-colors"
+            className="px-5 py-3 bg-surface-white border border-border rounded-lg font-medium text-text-primary hover:border-accent hover:shadow-sm transition-all duration-150"
           >
             ✂️ Scissors
           </button>
         </div>
       </div>
 
-      <hr className="w-full border-t my-4" />
+      {/* Divider */}
+      <div className="w-full h-px bg-border my-4" />
 
-      {/* Game log toggle */}
+      {/* Game Log Toggle */}
       <button
         onClick={() => setShowLog(!showLog)}
-        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors"
+        className="px-4 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors duration-150"
       >
         {showLog ? 'Hide' : 'Show'} Game Log
       </button>
 
       {showLog && gameLog.length > 0 && (
-        <div className="mt-4 border rounded p-4 max-h-64 overflow-y-auto">
-          <table className="text-sm">
-            <thead>
+        <div className="mt-4 w-full max-w-md border border-border rounded-lg overflow-hidden max-h-64 overflow-y-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-surface sticky top-0">
               <tr>
-                <th className="px-2">#</th>
-                <th className="px-2">Player</th>
-                <th className="px-2">Computer</th>
+                <th className="px-3 py-2 text-left text-text-secondary font-medium">#</th>
+                <th className="px-3 py-2 text-left text-text-secondary font-medium">You</th>
+                <th className="px-3 py-2 text-left text-text-secondary font-medium">Computer</th>
               </tr>
             </thead>
             <tbody>
               {gameLog.map((log, idx) => (
-                <tr key={idx}>
-                  <td className="px-2">{idx + 1}</td>
-                  <td className={`px-2 ${log.result === 'player' ? 'font-bold' : ''}`}>
+                <tr key={idx} className="border-t border-border-light">
+                  <td className="px-3 py-2 text-text-muted">{idx + 1}</td>
+                  <td className={`px-3 py-2 ${log.result === 'player' ? 'font-semibold text-emerald-600' : 'text-text-primary'}`}>
                     {log.playerMove}
                   </td>
-                  <td className={`px-2 ${log.result === 'computer' ? 'font-bold' : ''}`}>
+                  <td className={`px-3 py-2 ${log.result === 'computer' ? 'font-semibold text-rose-600' : 'text-text-primary'}`}>
                     {log.computerMove}
                   </td>
                 </tr>
@@ -209,5 +216,3 @@ export default function RocksPaperGame() {
     </div>
   );
 }
-
-

@@ -11,7 +11,7 @@ There are two competing schools of thought which offer differing definitions of 
 The "Frequentist" definition of probability, as the name suggests, thinks of probability as describing the relative frequency with which an event occurs.  This definition is therefore limited to describing events that can occur many times and whose outcome for each occurrence is random.  A Frequentist defines probability of a specific outcome as how many times that outcome occurred divided by the total number of events (in the limit as the number of event trials approaches infinity):
 
 $$
-\text{prob}(x) = \frac{\text{# of events whose outcome is x}}{\text{total # of events}}
+\text{prob}(x) = \frac{\text{\# of events whose outcome is x}}{\text{total \# of events}}
 $$
 
 The "Bayesian" definition of probability is the subjective belief that an event will occur, weighted by the evidence for that event occurring.  It is both more vague and more general than the frequentist definition.  It is vague because it includes a subjective component, which is ill defined and is based on a person's belief in the likelihood of an event.  It is more general because it is based on a belief that an event will occur,  which allows it to describe events which which aren't repeatable.

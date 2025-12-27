@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getAllPostSlugs, getPostByUrl } from '@/lib/posts';
-import BlogSidebar from '@/components/BlogSidebar';
+import { getAllPostSlugs, getPostByUrl, getLatestPosts } from '@/lib/posts';
 import PostContent from '@/components/PostContent';
+import BlogSidebar from '@/components/BlogSidebar';
 
 interface Props {
   params: { slug: string };
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const slugs = getAllPostSlugs();
   return slugs.map((slug) => ({ slug }));
 }
@@ -26,28 +26,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params }: Props): Promise<JSX.Element> {
   const post = await getPostByUrl(params.slug);
 
   if (!post) {
     notFound();
   }
 
+  // Prepare sidebar data (server-side)
+  const recentPosts = getLatestPosts(7)
+    .filter(p => p.url !== post.url)
+    .slice(0, 6)
+    .map(p => ({
+      url: p.url,
+      title: p.title,
+      dateStr: p.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    }));
+
   return (
-    <div className="flex flex-col lg:flex-row gap-8">
-      <aside className="sidebar w-full lg:w-48 flex-shrink-0 order-2 lg:order-1">
-        <BlogSidebar />
-      </aside>
-      
-      <main className="content flex-1 max-w-3xl order-1 lg:order-2">
+    <div className="max-w-2xl mx-auto relative">
+      {/* Main Content - centered like other pages */}
+      <main>
         <PostContent post={post} contentHtml={post.contentHtml} />
       </main>
 
-      <div className="hidden lg:block w-48 flex-shrink-0 order-3">
-        {/* Right sidebar placeholder for layout balance */}
+      {/* Collapsible Sidebar - positioned to the right, outside the centered content */}
+      <div className="hidden lg:block absolute left-full top-0 ml-8">
+        <BlogSidebar recentPosts={recentPosts} />
       </div>
     </div>
   );
 }
-
-

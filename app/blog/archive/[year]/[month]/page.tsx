@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getArchive, getArchiveByMonth, formatMonthYear } from '@/lib/posts';
+import PageHero from '@/components/PageHero';
 
 interface Props {
   params: { year: string; month: string };
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ year: string; month: string }[]> {
   const archive = getArchive();
   return archive.map((month) => ({
     year: month.year.toString(),
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ArchiveMonthPage({ params }: Props) {
+export default function ArchiveMonthPage({ params }: Props): JSX.Element {
   const year = parseInt(params.year);
   const month = parseInt(params.month);
   
@@ -39,31 +40,39 @@ export default function ArchiveMonthPage({ params }: Props) {
   }
 
   return (
-    <div className="content mx-auto max-w-3xl">
-      <h1 className="text-2xl font-semibold text-center mb-8">
-        Archive: {formatMonthYear(year, month)}
-      </h1>
+    <div className="max-w-2xl mx-auto">
+      <PageHero 
+        title={formatMonthYear(year, month)} 
+        subtitle={`${posts.length} ${posts.length === 1 ? 'post' : 'posts'}`} 
+      />
 
-      <ul className="space-y-4">
+      {/* Posts List */}
+      <ul className="space-y-2">
         {posts.map((post) => (
-          <li key={post.url}>
-            <Link href={`/blog/${post.url}`} className="text-lg">
+          <li key={post.url} className="flex items-baseline gap-3">
+            <span className="text-text-muted text-sm tabular-nums shrink-0">
+              {post.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </span>
+            <Link 
+              href={`/blog/${post.url}`}
+              className="text-text-primary hover:text-accent transition-colors duration-150"
+            >
               {post.title}
             </Link>
-            <span className="text-gray-500 text-sm ml-2">
-              ({post.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})
-            </span>
           </li>
         ))}
       </ul>
 
-      <div className="mt-8">
-        <Link href="/blog/archive" className="text-accent hover:underline">
-          ← Back to full archive
+      {/* Back Link */}
+      <div className="mt-10">
+        <Link 
+          href="/blog/archive" 
+          className="inline-flex items-center text-text-secondary hover:text-text-primary transition-colors duration-150"
+        >
+          <span className="mr-2">←</span>
+          Back to full archive
         </Link>
       </div>
     </div>
   );
 }
-
-

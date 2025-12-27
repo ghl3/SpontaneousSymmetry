@@ -314,7 +314,7 @@ To reiterate, this inequality gives us the set of all values of $\mu$ such that 
 -->
 
 <!--
-  It is sufficient to pick an arbitrary value of $\mu$ and show that the confidence intervals we generate contain the $\,mu$ 95% of the time.  Here's how: For our measured value of $\hat{\mu}$, we will find the distribution of $\mu$ and create an interval that contains 95% of the values of $\mu$ (or whatever $\alpha$ is.  The next step is to convince you that this procedure will result in 95% of confidence intervals containing the true mean $\mu$.
+  It is sufficient to pick an arbitrary value of $\mu$ and show that the confidence intervals we generate contain the $\mu$ 95% of the time.  Here's how: For our measured value of $\hat{\mu}$, we will find the distribution of $\mu$ and create an interval that contains 95% of the values of $\mu$ (or whatever $\alpha$ is.  The next step is to convince you that this procedure will result in 95% of confidence intervals containing the true mean $\mu$.
 
 The fraction of confidence intervals that contain the true mean $\mu$ is given by:
 

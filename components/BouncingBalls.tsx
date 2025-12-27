@@ -68,10 +68,10 @@ function bounceBalls(ballA: Ball, ballB: Ball): void {
   const vxCM = (ballA.vx + ballB.vx) / 2;
   const vyCM = (ballA.vy + ballB.vy) / 2;
 
-  let vx1CM = ballA.vx - vxCM;
-  let vy1CM = ballA.vy - vyCM;
-  let vx2CM = ballB.vx - vxCM;
-  let vy2CM = ballB.vy - vyCM;
+  const vx1CM = ballA.vx - vxCM;
+  const vy1CM = ballA.vy - vyCM;
+  const vx2CM = ballB.vx - vxCM;
+  const vy2CM = ballB.vy - vyCM;
 
   // Apply collision transformation
   const newVx1CM = (1 - termV) * vx1CM + expV * vy1CM;
@@ -85,7 +85,7 @@ function bounceBalls(ballA: Ball, ballB: Ball): void {
   ballB.vy = newVy2CM + vyCM;
 }
 
-export default function BouncingBalls() {
+export default function BouncingBalls(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ballsRef = useRef<Ball[]>([]);
   const animationRef = useRef<number | null>(null);
@@ -125,7 +125,7 @@ export default function BouncingBalls() {
       ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
       ctx.fillStyle = ball.color;
       ctx.fill();
-      ctx.strokeStyle = 'black';
+      ctx.strokeStyle = '#1A1A1A';
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.closePath();
@@ -148,7 +148,7 @@ export default function BouncingBalls() {
           ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
           ctx.fillStyle = ball.color;
           ctx.fill();
-          ctx.strokeStyle = 'black';
+          ctx.strokeStyle = '#1A1A1A';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.closePath();
@@ -169,11 +169,11 @@ export default function BouncingBalls() {
     };
   }, [isRunning, draw]);
 
-  const toggleLoop = () => {
+  const toggleLoop = (): void => {
     setIsRunning(!isRunning);
   };
 
-  const reset = () => {
+  const reset = (): void => {
     setIsRunning(false);
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
@@ -190,7 +190,7 @@ export default function BouncingBalls() {
           ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
           ctx.fillStyle = ball.color;
           ctx.fill();
-          ctx.strokeStyle = 'black';
+          ctx.strokeStyle = '#1A1A1A';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.closePath();
@@ -201,36 +201,38 @@ export default function BouncingBalls() {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-2xl font-semibold mb-4">Bouncing Balls</h1>
-      
-      <p className="text-center mb-6">
-        A simple JavaScript program demonstrating animation<br />
-        and basic physics simulation.
+      {/* Description */}
+      <p className="text-center text-text-secondary mb-6 max-w-md">
+        A simple JavaScript program demonstrating animation and basic physics simulation.
       </p>
 
-      <div className="flex gap-4 mb-4">
+      {/* Controls */}
+      <div className="flex gap-3 mb-6">
         <button
           onClick={toggleLoop}
-          className="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold transition-colors"
+          className={`px-5 py-2 rounded-full font-medium transition-all duration-150 ${
+            isRunning 
+              ? 'bg-rose-500 text-white hover:bg-rose-600' 
+              : 'bg-text-primary text-surface-white hover:bg-accent'
+          }`}
         >
           {isRunning ? 'Stop' : 'Start'}
         </button>
         <button
           onClick={reset}
-          className="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold transition-colors"
+          className="px-5 py-2 bg-surface-white border border-border rounded-full font-medium text-text-primary hover:border-accent transition-all duration-150"
         >
           Reset
         </button>
       </div>
 
+      {/* Canvas */}
       <canvas
         ref={canvasRef}
         width={WIDTH}
         height={HEIGHT}
-        className="border-2 border-black"
+        className="border-2 border-text-primary rounded-lg shadow-sm bg-surface-white"
       />
     </div>
   );
 }
-
-

@@ -261,7 +261,7 @@ A K-S test is an exact test comparing the distribution of a sample to a known th
 The test statistic for a K-S test is is the the maximum deviation between the theoretical CDF and the empirical CDF of the measured data, where the empirical CDF is given by:
 
 $$
-CDF_{em}(x) = \frac{1}{N} (\text{# of data points < x})
+CDF_{em}(x) = \frac{1}{N} (\text{\# of data points < x})
 $$
 
 The test statistic is then:
@@ -393,7 +393,7 @@ To determine if two datasets of continuous, 1-d data came from the same distribu
 Similar one-sample KS test described above, this test uses the empirical cumulative distributions of the two datasets to create a test statistic.  Specifically, defining the empirical cumulative distribution as:
 
 $$
-CDF_{em}(x) = \frac{1}{N} (\text{# of data points < x})
+CDF_{em}(x) = \frac{1}{N} (\text{\# of data points < x})
 $$
 
 then the test statistic of our problem becomes:
@@ -437,14 +437,14 @@ $$
 \mu = p_1−p_2 
 $$
 $$
-\sigma^2 = \frac{p_1(1-p_1}{N_1} + \frac{p_2(1-p_2)}{N_2}
+\sigma^2 = \frac{p_1(1-p_1)}{N_1} + \frac{p_2(1-p_2)}{N_2}
 $$
 
 which means that the quantity
 
 $$
 Z = \frac {(\hat{p_1} - \hat{p_2}) - (p_1 - p_2)}
-          {\sqrt{\frac{p_1(1-p_1}{N_1} + \frac{p_2(1-p_2)}{N_2}}}
+          {\sqrt{\frac{p_1(1-p_1)}{N_1} + \frac{p_2(1-p_2)}{N_2}}}
 $$
 
 setting $p_1=p_2$, this reduces to

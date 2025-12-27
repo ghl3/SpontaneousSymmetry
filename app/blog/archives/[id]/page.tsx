@@ -5,7 +5,7 @@ interface Props {
   params: { id: string };
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ id: string }[]> {
   const posts = getAllPostsMeta();
   return posts
     .filter((post) => post.id !== null)
@@ -14,7 +14,7 @@ export async function generateStaticParams() {
     }));
 }
 
-export default function LegacyArchiveRedirect({ params }: Props) {
+export default function LegacyArchiveRedirect({ params }: Props): never {
   const id = parseInt(params.id);
   
   if (isNaN(id)) {
@@ -29,5 +29,3 @@ export default function LegacyArchiveRedirect({ params }: Props) {
 
   redirect(`/blog/${post.url}`);
 }
-
-

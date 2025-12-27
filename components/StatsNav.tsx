@@ -1,28 +1,36 @@
 import Link from 'next/link';
 import { STATS_PAGES } from '@/lib/pages';
+import SectionLabel from '@/components/SectionLabel';
 
 interface StatsNavProps {
   currentSlug?: string;
 }
 
-export default function StatsNav({ currentSlug }: StatsNavProps) {
+export default function StatsNav({ currentSlug }: StatsNavProps): JSX.Element {
   return (
-    <nav className="mb-8">
-      <h3 className="text-lg font-semibold mb-4">Statistics Guide</h3>
-      <ul className="space-y-2">
-        {STATS_PAGES.map((page) => (
-          <li key={page.slug}>
-            <Link
-              href={`/stats/${page.slug}`}
-              className={currentSlug === page.slug ? 'font-bold text-accent' : ''}
-            >
-              {page.title}
-            </Link>
-          </li>
-        ))}
+    <nav>
+      <SectionLabel>Statistics Guide</SectionLabel>
+      <ul className="space-y-1">
+        {STATS_PAGES.map((page) => {
+          const isActive = currentSlug === page.slug;
+          return (
+            <li key={page.slug}>
+              <Link
+                href={`/stats/${page.slug}`}
+                className={`
+                  block py-1.5 text-sm transition-colors duration-150
+                  ${isActive 
+                    ? 'text-accent font-medium' 
+                    : 'text-text-secondary hover:text-text-primary'
+                  }
+                `}
+              >
+                {page.title}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );
 }
-
-

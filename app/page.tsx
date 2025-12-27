@@ -1,67 +1,94 @@
-import Image from 'next/image';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import PageHero from '@/components/PageHero';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'Spontaneous Symmetry',
+};
+
+export default function Home(): JSX.Element {
   return (
-    <div className="content mx-auto max-w-3xl">
-      <div className="text-center">
-        <h2 className="text-2xl font-semibold mb-4">George Lewis</h2>
+    <div className="max-w-2xl mx-auto">
+      <PageHero 
+        title="George Lewis" 
+        subtitle="Programmer · Data Scientist · Physicist" 
+      />
+
+      {/* Introduction */}
+      <div className="space-y-5 text-text-primary leading-relaxed">
+        <p>
+          I&apos;m a programmer, data scientist, physicist, and technology lover, and I am 
+          fascinated by learning how almost anything works.
+        </p>
+
+        <p>
+          I&apos;m currently a Machine Learning Engineer at{' '}
+          <Link href="http://google.com" className="font-medium">Google</Link>, where I work on the Location Platform at{' '}
+          <Link href="https://google.com/maps" className="font-medium">Google Maps</Link>.
+        </p>
+
+        <p>
+          Previously, I worked at{' '}
+          <Link href="https://www.LendUp.com" className="font-medium">LendUp</Link>, a startup whose 
+          goal is to safely extend credit to all who need it.
+        </p>
+
+        <p>
+          I obtained a PhD in High Energy Experimental Particle Physics from New York University, 
+          where I worked on the{' '}
+          <Link href="http://atlas.ch/" className="font-medium">ATLAS</Link> experiment on the Large 
+          Hadron Collider at{' '}
+          <Link href="http://public.web.cern.ch/public/" className="font-medium">CERN</Link>.
+        </p>
+
+        <p>
+          I was also a fellow at the{' '}
+          <Link href="http://insightdatascience.com/" className="font-medium">Insight Data Science Program</Link>.
+        </p>
       </div>
 
-      <p>
-        I&apos;m a programmer, data scientist, physicist, and technology lover, and I am 
-        fascinated by learning how almost anything works.
+      <p className="text-center text-text-secondary mt-8">
+        Reach me at{' '}
+        <Link href="mailto:ghl227@gmail.com" className="font-medium">ghl227@gmail.com</Link>
       </p>
 
-      <p>
-        I&apos;m currently a Machine Learning Engineer at{' '}
-        <a href="http://google.com">Google</a>, where I work on the Location Platform at{' '}
-        <a href="https://google.com/maps">Google Maps</a>.
+      {/* Divider */}
+      <div className="divider" />
+
+      {/* Quick Links */}
+      <p className="text-center text-text-muted text-sm">
+        <Link href="/blog" className="hover:text-accent">Blog</Link>
+        {' · '}
+        <Link href="/stats" className="hover:text-accent">Statistics Guide</Link>
+        {' · '}
+        <Link href="/work" className="hover:text-accent">Work</Link>
+        {' · '}
+        <Link href="/atlas" className="hover:text-accent">Research</Link>
       </p>
 
-      <p>
-        Previously, I worked at <a href="https://www.LendUp.com">LendUp</a>, a startup whose 
-        goal is to safely extend credit to all who need it.
-      </p>
+      {/* Divider */}
+      <div className="divider" />
 
-      <p>
-        I obtained a PhD in High Energy Experimental Particle Physics from New York University, 
-        where I worked on the <a href="http://atlas.ch/">ATLAS</a> experiment on the Large 
-        Hadron Collider at <a href="http://public.web.cern.ch/public/">CERN</a>.
-      </p>
-
-      <p>
-        I was also a fellow at the{' '}
-        <a href="http://insightdatascience.com/">Insight Data Science Program</a>.
-      </p>
-
-      <p>
-        For more information, please browse my <a href="/work">work and projects</a> page or 
-        read entries from my <a href="/blog">blog</a> or check out my <a href="/apps">apps</a>.
-      </p>
-
-      <p>
-        I can be reached at the following email address: ghl227@gmail.com
-      </p>
-
-      <div className="break" />
-
-      <div className="text-center my-8">
-        <img 
-          src="/assets/images/symmetry_e8.jpg" 
-          alt="E8 Symmetry" 
-          className="w-48 mx-auto"
-        />
-      </div>
-
-      <p>
-        Symmetries are all around us and shape our lives in ways few understand. On an aesthetic 
-        level, symmetries are considered beautiful and visually pleasing. But the mathematical 
-        concept of a symmetry goes much deeper than the familiar definition. In a deep, 
-        fundamental way, symmetries govern how the world works. They are the language of the 
-        most fundamental physical processes that we can describe.
-      </p>
+      {/* Philosophy Quote with E8 Graph */}
+      <figure className="text-center">
+        <div className="inline-block p-6 bg-surface rounded-2xl mb-6">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="/assets/images/E8_graph.svg" 
+            alt="E8 Graph — a visualization of the exceptional Lie group E8" 
+            width={280}
+            height={280}
+            className="opacity-80"
+          />
+        </div>
+        <blockquote className="max-w-md mx-auto">
+          <p className="text-text-secondary leading-relaxed italic">
+            Symmetries are all around us and shape our lives in ways few understand. 
+            In a deep, fundamental way, they govern how the world works—the language 
+            of the most fundamental physical processes we can describe.
+          </p>
+        </blockquote>
+      </figure>
     </div>
   );
 }
-
-

@@ -1,43 +1,50 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getArchive, formatMonthYear } from '@/lib/posts';
+import PageHero from '@/components/PageHero';
+import SectionLabel from '@/components/SectionLabel';
 
 export const metadata: Metadata = {
   title: 'Spontaneous Symmetry: Blog Archive',
 };
 
-export default function ArchivePage() {
+export default function ArchivePage(): JSX.Element {
   const archive = getArchive();
 
   return (
-    <div className="content mx-auto max-w-3xl">
-      <h1 className="text-2xl font-semibold text-center mb-8">Blog Archive</h1>
+    <div className="max-w-2xl mx-auto">
+      <PageHero title="Blog Archive" subtitle="All posts organized by date" />
 
+      {/* Archive List */}
       <div className="space-y-8">
         {archive.map((month) => (
-          <div key={`${month.year}-${month.month}`}>
-            <h2 className="text-xl font-semibold mb-4">
-              <Link href={`/blog/archive/${month.year}/${month.month}`}>
+          <section key={`${month.year}-${month.month}`}>
+            <SectionLabel>
+              <Link 
+                href={`/blog/archive/${month.year}/${month.month}`}
+                className="hover:text-text-primary transition-colors duration-150"
+              >
                 {formatMonthYear(month.year, month.month)}
               </Link>
-            </h2>
-            <ul className="space-y-2 ml-4">
+            </SectionLabel>
+            <ul className="space-y-2">
               {month.posts.map((post) => (
-                <li key={post.url}>
-                  <Link href={`/blog/${post.url}`}>
+                <li key={post.url} className="flex items-baseline gap-3">
+                  <span className="text-text-muted text-sm tabular-nums shrink-0">
+                    {post.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </span>
+                  <Link 
+                    href={`/blog/${post.url}`}
+                    className="text-text-primary hover:text-accent transition-colors duration-150"
+                  >
                     {post.title}
                   </Link>
-                  <span className="text-gray-500 text-sm ml-2">
-                    ({post.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})
-                  </span>
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
         ))}
       </div>
     </div>
   );
 }
-
-

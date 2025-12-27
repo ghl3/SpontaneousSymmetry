@@ -129,7 +129,7 @@ function softmax(probs: number[], theta: number = 25): number[] {
   return expProbs.map(p => p / sumExp);
 }
 
-export default function ConnectFourGame() {
+export default function ConnectFourGame(): JSX.Element {
   const [gameState, setGameState] = useState<GameState>({
     board: createBoard(),
     turn: 'human',
@@ -144,7 +144,7 @@ export default function ConnectFourGame() {
 
   // Load the neural network model
   useEffect(() => {
-    async function loadModel() {
+    async function loadModel(): Promise<void> {
       try {
         console.log('Loading Connect Four AI model...');
         const model = await tf.loadGraphModel('/models/connectfour/model.json');
@@ -272,7 +272,7 @@ export default function ConnectFourGame() {
     }
 
     // Add a small delay to make it feel more natural
-    const makeMove = async () => {
+    const makeMove = async (): Promise<void> => {
       await new Promise(resolve => setTimeout(resolve, 500));
       
       const computerCol = await getAIMove(gameState.board);
@@ -317,7 +317,7 @@ export default function ConnectFourGame() {
     makeMove();
   }, [gameState, getAIMove]);
 
-  const resetGame = () => {
+  const resetGame = (): void => {
     setGameState({
       ...gameState,
       board: createBoard(),
@@ -329,8 +329,8 @@ export default function ConnectFourGame() {
   };
 
   // Render the board
-  const renderBoard = () => {
-    const cells = [];
+  const renderBoard = (): JSX.Element[] => {
+    const cells: JSX.Element[] = [];
     
     for (let row = 0; row < NUM_ROWS; row++) {
       for (let col = 0; col < NUM_COLUMNS; col++) {
@@ -340,13 +340,15 @@ export default function ConnectFourGame() {
         cells.push(
           <div
             key={`${row}-${col}`}
-            className="w-16 h-16 bg-blue-800 border border-blue-900 flex items-center justify-center cursor-pointer hover:bg-blue-700 transition-colors"
+            className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-700 border border-blue-800 flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors duration-150"
             onClick={() => handleColumnClick(col)}
           >
             {piece && (
               <div
-                className={`w-12 h-12 rounded-full border-2 border-black ${
-                  piece === 'human' ? 'bg-yellow-400' : 'bg-red-500'
+                className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full shadow-inner ${
+                  piece === 'human' 
+                    ? 'bg-amber-400 border-2 border-amber-500' 
+                    : 'bg-rose-500 border-2 border-rose-600'
                 }`}
               />
             )}
@@ -358,52 +360,64 @@ export default function ConnectFourGame() {
     return cells;
   };
 
-  const getStatusMessage = () => {
+  const getStatusMessage = (): string => {
     if (!gameState.aiReady && !gameState.aiLoadError) {
       return 'Loading AI...';
     }
-    if (gameState.winner === 'human') return 'You Won!';
+    if (gameState.winner === 'human') return '🎉 You Won!';
     if (gameState.winner === 'computer') return 'Computer Won!';
     if (gameState.winner === 'tie') return "It's a Tie!";
     if (gameState.isLoading) return 'Computer is thinking...';
-    return "Your turn - Click a column to play";
+    return 'Your turn — Click a column to play';
   };
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-4 text-lg font-semibold">
+      {/* Status */}
+      <div className="mb-4 text-lg font-medium text-text-primary">
         {getStatusMessage()}
       </div>
       
+      {/* AI Status */}
       {gameState.aiLoadError && (
-        <div className="mb-4 text-sm text-orange-600">
+        <div className="mb-4 text-sm text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full">
           {gameState.aiLoadError}
         </div>
       )}
       
       {gameState.aiReady && (
-        <div className="mb-4 text-sm text-green-600">
+        <div className="mb-4 text-sm text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
           🧠 Neural Network AI Active
         </div>
       )}
 
+      {/* Game Board */}
       <div 
-        className="grid gap-0 bg-blue-900 p-2 rounded-lg"
+        className="grid gap-0 bg-blue-800 p-2 rounded-lg shadow-lg"
         style={{ gridTemplateColumns: `repeat(${NUM_COLUMNS}, 1fr)` }}
       >
         {renderBoard()}
       </div>
 
+      {/* Reset Button */}
       <button
         onClick={resetGame}
-        className="mt-6 px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold transition-colors"
+        className="mt-6 px-5 py-2 bg-text-primary text-surface-white rounded-full font-medium hover:bg-accent transition-colors duration-150"
       >
         Reset Game
       </button>
 
-      <p className="mt-4 text-sm text-gray-600">
-        You play yellow, computer plays red.
-      </p>
+      {/* Legend */}
+      <div className="mt-4 flex items-center gap-4 text-sm text-text-secondary">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded-full bg-amber-400 border border-amber-500" />
+          <span>You</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded-full bg-rose-500 border border-rose-600" />
+          <span>Computer</span>
+        </div>
+      </div>
     </div>
   );
 }

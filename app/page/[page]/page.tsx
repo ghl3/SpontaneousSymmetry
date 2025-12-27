@@ -8,7 +8,7 @@ interface Props {
   params: { page: string };
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ page: string }[]> {
   const pagesDir = path.join(process.cwd(), 'pages');
   const files = fs.readdirSync(pagesDir);
   
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function GenericPage({ params }: Props) {
+export default async function GenericPage({ params }: Props): Promise<JSX.Element> {
   const page = await getPage(params.page);
 
   if (!page) {
@@ -35,14 +35,19 @@ export default async function GenericPage({ params }: Props) {
   }
 
   return (
-    <div className="content mx-auto max-w-3xl">
-      <h1 className="text-2xl font-semibold text-center mb-8">{page.title}</h1>
-      <div
-        className="post-content prose max-w-none"
+    <div className="max-w-2xl mx-auto">
+      {/* Hero Section */}
+      <div className="text-center mb-10">
+        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+          {page.title}
+        </h1>
+      </div>
+
+      {/* Content */}
+      <article
+        className="post-content prose prose-lg max-w-none"
         dangerouslySetInnerHTML={{ __html: page.contentHtml }}
       />
     </div>
   );
 }
-
-

@@ -1,217 +1,143 @@
+/* Import KaTeX styles - must be first */
+@import "katex/dist/katex.min.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Import KaTeX styles */
-@import "katex/dist/katex.min.css";
+/* ===== Base Layer ===== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-/* ===== Base Styles (from original style.css) ===== */
+  body {
+    @apply font-sans text-text-primary bg-surface antialiased;
+    font-size: 17px;
+    line-height: 1.7;
+  }
 
-body {
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  color: rgba(0, 0, 0, 0.8);
-  background-color: white;
-  line-height: 150%;
-  font-size: 18px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-text-primary font-semibold tracking-tight;
+  }
+
+  h1 { @apply text-3xl md:text-4xl mb-4; }
+  h2 { @apply text-2xl md:text-3xl mb-3; }
+  h3 { @apply text-xl md:text-2xl mb-2; }
+
+  /* Links */
+  a {
+    @apply text-accent no-underline transition-colors duration-150;
+  }
+
+  a:hover {
+    @apply text-accent-dark;
+  }
+
+  /* Code */
+  pre {
+    @apply bg-code-bg rounded-lg p-4 my-4 overflow-x-auto font-mono text-sm leading-relaxed shadow-sm;
+  }
+
+  code {
+    @apply font-mono text-[0.9em];
+  }
+
+  :not(pre) > code {
+    @apply bg-code-bg px-1.5 py-0.5 rounded text-text-primary;
+  }
 }
 
-/* ===== Typography ===== */
+/* ===== Component Layer ===== */
+@layer components {
+  /* Document container */
+  .document {
+    @apply w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  color: black;
-  font-weight: 600;
+  /* Section divider */
+  .divider {
+    @apply w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto my-8;
+  }
+
+  /* Post content - prose overrides */
+  .post-content {
+    @apply leading-relaxed;
+  }
+
+  /* Hide first h1 when page already has a header */
+  .post-content.hide-first-h1 > h1:first-child {
+    @apply hidden;
+  }
+
+  /* Tighter heading spacing */
+  .post-content h2 {
+    @apply mt-8 mb-3;
+  }
+
+  .post-content h3 {
+    @apply mt-6 mb-2;
+  }
+
+  .post-content h4 {
+    @apply mt-5 mb-2;
+  }
+
+  /* First heading after hidden h1 should have no top margin */
+  .post-content.hide-first-h1 > h1:first-child + p + h2,
+  .post-content.hide-first-h1 > h1:first-child + h2,
+  .post-content > h2:first-child {
+    @apply mt-0;
+  }
+
+  .post-content p {
+    @apply mb-5;
+  }
+
+  .post-content ul,
+  .post-content ol {
+    @apply mb-4 pl-6;
+  }
+
+  .post-content li {
+    @apply mb-1;
+  }
+
+  .post-content blockquote {
+    @apply border-l-3 border-accent pl-4 my-4 text-text-secondary italic;
+  }
+
+  .post-content table {
+    @apply border-collapse my-4 w-full;
+  }
+
+  .post-content th,
+  .post-content td {
+    @apply border border-border px-3 py-2 text-left;
+  }
+
+  .post-content th {
+    @apply bg-surface font-semibold;
+  }
 }
 
-h1 { font-size: 2em; margin-bottom: 0.5em; }
-h2 { font-size: 1.5em; margin-bottom: 0.5em; }
-h3 { font-size: 1.25em; margin-bottom: 0.5em; }
-
-/* ===== Links ===== */
-
-a {
-  text-decoration: underline;
-  color: black;
-}
-
-a:hover {
-  color: #7FD600;
-}
-
-/* ===== Navigation ===== */
-
-nav a {
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: 1px;
-  font-size: 16px;
-  font-weight: normal;
-  color: rgb(153, 153, 153);
-}
-
-nav a:hover {
-  color: #7FD600;
-}
-
-nav a.active {
-  font-weight: bold;
-}
-
-/* ===== Layout ===== */
-
-.document {
-  width: 100%;
-  max-width: 1080px;
-  margin: 30px auto;
-}
-
-.content {
-  overflow: hidden;
-  padding-left: 5%;
-  padding-right: 5%;
-}
-
-.content p {
-  width: 100%;
-  margin-bottom: 1em;
-}
-
-.content img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* ===== Sidebar ===== */
-
-.sidebar {
-  font-size: 14px;
-  line-height: 1.8;
-  padding-top: 20px;
-}
-
-.sidebar a {
-  color: #444;
-  text-decoration: none;
-}
-
-.sidebar a:hover {
-  color: #7FD600;
-}
-
-.sidebar ul {
-  margin: 10px 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* ===== Code Blocks ===== */
-
-pre {
-  background: #eee;
-  padding: 15px 20px;
-  line-height: 1.4em;
-  font-size: 14px;
-  font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', monospace;
-  overflow-x: auto;
-  margin: 20px 0;
-  border-radius: 4px;
-}
-
-code {
-  font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', monospace;
-  font-size: 0.9em;
-}
-
-/* Inline code */
-:not(pre) > code {
-  background: #f4f4f4;
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-/* ===== Syntax Highlighting (Pygments) ===== */
-
-.hljs { background: #eee; }
-.hljs-comment, .hljs-quote { color: #408080; font-style: italic; }
-.hljs-keyword, .hljs-selector-tag { color: #008000; font-weight: bold; }
-.hljs-number { color: #666666; }
-.hljs-string { color: #BA2121; }
-.hljs-title, .hljs-section { color: #0000FF; font-weight: bold; }
-.hljs-built_in, .hljs-builtin-name { color: #008000; }
-.hljs-attr, .hljs-attribute { color: #7D9029; }
-.hljs-name, .hljs-tag { color: #008000; font-weight: bold; }
-
-/* ===== Footer ===== */
-
-.footer {
-  width: 85%;
-  margin: 20px auto 30px auto;
-  font-size: 14px;
-  color: #888;
-  text-align: right;
-}
-
-.footer a {
-  color: #888;
-}
-
-/* ===== Utilities ===== */
-
-.break {
-  display: block;
-  width: 15%;
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
-  margin: 10% auto;
-}
-
-/* ===== Blog Post Content ===== */
-
-.post-content {
-  line-height: 1.7;
-}
-
-.post-content p {
-  margin-bottom: 1.5em;
-}
-
-.post-content ul, .post-content ol {
-  margin-bottom: 1.5em;
-  padding-left: 2em;
-}
-
-.post-content li {
-  margin-bottom: 0.5em;
-}
-
-.post-content blockquote {
-  border-left: 3px solid #7FD600;
-  padding-left: 1em;
-  margin: 1.5em 0;
-  color: #555;
-}
-
-.post-content table {
-  border-collapse: collapse;
-  margin: 1.5em 0;
-  width: 100%;
-}
-
-.post-content th, .post-content td {
-  border: 1px solid #ddd;
-  padding: 8px 12px;
-  text-align: left;
-}
-
-.post-content th {
-  background: #f4f4f4;
-}
+/* ===== Syntax Highlighting ===== */
+.hljs { @apply bg-code-bg; }
+.hljs-comment, .hljs-quote { @apply text-text-secondary italic; }
+.hljs-keyword, .hljs-selector-tag { @apply text-emerald-700 font-semibold; }
+.hljs-number { @apply text-text-secondary; }
+.hljs-string { @apply text-rose-700; }
+.hljs-title, .hljs-section { @apply text-blue-700 font-semibold; }
+.hljs-built_in, .hljs-builtin-name { @apply text-emerald-700; }
+.hljs-attr, .hljs-attribute { @apply text-amber-700; }
+.hljs-name, .hljs-tag { @apply text-emerald-700 font-semibold; }
 
 /* ===== KaTeX Math Overrides ===== */
-
 .katex-display {
-  margin: 1.5em 0;
+  display: block !important;
+  margin: 1em 0 !important;
+  text-align: center;
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -220,4 +146,48 @@ code {
   font-size: 1.1em;
 }
 
+/* Protect KaTeX from prose styling */
+.prose .katex,
+.prose .katex-display {
+  font-size: 1.1em;
+  line-height: normal;
+}
 
+.prose .katex-display > .katex {
+  display: inline-block;
+  text-align: center;
+}
+
+/* Reset prose styles on KaTeX elements */
+.prose .katex .mord,
+.prose .katex .mbin,
+.prose .katex .mrel,
+.prose .katex .mopen,
+.prose .katex .mclose,
+.prose .katex .mpunct,
+.prose .katex .minner {
+  color: inherit;
+}
+
+/* Ensure math spans don't get prose code styling */
+.prose .katex-mathml {
+  display: none;
+}
+
+.prose span.katex-html {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Inline math should flow with text */
+.prose p .katex {
+  display: inline;
+}
+
+/* ===== Utilities ===== */
+@layer utilities {
+  .border-l-3 {
+    border-left-width: 3px;
+  }
+}

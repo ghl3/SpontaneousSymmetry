@@ -1,46 +1,47 @@
 import Link from 'next/link';
-import { getArchive, formatMonthYear, type ArchiveMonth } from '@/lib/posts';
+import SectionLabel from '@/components/SectionLabel';
 
-interface BlogSidebarProps {
-  maxMonths?: number;
+interface RecentPost {
+  url: string;
+  title: string;
+  dateStr: string;
 }
 
-export default function BlogSidebar({ maxMonths = 5 }: BlogSidebarProps) {
-  const archive = getArchive().slice(0, maxMonths);
+interface BlogSidebarProps {
+  recentPosts: RecentPost[];
+}
 
+export default function BlogSidebar({ recentPosts }: BlogSidebarProps): JSX.Element {
   return (
-    <aside className="sidebar w-full lg:w-48 flex-shrink-0">
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Recent Posts:</h2>
-        <ul className="space-y-1">
-          {archive.map((month) => (
-            <li key={`${month.year}-${month.month}`}>
+    <aside className="w-44 text-sm">
+      <div className="sticky top-24">
+        <SectionLabel>Recent</SectionLabel>
+        
+        <ul className="space-y-2">
+          {recentPosts.map((post) => (
+            <li key={post.url}>
               <Link 
-                href={`/blog/archive/${month.year}/${month.month}`}
-                className="font-semibold"
+                href={`/blog/${post.url}`}
+                className="block group"
               >
-                {formatMonthYear(month.year, month.month)}
+                <span className="text-text-muted text-xs tabular-nums">
+                  {post.dateStr}
+                </span>
+                <span className="block text-text-secondary group-hover:text-accent transition-colors duration-150 leading-snug text-sm">
+                  {post.title}
+                </span>
               </Link>
-              <ul className="ml-4 space-y-1">
-                {month.posts.map((post) => (
-                  <li key={post.url}>
-                    <Link href={`/blog/${post.url}`}>
-                      {post.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
             </li>
           ))}
-          <li className="mt-4">
-            <Link href="/blog/archive" className="font-semibold text-lg">
-              All Posts
-            </Link>
-          </li>
         </ul>
+        
+        <Link 
+          href="/blog/archive" 
+          className="block mt-4 text-xs text-text-muted hover:text-text-primary transition-colors duration-150"
+        >
+          All posts →
+        </Link>
       </div>
     </aside>
   );
 }
-
-

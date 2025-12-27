@@ -234,7 +234,7 @@ In order to calculate the test statistic $Z^2_N$, one must know BOTH the true me
 For example, if one has a gaussian variable $x$ with true mean $\mu$ and true variance $\sigma^2$ and draws n samples from it, one can show that the quantity
 
 $$
-\chi^2 = \sum_i \frac{(x - \overbar{x})}{\sigma^2}
+\chi^2 = \sum_i \frac{(x - \bar{x})}{\sigma^2}
 $$
 
 follows a chi-squared distribution with n-1 degrees of freedom.  This is an exact relationship and can be proven using Cochran's theorem.
