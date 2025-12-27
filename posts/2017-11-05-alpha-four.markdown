@@ -48,13 +48,13 @@ To train the board-position-to-win-probability model, I used neural networks bui
 
 The overall architecture included numerous convolution filters of this type (with different shapes and numbers of filers) as well as numerous fully connected layers.  These layers were eventually connected via a fully-connected layer and fed into a SoftMax to determine the probability of win, lose, or draw.  The network used RELU for all activation functions.  I experimented with a number of permutations on this approach, including adding different types of regularization and trying alternate activation functions, most of which only had a small effect and led to decreased performance relative to our preferred architecture, which can be seen below:
 
-![Alt text](/static/images/connect_four_nn_arch.png)
+![Alt text](/assets/images/connect_four_nn_arch.png)
 
 To fit the weights, I used the Adam optimizer and minimized the categorical cross-entropy using the softmax of the output predictions (which evaluates the accuracy of predicting win, lose, and draw).  I also closely monitored the overall prediction accuracy during training as a proxy metric when evaluating the quality of the fit.  I initially trained it on 500,000 randomly generated full games (leading to several million board positions) and added an additional 200,000 games using the bootstrapped AI.
 
-![Alt text](/static/images/connect_four_accuracy.png)
+![Alt text](/assets/images/connect_four_accuracy.png)
 
-![Alt text](/static/images/connect_four_loss.png)
+![Alt text](/assets/images/connect_four_loss.png)
 
 
 I found that the overall accuracy increased as we moved from training on randomly-generated games to training on games between competent AIs.  This makes sense, as the model predicts who will eventually win the game, and even with a good board position, a random player will have trouble exploiting it, but a skilled player will hold on to their advantage until victory.

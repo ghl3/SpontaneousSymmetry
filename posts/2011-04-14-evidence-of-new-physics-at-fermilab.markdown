@@ -22,7 +22,7 @@ This “bump” was found in a search of what are called “diboson” events, w
 
 In the diboson events that were studied in this analysis, one of the bosons decays into a lepton (meaning an electron or it’s cousin the muon) and the other decays into two quarks.  These quarks eventually become jets, which are messy cones of particles that come from the effects of quantum-chromodynamics (QCD).  In addition, these events contain missing energy that comes from invisible neutrinos escaping the detector.  So, experimentalists collected these events from CDF and calculated the “invariant mass” of the two jets.  Since these jets came from one of the bosons (either the W or the Z), one would expect this mass to be close to the W or the Z mass, which are 80 and 91 GeV, respectively.  In practice, since these jets are so messy, the resolution of the detector isn’t fine enough to distinguish between those two masses, so one expects to see one giant mass peak between 80 and 90 GeV.  When experimentalists looked at these events, this is indeed what they saw:
 
-![](/static/images/CDFMjjPlot.png)
+![](/assets/images/CDFMjjPlot.png)
 
 The red in the plot above represent these diboson events that the experimentalists were looking for.  The different colored histograms are background, mostly coming from simulation.  The black dots with the small vertical bars are the data that was actually measured by the experiment.  So, if the sum of the colored blobs add up to the black data points, then everything is well-understood and agrees with standard model prediction.  And this is the case, for the most part.  One can clearly see that the black lines follow the red bump where simulation says it should be, which essentially means that experimentalists have found the diboson events they were looking for.  At the same time, there is a lot of background.  In this analysis, there is much more background than signal, moss of which comes from “W plus jets” events in green.
 
@@ -31,7 +31,7 @@ So, what’s all the excitement about?  The Diboson signal (red) indeed behaves
 
 If you take the data and subtract everything but the red, you’ll end up with this plot:
 
-![](/static/images/DijetResonanceSubtracted.png)
+![](/assets/images/DijetResonanceSubtracted.png)
 
 There is a first bump at around 90 GeV where we expect the standard diboson signal to be.  However, the excess around 140 GeV is clearer as a bump (the red and blue lines are fits to these shapes and have been included to guide the eye).
 

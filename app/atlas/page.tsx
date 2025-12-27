@@ -107,7 +107,7 @@ export default function AtlasPage() {
       {/* Sidebar */}
       <aside className="sidebar w-full lg:w-64 flex-shrink-0">
         <img 
-          src="/static/images/topquarkevent.jpg" 
+          src="/assets/images/topquarkevent.jpg" 
           alt="Top quark event" 
           className="w-full mb-2"
         />
@@ -118,7 +118,7 @@ export default function AtlasPage() {
         </p>
 
         <img 
-          src="/static/images/AtlasEvent.jpg" 
+          src="/assets/images/AtlasEvent.jpg" 
           alt="ATLAS event" 
           className="w-full mb-2"
         />
@@ -128,7 +128,7 @@ export default function AtlasPage() {
         </p>
 
         <img 
-          src="/static/images/DijetResonance.jpg" 
+          src="/assets/images/DijetResonance.jpg" 
           alt="Dijet Resonance" 
           className="w-full mb-2"
         />

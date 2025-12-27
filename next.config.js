@@ -19,7 +19,7 @@ const nextConfig = {
     // Ignore the pages/ directory which is for Flask content, not Next.js pages
     config.watchOptions = {
       ...config.watchOptions,
-      ignored: ['**/pages/**', '**/apps/**', '**/static/MathJax/**'],
+      ignored: ['**/pages/**', '**/apps/**', '**/assets/MathJax/**'],
     };
     return config;
   },

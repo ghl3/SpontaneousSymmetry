@@ -27,7 +27,7 @@ So, with a Poisson distribution in mind, we can approximate the standard deviati
 
 If we assume that the mean measured by the placebo is correct and the infection rate follows a binomial distribution, we get the following distribution for the number of infections out of the tested population:
 
-![BinomailImage](/static/uploads/2009/09/binomailimage.jpg)
+![BinomailImage](/assets/uploads/2009/09/binomailimage.jpg)
 
 The number of people infected from the group that took the vaccine was 51.  If you look for that number in the above graph, you can see that the measured number of infected of the population that took the vaccine is well outside of the center of the bell curve.  Thus, it makes us tend to believe that the vaccine is actually doing something.
 

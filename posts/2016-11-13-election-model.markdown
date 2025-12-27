@@ -12,7 +12,7 @@ Those who felt high levels of anxiety during this election season, myself includ
 
 And as a result, Silver's predictions were the target of a large body of scrutiny and backlash, in particular because his model gave Trump the highest probability of winning among the most widely known predictions.  At the time of the election, <a href="http://www.nytimes.com/interactive/2016/upshot/presidential-polls-forecast.html">The New York Times</a>' model, build by Nate Cohen, gave trump a 15% chance of winning, <a href='http://predictwise.com/blog/2016/11/election-day-2016/'>PredictWise</a> a 10% chance, the <a href='http://elections.huffingtonpost.com/2016/forecast/president'>Huffington Post</a> only a 1% chance and the Princeton Election Consortium <a href='http://election.princeton.edu/2016/11/08/final-mode-projections-clinton-323-ev-51-di-senate-seats-gop-house/'>predicted</a> that Trumps' chances were as low as 1%, stating that a Clinton victory was nearly certain.
 
-![](/static/images/ElectionPredictions.png)
+![](/assets/images/ElectionPredictions.png)
 
 Even with Silver's relatively high odds, of these models predicted that Trump would win the election.  And yet he did.  So, what does that say about the state of election modeling?  Were all these models wrong or somehow misguided?  And how should we compare the predictions of these models, knowing that they were predicting an scenario that can only be run once?  Politics aside, the art of modeling elections and the various approaches that were put forth during the 2016 season is a good subject for discussion important concepts in statistical modeling.
 
