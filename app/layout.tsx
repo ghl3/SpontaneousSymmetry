@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   icons: {
     icon: '/assets/images/logo.svg',
   },
+  verification: {
+    google: 'aLlIqRf4-U1xm6_hBa01owFg63hFD0paNvHSD-VTod0',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
