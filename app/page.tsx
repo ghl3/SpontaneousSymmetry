@@ -55,20 +55,6 @@ export default function Home(): JSX.Element {
       {/* Divider */}
       <div className="divider" />
 
-      {/* Quick Links */}
-      <p className="text-center text-text-muted text-sm">
-        <Link href="/blog" className="hover:text-accent">Blog</Link>
-        {' · '}
-        <Link href="/stats" className="hover:text-accent">Statistics Guide</Link>
-        {' · '}
-        <Link href="/work" className="hover:text-accent">Work</Link>
-        {' · '}
-        <Link href="/atlas" className="hover:text-accent">Research</Link>
-      </p>
-
-      {/* Divider */}
-      <div className="divider" />
-
       {/* Philosophy Quote with E8 Graph */}
       <figure className="text-center">
         <div className="inline-block p-6 bg-surface rounded-2xl mb-6">

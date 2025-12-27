@@ -23,6 +23,11 @@ const apps: AppItem[] = [
     href: '/app/connectfour',
     description: 'Play Connect Four against an AI trained using self-play with TensorFlow.',
   },
+  {
+    name: 'Bouncing Balls',
+    href: '/app/bouncingballs',
+    description: 'Physics simulation with elastic collisions between colorful bouncing balls.',
+  },
 ];
 
 export default function AppsPage(): JSX.Element {
