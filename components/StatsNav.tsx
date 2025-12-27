@@ -25,3 +25,4 @@ export default function StatsNav({ currentSlug }: StatsNavProps) {
   );
 }
 
+

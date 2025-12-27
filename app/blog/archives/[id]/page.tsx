@@ -30,3 +30,4 @@ export default function LegacyArchiveRedirect({ params }: Props) {
   redirect(`/blog/${post.url}`);
 }
 
+

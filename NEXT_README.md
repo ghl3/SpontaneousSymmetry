@@ -120,3 +120,4 @@ rm requirements.txt constraints.txt
 - Static export mode for Vercel compatibility
 - KaTeX for math rendering (smaller than MathJax)
 
+

@@ -33,3 +33,4 @@ echo "Note: The symlink approach works for development."
 echo "For production builds, you may need to copy files instead:"
 echo "  cp -r static/* public/static/"
 
+

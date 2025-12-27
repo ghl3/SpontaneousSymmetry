@@ -45,3 +45,4 @@ export default async function GenericPage({ params }: Props) {
   );
 }
 
+

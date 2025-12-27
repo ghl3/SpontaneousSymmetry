@@ -5,3 +5,4 @@ export default function StatsIndexPage() {
   redirect('/stats/introduction');
 }
 
+
