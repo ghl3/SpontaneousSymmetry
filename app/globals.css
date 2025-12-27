@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import KaTeX styles */
+@import "katex/dist/katex.min.css";
+
+/* ===== Base Styles (from original style.css) ===== */
+
+body {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.8);
+  background-color: white;
+  line-height: 150%;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Typography ===== */
+
+h1, h2, h3, h4, h5, h6 {
+  color: black;
+  font-weight: 600;
+}
+
+h1 { font-size: 2em; margin-bottom: 0.5em; }
+h2 { font-size: 1.5em; margin-bottom: 0.5em; }
+h3 { font-size: 1.25em; margin-bottom: 0.5em; }
+
+/* ===== Links ===== */
+
+a {
+  text-decoration: underline;
+  color: black;
+}
+
+a:hover {
+  color: #7FD600;
+}
+
+/* ===== Navigation ===== */
+
+nav a {
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 16px;
+  font-weight: normal;
+  color: rgb(153, 153, 153);
+}
+
+nav a:hover {
+  color: #7FD600;
+}
+
+nav a.active {
+  font-weight: bold;
+}
+
+/* ===== Layout ===== */
+
+.document {
+  width: 100%;
+  max-width: 1080px;
+  margin: 30px auto;
+}
+
+.content {
+  overflow: hidden;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.content p {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== Sidebar ===== */
+
+.sidebar {
+  font-size: 14px;
+  line-height: 1.8;
+  padding-top: 20px;
+}
+
+.sidebar a {
+  color: #444;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  color: #7FD600;
+}
+
+.sidebar ul {
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ===== Code Blocks ===== */
+
+pre {
+  background: #eee;
+  padding: 15px 20px;
+  line-height: 1.4em;
+  font-size: 14px;
+  font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', monospace;
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+code {
+  font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', monospace;
+  font-size: 0.9em;
+}
+
+/* Inline code */
+:not(pre) > code {
+  background: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* ===== Syntax Highlighting (Pygments) ===== */
+
+.hljs { background: #eee; }
+.hljs-comment, .hljs-quote { color: #408080; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag { color: #008000; font-weight: bold; }
+.hljs-number { color: #666666; }
+.hljs-string { color: #BA2121; }
+.hljs-title, .hljs-section { color: #0000FF; font-weight: bold; }
+.hljs-built_in, .hljs-builtin-name { color: #008000; }
+.hljs-attr, .hljs-attribute { color: #7D9029; }
+.hljs-name, .hljs-tag { color: #008000; font-weight: bold; }
+
+/* ===== Footer ===== */
+
+.footer {
+  width: 85%;
+  margin: 20px auto 30px auto;
+  font-size: 14px;
+  color: #888;
+  text-align: right;
+}
+
+.footer a {
+  color: #888;
+}
+
+/* ===== Utilities ===== */
+
+.break {
+  display: block;
+  width: 15%;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 10% auto;
+}
+
+/* ===== Blog Post Content ===== */
+
+.post-content {
+  line-height: 1.7;
+}
+
+.post-content p {
+  margin-bottom: 1.5em;
+}
+
+.post-content ul, .post-content ol {
+  margin-bottom: 1.5em;
+  padding-left: 2em;
+}
+
+.post-content li {
+  margin-bottom: 0.5em;
+}
+
+.post-content blockquote {
+  border-left: 3px solid #7FD600;
+  padding-left: 1em;
+  margin: 1.5em 0;
+  color: #555;
+}
+
+.post-content table {
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  width: 100%;
+}
+
+.post-content th, .post-content td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.post-content th {
+  background: #f4f4f4;
+}
+
+/* ===== KaTeX Math Overrides ===== */
+
+.katex-display {
+  margin: 1.5em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.katex {
+  font-size: 1.1em;
+}
+

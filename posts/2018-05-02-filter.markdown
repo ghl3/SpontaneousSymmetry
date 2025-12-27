@@ -236,13 +236,14 @@ $$
 $$
 
 $$
-\overleftrightarrow{\Sigma}_{i} \leftarrow \overleftrightarrow{\Sigma}_{i} +  \overleftrightarrow{Q}_i$$
+\overleftrightarrow{\Sigma}_{i} \leftarrow \overleftrightarrow{\Sigma}_{i} +  \overleftrightarrow{Q}_i
+$$
 
 In other words, the noise only changes the distribution by adding to the covariance matrix of our distribution of the state vector.  
 
 Thus, we can write down the update rule for our more complicated version of the Kalman Filter as:
 
-- Update the state vector mean and covariance matrix deterministically using $ \overleftrightarrow{T}$ and $\overleftrightarrow{B}\vec{u_i}$
+- Update the state vector mean and covariance matrix deterministically using $\overleftrightarrow{T}$ and $\overleftrightarrow{B}\vec{u_i}$
 - Add the noise covariance matrix $\overleftrightarrow{Q}$ to the state vector covariance matrix
 - Make a measurement and update the mean and covariance matrices using a Bayesian update
 
