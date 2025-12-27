@@ -59,7 +59,7 @@ export default function WorkPage() {
       <ul className="list-disc pl-6 space-y-4 mt-4">
         <li>
           <strong><a href="https://github.com/ghl3/SpontaneousSymmetry">Spontaneous Symmetry</a></strong>: 
-          This very site, written in Flask and served on AWS using nginx and docker.
+          This very site, built with Next.js and React, deployed on Vercel.
         </li>
         <li>
           <strong><a href="/stats">Statistics</a></strong>: 

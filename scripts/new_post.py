@@ -1,11 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import re
 import string
 from datetime import datetime
 import argparse
-
 import glob
 
 
@@ -28,27 +27,23 @@ def main():
     parser.add_argument('--layout', default='post',
                         help='The type of layout')
 
-    parser.add_argument('--sum', dest='accumulate', action='store_const',
-                        const=sum, default=max,
-                        help='sum the integers (default: find the max)')
-
     args = parser.parse_args()
 
     slug = args.slug.lower()
     for token in string.whitespace:
         if token in slug:
-            print "Slug (argument 0) must not contain whitespace"
+            print("Slug (argument 0) must not contain whitespace")
             return
 
     title = args.title
     if title is None:
         title = slug.replace('-', ' ').title()
 
-    id = get_max_id(args.dir) + 1
+    post_id = get_max_id(args.dir) + 1
     all_args = vars(args)
     all_args['slug'] = slug
     all_args['title'] = title
-    all_args['id'] = id
+    all_args['id'] = post_id
 
     metadata = """---
 author: {author}
@@ -65,32 +60,37 @@ Type Content Here
     output = "{}/{}-{}.markdown".format(args.dir, args.date.strftime("%Y-%m-%d"), args.slug)
 
     if not os.path.isfile(output):
-        f = open(output, 'w+')
-        f.write(metadata)
-        f.close()
-        print "Created new post stub: {}".format(output)
+        with open(output, 'w', encoding='utf-8') as f:
+            f.write(metadata)
+        print("Created new post stub: {}".format(output))
     else:
-        print "File {} already exists.  Not overwriting".format(output)
+        print("File {} already exists.  Not overwriting".format(output))
 
 
 def get_max_id(directory):
     """
     Look through the given directory for any posts.
-    Collect their set of "id" metadata tags.
+    Collect their set of "id" or "wordpress_id" metadata tags.
     Return the largest number
     """
 
-    pattern = r"\s*wordpress_id:\s*(\d+)\s*"
+    # Match both 'id:' and 'wordpress_id:' patterns
+    patterns = [
+        r"\s*wordpress_id:\s*(\d+)\s*",
+        r"\s*id:\s*(\d+)\s*"
+    ]
 
-    files = glob.glob(directory+"/*.markdown")
+    files = glob.glob(directory + "/*.markdown")
 
     indices = []
 
     for file_name in files:
-        for line in open(file_name).readlines():
-            m = re.match(pattern, line)
-            if m:
-                indices.append(int(m.group(1)))
+        with open(file_name, encoding='utf-8') as f:
+            for line in f.readlines():
+                for pattern in patterns:
+                    m = re.match(pattern, line)
+                    if m:
+                        indices.append(int(m.group(1)))
 
     if indices:
         return max(indices)
