@@ -16,7 +16,7 @@ _____
 
 ### Gaussian Distributed Data
 
-***You have a dataset consisting of a number of 1-d observations which you assume come from a gaussian distribution.  You know the true variance of the sample, but the mean is unknown.  You would like to perform inference on the mean $\mu$.***
+**You have a dataset consisting of a number of 1-d observations which you assume come from a gaussian distribution.  You know the true variance of the sample, but the mean is unknown.  You would like to perform inference on the mean $\mu$.**
 
 Apply a Gaussian Z-test.  A Z-test allows us to perform two types of inference:
 
@@ -56,7 +56,7 @@ Note that sample mean is a sufficient test statistic for estimating the mean of 
 _____
 
 
-***You have a set of Gaussian distributed data that you know has zero mean.  You'd like to perform inference on the variance of the unknown gaussian distribution***
+**You have a set of Gaussian distributed data that you know has zero mean.  You'd like to perform inference on the variance of the unknown gaussian distribution.**
 
 From our earlier work on the gaussian, we know that the distribution of the sample variance of the gaussian is given by:
 
@@ -72,9 +72,9 @@ $$
 
 is a pivotal quantity that follows a Chi-Squared distribution.  We can use its known cumulative distribution to create intervals of a chose size $\alpha$ in the space of the test statistic and then invert the definition of the test statistic to obtain intervals in $\sigma$.
 
-______
+_____
 
-***You have a dataset consisting of a number of 1-d observations which you assume come from a gaussian distribution.  You know neither the true mean nor the true variance and would like to perform inference on the mean (but you don't care to learn about the uncertainty)***
+**You have a dataset consisting of a number of 1-d observations which you assume come from a gaussian distribution.  You know neither the true mean nor the true variance and would like to perform inference on the mean (but you don't care to learn about the uncertainty).**
 
 <!--If I assume that my data comes from some Gaussian distribution with unknown mean and unknown variance, does it come from a gaussian with a given mean (regardless of the unknown variance)?-->
 
@@ -101,7 +101,7 @@ References:
 _____
 
 
-***You have a dataset consisting of a number of 1-d observations, which you assume come from a gaussian distribution.  You want to perform inference on both the mean and the variance parameters.***
+**You have a dataset consisting of a number of 1-d observations, which you assume come from a gaussian distribution.  You want to perform inference on both the mean and the variance parameters.**
 
 Unlike previous examples, we're here looking to perform simultaneous inference on two parameters.  Instead of making a confidence interval for a single parameter, we instead will attempt to make a confidence region, consisting of a 2-d region in ($\mu$, $\sigma$) space.
 
@@ -145,16 +145,18 @@ Even with this distribution in hand, however, we are not done.  There is a lot o
 - Symmetry of the region
 - Minimizing the overall area of the region
 
-(In this example, one has freedom to, in a sense, divvy the $\alpha$ between the distributions of $t$ or $s^2$, making the region very wide in $t$ and narrow in $\sigma$, or visa versa, as long as it's total area integrates to $\alpha$).
+(In this example, one has freedom to, in a sense, divvy the $\alpha$ between the distributions of $t$ or $s^2$, making the region very wide in $t$ and narrow in $\sigma$, or vice versa, as long as its total area integrates to $\alpha$).
 
-One reasonable choice is to define a region defined by $(-|a| < t < |a|)$ and $(b < s^2 < c)$ with $a = \alpha_1/2$ 
-
-$$
-\text{Region} = ( \bar{x} - a \frac{\sigma}{\sqrt{n}} < \mu < \bar{x} + a \frac{\sigma}{\sqrt{n}},
-$$
+One reasonable choice is to define a region by $(-|a| < t < |a|)$ and $(b < s^2 < c)$ with $a = \alpha_1/2$:
 
 $$
-\frac{\sum(x_i - \bar{x})^2}{c} < \sigma^2 <  \frac{\sum(x_i - \bar{x})^2}{b})
+\text{Region} =
+\left\{
+\begin{aligned}
+\bar{x} - a \frac{\sigma}{\sqrt{n}} &< \mu < \bar{x} + a \frac{\sigma}{\sqrt{n}} \\
+\frac{\sum (x_i - \bar{x})^2}{c} &< \sigma^2 < \frac{\sum (x_i - \bar{x})^2}{b}
+\end{aligned}
+\right.
 $$
 
 This region is a trapezoid, as $\bar{x}$ appears in both the $\mu$ and $\sigma$ region.
@@ -163,11 +165,10 @@ This region is a trapezoid, as $\bar{x}$ appears in both the $\mu$ and $\sigma$ 
 https://www.math.tecnico.ulisboa.pt/~apacheco/ID1/artigo%20n%BA2.pdf
 -->
 _____
-_____
 
-### Comparing measured data to a various distributions
+### Comparing measured data to various distributions
 
-***You have a dataset of binary data consisting of measured $N_s$ successes out of a total of $N$ trials.  You assume that my data comes from a binomial distribution and you want to perform inference on the true success rate $p$ ***
+**You have a dataset of binary data consisting of measured $N_s$ successes out of a total of $N$ trials.  You assume that your data comes from a binomial distribution and you want to perform inference on the true success rate $p$.**
 
 If N is large, one can use the fact that a binomial distribution approaches a normal distribution.  The mean of the gaussian approximation is given by:
 
@@ -205,7 +206,7 @@ http://www.ucl.ac.uk/english-usage/staff/sean/resources/binomialpoisson.pdf
 
 _____
 
-***You have observed a random process that can occur multiple times and have measured $N$ counts.  You assume that the data comes from a poisson distribution and you want to perform inference on the true rate $\lambda$***
+**You have observed a random process that can occur multiple times and have measured $N$ counts.  You assume that the data comes from a poisson distribution and you want to perform inference on the true rate $\lambda$.**
 
 Similar to how we treat the binomial distribution, we can start by using the gaussian approximation to the poisson.  To do this we associate:
 
@@ -236,7 +237,7 @@ $$
 where the right half of the equation represents the probability of a chi-square distributed variable with $2(1+x)$ degrees of freedom having a value > $2\mu$.  Using this, one can express the exact intervals in terms of quantiles of an appropriate chi-squared distribution:
 
 $$
-\frac{1}{2} \text{Quantil}e_{\alpha/2}(\chi^2_{2N}) < \lambda < \frac{1}{2} \text{Quantil}e_{1 - \alpha/2}(\chi^2_{2N + 2})
+\frac{1}{2} \text{Quantile}_{\alpha/2}(\chi^2_{2N}) < \lambda < \frac{1}{2} \text{Quantile}_{1 - \alpha/2}(\chi^2_{2N + 2})
 $$
 
 
@@ -252,13 +253,13 @@ https://www.ine.pt/revstat/pdf/rs120203.pdf
 
 _____
 
-***You have a set of continuous data and you want to determine whether it came from a known (but arbitrary) probability distribution?***
+**You have a set of continuous data and you want to determine whether it came from a known (but arbitrary) probability distribution?**
 
 One can perform a one-sample Kolmogorov-Smirnov test to determine arbitrary continuous data likely came from some known distribution.
 
 A K-S test is an exact test comparing the distribution of a sample to a known theoretical distribution.  The K-S test is valid regardless of the underlying distribution the data is being compared to.  The exactness, however, only applies if the theoretical distribution being compared against is fully specified: one cannot fit parameters from the data and then perform a K-S test.
 
-The test statistic for a K-S test is is the the maximum deviation between the theoretical CDF and the empirical CDF of the measured data, where the empirical CDF is given by:
+The test statistic for a K-S test is the maximum deviation between the theoretical CDF and the empirical CDF of the measured data, where the empirical CDF is given by:
 
 $$
 CDF_{em}(x) = \frac{1}{N} (\text{\# of data points < x})
@@ -278,10 +279,10 @@ References:
 - http://www.itl.nist.gov/div898/handbook/eda/section3/eda35g.htm
 -->
 
-____
+_____
 
 
-***You have a collection of counts in various bins.  You want to know if that binned data comes from a known distribution (describing binned data)?***
+**You have a collection of counts in various bins.  You want to know if that binned data comes from a known distribution (describing binned data)?**
 
 If one has a binned dataset consisting of measured bin counts and a theoretical distribution that predicts the expected bin count, one can use a Chi-Squared test (goodness-of-fit test) to calculate the p-value that the data was generated by the theoretical distribution.
 
@@ -314,13 +315,12 @@ References:
 - http://stattrek.com/chi-square-test/goodness-of-fit.aspx?Tutorial=AP
 -->
 
-____
-____
+_____
 
 ### Determining if two measured datasets came from the same distribution.
 
 
-*** You have two datasets of continuous data, and you assume that they are both drawn from gaussian distributions with the same variance, which is unknown to me.  You want to determine if the two gaussian distributions have the same mean.***
+**You have two datasets of continuous data, and you assume that they are both drawn from gaussian distributions with the same variance, which is unknown to you.  You want to determine if the two gaussian distributions have the same mean.**
 
 This can be solved by performing a statistical test by creating a test statistic that follows the t-distribution.
 
@@ -372,7 +372,7 @@ This is an exact test, applicable for all values of n and m.  Further, if the sa
 
 _____
 
-*** You have two 1-d datasets drawn from gaussian distributions, but you don't assume anything about the means and variance of those distributions.  You want to know if both distributions are the same.***
+**You have two 1-d datasets drawn from gaussian distributions, but you don't assume anything about the means and variance of those distributions.  You want to know if both distributions are the same.**
 
 This problem is known as the Behrens-Fisher Problem.  A number of approximate solutions exist.
 
@@ -386,7 +386,7 @@ http://www.sciencedirect.com/science/article/pii/S0378375806002382
 
 _____
 
-***You have two datasets of continuous data.  You have no assumptions about the underlying distribution that generated them.  You want to test if they came from the same continuous probability distribution***
+**You have two datasets of continuous data.  You have no assumptions about the underlying distribution that generated them.  You want to test if they came from the same continuous probability distribution.**
 
 To determine if two datasets of continuous, 1-d data came from the same distribution (without specifying what that distribution is), one can perform what is called a two-sample Kolmogorov-Smirnov test (2 sample KS test).
 
@@ -408,7 +408,7 @@ The distribution of $\sqrt{\frac{nm}{n+m}}D$ follows the same Kolmogorov Distrib
 
 _____
 
-***You have two sets of binary data (weighted coin flips, or counts of successes and failures) with potentially differing counts N_1 and N_2.  You want to infer if they have the same intrinsic rate?***
+**You have two sets of binary data (weighted coin flips, or counts of successes and failures) with potentially differing counts N_1 and N_2.  You want to infer if they have the same intrinsic rate?**
 
 To solve this, we have to make certain assumptions.  The main assumption that we're going to make here is that each dataset comes from a binomial distribution with a fixed rate.  The question then becomes: for both of these distributions, is the rate the same?
 
@@ -453,7 +453,7 @@ $$
 Z = \frac{\hat{p}_1 - \hat{p}_2} {\sqrt{p(1-p)(\frac{1}{N_1} + \frac{1}{N_2})}}
 $$
 
-Here, $p$ is still a nuisance parameter.  We can perform inference on it if we assume that the rates in the two groups are equal.  But, if we want to test whether they're equal, we have to eliminate it somehow.  A common approach is to replace it with it's maximum likelihood estimator: 
+Here, $p$ is still a nuisance parameter.  We can perform inference on it if we assume that the rates in the two groups are equal.  But, if we want to test whether they're equal, we have to eliminate it somehow.  A common approach is to replace it with its maximum likelihood estimator: 
 
 $$
 \hat{p} = \frac{\hat{p}_1N_1 + \hat{p}_2N_2 }{N_1 + N_2}
@@ -476,12 +476,11 @@ https://onlinecourses.science.psu.edu/stat414/node/268
 An exact solution to this problem uses Bernard's test.  The aspect of this problem that makes an exact solution challenging is the fact that the true binomial rate is a nuisance parameter (remember, we are only testing that they're the same binomial, we don't care what their common rate is).  Bernard's test addresses the issue in a brute-force way:  It calculates the p-value for each possible value of the parameter $p$ and then takes the maximum of all p-values (the most conservative choice).  For each possible value of the true rate, it calculates the p-value by considering all possible observable counts.  This is conceptually simple but can be computationally expensive.  Since there is only 1 nuisance parameter $p$, one can have a computer grid-search through a range of values relatively quickly.
 
 _____
-_____
 
 ### Determining if multiple measured datasets came from the same distribution.
 
 
-***I have a contingency table, which is a collection datasets (one per group) each consisting of counts of categorical data (a multinomial distribution over N categorical outcomes).  What is the p-value that the distribution over outcomes is equal for all groups?***
+**I have a contingency table, which is a collection datasets (one per group) each consisting of counts of categorical data (a multinomial distribution over N categorical outcomes).  What is the p-value that the distribution over outcomes is equal for all groups?**
  
 This is the generalization of the binomial example discussed above and is a common situation in statistics.  A contingency table can be visualized as the following:
 
@@ -533,13 +532,15 @@ http://www.stat.wisc.edu/~st571-1/06-tables-2.pdf
 It turns out that the number of linearly independent constraints is given by $(\text{num classes} - 1) + (\text{num outcomes} - 1) + 1$.  Therefore, we are taking as our test statistic the sum of $(\text{num classes}) * (\text{num outcomes})$ gaussian variables that have $(\text{num classes} - 1) + (\text{num outcomes} - 1) + 1$ linear constraints on them.  Based on an earlier discussion, the sum of the squares of these variables follows a chi-squared distribution with degrees of freedom $\nu$ given by the number of gaussian variables minus the number of linearly independent linear constraints on them, which is
 
 
-$$\begin{eqnarray}
-\nu &=& (\text{num classes}) * (\text{num outcomes}) \\
-    & & - (\text{num classes} - 1) \\
-    & & - (\text{num outcomes} - 1) \\
-    & & -1 \\
-    &=& (\text{num classes} - 1) * (\text{num outcomes} - 1) \\
-\end{eqnarray}$$
+$$
+\begin{aligned}
+\nu &= (\text{num classes}) * (\text{num outcomes}) \\
+&\quad - (\text{num classes} - 1) \\
+&\quad - (\text{num outcomes} - 1) \\
+&\quad - 1 \\
+&= (\text{num classes} - 1) * (\text{num outcomes} - 1)
+\end{aligned}
+$$
 
 One can therefore use the distribution of $\chi^2_\nu$ to calculate the p-value of the observed data given the hypothesis that all classes have the same distribution over the possible outcomes.
 
@@ -559,20 +560,24 @@ $$
 
 and the log likelihood ratio is give by:
 
-$$\begin{eqnarray}
- -2*LLR &=& -2*Log[L(n_i | p_i) / L(n_i | \hat{p_i})] \\
-        &=& -2*(Log [\prod p_i^{n_i}] - Log [\prod \hat{p}_i^{n_i}]) \\      
-        &=& -2*\sum_i n_i(Log[p_i] - Log[\hat{p}^i]) \\
-        &=& -2 * \sum_i n_i Log[\frac{p_i}  {\hat{p}_i}] \\
-\end{eqnarray}$$
+$$
+\begin{aligned}
+ -2*LLR &= -2*Log[L(n_i | p_i) / L(n_i | \hat{p_i})] \\
+&= -2*(Log [\prod p_i^{n_i}] - Log [\prod \hat{p}_i^{n_i}]) \\      
+&= -2*\sum_i n_i(Log[p_i] - Log[\hat{p}^i]) \\
+&= -2 * \sum_i n_i Log[\frac{p_i}  {\hat{p}_i}]
+\end{aligned}
+$$
 
 Substituting in the maximum likelihood estimate for $\hat{p_i}$ and defining $n_{obs}$ = $n_i$ and $n_{exp}$ = $p_i*N$, we get:
 
-$$\begin{eqnarray}
-      &=& -2 \sum_{i} n_{i} Log[\frac{p_i}{n_i/N}] \\
-      &=& -2 \sum_{i} n_{i} Log[\frac{p_i N}{n_i}] \\
-      &=& 2 \sum_i n_{obs} Log[\frac{n_{obs}}{n_{exp}}] \\
-\end{eqnarray}$$
+$$
+\begin{aligned}
+&= -2 \sum_{i} n_{i} Log[\frac{p_i}{n_i/N}] \\
+&= -2 \sum_{i} n_{i} Log[\frac{p_i N}{n_i}] \\
+&= 2 \sum_i n_{obs} Log[\frac{n_{obs}}{n_{exp}}]
+\end{aligned}
+$$
 
 
 We know from previous results that the log likelihood ratio is approximately distributed by a chi-squared distribution.  The number of degrees of freedom of that distribution would normally be given by the number of rows, which here is $i$.  However, in this case we have fewer degrees of freedom since we are constraining the total count per class to be the observed count and we are using the observed rates per outcome to infer the true value.  One can show that the -2*LLR defined above follows a chi-squared with degrees of freedom given by $(\text{num classes} - 1) * (\text{num observations} - 1)$.
@@ -619,9 +624,9 @@ https://en.wikipedia.org/wiki/Fisher%27s_exact_test
 https://stats.stackexchange.com/a/16931/16736
 -->
 
-_______
+_____
 
-***I have a datasets broken into groups, and within each group, I have measurements of a continuous variable.  Assuming the distribution of the variable is gaussian in each group (with unknown mean and variable), what is the p-value that the true means and variances of the distributions across all groups are equal?***
+**I have a dataset broken into groups, and within each group, I have measurements of a continuous variable.  Assuming the distribution of the variable is gaussian in each group (with unknown mean and variance), what is the p-value that the true means and variances of the distributions across all groups are equal?**
 
 This problem is addressed with a technique known as the "Analysis of Variance", or ANOVA.  Consider a situation when one has a multiple measurement of a continuous variable that is separated into several groups.  The goal of an anova analysis is to determine if the distribution of the variable is different in the various groups (in other words, does the group have any effect on the variable).  To measure this, imagine we have N measurements of a variable $y$ with $y_{ij}$ being the $i^{th}$ measurement of the $j^{th}$ group.  We have K groups total, and the size of the $i^{th}$ group is $n_i$.
 
@@ -676,5 +681,4 @@ If the null hypothesis is false, if the true means vary across groups, then, int
 https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&uact=8&ved=0ahUKEwibuq6xvc3WAhUD9WMKHdP9BVQQFggwMAI&url=http%3A%2F%2Fwww.springer.com%2Fcda%2Fcontent%2Fdocument%2Fcda_downloaddocument%2F9781848829688-c2.pdf%3FSGWID%3D0-0-45-1121038-p173940731&usg=AOvVaw25VisbaXWE07pmwhrmXw9k
 -->
 
-______
-______
+_____

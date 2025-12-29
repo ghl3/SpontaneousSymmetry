@@ -10,4 +10,4 @@ categories:
 - General
 ---
 
-![](http://imgs.xkcd.com/comics/sheeple.png)
+![](https://imgs.xkcd.com/comics/sheeple.png)

@@ -24,7 +24,7 @@ So, what is this business with sigmas?  Well, scientists are very strict when it
 For the discovery of a new particle, scientists have sent the standard of certainty to be "5 Sigma evidence," meaning that the probability of obtaining the same data and there NOT being a Higgs is about .00005% (For the statistically inclined, this is just the p-value of the background only hypothesis). This plot helps to illustrate the concept:
 
 
-![](http://tevnphwg.fnal.gov/results/SM_Higgs_Fall_09/tevhcp09llr.gif)
+![](https://tevnphwg.fnal.gov/results/SM_Higgs_Fall_09/tevhcp09llr.gif)
 
 
 Here’s how to read the plot.  Pick a value of the Higgs mass (the x-axis, in units of GeV).  For that value, the black dotted line is the expected value of some statistic (exactly what that statistic is isn’t all that important, but it’s something called the Log-Likelihood Ratio).  The red dotted line is the expected value if there were a Higgs boson.  The black line is the data that we obtain from experiment.  So, for a given Higgs mass on the x-axis, if the solid black line is close to the dotted black line, then most likely the Higgs DOES NOT exist at that mass.  However, if the solid black line is close to the red line, then the data is consistent with a Higgs boson of that mass.

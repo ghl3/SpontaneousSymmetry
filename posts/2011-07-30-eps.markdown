@@ -10,7 +10,7 @@ wordpress_id: 418
 
 
 
-Summer conferences are upon us.  Several times a year, members of the high energy experimental physics community gather and share their results with each other.  At these conferences, the major experiments unveil their latest findings to the world, trying to show off the accuracy of their results.  One us conference took place earlier this week in Grenoble, France called the International Europhysics conference on High Energy Physics, or EPS-HEP for short, or even simply EPS.
+Summer conferences are upon us.  Several times a year, members of the high energy experimental physics community gather and share their results with each other.  At these conferences, the major experiments unveil their latest findings to the world, trying to show off the accuracy of their results.  One such conference took place earlier this week in Grenoble, France called the International Europhysics conference on High Energy Physics, or EPS-HEP for short, or even simply EPS.
 
 This particular conference takes place at an extremely interesting time in the history of particle physics.  The Tevatron, the accelerator at Fermi Lab and the former king of high-energy physics, is set to be shut down this Fall.  So, this conference will be one of the last where new data from the Tevatron, mainly from the experiments CDF and D0, will be presented.  At the same time, it’s coming soon after the LHC achieved a milestone by collecting one inverse-femptobarn of data.  As a means of comparison the Tevatron, after about 20 years, has collected 8 inverse femptobarns.  The LHC collected 1 inverse femptobarn since March and is on track to get much more by the end of the year.  So, with this newly produced dataset, made with the record-setting energy of 7 TeV, the LHC experiments have plenty of interesting results.
 
@@ -28,14 +28,12 @@ To quickly summarize the results presented:
 
 So, this could be the first taste of finding the Higgs boson. Both experiments will continue to update their results as new data is pouring in at a high rate. Within a year, we should know if the standard model Higgs boson exists with a high level of certainty.
 
-The summary of the Higgs searches by Atlas is shown below:
+The summary of the Higgs searches by ATLAS is shown below:
 
-<img alt="" width="500" src="http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png" >
+<img alt="ATLAS Higgs exclusion plot" width="500" src="https://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png" />
 
 <!--
-![](http://2.bp.blogspot.com/-6guk8ASrz3Y/TimXQb8ZmyI/AAAAAAAAAUI/ljAXU3GDG0M/s1600/ATLAS_Higgsexclusion_fullrange.png =100)
-
-![](http://cms.web.cern.ch/cms/News/2011/EPS_2011/images/HIG-11-011-pas-v8-fig18.png)
+![](https://cms.web.cern.ch/cms/News/2011/EPS_2011/images/HIG-11-011-pas-v8-fig18.png)
 -->
 
 The meaning of the y-axis is “upper limit on the higgs cross-section with 95% confidence.”  Recall that the cross-section is a measurement of how often a Higgs boson is produced.  So, the upper limit on this value represents the maximum value, based on what we measure, that the higgs cross section could have with 95% confidence.  These plots are scaled such that a cross section of 1 represents the standard-model theoretical prediction.  So, when the limit that we measure falls below 1, it means that we have excluded the standard model higgs (at a particular mass point).  The central black line in the middle of the green band represents the “expected limit,” or the limits that we would make if we assume the Standard Model but without a Higgs.  The black dots joined together by a curve represent the measured limit.  So, when reading the plots, you should look for two things.  First, you should ask if the measured limits fall below 1.  Wherever they do, that region is said to be “excluded.”  In addition, one should ask if the measured limits follow the expected limits.  If the measured limits fall within the green band, they are close to expectation within 1 sigma.  If they fall within the yellow, they are close to expectation within 2 sigma.  If they leave the yellow band, they have made a greater than 2 sigma variation from the expected limit.

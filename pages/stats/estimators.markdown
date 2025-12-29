@@ -89,7 +89,7 @@ $$
 MSE = bias^2 + variance
 $$
 
-This is often a valuable way to think about a problem.  Changes to an estimator will often have the effect of decreasing the bias but increasing the variance, or visa versa.  In order to decrease the overall MSE, one must find a way to simultaneously decrease both, or at least decrease one without increasing the other.
+This is often a valuable way to think about a problem.  Changes to an estimator will often have the effect of decreasing the bias but increasing the variance, or vice versa.  In order to decrease the overall MSE, one must find a way to simultaneously decrease both, or at least decrease one without increasing the other.
 
 
 A "consistent" estimator is one that converges to the true value of the parameter, usually defined as a function of sample size.  It is defined by finding an estimator that, for all $\epsilon$ and [0 < $\delta$ < 1], there exists a sample size $n$ such that:
@@ -112,7 +112,7 @@ $$
 FI_\theta = FI(x | \theta) = -\frac{d^2L(x | \theta')}{d\theta'^2} |_{\theta'=\theta}
 $$
 
-We will not concern ourselves with the details of this calculation here, but instead will note that the existence of such a bound means that it's possible in some cases to obtain the "best" unbiased estimator as the one whose variance is falls right on the boundary.  The efficiency of an estimator is the ratio of it's variance to the Cramer-Rao variance bound, where an efficiency of 1 is the best an estimator can do.
+We will not concern ourselves with the details of this calculation here, but instead will note that the existence of such a bound means that it's possible in some cases to obtain the "best" unbiased estimator as the one whose variance falls right on the boundary.  The efficiency of an estimator is the ratio of its variance to the Cramer-Rao variance bound, where an efficiency of 1 is the best an estimator can do.
 
 ## Maximum Likelihood Estimator
 

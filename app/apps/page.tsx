@@ -19,12 +19,12 @@ interface AppItem {
 
 const apps: AppItem[] = [
   {
-    name: 'RocksPaper',
+    name: 'Rock Paper Scissors',
     href: '/app/rockspaper',
     description: 'Play Rocks-Paper-Scissors against a computer that attempts to learn your tendencies.',
   },
   {
-    name: 'ConnectFour',
+    name: 'Connect Four',
     href: '/app/connectfour',
     description: 'Play Connect Four against an AI trained using self-play with TensorFlow.',
   },

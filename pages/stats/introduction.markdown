@@ -9,9 +9,9 @@ id: 446
 
 # Statistics
 
-Statistics is an extremely deep topic.  At it's heart, statistics aims to answer the question, "What do we know and how well do we know it?"  It is therefore the bedrock on which modern science stands.  Understanding statistics well is necessary both for creating a working model of the world and for making predictions of the future.
+Statistics is an extremely deep topic.  At its heart, statistics aims to answer the question, "What do we know and how well do we know it?"  It is therefore the bedrock on which modern science stands.  Understanding statistics well is necessary both for creating a working model of the world and for making predictions of the future.
 
-While its usefulness is clear, statistic is a difficult tool to wield.  I have studied it in many ways for a long time, and yet I consistently find myself having to go back to the basics, to review what I know, and to re-ground my understanding.
+While its usefulness is clear, statistics is a difficult tool to wield.  I have studied it in many ways for a long time, and yet I consistently find myself having to go back to the basics, to review what I know, and to re-ground my understanding.
 
 The goal of these pages is to serve as a reference guide for when I need to re-learn or make fresh the building blocks of statistics.  It is not intended as an introduction, but is most useful for someone who already has exposure to these concepts.  It may serve as a quickly-digestible resource for understanding how various concepts fit together or as a reference guide for picking certain tools or techniques.
 

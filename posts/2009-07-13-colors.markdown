@@ -73,7 +73,7 @@ Well, the answer comes from the way that the human eye “sees” colors.  We ar
 
 
 
-![](http://upload.wikimedia.org/wikipedia/en/thumb/1/1e/Cones_SMJ2_E.svg/287px-Cones_SMJ2_E.svg.png)
+![](https://upload.wikimedia.org/wikipedia/en/thumb/1/1e/Cones_SMJ2_E.svg/287px-Cones_SMJ2_E.svg.png)
 
 
   
@@ -87,7 +87,7 @@ The frequency that we call yellow is about 580.  Find that point in the above di
 
 
 
-![](http://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/CIExy1931_sRGB.svg/542px-CIExy1931_sRGB.svg.png)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/CIExy1931_sRGB.svg/542px-CIExy1931_sRGB.svg.png)
 
 
   

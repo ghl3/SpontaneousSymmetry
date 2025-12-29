@@ -138,7 +138,7 @@ where n is the number of rows and p is the number of variables.
 
 - Akaike information criterion (AIC)
 
-The AIC is a metric for measuring the goodness of fit of a model relative to it's complexity.  Because it takes into account the number of features used in the model, it is suitable for use in feature selection.  It essentially answers the question, "Does adding more complexity to a model give me an overall better fit?"  To answer this question in full, one should leverage a hold-out set.  The AIC is a way to measure this using the same dataset that the model was trained on, making it a faster metric for this decision.  Without including a penalty for model complexity, one would always conclude that a more complex model is better when only looking at the dataset it was trained on. 
+The AIC is a metric for measuring the goodness of fit of a model relative to its complexity.  Because it takes into account the number of features used in the model, it is suitable for use in feature selection.  It essentially answers the question, "Does adding more complexity to a model give me an overall better fit?"  To answer this question in full, one should leverage a hold-out set.  The AIC is a way to measure this using the same dataset that the model was trained on, making it a faster metric for this decision.  Without including a penalty for model complexity, one would always conclude that a more complex model is better when only looking at the dataset it was trained on. 
 
 It is defined as:
 
@@ -171,11 +171,11 @@ $$
 where
 - U is m*m
 - $\Sigma$ mxn and diagonal 
-- V is nxn and unitary (meaning it's complex conjugate is its inverse)
+- V is nxn and unitary (meaning its complex conjugate is its inverse)
 
 The diagonal elements of $\Sigma$ are the "singular values".  
 
-The value of this technique is that one approximate $F$ by ignoring small values along the diagonal of $\Sigma$.  This effectively achieves a smaller-dimension representation of the original matrix F (or any matrix in it's space that is statistically similar to F).
+The value of this technique is that one approximates $F$ by ignoring small values along the diagonal of $\Sigma$.  This effectively achieves a smaller-dimension representation of the original matrix F (or any matrix in its space that is statistically similar to F).
 
 
 ### Principal Component Analysis (PCA)
@@ -259,7 +259,7 @@ For the case of counting, say, sign-ups, the dataset consists of a 2x2 table
 |----------|---------|---------|
 | took action? |         |         |
 | Yes        | $N_{AY}$ | $N_{BY}$ |
-| No        | $N_{AN}$ | $N_{AN}$ |
+| No        | $N_{AN}$ | $N_{BN}$ |
 
 
 One can use the following statistical tests for this data:

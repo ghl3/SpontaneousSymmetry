@@ -45,7 +45,7 @@ Events enter the Level 1 trigger at a rate of 40 MegaHertz, and the output of Le
 
 
 
-![](http://www-atlas.desy.de/pictures/trigger_overview.gif)
+![](https://www-atlas.desy.de/pictures/trigger_overview.gif)
 
 
 

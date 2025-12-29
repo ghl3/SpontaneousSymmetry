@@ -14,7 +14,7 @@ The recent tragedy in Arizona has sparked a lot of controversy.  Many people fro
 
 One argument related to Arizona’s shooting that I came across focused on the relationship between the number of guns in a state and that state’s propensity toward gun violence.  I saw in several places an image which attempted to concisely summarized this point:
 
-![GunViolenceTrendImage](http://www.blogforarizona.com/.a/6a00d8341bf80c53ef0147e1b7ffa2970b-500wi)
+![GunViolenceTrendImage](https://www.blogforarizona.com/.a/6a00d8341bf80c53ef0147e1b7ffa2970b-500wi)
 
 This graphic stood out to me for several reasons.  First, the data being quoted superficially seems to be quite convincing: the states with the highest rates of gun-related deaths do have much higher percentages of people who own guns.  While from that data alone it remains unclear how the underlying relation worked, or in which direction the underlying causation pointed, this data seems to be direct evidence against the idea that higher gun ownership actually reduces gun homicides via the phenomenon of people in a crowd “fighting back.”
 

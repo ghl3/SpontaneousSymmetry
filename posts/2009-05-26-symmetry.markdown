@@ -34,7 +34,7 @@ So, how does any of this apply to physics?  It turns out that for each continuou
 All of these conserved quantities can be derived from a symmetry of nature.  The mechanism for doing this is one of the most beautiful theorems in all of physics.  It's called Noether's theorem, which was first discovered by Emmy Noether (seen below).  Einstein apparently called her the most important woman in the field of mathematics.  It says what I just said, that each continuous symmetry leads to a conserved quantity (it just says it in fancy math language).  
   
   
-[![](http://upload.wikimedia.org/wikipedia/commons/e/e5/Noether.jpg)](http://upload.wikimedia.org/wikipedia/commons/e/e5/Noether.jpg)  
+[![](https://upload.wikimedia.org/wikipedia/commons/e/e5/Noether.jpg)](http://upload.wikimedia.org/wikipedia/commons/e/e5/Noether.jpg)  
   
   
 Conservation of energy comes from the fact that the laws of physics are constant in time (meaning if I preform an experiment at 3:00 in the morning, it should have the same results as if I did it at 5:00 in the afternoon, ignoring external differences associated with the different times of day such as daylight, weather, etc).  Conservation of momentum comes from the fact that the laws of physics don't care where they take place (meaning they are the same here as well as in the Andromeda galaxy, or they are "symmetric under translations").  

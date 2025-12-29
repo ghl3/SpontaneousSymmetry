@@ -22,7 +22,7 @@ export default function AboutPage(): JSX.Element {
       {/* Content */}
       <div className="space-y-5 text-text-primary leading-relaxed">
         <p>
-          Welcome to SpontaneousSymmetry, a site dedicated to programming, science, math, 
+          Welcome to Spontaneous Symmetry, a site dedicated to programming, science, math, 
           and technology.
         </p>
 
@@ -39,7 +39,7 @@ export default function AboutPage(): JSX.Element {
         <p>
           To learn more about the author, visit the{' '}
           <Link href="/" className="font-medium">Home</Link> page or 
-          the <Link href="/work" className="font-medium">Work</Link> page. And for more details about the author&apos;s 
+          the <Link href="/work" className="font-medium">Work</Link> page. For more details about the author&apos;s 
           physics research, visit the{' '}
           <Link href="/atlas" className="font-medium">Research</Link> page.
         </p>

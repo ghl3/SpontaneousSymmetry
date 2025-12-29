@@ -18,7 +18,7 @@ There's an airplane with 100 seats and 100 passengers each with a ticket and an 
 What is the probability that the last person will end up in his assigned seat?
 
 
-![](http://www3.timeoutny.com/newyork/upstaged/wp-content/uploads/2009/07/pigeon.jpg)
+![](https://www3.timeoutny.com/newyork/upstaged/wp-content/uploads/2009/07/pigeon.jpg)
 Oh, and in case you didn't figure out the shaking of hands at a party question:
 
 The answer is an application of the so called "Pigeon Hole Principle."  Imagine that I have 100 mailboxes and 101 letters.  No matter how I decide to put the letters in the boxes, one box will have at least two letters.  So simple, but it comes up a lot in proofs, so it gets its own name.

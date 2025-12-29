@@ -24,7 +24,7 @@ There is, however, an interesting complication.  As an object moves closer and c
 
 Let’s say that we want to accelerate our ship at 10 m/s/s.  I make this choice, of course, because 10 m/s/s is how fast things accelerate in Earth’s gravitational field, so a person in a ship accelerating at that speed would weigh as much as he does on Earth (he would fell gravity due to the accelerating ship, just like you feel a pull forward and backward when your car breaks or accelerates quickly).  If you ignore relativity, it will take about HALF a year to reach about HALF speed of light. If you include relativity, it will take approximately the same amount of time. The following graph shows that the change of speed is nearly linear for constant acceleration until you get above about .6 the speed of light:
 
-![](http://physics.nmt.edu/~raymond/classes/ph13xbook/img841.png)
+![](https://physics.nmt.edu/~raymond/classes/ph13xbook/img841.png)
 
 So, there’s not problem getting fast enough.  You have enough fuel to burn for half a year to get up to speed, and then another half a year to slow down.  And then you of course need to double that amount if you plan to get back to Earth.  So, you need two years worth of fuel, and the rest of the time you simply coast.  It would be a lot, but certainly not completely out of the question.  (I’m ignoring the change of mass to your ship due to the burning of your fuel.  Including that is interesting, but not relevant to this discussion.  Just assume that the ship is heavy compared to the mass of the fuel).
 

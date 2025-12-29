@@ -21,7 +21,7 @@ So, how do we know this, or why would we think that these things called protons 
 
 However, several brilliant people noticed that there were patterns with these particles.  It you take these particles and look at their charges and spins (fundamental properties that describe all particles), you’ll see that they fall nicely into shapes and patterns.  These patterns suggest that there is some common, underlying structure to these particles, and that different particles are simply different possible manifestations of this structure.
 
-![](http://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Noneto_mes%C3%B4nico_de_spin_0.png/800px-Noneto_mes%C3%B4nico_de_spin_0.png)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Noneto_mes%C3%B4nico_de_spin_0.png/800px-Noneto_mes%C3%B4nico_de_spin_0.png)
 
 The model of quarks was designed in the 70s to explain this structure.  At first, scientists introduced three quarks (the up, down, and “strange” quark) and invented a theory that described how these quarks interact (Quantum Chromodynamics, or QCD for short).  Using this theory, which is essentially a specific application of group theory, theorists were able to show that these three quarks mix together to form the strange menu of particles that were observed.  Incidentally, the name quark comes from none other than Joyce:
 

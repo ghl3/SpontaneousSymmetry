@@ -17,10 +17,10 @@ Although the space of possible probability distribution functions is infinite, t
 The Bernoulli distribution is possibly the simplest distribution in statistics.  It is a 1-parameter distribution whose range consists only of the set {0, 1}.  It is defined simply as:
 
 $$
-\begin{align}
-ber(1 | p) &=& p   \\
-ber(0 | p) &=& 1-p
-\end{align}
+\begin{aligned}
+\operatorname{ber}(1 \mid p) &= p \\
+\operatorname{ber}(0 \mid p) &= 1 - p
+\end{aligned}
 $$
 
 The simplest example is a weighted coin flip where heads is valued at 1 and tails at 0: with probability p, the coin lands on heads and with probability 1-p, the coin lands on tails.
@@ -49,13 +49,13 @@ $$
 The binomial distribution here is the distribution of the total number of heads.  In this case, $N=3$ and probability of the various outcomes is given by:
 
 $$
-\begin{align}
-binom(0 | N=3, p) =& (1-p)(1-p)(1-p) \\
-binom(1 | N=3, p) =& (1-p)(1-p)p + (1-p)p(1-p) \\
-                   &  + p(1-p)(1-p) \\
-binom(2 | N=3, p) =& (1-p)pp + p(1-p)p + pp(1-p) \\
-binom(3 | N=3, p) =& ppp \\
-\end{align}
+\begin{aligned}
+\operatorname{binom}(0 \mid N=3, p) &= (1-p)(1-p)(1-p) \\
+\operatorname{binom}(1 \mid N=3, p) &= (1-p)(1-p)p + (1-p)p(1-p) \\
+&\quad + p(1-p)(1-p) \\
+\operatorname{binom}(2 \mid N=3, p) &= (1-p)pp + p(1-p)p + pp(1-p) \\
+\operatorname{binom}(3 \mid N=3, p) &= ppp
+\end{aligned}
 $$
 
 One create such a table for $N$ just by enumerating the possibilities, just as we did above with $N=3$.  Thus, it's simple to calculate the Binomial distribution from first principles, starting with the Bernoulli distribution (though it may be quite tedious for large $N$).  
@@ -96,11 +96,11 @@ $$
 where we have canceled out factors of $\frac{N!}{n!(N-n)!}$.  We then make the following definitions:
 
 $$
-\begin{eqnarray}
-\alpha &=& n + 1 \\
-\beta &=& N - n + 1 \\
-B(x, \alpha, \beta) &=& \int x^{\alpha-1} (1-x)^{\beta-1} dx \\
-\end{eqnarray}
+\begin{aligned}
+\alpha &= n + 1 \\
+\beta &= N - n + 1 \\
+B(x, \alpha, \beta) &= \int x^{\alpha-1} (1-x)^{\beta-1} dx
+\end{aligned}
 $$
 
 which gives us
@@ -114,19 +114,19 @@ This is the definition of the Beta distribution.  The interpretation is that we 
 The Beta distribution turns out to be the "conjugate prior" to the binomial distribution.  Mathematically, this means that:
 
 $$
-\begin{eqnarray}
-P(p | \alpha, \beta, n, N) &=& \frac{Binom(n | N, p)*Beta(p | \alpha \beta)} {\int Binom(n |x, N) Beta(x | \alpha, \beta) dx} \\
- &=& Beta(p | \alpha', \beta')
-\end{eqnarray}
+\begin{aligned}
+P(p | \alpha, \beta, n, N) &= \frac{Binom(n | N, p)*Beta(p | \alpha \beta)} {\int Binom(n |x, N) Beta(x | \alpha, \beta) dx} \\
+&= Beta(p | \alpha', \beta')
+\end{aligned}
 $$
 
 In other words, if we have a prior belief on $p$ that is represented by $\alpha$ and $\beta$, and we measure $n$ heads of a total of $N$ from a binomial distribution, then our posterior belief in the distribution of $p$ is also a beta distribution with new parameters $\alpha'$ and $\beta'$, where
 
 $$
-\begin{eqnarray}
+\begin{aligned}
 \alpha' = \alpha + n \\
 \beta' = \beta + (N-n)
-\end{eqnarray}
+\end{aligned}
 $$
 
 This means that that if we have a prior believe of $p$ represented by $\alpha$ and $\beta$ and we observe $h$ heads and $t$ tails, then our posterior is represented by $\alpha+h$ and $\beta+t$.  This makes the process of updating extremely easy, which is why it is so often used when performing inference on binomial distributed data.
@@ -140,7 +140,7 @@ Examples are the number of raindrops hitting your roof in a short period of time
 
 The Poisson distribution is a 1-parameter model, and the single parameter, $\lambda$, represents the expected number of event occurrences (usually in some unit time interval).  The typical setup is to have some ground truth for how many events are expected to occur on average.  For example, one could have measured over the past year the average number of people who walk into a bank in a 15 minute interval.  Based on that average, and assuming that people's schedules are independent, one can assume that the number of people arriving at the bank in a given time interval is described by the Poisson distribution.
 
-One way to derive the poisson distribution is to think of a period of time T, during which we expect on average $\lambda$ events to occur, as consisting of many infinitesimal periods of time, $\delta t$.  We assume that that the $\delta t$s are small enough such that the probability of more than 1 event occurring in each window is vanishingly small.  We can therefore model each window as a Bernouilli random variable with probability $\lambda \delta t / T$.  The question we are asking is, "How many total events occurred in time $T$" which, with these assumptions, becomes, "How many of these individual bernouilli events resulted in success?".  
+One way to derive the poisson distribution is to think of a period of time T, during which we expect on average $\lambda$ events to occur, as consisting of many infinitesimal periods of time, $\delta t$.  We assume that that the $\delta t$s are small enough such that the probability of more than 1 event occurring in each window is vanishingly small.  We can therefore model each window as a Bernoulli random variable with probability $\lambda \delta t / T$.  The question we are asking is, "How many total events occurred in time $T$" which, with these assumptions, becomes, "How many of these individual Bernoulli events resulted in success?".  
 
 
 This is the equivalent of a binomial distribution where we have MANY individual coin flips, each with a very small probability of being heads.  In each small period of time, the probability of an event occurring is $\lambda \delta t / T = \lambda (T/N) / T = \lambda / N$
@@ -171,9 +171,9 @@ $$
 gauss(x | \mu, \sigma) = \frac{1}{\sqrt{2\sigma^2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
 $$
 
-Using the formula above, one can show that the mean of the distribution if $\mu$ and the standard deviation is given by $\sigma$.  In fact, the parameters $\mu$ and $\sigma$ are often referred to as the "mean" and "standard deviation".
+Using the formula above, one can show that the mean of the distribution is $\mu$ and the standard deviation is given by $\sigma$.  In fact, the parameters $\mu$ and $\sigma$ are often referred to as the "mean" and "standard deviation".
 
-Because the gaussian distribution is so ubiquitous, it is worthwhile to spend some time to understand it's properties.  Imagine w draw $n$ points from a gaussian describing the random variable $x$ and take the mean of those measured points.  We define that "sample mean" of $x$ to be $\bar{x}$, nothing that this refers to the mean of a specific realized sample.  The quantity $\bar{x}$ is itself a random variable (as it is just a function of the data) and therefore it has a distribution that depends on the model and its parameters.  On can mathematically show that the distribution of $\mu_s$ is itself a gaussian and is given by 
+Because the gaussian distribution is so ubiquitous, it is worthwhile to spend some time to understand its properties.  Imagine we draw $n$ points from a gaussian describing the random variable $x$ and take the mean of those measured points.  We define that "sample mean" of $x$ to be $\bar{x}$, noting that this refers to the mean of a specific realized sample.  The quantity $\bar{x}$ is itself a random variable (as it is just a function of the data) and therefore it has a distribution that depends on the model and its parameters.  One can mathematically show that the distribution of $\mu_s$ is itself a gaussian and is given by 
 
 $$ p(\bar{x} | \mu, \sigma, n) = Gauss(\mu, \frac{\sigma}{\sqrt{n}}) $$
 
@@ -334,10 +334,10 @@ Reference: http://courses.education.illinois.edu/EdPsy580/lectures/6ChiSq_Fdist_
 To summarize, if we draw n points from a gaussian distribution, the distributions for the sample mean $\bar{x}$ and the sample variance $s^2$ are given by:
 
 $$
-\begin{eqnarray}
-\bar{x} \sim gaus(\mu, \frac{\sigma}{\sqrt{n}}) \\
-s^2 \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1} \\
-\end{eqnarray}
+\begin{aligned}
+\bar{x} \sim gauss(\mu, \frac{\sigma}{\sqrt{n}}) \\
+s^2 \sim \frac{\sigma^2}{(n-1)} \chi^2_{n-1}
+\end{aligned}
 $$
 
 and these are independent of each other.
@@ -376,7 +376,7 @@ $$
 
 which, by construction, follows the student's t distribution with $n-1$ degrees of freedom.  The important aspect of this quantity is that it depends on the true mean $\mu$ but does not depend on the true standard deviation $\sigma$ (it canceled out above).  We will later show that we can use this test statistic to perform inference on the true mean $\mu$ without knowing or assuming the true standard deviation $\sigma$ (we only need to assume that the underlying distribution is a Gaussian).
 
-The probability distribution for the student's t distribution can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation, but we will not do so here.  A student's t-distribution is shaped like a gaussian, but has larger tails.  The standard interpretation of the longer tails is the fact that we are using the sample mean and not the true mean in it's definition, which adds additional "uncertainty" to the distribution.
+The probability distribution for the student's t distribution can be calculated by starting with the PDF distributions for a gaussian and for a chi-squared and applying the laws of probabilistic transformation, but we will not do so here.  A student's t-distribution is shaped like a gaussian, but has larger tails.  The standard interpretation of the longer tails is the fact that we are using the sample mean and not the true mean in its definition, which adds additional "uncertainty" to the distribution.
 
 <!--
 - http://www.math.ntu.edu.tw/~hchen/teaching/StatInference/notes/lecture35.pdf
@@ -406,7 +406,7 @@ $$
 \bar{F}_{d_1, d_2} = d_2 / ( d_2 - 2 )
 $$
 
-and it's variance is given by:
+and its variance is given by:
 
 $$
 var(F_{d_1, d_2}) = \frac{ 2 d_2^2 ( d_1 + d_1 - 2 ) }  { d_1 ( d_2 - 2 )^2 ( d_2 - 4 ) }

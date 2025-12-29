@@ -19,8 +19,8 @@ Of course, you knew going in that, at any party of any number of people with any
 
 The generalization of this idea extends into graph theory.  Take a piece of paper and draw a few circles.  Each circle will represent a person, so you can label it with a name or simply a letter.  Draw lines between the circles to represent the shaking of hands.  Draw as many lines as you please.  When you're satisfied, count the number of lines coming out of each circle, or each person, or each node, or whatever you want to call it.  You'll always find that two circles have the same number of lines coming out of them.  Again, very simple but somewhat neat.
 
-![](http://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Graph_theory_tree.svg/542px-Graph_theory_tree.svg.png)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Graph_theory_tree.svg/542px-Graph_theory_tree.svg.png)
 
-![](http://www.geom.uiuc.edu/~zarembe/graph6.gif)
+![](https://www.geom.uiuc.edu/~zarembe/graph6.gif)
 
-![](http://delmondogeraldine.blog.lemonde.fr/files/2008/03/random.1205831333.png)
+![](https://delmondogeraldine.blog.lemonde.fr/files/2008/03/random.1205831333.png)

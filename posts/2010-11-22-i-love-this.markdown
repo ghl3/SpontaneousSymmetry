@@ -19,6 +19,6 @@ The story is that last week or so, Microsoft released Kinect, which is essential
 We’ve seen this before.  When the Wii came out with similar technology, it was hacked by many, as described in this [Ted Talk](http://www.youtube.com/watch?v=QgKCrGvShZs) .  And my favorite instance of videogame systems being hacked is when a research group hooked together 16 Playstation 3’s to preform parallel black hole simulations: [PS3](http://www.universetoday.com/22800/studying-black-holes-using-a-playstation-3/)
 
 
-![PS3s](http://c2431622.cdn.cloudfiles.rackspacecloud.com/wp-content/uploads/2008/12/rackfront-377x580.jpg)
+![PS3s](https://c2431622.cdn.cloudfiles.rackspacecloud.com/wp-content/uploads/2008/12/rackfront-377x580.jpg)
 
 I’m very excited to see what else can come from this sort of technology.  The obvious next step would be to combine two or more of these Kinect devices to get a more complete 3-d image.  I don’t know about you, but I think this stuff is really cool.

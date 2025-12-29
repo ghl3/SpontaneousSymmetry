@@ -40,7 +40,7 @@ A p-value test, not surprisingly, consists of running an experiment, calculating
 <!--
 A p-value test can be thought of as a subset of the general hypothesis testing framework above: it is a means of diving the space of data into regions that support $H_0$ and complementary regions that support $H_1$.  In this test, the summary statistic of the data is the p-value itself: we associate each possible data value with its p-value and those regions of space which have a p-value less than some pre-defined limit will be considered regions that reject the null hypothesis.
 
-Seemingly, one difference between this test and the likelihood-ratio test described above is that this p-value test doesn't appear to depend on the model of the alternative hypothesis.  We are only calculating the total probability of a certain space of data given the null hypothesis and making our hypothesis choice based on that.  Historically, this type of hypothesis testing that only considered the null hypothesis was supported by Fischer, where as the type of hypothesis testing that explicitly compared $H_0$ to $H_1$ was supported by Neyman and Pearson (hence the Lemma named after them).
+Seemingly, one difference between this test and the likelihood-ratio test described above is that this p-value test doesn't appear to depend on the model of the alternative hypothesis.  We are only calculating the total probability of a certain space of data given the null hypothesis and making our hypothesis choice based on that.  Historically, this type of hypothesis testing that only considered the null hypothesis was supported by Fischer, whereas the type of hypothesis testing that explicitly compared $H_0$ to $H_1$ was supported by Neyman and Pearson (hence the Lemma named after them).
 -->
 
 
@@ -72,7 +72,7 @@ Typically, people choose a size of the test to be 0.05 (5% chance of wrongly rej
 
 Fortunately, in the case of a Simple Hypothesis, there is a way to find a division of space between the null and alternate hypothesis that maximizes the power of the test for a fixed value of the size of the test.  This procedure can be proven, and the proof is called the Neyman–Pearson Lemma.
 
-The lemma simply states that on should parameterize the partitions of space by a single parameter, $\eta$, which is defined by:
+The lemma simply states that one should parameterize the partitions of space by a single parameter, $\eta$, which is defined by:
 
 $$
 \frac {L(data | H_0)} {L(data | H_1)} <= \eta

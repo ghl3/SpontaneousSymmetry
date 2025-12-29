@@ -19,7 +19,7 @@ When two protons are accelerated to high energies and made to fly into each othe
 
 Because Top quarks are so heavy, they don't exist for very long.  Almost instantly after it comes into existence (after only 5×10−25 seconds), a Top quark will decay into a Bottom quark and a W boson.  Similarly, the W boson quickly can decay into more quarks or into leptons (electrons or muons).  Thus, in the end we are left with a bunch of quarks and leptons flying out into the detector.  From those "daughter" particles, physicists must search for evidence that the parent Top quarks were even there in the first place.
 
-![](http://www.nature.com/nature/journal/v429/n6992/images/nature02589-f1.2.jpg)
+![](https://www.nature.com/nature/journal/v429/n6992/images/nature02589-f1.2.jpg)
 
 The image (a) above is the process I just described, and the image (b) is a similar process where two gluons collide and eject another gluon, which then turns into Top Quarks.
 

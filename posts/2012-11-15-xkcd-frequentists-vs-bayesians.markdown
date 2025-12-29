@@ -10,7 +10,7 @@ wordpress_id: 432
 
 XKCD (an excellent web comic about computing and science) recently wrote a strip about the never-ending battle between Frequentists and Bayesians:
 
-![](http://imgs.xkcd.com/comics/frequentists_vs_bayesians.png)
+![](https://imgs.xkcd.com/comics/frequentists_vs_bayesians.png)
 
 First, I'd like to discuss what the comic means, or even what the heck a frequentist or a bayesian is anyway.  But then, I'd like to respond to the central point of the comic from a frequentist’s point of view.
 

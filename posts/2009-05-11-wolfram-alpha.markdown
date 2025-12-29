@@ -40,7 +40,7 @@ Rule 30 is a simple rule for moving through a series of bits and changing each b
 There are 8 rules and they represent all possible combinations of three binary numbers.  
 In other words, if we come across a “1 1 1 x”, we change the middle number to 0 so it becomes “1 0 1 x” and then we move on to the next bit, which would be “0 1 x” and apply the rule again.  We do this for as long as we like, and from these simple rules chaotic patterns emerge.  Just as ants, birds, the very neurons in our brain, quarks, gluons, electrons, photons, and all other elementary particles run on some set of rules and yet create complexity.   
   
-[![](http://upload.wikimedia.org/wikipedia/commons/9/9d/CA_rule30s.png)](http://upload.wikimedia.org/wikipedia/commons/9/9d/CA_rule30s.png)  
+[![](https://upload.wikimedia.org/wikipedia/commons/9/9d/CA_rule30s.png)](http://upload.wikimedia.org/wikipedia/commons/9/9d/CA_rule30s.png)  
   
 Dr. Ian Malcom and Stephen Wolfram would certainly be good friends.  
   

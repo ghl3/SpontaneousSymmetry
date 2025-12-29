@@ -60,7 +60,7 @@ const projects: Project[] = [
   {
     name: 'Higgs Kaggle',
     href: 'https://github.com/ghl3/higgs-kaggle',
-    description: 'My solution to the higgs boson Kaggle competition.',
+    description: 'My solution to the Higgs boson Kaggle competition.',
     external: true,
   },
   {
@@ -115,7 +115,7 @@ export default function WorkPage(): JSX.Element {
                 <>
                   {' '}For a discussion of my research results, see{' '}
                   <Link href={exp.link} className="font-medium">
-                    HERE
+                    here
                   </Link>.
                 </>
               )}
@@ -169,7 +169,7 @@ export default function WorkPage(): JSX.Element {
             target="_blank"
             rel="noopener noreferrer"
           >
-            HERE ↗
+            here ↗
           </Link>
         </p>
       </section>

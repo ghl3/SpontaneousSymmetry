@@ -34,33 +34,33 @@ export default function Home(): JSX.Element {
       {/* Introduction */}
       <div className="space-y-5 text-text-primary leading-relaxed">
         <p>
-          I&apos;m a programmer, data scientist, physicist, and technology lover, and I am 
+          I&apos;m a programmer, data scientist, physicist, and technology lover, and I&apos;m 
           fascinated by learning how almost anything works.
         </p>
 
         <p>
           I&apos;m currently a Machine Learning Engineer at{' '}
-          <Link href="http://google.com" className="font-medium">Google</Link>, where I work on the Location Platform at{' '}
-          <Link href="https://google.com/maps" className="font-medium">Google Maps</Link>.
+          <Link href="https://www.google.com" className="font-medium">Google</Link>, where I work on the Location Platform at{' '}
+          <Link href="https://www.google.com/maps" className="font-medium">Google Maps</Link>.
         </p>
 
         <p>
           Previously, I worked at{' '}
-          <Link href="https://www.LendUp.com" className="font-medium">LendUp</Link>, a startup whose 
+          <Link href="https://www.lendup.com" className="font-medium">LendUp</Link>, a startup whose 
           goal is to safely extend credit to all who need it.
         </p>
 
         <p>
           I obtained a PhD in High Energy Experimental Particle Physics from New York University, 
           where I worked on the{' '}
-          <Link href="http://atlas.ch/" className="font-medium">ATLAS</Link> experiment on the Large 
+          <Link href="https://atlas.ch/" className="font-medium">ATLAS</Link> experiment on the Large 
           Hadron Collider at{' '}
-          <Link href="http://public.web.cern.ch/public/" className="font-medium">CERN</Link>.
+          <Link href="https://public.web.cern.ch/public/" className="font-medium">CERN</Link>.
         </p>
 
         <p>
           I was also a fellow at the{' '}
-          <Link href="http://insightdatascience.com/" className="font-medium">Insight Data Science Program</Link>.
+          <Link href="https://insightdatascience.com/" className="font-medium">Insight Data Science Program</Link>.
         </p>
       </div>
 

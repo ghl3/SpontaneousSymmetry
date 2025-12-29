@@ -54,10 +54,11 @@ It is important to note that including more points $(y_n, x_n^i)$ doesn't add mo
 
 To "fit" a logistic regression model is to obtain the values of the weights.  The most common technique used to determine the weights is to find their maximum likelihood estimators.  It turns out that one can obtain the maximum likelihood estimators for these parameters exactly (which is one of the most important properties of linear regression).  Before presenting this result, we will re-write the likelihood function as the negative-log-likelhood (to better match how it is most commonly encountered in statistical textbooks):
 
-$$\begin{align}
--log(y_n, x_n^i | {w_i}, \sigma)   & = &  \sum_n -log(Gauss(y_n | x_n^i \cdot w_i, \sigma)) \\
-   & = & \sum_n  \frac{(y_n - (x_n^i \cdot w_i))^2}{\sigma^2} + \frac{N}{2} log(\sigma^2) \\
-\end{align}
+$$
+\begin{aligned}
+-\log\left(y_n, x_n^i \mid \{w_i\}, \sigma\right) &= \sum_n -\log\left(Gauss(y_n \mid x_n^i \cdot w_i, \sigma)\right) \\
+&= \sum_n \frac{(y_n - (x_n^i \cdot w_i))^2}{\sigma^2} + \frac{N}{2} \log(\sigma^2)
+\end{aligned}
 $$
 
 Since maximizing the likelihood is equivalent to minimizing the negative-log-likelihood, one can obtain the maximum likelihood estimators by minimizing the above equation for the negative-log-likelihood.  Often, performing inference on a regression model is viewed from an optimization perspective, in which case the log likelihood ratio is interpreted as a "cost" function that one must minimize.
@@ -180,7 +181,7 @@ On the other hand, the estimator for $\sigma$ is biased.  One can create an unbi
 
 ### Prediction Errors
 
-When actually using a regression to make a prediction on new data, one often wants to know what the uncertainty on that prediction is.  To make this more concrete, let's think through where this error comes from using a generative perspective.  Say that assume that the true distribution of $p(y|x)$ = $gauss(w_{true} \cdot x | \sigma)$.  We then generate a dataset of size N and estimate $\hat{w}$ and $\hat{\sigma}$ from that dataset, and then apply the predictions to a test point $x_0$ to obtain $\hat{y}(x_0)$.  In parallel, we take our true distribution and make a draw from it to obtain $y_{true}(x_0)$.  The questions is: What is the mean squared error between $y_{true}(x_0)$ and $\hat{y}(x_0)$.
+When actually using a regression to make a prediction on new data, one often wants to know what the uncertainty on that prediction is.  To make this more concrete, let's think through where this error comes from using a generative perspective.  Say that we assume that the true distribution of $p(y|x)$ = $gauss(w_{true} \cdot x | \sigma)$.  We then generate a dataset of size N and estimate $\hat{w}$ and $\hat{\sigma}$ from that dataset, and then apply the predictions to a test point $x_0$ to obtain $\hat{y}(x_0)$.  In parallel, we take our true distribution and make a draw from it to obtain $y_{true}(x_0)$.  The question is: What is the mean squared error between $y_{true}(x_0)$ and $\hat{y}(x_0)$?
 
 The sources of error here are the following:
 
@@ -190,14 +191,14 @@ The sources of error here are the following:
 Fortunately, these errors are uncorrelated (the draw from the true distribution doesn't care what our generated training dataset was, and therefore is uncorrelated from the parameters fitted on that dataset).  So, the absolute error is the difference of two uncorrelated, gaussian distributed random variables and is given by:
 
 $$
-\begin{eqnarray}
-\text{err}(x_0) & = & \hat{y}(x_0) - y_0 \\
-& = &  (\hat{w_i} \cdot x_0^i) - (w_i  \cdot x_0^i + \epsilon_0) \\
-& = &  (\hat{w_i} - w_i) \cdot x_0 - \epsilon_0 \\
-\end{eqnarray}
+\begin{aligned}
+\text{err}(x_0) &= \hat{y}(x_0) - y_0 \\
+&= (\hat{w_i} \cdot x_0^i) - (w_i \cdot x_0^i + \epsilon_0) \\
+&= (\hat{w_i} - w_i) \cdot x_0 - \epsilon_0
+\end{aligned}
 $$
 
-Where $\epsilon_0$ is the true stochastic error.  In the above equation, each $(\hat{w_i} - w_i)$ is gaussian distributed with mean 0 and $\epsilon_0$ is gaussian distributed with mean zero.  The full sum of these terms will therefore be gaussian distributed with mean zero.  And while $\epsilon_0$ is uncorrelated to all $(\hat{w_i} - w_i)$ terms, the individual $(\hat{w_i} - w_i)$ have nonzero covariance with each other.  Therefore, to find the disribution of the sum of these gaussians, we need to use the non-zero elements of the covariance matrix $Cov(\hat{w_i}, \hat{w_j})$.
+Where $\epsilon_0$ is the true stochastic error.  In the above equation, each $(\hat{w_i} - w_i)$ is gaussian distributed with mean 0 and $\epsilon_0$ is gaussian distributed with mean zero.  The full sum of these terms will therefore be gaussian distributed with mean zero.  And while $\epsilon_0$ is uncorrelated to all $(\hat{w_i} - w_i)$ terms, the individual $(\hat{w_i} - w_i)$ have nonzero covariance with each other.  Therefore, to find the distribution of the sum of these gaussians, we need to use the non-zero elements of the covariance matrix $Cov(\hat{w_i}, \hat{w_j})$.
 
 Using this, one can show that the distribution of the prediction errors is given by:
 
@@ -220,11 +221,11 @@ $$
 allows us to show that:
 
 $$
-\begin{eqnarray}
-t_{N-I} & \sim & \frac{gauss}{\sqrt{\chi^2_N / N}} \\
- & \sim & \frac{\frac{err(x_0)}{ \sigma \sqrt{1 + x_0^T (X^TX)^{-1}x_0}}} {\sqrt{\frac{(N-I)s^2}{\sigma^2} / (N-I)}} \\
-& \sim & \frac{err(x_0)}{s\sqrt{1 +x_0^T (X^TX)^{-1}x_0}} \\
-\end{eqnarray}
+\begin{aligned}
+t_{N-I} &\sim \frac{gauss}{\sqrt{\chi^2_N / N}} \\
+&\sim \frac{\frac{err(x_0)}{ \sigma \sqrt{1 + x_0^T (X^TX)^{-1}x_0}}} {\sqrt{\frac{(N-I)s^2}{\sigma^2} / (N-I)}} \\
+&\sim \frac{err(x_0)}{s\sqrt{1 +x_0^T (X^TX)^{-1}x_0}}
+\end{aligned}
 $$
 
 This allows us to show that the distribution of the absolute error on the prediction is given by:
@@ -319,11 +320,11 @@ Regularization is a general term that describes adjustments to a model which wor
 In regression, regularization can be introduced by adding a term to the likelihood function:
 
 $$
-\begin{eqnarray}
-L({y_n, x_n^i} | w_0,...,w_i, \sigma) &=& \prod_i Gauss(|w_i|^{k/2}| 0, \sqrt{C}) \\
-                                      &*&\prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma) \\
-                                      &*& L(x_n^0, ..., x_n^i) \\
-\end{eqnarray}
+\begin{aligned}
+L({y_n, x_n^i} | w_0,...,w_i, \sigma) &= \prod_i Gauss(|w_i|^{k/2}| 0, \sqrt{C}) \\
+&*\prod_n Gauss(y_n | \sum_i w_i x_n^i, \sigma) \\
+&* L(x_n^0, ..., x_n^i)
+\end{aligned}
 $$
 
 We are here adding a new term to the likelihood that constraints the power of all the weights to be close to 0 (with variance C).  When the model is fit, the weights will balance between the constraining power of the first term (which depends on the data) and this new regularization term in the likelihood (which is independent of the data).  If the data very strongly constraints the weights, the regularization term will not have much of an effect.  For weights that aren't highly constrained by the data, the regularization will dominate their fit and they will be pulled toward 0.
@@ -338,7 +339,7 @@ $$
 
 Here, the interpretation is that regularization acts as an additional cost which contributes to the total cost function.  The most common choices for the power $k$ are 1 (known as L1 regularization or "Lasso") and 2 (known as L2 regularization or "Ridge").  One can create new types of regularization by adding arbitrary functions of the weights to the cost function, assuming that they roughly scale with the total magnitude of the weights.
 
-Adding a regularization term of course changes the fitted values of the weights.  Recall that the unregulairzed MLEs of the weights are given by:
+Adding a regularization term of course changes the fitted values of the weights.  Recall that the unregularized MLEs of the weights are given by:
 
 $$
 \hat{\vec{w}} = (X^TX)^{-1}X^T\vec{y}
@@ -355,7 +356,7 @@ where $I$ is the identity matrix and $C$ is the regularization constant defined 
 
 ### Correlations
 
-Contrary to a common mis-understanding, a regression model doesn't assume that input features are statistically uncorrelated.  The only assumption is that the mean of the dependent variable, $y$, is determined by the weighted sum of the inputs.  Having features that are correlated with each other (for example, when one tends to be high while the other is high and visa versa) doesn't break this assumption.  However, it may lead to misleading interpretations when fitting the data.  Specifically, the presence of correlated features will cause the variance on the fitted value of the features to be larger than the variance of any individual feature would be.  Intuitively, if you copy a feature exactly, the model has full freedom to adjust the coefficients for those features as long as their sum remains the same.  This leads to a high variance on the fitted values of the parameters (since they cannot be fitted unquely).  This can hurt the interpretability of a model: you may want to draw a conclusion based on the value of one of the fitted parameters, but since it is so volatile, your conclusion will have little statistical significance.
+Contrary to a common misunderstanding, a regression model doesn't assume that input features are statistically uncorrelated.  The only assumption is that the mean of the dependent variable, $y$, is determined by the weighted sum of the inputs.  Having features that are correlated with each other (for example, when one tends to be high while the other is high and vice versa) doesn't break this assumption.  However, it may lead to misleading interpretations when fitting the data.  Specifically, the presence of correlated features will cause the variance on the fitted value of the features to be larger than the variance of any individual feature would be.  Intuitively, if you copy a feature exactly, the model has full freedom to adjust the coefficients for those features as long as their sum remains the same.  This leads to a high variance on the fitted values of the parameters (since they cannot be fitted uniquely).  This can hurt the interpretability of a model: you may want to draw a conclusion based on the value of one of the fitted parameters, but since it is so volatile, your conclusion will have little statistical significance.
 
 The extent to which the variance of fitted predictors is increased is known as the Variance Inflation Factor (VIF).  However, multicollinearity tends to not effect the overall performance of the model.
 
@@ -384,28 +385,30 @@ http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/06/lecture-06.pdf
 
 Logistic regression is a variation on normal regression that is designed to be used for classification instead of the prediction of a continuous value.  We will here apply logistic regression to the problem of binary classification, where the two classes are represented by the target variable values of 0 and 1.
 
-One may be tempted to solve this problem by encoding the target into 0 and 1 values and then performing normal regression.  However, this will create a regression function whose range can be all real numbers, where as the real range of our target variable is only the discrete values 0 and 1.  One may attempt to fix this by picking a threshold in the space of the regression output and labeling points with value greater that this threshold as being class 1 and points less than the threshold as being class 0.  And this may work reasonably well!  Logistic regression is essentially a more principled version of this approach, and the extra formalism endows it with some nice additional properties.
+One may be tempted to solve this problem by encoding the target into 0 and 1 values and then performing normal regression.  However, this will create a regression function whose range can be all real numbers, whereas the real range of our target variable is only the discrete values 0 and 1.  One may attempt to fix this by picking a threshold in the space of the regression output and labeling points with value greater than this threshold as being class 1 and points less than the threshold as being class 0.  And this may work reasonably well!  Logistic regression is essentially a more principled version of this approach, and the extra formalism endows it with some nice additional properties.
 
 It's clear that a regression by itself can't be used to model a discrete variable, as regressions model only continuous variables.  So, in order to be able to use a regression in the context of a classification problem, we have to find a continuous variable that occurs within the classification model and we need to find a way to use regression to model that variable.
 
 A common model for binary classification problems is assuming that each data point randomly picks between the two output classes with some probability, and that probability depends on the value of the input features:
 
-$$\begin{align}
-p(y=1 | x) &=& f(x) \\
-p(y=0 | x) &=& 1 - f(x) \\
-\end{align}
+$$
+\begin{aligned}
+p(y=1 \mid x) &= f(x) \\
+p(y=0 \mid x) &= 1 - f(x)
+\end{aligned}
 $$
 
-where $f(x)$ is has a range between 0 and 1 (since it represents a probability).  The probability $p(y|x)$ for a single data row represents a Bernouilli variable, or a weighted coin-flip.  We're getting closer: we've taken a discrete problem and identified a continuous variable $p$ that we can try to model with a regression.  However, our model for $p$ must produce values between 0 and 1, so using a regression out-of-the-box won't work here.  But we're conceptually close.  We just need to come up with a variable that, when high (approaching infinity), can be associated with probabilities approaching 1 and, when low (approaching negative infinity) can be associated with probabilities approaching 0.
+where $f(x)$ has a range between 0 and 1 (since it represents a probability).  The probability $p(y|x)$ for a single data row represents a Bernoulli variable, or a weighted coin-flip.  We're getting closer: we've taken a discrete problem and identified a continuous variable $p$ that we can try to model with a regression.  However, our model for $p$ must produce values between 0 and 1, so using a regression out-of-the-box won't work here.  But we're conceptually close.  We just need to come up with a variable that, when high (approaching infinity), can be associated with probabilities approaching 1 and, when low (approaching negative infinity) can be associated with probabilities approaching 0.
 
 Toward that end, we define a concept known as the  "odds ratio".  Imagine an event occurs $n$ times out of a total of $N$ tries.  The probability can be estimated as $n/N$.  We define the odds ratio to be: $n / (N-n)$.  It is the ratio of the amount of times it occurred to the amount of times it did not occur.  If the event occurred every time, then the odds ratio is infinity.  If the event never occurred, then the odds ratio is 0.  This concept, therefore, fits our need.
 
-One can determine the probability from the odds, and visa versa, using the following:
+One can determine the probability from the odds, and vice versa, using the following:
 
-$$\begin{align}
-prob &=& \frac{odds}{1 + odds} \\
-odds &=& \frac{prob}{1-prob} \\
-\end{align}
+$$
+\begin{aligned}
+prob &= \frac{odds}{1 + odds} \\
+odds &= \frac{prob}{1-prob}
+\end{aligned}
 $$
 
 Introducing the odds has gotten us closer to what we want.  We see that, when the odds ratio is very high (approaching infinity), the probability approaches 1.  This is half of our need.  However, the odds (by construction) can never be negative.  Therefore, we can't model the odds directly using a regression (since the output of a regression can approach negative infinity).  The output of the regression goes from $(-\inf, \inf)$ but the input to the odds only goes from $[0, \inf)$.  If we want to use a regression to model the odds, we have to do one last transformation to make these line up.  The exponential is a function that fits our need here.  The exponential takes values from negative to positive infinity and maps them to values between 0 and positive infinity.
@@ -428,10 +431,12 @@ We can interpret this framework as using a regression to model the logarithm of 
 
 One can also interpret this framework in the reverse direction.  Instead of starting with the regression output and converting it to a probability, one can start with the data and transform it until it matches something that we can regress on.  The essentially amounts to applying the inverse of the transformations we did above on the data.  Confusingly, the inverse of the logistic function is named the "logit" function:
 
-$$\begin{align}
-\text{logit}(x) &=& -log(\frac{1}{x} -1) \\
-\text{logistic}(x) &=& \text{logit}^{-1}(x) \\
-\end{align}$$
+$$
+\begin{aligned}
+\text{logit}(x) &= -\log\left(\frac{1}{x} - 1\right) \\
+\text{logistic}(x) &= \text{logit}^{-1}(x)
+\end{aligned}
+$$
 
 However, I find it conceptually simpler to think of the probabilities as being modeled by the logistic of the output of our regression.
 
@@ -439,18 +444,22 @@ Part of our logic involved identifying the odds as an intermediate quantity to t
 
 We can now readily write down the likelihood for the logistic regression model.  Since the model directly calculates the probabilities of each class for each row, we can use these probabilities to determine the total probability of the data we observed given the model:
 
-$$\begin{align}
-p(y_i=1 | x_i) &= logistic(\sum_j w_j x_i^j) \\
-L(x, y | w) &= \prod_{i: y_i = 1} p(y=1 | x_i)  \prod_{i: y_i = 0} (1 - p(y_i=1 | x_i)) \\
-\end{align}$$
+$$
+\begin{aligned}
+p(y_i=1 \mid x_i) &= logistic(\sum_j w_j x_i^j) \\
+L(x, y \mid w) &= \prod_{i: y_i = 1} p(y=1 \mid x_i)  \prod_{i: y_i = 0} (1 - p(y_i=1 \mid x_i))
+\end{aligned}
+$$
 
 Plugging in $p(y_i=1 | x_i)$, we can obtain the log likelihood as:
 
-$$\begin{align}
-log[L] &= \sum_{i: y_i = 1} log[p(y=1 | x_i)] + \sum_{i: y_i = 0} log[(1 - p(y_i=1 | x_i))] \\
-&= \sum_{i} y_i log[p(y=1 | x_i)] + (1-y_i) log[(1 - p(y_i=1 | x_i))] \\
-& = \sum_i y_i (\sum_jw_j x_i^j) - log[1 + e^{\sum_j w_j x_i^j}] \\
-\end{align}$$
+$$
+\begin{aligned}
+\log[L] &= \sum_{i: y_i = 1} \log[p(y=1 \mid x_i)] + \sum_{i: y_i = 0} \log[(1 - p(y_i=1 \mid x_i))] \\
+&= \sum_{i} y_i \log[p(y=1 \mid x_i)] + (1-y_i) \log[(1 - p(y_i=1 \mid x_i))] \\
+&= \sum_i y_i (\sum_j w_j x_i^j) - \log[1 + e^{\sum_j w_j x_i^j}]
+\end{aligned}
+$$
 
 Note that there isn't an additional $\sigma$ parameter that we had to introduce here, as we did with ordinary regression.  The weights $w_j$ are obtained as the maximum likelihood estimators of this likelihood function.  Unlike in the case of ordinary regression, one cannot readily find a closed form solution for the weights.  Instead, packages typically use numerical optimization routines to solve for $w_j$, typically utilizing a form of Newton's Method.  This can be readily done since we have an exact mathematical form for the likelihood.
 
@@ -460,7 +469,7 @@ http://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch12.pdf
 http://www.win-vector.com/blog/2011/09/the-simpler-derivation-of-logistic-regression/
 -->
 
-### Confidence Inervals of fitted parameters
+### Confidence Intervals of fitted parameters
 
 
 In the case of linear regression, we were able to show that the distribution of a fitted parameter $w_i$ follows a Student's t distribution.  It would be nice to be able to come up with an exact, closed-form distribution for the fitted parameters of a logistic regression model.  However, just as there is no closed form for the MLEs of the parameters, there is no closed form for their distribution either.  Instead, most inference done on the fitted parameters of a logistic model use an approximation that becomes asymptotically more accurate as the size of the data increases.
@@ -470,7 +479,7 @@ A common approach for determining confidence intervals on fitted parameters uses
 - Using the likelihood function, calculate the Fisher information matrix as a function of the true values of the parameters
 - Fit the model using maximum likelihood estimation to produce estimates of the parameters
 - Plug these estimates into the Fisher information matrix to estimate the variance of the maximum likelihood estimators
-- Assuming the gaussian asymptotic distribution, divide the fitted parameter value by it's variance, square it, and compare it to a chi-squared distribution with 1 degree of freedom.
+- Assuming the gaussian asymptotic distribution, divide the fitted parameter value by its variance, square it, and compare it to a chi-squared distribution with 1 degree of freedom.
 
 Note here that we are making two approximations.  We're first assuming that the asymptotic form for the distribution for the MLEs holds.  And we're second assuming that the Fisher information matrix evaluated with the MLEs is close to the fisher information matrix evaluated with the true parameters.  The fact that we're using two assumptions here can make this test inaccurate, but it is still commonly used.  Most likely, the statistical package that you're using to fit a logistic regression will return to you the results of this test.
 
@@ -483,7 +492,7 @@ $$
 is asymptotically related to a Chi-Squared distribution:
 
 $$
--2 log(\lambda(\theta)) \sim \chi^2_{1}
+-2 \log(\lambda(\theta)) \sim \chi^2_{1}
 $$
 
 For a logistic regression, we can write down the likelihood and take the parameter of interest $\theta$ to be the ith fitted parameter $w_i$.  To use the profile likelihood to calculate confidence intervals, one can perform the following procedure:

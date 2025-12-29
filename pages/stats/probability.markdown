@@ -103,7 +103,7 @@ $$
 p(x) = \int p(y) p(x | y) dy
 $$
 
-Finally, we can perform a transformation better known as Bayes Theorem.  Unlike marginalization, Bayes' theorem allows one to turn a parameter of a probability distribution into a random variable, and visa versa.  Specifically, it says that:
+Finally, we can perform a transformation better known as Bayes Theorem.  Unlike marginalization, Bayes' theorem allows one to turn a parameter of a probability distribution into a random variable, and vice versa.  Specifically, it says that:
 
 $$
 p(A | B) = \frac {p(B | A) p(A)} {p(B)}

@@ -26,18 +26,18 @@ Let's go a bit deeper.  In addition to electrons, there are electrons' evil cous
   
 The theory of electrons, positrons, and photons is known as Quantum Electrodynamics, or QED for short.  It is a major component of the Standard Model.  But really, it's quite simple.  QED can be summarized by the fact that an electron and a positron interact via the exchange of a photon, two electrons interact via the exchange of the photon, or two positrons interact via the exchange of a photon.  It's even simpler than that sentence if one understands Feynman diagrams (there's only one vertex between an electron, positron, and photon, and all possible interactions are built out of this one vertex like legos).  
   
-[![](http://plus.maths.org/issue21/features/strings/feynman1.gif)](http://plus.maths.org/issue21/features/strings/feynman1.gif)  
+[![](https://plus.maths.org/issue21/features/strings/feynman1.gif)](http://plus.maths.org/issue21/features/strings/feynman1.gif)  
   
   
-[![](http://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Electron-positron-scattering.svg/220px-Electron-positron-scattering.svg.png)](http://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Electron-positron-scattering.svg/220px-Electron-positron-scattering.svg.png)  
+[![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Electron-positron-scattering.svg/220px-Electron-positron-scattering.svg.png)](http://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Electron-positron-scattering.svg/220px-Electron-positron-scattering.svg.png)  
   
   
 As you can see in the following diagram, each interaction vertex (where two lines meet) contains an electron and a positron (the two straight lines) and a photon (the wiggly line).  Any such diagram that can be drawn that is made up of straight and wiggly lines where each wiggly line meets with two straight lines is a valid "Feynamn Diagram" in QED.  If you aren't familiar with these sort of diagrams, don't worry, maybe I'll describe them in more detail in another blog.  
   
-[![](http://bp3.blogger.com/_zi39n2uYgqg/SISZkwqq5KI/AAAAAAAAAJM/5kzeCzjPmnM/s320/compton03.png)](http://bp3.blogger.com/_zi39n2uYgqg/SISZkwqq5KI/AAAAAAAAAJM/5kzeCzjPmnM/s320/compton03.png)  
+[![](https://bp3.blogger.com/_zi39n2uYgqg/SISZkwqq5KI/AAAAAAAAAJM/5kzeCzjPmnM/s320/compton03.png)](http://bp3.blogger.com/_zi39n2uYgqg/SISZkwqq5KI/AAAAAAAAAJM/5kzeCzjPmnM/s320/compton03.png)  
   
   
-[![](http://kempton.files.wordpress.com/2006/11/feynman-bongos.jpg)](http://kempton.files.wordpress.com/2006/11/feynman-bongos.jpg)  
+[![](https://kempton.files.wordpress.com/2006/11/feynman-bongos.jpg)](http://kempton.files.wordpress.com/2006/11/feynman-bongos.jpg)  
   
   
 Richard Feynman, the man see above playing the bongos, was a central figure in the creation of QED in the 1970's.  
