@@ -19,7 +19,8 @@
 
   /* Typography */
   h1, h2, h3, h4, h5, h6 {
-    @apply text-text-primary font-semibold tracking-tight;
+    @apply text-text-primary font-semibold;
+    letter-spacing: -0.01em;
   }
 
   h1 { @apply text-3xl md:text-4xl mb-4; }

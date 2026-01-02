@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'system-ui', 'sans-serif'],
+        sans: ['Literata', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'monospace'],
       },
       colors: {
@@ -50,12 +50,12 @@ module.exports = {
             h1: {
               color: '#1A1A1A',
               fontWeight: '600',
-              letterSpacing: '-0.025em',
+              letterSpacing: '-0.01em',
             },
             h2: {
               color: '#1A1A1A',
               fontWeight: '600',
-              letterSpacing: '-0.025em',
+              letterSpacing: '-0.01em',
             },
             h3: {
               color: '#1A1A1A',

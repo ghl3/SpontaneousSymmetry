@@ -85,7 +85,7 @@ export default function Home(): JSX.Element {
           />
         </div>
         <blockquote className="max-w-md mx-auto">
-          <p className="text-text-secondary leading-relaxed italic">
+          <p className="text-text-primary/70 leading-relaxed">
             Symmetries are all around us and shape our lives in ways few understand. 
             In a deep, fundamental way, they govern how the world works—the language 
             of the most fundamental physical processes we can describe.
